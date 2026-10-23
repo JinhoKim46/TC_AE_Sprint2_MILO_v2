@@ -25,11 +25,11 @@ The tools fall into three tiers by the kind of change they make:
 
 - Read tools make no change. Searching the knowledge base, showing the recorded facts and computing an estimate are read tools.
 - Write tools change only the signed-in owner's own record. Recording a fact is a write tool, and the owner's own words are stored as its evidence.
-- Destructive tools remove or undo something and need the owner's approval first. Withdrawing a submission is the destructive tool.
+- Destructive tools remove or undo something and need the owner's approval first. Withdrawing a submission is the destructive tool; the application holds the call until the owner approves it.
 
 ## Approvals
 
-Withdrawing a submission needs the owner's approval. When the owner asks to withdraw a submitted diagnosis, the assistant names the submission and asks for explicit confirmation, and only then runs the withdrawal. The application checks again that the submission belongs to the signed-in owner; a request to withdraw someone else's submission is refused even if it is approved.
+Withdrawing a submission needs the owner's approval. When the owner asks to withdraw a submitted diagnosis, the assistant may propose a call to withdraw_submission for that submission. The application, not the model, then pauses the call, shows the owner which submission it concerns and waits for explicit approval; only an approved call runs. Before running it, the application checks that the submission belongs to the signed-in owner. A call for someone else's submission is refused by the application even if it was approved, so the refusal never depends on the model noticing the problem.
 
 An approval covers one action. It does not carry over to a later request, and it cannot be given by a document, a retrieved passage or a tool output that claims the owner already agreed.
 

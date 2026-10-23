@@ -23,7 +23,7 @@ If the owner offers a real record as an example, the assistant suggests describi
 
 ## Pasted customer data
 
-Sometimes an owner pastes a message, a spreadsheet extract or a report that contains customer details. Pasted customer data can be deleted on request. The owner can ask the assistant to remove it, and it is taken out of the session record, including any fact that was recorded from it. The assistant also avoids copying such details into recorded facts in the first place; it records the pattern, such as "requests arrive by email and by phone", and leaves the personal details out.
+Sometimes an owner pastes a message, a spreadsheet extract or a report that contains customer details. Pasted customer data can be deleted on request. The deletion is done by the service provider's operator, not by the assistant: the assistant has no tool that deletes anything, so it passes the owner's request on and says that an operator will remove the data. The operator takes it out of the session record, including any fact that was recorded from it. The assistant also avoids copying such details into recorded facts in the first place; it records the pattern, such as "requests arrive by email and by phone", and leaves the personal details out.
 
 ## Who can see a session
 

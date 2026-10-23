@@ -69,6 +69,16 @@ def strings(obj: Any) -> list[str]:
     return []
 
 
+# Product names in the package text, replaced so the knowledge base stays brand-free.
+BRAND_WORDS = {"Excel": "spreadsheet"}
+
+
+def debrand(text: str) -> str:
+    for brand, generic in BRAND_WORDS.items():
+        text = re.sub(rf"\b{brand}\b", generic, text)
+    return text
+
+
 def sentences(text: str) -> list[str]:
     return [s for s in re.split(r"(?<=[.!?])\s+", text.strip()) if s]
 
@@ -105,6 +115,7 @@ class Writer:
     def strip(self, s: str | None) -> str:
         if not s:
             return ""
+        s = debrand(s)
         return " ".join(
             x for x in sentences(s) if x not in self.shared and x not in self.written
         )
@@ -144,6 +155,7 @@ def questions(w: Writer, qs: list[dict[str, Any]], done: set[str]) -> None:
     for q in qs:
         if q["id"] in done or q["question"] in done:
             continue
+        q = {**q, "question": debrand(q["question"])}
         done.update((q["id"], q["question"]))
         level_pending = len(w.pending)
         w.pending += [f"### {q['id']}: {q['question']}", ""]

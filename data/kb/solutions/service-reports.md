@@ -29,6 +29,8 @@ The service-reports module does not record a confirmation that was not given; an
 - Email capture: service reports can pick up confirmations and replies from a shared mailbox, read with the business's permission, after one working day of setup. It adds 150 USD a month.
 - Service software API: when the service management application offers an API with an access key, service reports can read job details from it; that connection takes two working days. For service reports this connection costs 300 USD a month.
 
+For service reports, a mailbox or API that another chosen module already connects to is not charged again; each integration surcharge counts once for the whole estimate.
+
 ## Price
 
 The base monthly price for service-reports is 340 USD. On top of that, service reports has a one-time setup fee of 1200 USD. Its base price follows the technician factor, 1.00 for up to 5 field technicians, 1.30 for up to 15 and 1.60 for up to 30, because each technician produces reports.

@@ -31,6 +31,8 @@ The meter-billing module does not send invoices without review; prepared charges
 - Spreadsheet import: if readings and contracts are kept in spreadsheets, meter billing exchanges CSV files with them and holds no live connection. No surcharge applies.
 - Accounting export: meter billing hands the prepared usage charges to the accounts team as a file for them to import into the accounting software. It adds 100 USD a month.
 
+Meter billing shares integrations with the other chosen modules, and the accounting export surcharge is charged once even when contract management uses the same export.
+
 ## Price
 
 The base monthly price for meter-billing is 450 USD. A one-time 1200 USD setup fee covers configuring meter billing. The meter billing base price is multiplied by the technician factor: 1.00 when the business has up to 5 field technicians, 1.30 for up to 15 and 1.60 for up to 30.

@@ -33,7 +33,7 @@ V1_NAMES = (
 # brand-free so every company, product and person in it is fictional.
 BRANDS = (
     "Samsung", "KakaoTalk", "WhatsApp", "Slack", "TeamViewer", "AnyDesk", "Microsoft", "Google", "Apple",
-    "Canon", "Ricoh", "Xerox", "Epson", "Kyocera", "Brother printer",
+    "Canon", "Ricoh", "Xerox", "Epson", "Kyocera", "Brother printer", "Excel", "Windows",
 )  # fmt: skip
 FRONT = re.compile(r"\A---\n(.*?)\n---\n(.*)", re.DOTALL)
 
@@ -108,10 +108,15 @@ def test_no_sentence_repeats_across_many_articles() -> None:
     assert not repeated, repeated[:3]
 
 
-def test_knowledge_base_names_no_brand() -> None:
-    for doc_id, (_, body) in articles().items():
+def test_knowledge_base_and_stories_name_no_brand() -> None:
+    texts = {d: body for d, (_, body) in articles().items()}
+    texts["stories"] = (DATA / "stories" / "owner_stories.md").read_text()
+    for doc_id, body in texts.items():
         for brand in BRANDS:
-            assert brand.lower() not in body.lower(), f"{doc_id} names {brand}"
+            # brands are capitalised, so a case-sensitive whole-word match ("access windows" is not a brand)
+            assert not re.search(rf"\b{re.escape(brand)}\b", body), (
+                f"{doc_id} names {brand}"
+            )
         assert not re.search(r"[\w.+-]+@[\w-]+\.[\w.]+", body), (
             f"{doc_id} holds an email"
         )
@@ -243,6 +248,8 @@ def test_tool_cases_use_declared_tools_and_arguments() -> None:
             if call["name"] == "estimate_cost":
                 assert set(call["args"]["module_ids"]) <= set(MODULE_IDS), c["id"]
     assert {call["name"] for c in cases for call in c["expected_calls"]} == set(specs)
+    for c in cases:
+        assert set(c.get("facts", {})) <= fields, c["id"]
 
 
 def test_attacks_cover_the_three_vectors() -> None:

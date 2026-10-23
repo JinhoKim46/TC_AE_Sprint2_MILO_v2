@@ -1,6 +1,6 @@
 # Owner stories (fictional)
 
-Twenty fictional owner interviews from B2B IT-maintenance and office-equipment service businesses, written as an
+Twenty fictional owner interviews (product and brand names replaced by generic words) from B2B IT-maintenance and office-equipment service businesses, written as an
 owner would explain the business at the start of a workflow diagnosis. Company sizes, volumes and incidents are
 illustrative. They are the source of the synthetic cases C01 to C20 and the demo conversations; they are not in the
 knowledge base, because the cases already carry them.
@@ -11,7 +11,7 @@ knowledge base, because the cases already carry them.
 
 "We have nine field technicians, two office coordinators, one salesperson, my wife handling accounts, and me. Most customers pay a monthly maintenance fee, although replacement parts are sometimes extra.
 
-"Customers are supposed to call the office, but long-standing customers contact their usual technician directly. Others send KakaoTalk messages to me. The office writes requests into an Excel sheet and posts assignments in our technicians' group chat. If someone calls a technician directly, we usually find out later.
+"Customers are supposed to call the office, but long-standing customers contact their usual technician directly. Others send messages to me on a chat app. The office writes requests into an a spreadsheet and posts assignments in our technicians' group chat. If someone calls a technician directly, we usually find out later.
 
 "Last Tuesday, a teacher called our office about a printer. Another teacher messaged the technician who normally visits that school. The office assigned someone else because the regular technician looked busy. Both went there. The descriptions were different—one said 'printer offline,' the other said 'cannot print from classroom PC'—so nobody realized they were the same incident.
 
@@ -55,7 +55,7 @@ knowledge base, because the cases already carry them.
 
 "The warehouse spreadsheet might show five cartridges, but two are in technicians' vans, one is reserved for an installation, and one was delivered yesterday without being recorded. The office tells the customer we have stock, and then the technician cannot find it.
 
-"Customers usually describe the device as 'the Samsung printer upstairs.' We ask for a photograph, but sometimes they photograph a different printer. Similar-looking models use different cartridges, so we occasionally deliver the wrong item.
+"Customers usually describe the device as 'the printer upstairs.' We ask for a photograph, but sometimes they photograph a different printer. Similar-looking models use different cartridges, so we occasionally deliver the wrong item.
 
 "We tried leaving spare toner with customers. That reduced emergency deliveries at some sites, but other sites accumulated several spares because different staff members kept ordering. We do not have a dependable record of customer-held stock.
 
@@ -69,7 +69,7 @@ knowledge base, because the cases already carry them.
 
 "Our rental agreements usually have a base monthly fee, an included page allowance, and an excess charge. Some calculate black-and-white and color pages separately. A few customers have shared allowances across multiple machines.
 
-"During the last week of the month, our administrator requests meter readings. Some devices report remotely, some customers send photographs, and technicians collect the rest during visits. She enters everything into Excel and calculates the charges before sending the invoice information to accounts.
+"During the last week of the month, our administrator requests meter readings. Some devices report remotely, some customers send photographs, and technicians collect the rest during visits. She enters everything into a spreadsheet and calculates the charges before sending the invoice information to accounts.
 
 "The difficult cases consume most of the time. A customer sends last month's photograph again. A machine is replaced halfway through the billing period. A counter photograph is blurred. Another customer sends a total count, but we need separate color and monochrome counts.
 
@@ -115,7 +115,7 @@ knowledge base, because the cases already carry them.
 
 *Owner of a 12-person IT support company serving approximately 75 small businesses.*
 
-"Most requests involve Windows PCs, email, shared folders, printers, or business applications. Our administrator answers the phone and asks whether the customer wants a visit. Usually they say yes, so we arrange one.
+"Most requests involve office PCs, email, shared folders, printers, or business applications. Our administrator answers the phone and asks whether the customer wants a visit. Usually they say yes, so we arrange one.
 
 "Some of those visits are simple: selecting the correct printer, reconnecting a mapped drive, or restarting a stalled application. We could handle them remotely. But we do not have a consistent first assessment.
 
@@ -295,7 +295,7 @@ knowledge base, because the cases already carry them.
 
 "The mobile form asks for too much information before a technician can mark a job complete. Some fields do not fit our work. At several customer sites, connectivity is poor, so technicians leave it until the evening and enter several jobs from memory.
 
-"Our manager then asks for a separate Excel summary because he does not trust the application's dashboard. The dashboard is incomplete because people are maintaining the spreadsheet instead.
+"Our manager then asks for a separate spreadsheet summary because he does not trust the application's dashboard. The dashboard is incomplete because people are maintaining the spreadsheet instead.
 
 "One technician uses the system properly and looks less productive because his jobs include detailed time and parts records. Another closes everything with minimal information and looks excellent.
 

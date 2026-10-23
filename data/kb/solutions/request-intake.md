@@ -31,6 +31,8 @@ The request-intake module does not merge requests without a coordinator decision
 - Email capture: request intake reads a shared mailbox with the business's permission, and connecting that mailbox takes one working day. It adds 150 USD a month.
 - Service software API: if the business's service management application offers an API with an access key, request intake can use it after two working days of setup. The API connection adds 300 USD a month to request intake.
 
+Each of these surcharges is charged once per integration: if another module already uses the same mailbox or the same API, request intake does not add it a second time.
+
 ## Price
 
 The base monthly price for request-intake is 420 USD. Setting up request intake costs a one-time fee of 1200 USD. That 420 USD figure is multiplied by the technician factor for the number of field technicians: 1.00 for up to 5, 1.30 for up to 15 and 1.60 for up to 30. The estimate tool works this out from the recorded facts.

@@ -31,6 +31,8 @@ The work-tracking module does not order parts; it shows that a job is waiting fo
 - Email capture: work tracking can attach supplier replies from a shared mailbox, read with the business's permission, once a one-working-day setup is done. It adds 150 USD a month.
 - Service software API: work tracking can follow open jobs in a service management application that offers an API with an access key, with two working days of setup. Work tracking adds 300 USD a month for the API link.
 
+When work tracking is chosen next to other modules, every shared integration is still charged only once, so a mailbox or API used by several modules costs its surcharge a single time.
+
 ## Price
 
 The base monthly price for work-tracking is 360 USD. Starting work tracking involves a one-time setup fee of 1200 USD. The work tracking base price is multiplied by the technician factor of 1.00 for up to 5 field technicians, 1.30 for up to 15 or 1.60 for up to 30.

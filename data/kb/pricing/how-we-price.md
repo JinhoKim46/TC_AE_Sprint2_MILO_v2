@@ -13,7 +13,7 @@ review_status: author_written_for_milo_v2
 
 An estimate has four parts. The first is the base monthly price of each chosen module. The second is the technician factor, which scales the module prices by the size of the field team. The third is the integration surcharge, a monthly amount for each connection to the business's own tools. The fourth is the one-time setup fee charged for each module.
 
-The monthly figure is the sum of the chosen modules' base prices, multiplied by the technician factor, plus the surcharges for the integrations the business needs. The setup fee is shown separately because it is paid once, not every month. Every figure is shown in USD and is indicative: it describes the likely cost of the work discussed, not a signed offer.
+The monthly figure is the sum of the chosen modules' base prices, multiplied by the technician factor, plus the surcharges for the integrations the business needs. The setup fee is shown separately because it is paid once, not every month. Every figure is shown in USD and is indicative: it describes the likely cost of the work discussed, not a signed offer. Both the monthly total and the setup total are shown as a low, base and high range, using the factors 0.90, 1.00 and 1.20. When the business has more than 30 field technicians, no figure is shown and a person prepares the offer instead.
 
 ## Base monthly prices
 

@@ -30,6 +30,8 @@ The stock-control module does not raise automatic purchase orders; it can show t
 - Spreadsheet import: where stock lists live in spreadsheets, stock control takes them in and gives them back as CSV files, with no live connection. This one is free of surcharge.
 - Service software API: stock control can follow parts used on jobs in the business's service management application if it offers an API with an access key, after a two-working-day setup. Stock control pays a 300 USD monthly surcharge for this link.
 
+If another chosen module already connects to the same service software, stock control shares that connection and the 300 USD surcharge is not charged twice.
+
 ## Price
 
 The base monthly price for stock-control is 390 USD. Stock control carries the same one-time setup fee as every module, 1200 USD. The stock control base is then multiplied by the technician factor, at 1.00 for up to 5 field technicians, 1.30 for up to 15 and 1.60 for up to 30, since every van is another location to track.

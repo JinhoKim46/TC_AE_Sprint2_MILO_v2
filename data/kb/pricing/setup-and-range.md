@@ -11,7 +11,7 @@ review_status: author_written_for_milo_v2
 
 ## Setup fee
 
-Each chosen module carries a one-time setup fee of 1200 USD per module. The fee covers configuring the module for the business, importing its starting data and a short handover with the staff who will use it. Two modules cost 2400 USD to set up, three cost 3600 USD, and so on. The setup fee is shown apart from the monthly figure and is not multiplied by the technician factor.
+Each chosen module carries a one-time setup fee of 1200 USD per module. The fee covers configuring the module for the business and importing its starting data. Two modules cost 2400 USD to set up, three cost 3600 USD, and so on. The setup fee is shown apart from the monthly figure and is not multiplied by the technician factor.
 
 ## Integration surcharges
 
@@ -30,9 +30,9 @@ A surcharge is counted once per integration, however many modules share it. If r
 
 ## The low, base and high range
 
-Every estimate is shown as a range rather than a single number. The range factors are 0.90 for the low figure, 1.00 for the base figure and 1.20 for the high figure, applied to the monthly total.
+Whenever a figure can be computed, the estimate is shown as a range rather than a single number. Above 30 field technicians no figure is shown at all, because a person prices the work. The range factors are 0.90 for the low figure, 1.00 for the base figure and 1.20 for the high figure, and they apply both to the monthly total and to the setup total.
 
-The base figure is the estimate computed directly from the rate card and the recorded facts. The low figure, at 0.90, shows what the work could cost if the setup turns out simpler than the diagnosis suggests, for example clean data and few exceptions. The high figure, at 1.20, shows what it could cost if the diagnosis uncovers more exceptions, messier data or extra configuration. The range is wider on the high side on purpose, because surprises in service businesses more often add work than remove it.
+The base figure is the estimate computed directly from the rate card and the recorded facts; for two modules, for example, the setup total of 2400 USD becomes a range of 2160 to 2880 USD. The low figure, at 0.90, shows what the work could cost if the setup turns out simpler than the diagnosis suggests, for example clean data and few exceptions. The high figure, at 1.20, shows what it could cost if the diagnosis uncovers more exceptions, messier data or extra configuration. The range is wider on the high side on purpose, because surprises in service businesses more often add work than remove it.
 
 ## Limits
 

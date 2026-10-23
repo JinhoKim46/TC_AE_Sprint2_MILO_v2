@@ -30,6 +30,8 @@ The contract-management module does not make automatic renewal offers; a person 
 - Spreadsheet import: contracts held in spreadsheets reach contract management as CSV files, and changes go back the same way; no live connection is made. It adds nothing to the monthly price.
 - Accounting export: for contract management, the charges it prepares are written to a file that the accounts team imports into the accounting software. It adds 100 USD a month.
 
+An integration is charged once however many modules share it, so contract management adds no second accounting export fee when meter billing already uses that export.
+
 ## Price
 
 The base monthly price for contract-management is 480 USD. Contract management also has a one-time setup fee of 1200 USD. The 480 USD base is multiplied by the technician factor: 1.00 for a field team of up to 5 technicians, 1.30 for up to 15 and 1.60 for up to 30.
