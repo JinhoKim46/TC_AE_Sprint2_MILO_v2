@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Retrieval chunk",
+  "type": "object",
+  "required": [
+    "chunk_id",
+    "doc_id",
+    "kind",
+    "source_path",
+    "synthetic",
+    "evidence_origin",
+    "review_status",
+    "split",
+    "text"
+  ],
+  "properties": {
+    "chunk_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "doc_id": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "case",
+        "playbook",
+        "blueprint"
+      ]
+    },
+    "source_path": {
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "evidence_origin": {
+      "const": "synthetic_fixture"
+    },
+    "review_status": {
+      "const": "author_generated_not_domain_validated"
+    },
+    "split": {
+      "const": "knowledge"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

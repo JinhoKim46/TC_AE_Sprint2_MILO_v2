@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P17",
+  "title": "Vendor escalation becomes a ticket graveyard",
+  "synthetic": true,
+  "source_case_ids": [
+    "C17"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "The internet provider wants wired tests; the application vendor wants logs. Our notes rarely say where or when tests occurred. Second technicians repeat them. An access point replacement did not fix a meeting-room problem that returned during busy events. Waiting for vendor can last indefinitely.",
+    "workflow_context": "Ten-person office network, Wi-Fi and general IT service provider."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Which conditions reproduce the issue?",
+      "synthetic_answer": "Busy meetings, but tests were done in an empty room.",
+      "diagnostic_value": "Test context matters.",
+      "id": "C17-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A supplier may have a real unresolved external defect; the service firm can manage evidence and communications without claiming to fix it."
+    },
+    {
+      "question": "Are results timestamped and tied to a device?",
+      "synthetic_answer": "Usually not.",
+      "diagnostic_value": "Prevent ambiguous or duplicated evidence.",
+      "id": "C17-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Who follows up with the vendor?",
+      "synthetic_answer": "No named owner after escalation.",
+      "diagnostic_value": "Waiting still requires ownership.",
+      "id": "C17-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Was the workaround verified under original conditions?",
+      "synthetic_answer": "No.",
+      "diagnostic_value": "Restoration is not causal resolution.",
+      "id": "C17-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+  "counterexample": "A supplier may have a real unresolved external defect; the service firm can manage evidence and communications without claiming to fix it.",
+  "minimum_evidence": [
+    "A simulated test log omits load conditions.",
+    "A simulated vendor request remains unanswered.",
+    "A simulated closure note records only temporary restoration."
+  ],
+  "process_intervention": "Record test context, results and next vendor action; separate restored, monitoring and resolved states.",
+  "automation_candidate": "Build structured investigation timelines and vendor follow-up tasks; draft evidence packages with sensitive information removed.",
+  "unknowns": [
+    "Supplier support windows and permissible diagnostic data vary by agreement."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Structured technical investigation and supplier-case linking are additional capabilities.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C08",
+  "title": "Remote-first support creates another delay",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 8,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "12 staff supporting approximately 75 small businesses.",
+  "owner_narrative": "We visit for simple settings problems, but attempted remote support can also waste 25 minutes before a visit. The remote tool may be absent, the internet down or the caller unauthorized. Customers repeat symptoms to several staff members.",
+  "current_workflow": [
+    "Call received",
+    "Ask for visit",
+    "Optional remote attempt",
+    "Connection fails or diagnosis proceeds",
+    "Dispatch",
+    "Customer repeats story"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Is network connectivity available?",
+      "synthetic_answer": "Some affected PCs cannot connect at all.",
+      "diagnostic_value": "Excludes many remote workflows.",
+      "id": "C08-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If remote readiness is high but a hardware replacement is evident, dispatch directly; remote-first is not a universal objective."
+    },
+    {
+      "question": "Who may authorize a session?",
+      "synthetic_answer": "Some customers require a named on-site contact.",
+      "diagnostic_value": "Consent and access are prerequisites.",
+      "id": "C08-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are remote attempts time-boxed?",
+      "synthetic_answer": "No; technicians keep troubleshooting connection setup.",
+      "diagnostic_value": "Avoid an unbounded extra stage.",
+      "id": "C08-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Do dispatch notes contain remote findings?",
+      "synthetic_answer": "They usually say remote failed.",
+      "diagnostic_value": "Negative results must transfer.",
+      "id": "C08-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C08-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated call records loss of internet before the remote attempt."
+    },
+    {
+      "id": "C08-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated customer policy requires attended access."
+    },
+    {
+      "id": "C08-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated visit repeats checks absent from the ticket."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C08-D01",
+      "hypothesis": "There is no eligibility gate or structured handover for remote support.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C08-E01",
+        "C08-E02",
+        "C08-E03"
+      ],
+      "counterhypothesis": "If remote readiness is high but a hardware replacement is evident, dispatch directly; remote-first is not a universal objective.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Ask connectivity, authorization and symptom questions first; agree a limited remote attempt and a clear escalation point.",
+    "deterministic_and_assisted_automation": "Apply a deterministic eligibility checklist; suggest remote or site triage; retain tests, errors and consent references.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B08",
+    "fields": [
+      "connectivity_state",
+      "remote_tool_ready",
+      "authorized_contact",
+      "consent_ref",
+      "symptom_scope",
+      "attempted_steps",
+      "attempt_start",
+      "escalation_reason",
+      "appointment_window"
+    ],
+    "requirements": [
+      {
+        "id": "C08-R01",
+        "statement": "Do not initiate control without applicable authorization.",
+        "rationale": "There is no eligibility gate or structured handover for remote support.",
+        "evidence_refs": [
+          "C08-E01",
+          "C08-E02",
+          "C08-E03"
+        ],
+        "verification_refs": [
+          "C08-AT01",
+          "C08-AT02",
+          "C08-AT03"
+        ]
+      },
+      {
+        "id": "C08-R02",
+        "statement": "Disconnected or obvious physical faults may bypass remote support.",
+        "rationale": "There is no eligibility gate or structured handover for remote support.",
+        "evidence_refs": [
+          "C08-E01",
+          "C08-E02",
+          "C08-E03"
+        ],
+        "verification_refs": [
+          "C08-AT01",
+          "C08-AT02",
+          "C08-AT03"
+        ]
+      },
+      {
+        "id": "C08-R03",
+        "statement": "Time-box is configured with the service owner, not invented by the model.",
+        "rationale": "There is no eligibility gate or structured handover for remote support.",
+        "evidence_refs": [
+          "C08-E01",
+          "C08-E02",
+          "C08-E03"
+        ],
+        "verification_refs": [
+          "C08-AT01",
+          "C08-AT02",
+          "C08-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C08-AT01",
+        "scenario_and_expected_result": "An offline PC goes to alternative triage without repeated connection attempts.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C08-AT02",
+        "scenario_and_expected_result": "Declined access creates no session.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C08-AT03",
+        "scenario_and_expected_result": "A failed attempt carries diagnostic notes into dispatch.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation",
+        "staff-assignment"
+      ],
+      "proposed_extension": "Remote eligibility logic is new; remote-control software itself is not provided.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Resolution time by eligibility group; track remote success among eligible cases and extra delay before necessary visits.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Ask connectivity, authorization and symptom questions first; agree a limited remote attempt and a clear escalation point. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "If remote readiness is high but a hardware replacement is evident, dispatch directly; remote-first is not a universal objective.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Approved tools, access policies and practical time-box thresholds need local validation."
+  ],
+  "transfer_rules": {
+    "applicable_when": "There is no eligibility gate or structured handover for remote support.",
+    "do_not_assume": "If remote readiness is high but a hardware replacement is evident, dispatch directly; remote-first is not a universal objective.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C12",
+    "C16",
+    "C17"
+  ]
+}

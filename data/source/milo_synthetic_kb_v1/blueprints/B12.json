@@ -1,0 +1,119 @@
+{
+  "blueprint_id": "B12",
+  "title": "Senior technicians are the only knowledge base",
+  "synthetic": true,
+  "source_case_ids": [
+    "C12"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Capture symptoms, environment, tests, result and exceptions; assign review owners and retirement dates.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "article_id",
+    "customer_scope",
+    "asset_family",
+    "software_version",
+    "prerequisites",
+    "diagnostic_steps",
+    "verified_result",
+    "author",
+    "reviewer",
+    "reviewed_at",
+    "superseded_by"
+  ],
+  "business_rules": [
+    {
+      "id": "C12-R01",
+      "statement": "Unreviewed articles are suggestions, not approved instructions.",
+      "rationale": "Resolution context is not captured, scoped, reviewed or retired, so experience cannot transfer reliably.",
+      "evidence_refs": [
+        "C12-E01",
+        "C12-E02",
+        "C12-E03"
+      ],
+      "verification_refs": [
+        "C12-AT01",
+        "C12-AT02",
+        "C12-AT03"
+      ]
+    },
+    {
+      "id": "C12-R02",
+      "statement": "Customer-specific content is access scoped.",
+      "rationale": "Resolution context is not captured, scoped, reviewed or retired, so experience cannot transfer reliably.",
+      "evidence_refs": [
+        "C12-E01",
+        "C12-E02",
+        "C12-E03"
+      ],
+      "verification_refs": [
+        "C12-AT01",
+        "C12-AT02",
+        "C12-AT03"
+      ]
+    },
+    {
+      "id": "C12-R03",
+      "statement": "No credentials in indexed notes.",
+      "rationale": "Resolution context is not captured, scoped, reviewed or retired, so experience cannot transfer reliably.",
+      "evidence_refs": [
+        "C12-E01",
+        "C12-E02",
+        "C12-E03"
+      ],
+      "verification_refs": [
+        "C12-AT01",
+        "C12-AT02",
+        "C12-AT03"
+      ]
+    },
+    {
+      "id": "C12-R04",
+      "statement": "Retired articles cannot appear as current procedures.",
+      "rationale": "Resolution context is not captured, scoped, reviewed or retired, so experience cannot transfer reliably.",
+      "evidence_refs": [
+        "C12-E01",
+        "C12-E02",
+        "C12-E03"
+      ],
+      "verification_refs": [
+        "C12-AT01",
+        "C12-AT02",
+        "C12-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C12-AT01",
+      "scenario_and_expected_result": "A version-mismatched procedure carries a warning.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C12-AT02",
+      "scenario_and_expected_result": "A junior cannot retrieve another customer’s restricted configuration.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C12-AT03",
+      "scenario_and_expected_result": "A superseded article links to its replacement.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Actual solution accuracy requires expert review; synthetic procedures must never become device repair authority.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "document-data-entry"
+    ],
+    "proposed_extension": "Reviewed technical knowledge management and retrieval need a dedicated extension.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

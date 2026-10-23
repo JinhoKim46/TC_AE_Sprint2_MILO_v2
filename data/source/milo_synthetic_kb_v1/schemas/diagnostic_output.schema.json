@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Proposed diagnostic output, not existing MILO snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "customer_facts",
+    "hypotheses",
+    "questions",
+    "recommendations",
+    "unknowns",
+    "numbers_status"
+  ],
+  "properties": {
+    "customer_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "fact_id",
+          "statement",
+          "source_ref",
+          "status"
+        ],
+        "properties": {
+          "fact_id": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "source_ref": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "reported",
+              "verified",
+              "conflicting",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "hypothesis_id",
+          "claim",
+          "customer_fact_refs",
+          "analogy_case_refs",
+          "status",
+          "counterhypothesis"
+        ],
+        "properties": {
+          "hypothesis_id": {
+            "type": "string"
+          },
+          "claim": {
+            "type": "string"
+          },
+          "customer_fact_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "analogy_case_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^C[0-9]{2}$"
+            }
+          },
+          "status": {
+            "enum": [
+              "unresolved",
+              "supported",
+              "rejected"
+            ]
+          },
+          "counterhypothesis": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "action",
+          "basis_hypothesis_refs",
+          "condition",
+          "capability_status",
+          "human_review",
+          "acceptance_criteria"
+        ],
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "basis_hypothesis_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "condition": {
+            "type": "string"
+          },
+          "capability_status": {
+            "enum": [
+              "process_only",
+              "existing_partial",
+              "proposed_extension",
+              "no_build"
+            ]
+          },
+          "human_review": {
+            "type": "string"
+          },
+          "acceptance_criteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "numbers_status": {
+      "enum": [
+        "withheld_missing_customer_evidence",
+        "available_via_validated_calculator"
+      ]
+    }
+  }
+}

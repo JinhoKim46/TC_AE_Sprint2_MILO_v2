@@ -1,0 +1,243 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C19",
+  "title": "Service software increases duplicate work",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 19,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "19 staff; service management software introduced eight months ago.",
+  "owner_narrative": "The office creates tickets then messages technicians because chat gets noticed. Updates return by chat and are copied back. Long mobile forms and poor connectivity push reporting into the evening. Management asks for separate Excel totals because the dashboard is incomplete.",
+  "current_workflow": [
+    "Office opens ticket",
+    "Office duplicates assignment in chat",
+    "Technician works",
+    "Update sent in chat",
+    "Office rekeys",
+    "Manager asks for spreadsheet"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Which fields prevent completion?",
+      "synthetic_answer": "Several mandatory fields do not apply to simple jobs.",
+      "diagnostic_value": "Workflow configuration may be the obstacle.",
+      "id": "C19-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If essential features genuinely cannot be configured or integrated, replacement may be justified after a bounded trial; do not assume another app is always wrong."
+    },
+    {
+      "question": "Can staff save offline drafts?",
+      "synthetic_answer": "No reliable path exists at some sites.",
+      "diagnostic_value": "Connectivity is a concrete constraint.",
+      "id": "C19-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Why does management use Excel?",
+      "synthetic_answer": "Dashboard totals omit late entries.",
+      "diagnostic_value": "Trust and timing form a feedback loop.",
+      "id": "C19-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Does one staff member’s apparent productivity depend on reporting detail?",
+      "synthetic_answer": "Yes; careful entries record more time.",
+      "diagnostic_value": "Avoid unfair comparisons from incomplete data.",
+      "id": "C19-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C19-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated observation records duplicate entry in chat and the app."
+    },
+    {
+      "id": "C19-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated form contains irrelevant mandatory fields."
+    },
+    {
+      "id": "C19-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated dashboard differs from the later reconciled list."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C19-D01",
+      "hypothesis": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C19-E01",
+        "C19-E02",
+        "C19-E03"
+      ],
+      "counterhypothesis": "If essential features genuinely cannot be configured or integrated, replacement may be justified after a bounded trial; do not assume another app is always wrong.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Observe actual work; remove unjustified fields; define one authoritative queue and reconcile exceptions before retiring the shadow sheet.",
+    "deterministic_and_assisted_automation": "First configure existing software; add reliable notifications and offline draft synchronization only where supported and needed.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B19",
+    "fields": [
+      "job_id",
+      "required_field_profile",
+      "draft_id",
+      "local_revision",
+      "server_revision",
+      "sync_state",
+      "completion_time",
+      "entered_time",
+      "notification_ack"
+    ],
+    "requirements": [
+      {
+        "id": "C19-R01",
+        "statement": "Offline draft is not server-confirmed completion.",
+        "rationale": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+        "evidence_refs": [
+          "C19-E01",
+          "C19-E02",
+          "C19-E03"
+        ],
+        "verification_refs": [
+          "C19-AT01",
+          "C19-AT02",
+          "C19-AT03"
+        ]
+      },
+      {
+        "id": "C19-R02",
+        "statement": "Resolve conflicting edits visibly.",
+        "rationale": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+        "evidence_refs": [
+          "C19-E01",
+          "C19-E02",
+          "C19-E03"
+        ],
+        "verification_refs": [
+          "C19-AT01",
+          "C19-AT02",
+          "C19-AT03"
+        ]
+      },
+      {
+        "id": "C19-R03",
+        "statement": "Do not judge employee performance from incomparable recording completeness.",
+        "rationale": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+        "evidence_refs": [
+          "C19-E01",
+          "C19-E02",
+          "C19-E03"
+        ],
+        "verification_refs": [
+          "C19-AT01",
+          "C19-AT02",
+          "C19-AT03"
+        ]
+      },
+      {
+        "id": "C19-R04",
+        "statement": "Preserve a documented fallback when synchronization fails.",
+        "rationale": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+        "evidence_refs": [
+          "C19-E01",
+          "C19-E02",
+          "C19-E03"
+        ],
+        "verification_refs": [
+          "C19-AT01",
+          "C19-AT02",
+          "C19-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C19-AT01",
+        "scenario_and_expected_result": "A minimal simple-job form can be submitted without irrelevant data.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C19-AT02",
+        "scenario_and_expected_result": "Reconnection does not create duplicate jobs.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C19-AT03",
+        "scenario_and_expected_result": "Conflicting edits appear for resolution rather than overwriting silently.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation"
+      ],
+      "proposed_extension": "Offline synchronization may require vendor support; configuration-first intervention precedes a new product.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Duplicate-entry minutes per job and reporting completeness; track sync failures and staff adoption.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Observe actual work; remove unjustified fields; define one authoritative queue and reconcile exceptions before retiring the shadow sheet. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "If essential features genuinely cannot be configured or integrated, replacement may be justified after a bounded trial; do not assume another app is always wrong.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Existing software configuration and API/offline support must be tested before proposing custom development."
+  ],
+  "transfer_rules": {
+    "applicable_when": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+    "do_not_assume": "If essential features genuinely cannot be configured or integrated, replacement may be justified after a bounded trial; do not assume another app is always wrong.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C01",
+    "C12",
+    "C13",
+    "C20"
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "blueprint_id": "B01",
+  "title": "Duplicate dispatch across contact channels",
+  "synthetic": true,
+  "source_case_ids": [
+    "C01"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Nominate the coordinator as assignment owner; require a short direct-contact capture before promising attendance, allowing an urgent exception with later reconciliation.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "report_id",
+    "incident_id",
+    "customer_id",
+    "site_id",
+    "asset_id_nullable",
+    "source_channel",
+    "source_reference",
+    "received_at",
+    "symptoms",
+    "assignment_version",
+    "merge_reason"
+  ],
+  "business_rules": [
+    {
+      "id": "C01-R01",
+      "statement": "Never merge solely on school name or textual similarity.",
+      "rationale": "Requests and commitments bypass the shared queue; asset ambiguity makes the bypass harder to detect.",
+      "evidence_refs": [
+        "C01-E01",
+        "C01-E02",
+        "C01-E03"
+      ],
+      "verification_refs": [
+        "C01-AT01",
+        "C01-AT02",
+        "C01-AT03"
+      ]
+    },
+    {
+      "id": "C01-R02",
+      "statement": "Preserve original reports and their reporters after a merge.",
+      "rationale": "Requests and commitments bypass the shared queue; asset ambiguity makes the bypass harder to detect.",
+      "evidence_refs": [
+        "C01-E01",
+        "C01-E02",
+        "C01-E03"
+      ],
+      "verification_refs": [
+        "C01-AT01",
+        "C01-AT02",
+        "C01-AT03"
+      ]
+    },
+    {
+      "id": "C01-R03",
+      "statement": "Commit assignments with an incident version check; a second worker requires an explicit reason.",
+      "rationale": "Requests and commitments bypass the shared queue; asset ambiguity makes the bypass harder to detect.",
+      "evidence_refs": [
+        "C01-E01",
+        "C01-E02",
+        "C01-E03"
+      ],
+      "verification_refs": [
+        "C01-AT01",
+        "C01-AT02",
+        "C01-AT03"
+      ]
+    },
+    {
+      "id": "C01-R04",
+      "statement": "Unknown asset identity routes to clarification, not silent rejection.",
+      "rationale": "Requests and commitments bypass the shared queue; asset ambiguity makes the bypass harder to detect.",
+      "evidence_refs": [
+        "C01-E01",
+        "C01-E02",
+        "C01-E03"
+      ],
+      "verification_refs": [
+        "C01-AT01",
+        "C01-AT02",
+        "C01-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C01-AT01",
+      "scenario_and_expected_result": "Two descriptions with a verified common serial surface together before dispatch.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C01-AT02",
+      "scenario_and_expected_result": "Two different printers at one school remain separate.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C01-AT03",
+      "scenario_and_expected_result": "Concurrent dispatch attempts produce one accepted assignment and one conflict to review.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Channel capture permissions and a practical direct-call logging method are unverified.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "phone-intake",
+      "ticket-creation",
+      "staff-assignment"
+    ],
+    "proposed_extension": "Cross-channel identity resolution and transactional assignment safeguards need separate implementation.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

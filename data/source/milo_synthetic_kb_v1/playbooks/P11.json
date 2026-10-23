@@ -1,0 +1,65 @@
+{
+  "playbook_id": "P11",
+  "title": "Contract revenue hides service burden",
+  "synthetic": true,
+  "source_case_ids": [
+    "C11"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "We know revenue and payroll but not service cost by account. Short remote calls look like long on-site repairs when both count as one ticket. Driving, repeat visits and van parts are missing. Renewal prices follow intuition.",
+    "workflow_context": "20 staff; approximately 100 recurring contracts."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Are telephone and travel activities recorded?",
+      "synthetic_answer": "Usually not.",
+      "diagnostic_value": "Ticket totals underestimate resource use.",
+      "id": "C11-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "High service cost may reflect an intentional strategic account or temporary project; profitability ranking alone does not dictate termination."
+    },
+    {
+      "question": "Can parts be assigned to an account?",
+      "synthetic_answer": "Large items yes; van consumables often no.",
+      "diagnostic_value": "Cost attribution has varying completeness.",
+      "id": "C11-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Is technician time reliable?",
+      "synthetic_answer": "Detailed reporters appear more expensive.",
+      "diagnostic_value": "Measurement bias can distort rankings.",
+      "id": "C11-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "What decision will the analysis support?",
+      "synthetic_answer": "Scope and renewal discussions, not minute-by-minute employee monitoring.",
+      "diagnostic_value": "Choose proportionate data collection.",
+      "id": "C11-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Inconsistent activity and cost attribution prevents meaningful contract-level economics.",
+  "counterexample": "High service cost may reflect an intentional strategic account or temporary project; profitability ranking alone does not dictate termination.",
+  "minimum_evidence": [
+    "A simulated activity sample contains calls missing from tickets.",
+    "A simulated stock review finds unassigned part usage.",
+    "A simulated contract comparison mixes remote and multi-person work."
+  ],
+  "process_intervention": "Collect lightweight activity categories and parts attribution; disclose completeness; agree direct cost and overhead conventions separately.",
+  "automation_candidate": "Aggregate attributable time and material cost; show ranges or unknowns for missing inputs and flag expensive repeat patterns.",
+  "unknowns": [
+    "Loaded labor rates, overhead policy and actual usage must be measured locally."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [],
+    "proposed_extension": "Cost attribution and contract analytics are outside the existing six modules.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "blueprint_id": "B04",
+  "title": "Toner stock exists but cannot be found",
+  "synthetic": true,
+  "source_case_ids": [
+    "C04"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Count high-use stock; assign device IDs; log transfers at handover; ask about usable on-site spare stock before urgent delivery.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "sku",
+    "asset_id",
+    "compatibility_revision",
+    "location_id",
+    "quantity",
+    "reservation_id",
+    "movement_id",
+    "customer_spare_count",
+    "warning_level",
+    "counted_at"
+  ],
+  "business_rules": [
+    {
+      "id": "C04-R01",
+      "statement": "Available stock equals physical quantity minus valid reservations at that location.",
+      "rationale": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+      "evidence_refs": [
+        "C04-E01",
+        "C04-E02",
+        "C04-E03"
+      ],
+      "verification_refs": [
+        "C04-AT01",
+        "C04-AT02",
+        "C04-AT03"
+      ]
+    },
+    {
+      "id": "C04-R02",
+      "statement": "An incompatible or uncertain SKU blocks picking.",
+      "rationale": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+      "evidence_refs": [
+        "C04-E01",
+        "C04-E02",
+        "C04-E03"
+      ],
+      "verification_refs": [
+        "C04-AT01",
+        "C04-AT02",
+        "C04-AT03"
+      ]
+    },
+    {
+      "id": "C04-R03",
+      "statement": "A retry with the same movement ID cannot decrement twice.",
+      "rationale": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+      "evidence_refs": [
+        "C04-E01",
+        "C04-E02",
+        "C04-E03"
+      ],
+      "verification_refs": [
+        "C04-AT01",
+        "C04-AT02",
+        "C04-AT03"
+      ]
+    },
+    {
+      "id": "C04-R04",
+      "statement": "Reorder proposals include lead time and confidence in counts.",
+      "rationale": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+      "evidence_refs": [
+        "C04-E01",
+        "C04-E02",
+        "C04-E03"
+      ],
+      "verification_refs": [
+        "C04-AT01",
+        "C04-AT02",
+        "C04-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C04-AT01",
+      "scenario_and_expected_result": "Two reservations cannot consume the same final cartridge.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C04-AT02",
+      "scenario_and_expected_result": "A van-to-site delivery changes both locations once.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C04-AT03",
+      "scenario_and_expected_result": "An unknown model requires verification before fulfillment.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "OEM compatibility, supplier lead times and actual usage distributions are not supplied.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation"
+    ],
+    "proposed_extension": "Inventory ledger, asset compatibility and replenishment logic are proposed extensions.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

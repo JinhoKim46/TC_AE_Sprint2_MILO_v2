@@ -1,0 +1,103 @@
+{
+  "blueprint_id": "B03",
+  "title": "Preventive maintenance without defined completion",
+  "synthetic": true,
+  "source_case_ids": [
+    "C03"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Translate reviewed contracts into task lists; distinguish attended, partially completed and obligation fulfilled.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "contract_version",
+    "obligation_id",
+    "task_id",
+    "due_window",
+    "asset_scope",
+    "completed_at",
+    "evidence_ref",
+    "blocked_reason",
+    "acceptance_status"
+  ],
+  "business_rules": [
+    {
+      "id": "C03-R01",
+      "statement": "An emergency visit satisfies only evidenced tasks.",
+      "rationale": "The system tracks attendance instead of contract-level maintenance obligations and partial completion.",
+      "evidence_refs": [
+        "C03-E01",
+        "C03-E02",
+        "C03-E03"
+      ],
+      "verification_refs": [
+        "C03-AT01",
+        "C03-AT02",
+        "C03-AT03"
+      ]
+    },
+    {
+      "id": "C03-R02",
+      "statement": "Signatures confirm the stated scope, not inaccessible work.",
+      "rationale": "The system tracks attendance instead of contract-level maintenance obligations and partial completion.",
+      "evidence_refs": [
+        "C03-E01",
+        "C03-E02",
+        "C03-E03"
+      ],
+      "verification_refs": [
+        "C03-AT01",
+        "C03-AT02",
+        "C03-AT03"
+      ]
+    },
+    {
+      "id": "C03-R03",
+      "statement": "Blocked checks remain due unless an authorized exception is recorded.",
+      "rationale": "The system tracks attendance instead of contract-level maintenance obligations and partial completion.",
+      "evidence_refs": [
+        "C03-E01",
+        "C03-E02",
+        "C03-E03"
+      ],
+      "verification_refs": [
+        "C03-AT01",
+        "C03-AT02",
+        "C03-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C03-AT01",
+      "scenario_and_expected_result": "A printer repair does not close the lab obligation.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C03-AT02",
+      "scenario_and_expected_result": "An inaccessible room creates a follow-up task.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C03-AT03",
+      "scenario_and_expected_result": "A completed eligible checklist suppresses only the corresponding duplicate planned work.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Ambiguous contract wording needs human interpretation before scheduling rules are encoded.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "document-data-entry"
+    ],
+    "proposed_extension": "Contract obligation modelling and preventive scheduling are new capabilities.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

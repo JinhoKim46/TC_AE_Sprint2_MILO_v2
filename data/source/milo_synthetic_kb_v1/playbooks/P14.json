@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P14",
+  "title": "Renewal dates and terms diverge",
+  "synthetic": true,
+  "source_case_ids": [
+    "C14"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Contracts, billing and the renewal spreadsheet are separate. Email extensions and added equipment remain in messages. A customer arranged a competitor’s copier while we thought renewal was months away. Sales lacks a reliable service history before discussing the next agreement.",
+    "workflow_context": "Rental and maintenance provider; approximately 140 active agreements."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Which document controls the date?",
+      "synthetic_answer": "A later email extension was accepted but never reflected in the sheet.",
+      "diagnostic_value": "Need amendment provenance.",
+      "id": "C14-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A customer with a deliberate competitive tender needs tender tracking; an earlier reminder alone may not retain it."
+    },
+    {
+      "question": "Who owns renewal follow-up?",
+      "synthetic_answer": "Sales and accounts each assumed the other was tracking it.",
+      "diagnostic_value": "Ownership is explicit work.",
+      "id": "C14-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are notice deadlines different from expiry?",
+      "synthetic_answer": "Some contracts require earlier action.",
+      "diagnostic_value": "Expiry alone is not enough.",
+      "id": "C14-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Can offers be sent automatically?",
+      "synthetic_answer": "Service complaints or old equipment can change the proposal.",
+      "diagnostic_value": "Prepare review, not generic sales sending.",
+      "id": "C14-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Agreement versions and decision deadlines are not reconciled into an owned renewal workflow.",
+  "counterexample": "A customer with a deliberate competitive tender needs tender tracking; an earlier reminder alone may not retain it.",
+  "minimum_evidence": [
+    "A simulated amendment changes the end date.",
+    "A simulated spreadsheet retains the original date.",
+    "A simulated account has unresolved repeat failures."
+  ],
+  "process_intervention": "Review the current agreement and amendments; assign an account owner and separate notice, review and end dates.",
+  "automation_candidate": "Extract date candidates for review; maintain effective terms; prepare account summaries and internal renewal tasks.",
+  "unknowns": [
+    "Notice interpretations, negotiation lead time and completeness of amendments need review."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "document-data-entry",
+      "ticket-creation"
+    ],
+    "proposed_extension": "Agreement versioning and renewal management are proposed additions.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

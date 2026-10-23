@@ -1,0 +1,119 @@
+{
+  "blueprint_id": "B16",
+  "title": "Clinic support must respect operational windows",
+  "synthetic": true,
+  "source_case_ids": [
+    "C16"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Record operational impact using non-patient information; identify the authorized coordinator and approved work window; retain monitoring follow-up.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "affected_service",
+    "scope_owner",
+    "impact",
+    "device_alias",
+    "error_code",
+    "occurrence_time",
+    "permitted_window",
+    "interruption_approval",
+    "reproduction_status",
+    "monitoring_due"
+  ],
+  "business_rules": [
+    {
+      "id": "C16-R01",
+      "statement": "Do not collect patient records for routine IT triage.",
+      "rationale": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+      "evidence_refs": [
+        "C16-E01",
+        "C16-E02",
+        "C16-E03"
+      ],
+      "verification_refs": [
+        "C16-AT01",
+        "C16-AT02",
+        "C16-AT03"
+      ]
+    },
+    {
+      "id": "C16-R02",
+      "statement": "Disruptive changes require current scope-specific approval.",
+      "rationale": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+      "evidence_refs": [
+        "C16-E01",
+        "C16-E02",
+        "C16-E03"
+      ],
+      "verification_refs": [
+        "C16-AT01",
+        "C16-AT02",
+        "C16-AT03"
+      ]
+    },
+    {
+      "id": "C16-R03",
+      "statement": "Not reproduced remains distinct from confirmed resolution.",
+      "rationale": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+      "evidence_refs": [
+        "C16-E01",
+        "C16-E02",
+        "C16-E03"
+      ],
+      "verification_refs": [
+        "C16-AT01",
+        "C16-AT02",
+        "C16-AT03"
+      ]
+    },
+    {
+      "id": "C16-R04",
+      "statement": "Clinical advice and clinical-device procedures stay outside this case.",
+      "rationale": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+      "evidence_refs": [
+        "C16-E01",
+        "C16-E02",
+        "C16-E03"
+      ],
+      "verification_refs": [
+        "C16-AT01",
+        "C16-AT02",
+        "C16-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C16-AT01",
+      "scenario_and_expected_result": "A patient-bearing screenshot is flagged for controlled handling, not indexed.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C16-AT02",
+      "scenario_and_expected_result": "No restart is scheduled outside the approved window.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C16-AT03",
+      "scenario_and_expected_result": "A recurring symptom reopens investigation with prior evidence.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Customer privacy procedures, criticality and exact authorization policy need local confirmation.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Operational-window and privacy controls require explicit engineering and customer review.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "blueprint_id": "B15",
+  "title": "Branch access and head-office approval conflict",
+  "synthetic": true,
+  "source_case_ids": [
+    "C15"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Establish organization/site/device identities and separate access approval from spending approval; retain local child tickets under confirmed shared incidents.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "organization_id",
+    "branch_id",
+    "asset_id",
+    "location_valid_from",
+    "parent_incident_id",
+    "spending_approver",
+    "access_contact",
+    "approval_status",
+    "appointment_status"
+  ],
+  "business_rules": [
+    {
+      "id": "C15-R01",
+      "statement": "Do not expose another branch’s restricted data.",
+      "rationale": "Customer hierarchy, device location and approval dependencies are not modelled consistently.",
+      "evidence_refs": [
+        "C15-E01",
+        "C15-E02",
+        "C15-E03"
+      ],
+      "verification_refs": [
+        "C15-AT01",
+        "C15-AT02",
+        "C15-AT03"
+      ]
+    },
+    {
+      "id": "C15-R02",
+      "statement": "A planned appointment is not confirmed until required approvals and access exist.",
+      "rationale": "Customer hierarchy, device location and approval dependencies are not modelled consistently.",
+      "evidence_refs": [
+        "C15-E01",
+        "C15-E02",
+        "C15-E03"
+      ],
+      "verification_refs": [
+        "C15-AT01",
+        "C15-AT02",
+        "C15-AT03"
+      ]
+    },
+    {
+      "id": "C15-R03",
+      "statement": "Parent incident closure does not prove every branch is restored.",
+      "rationale": "Customer hierarchy, device location and approval dependencies are not modelled consistently.",
+      "evidence_refs": [
+        "C15-E01",
+        "C15-E02",
+        "C15-E03"
+      ],
+      "verification_refs": [
+        "C15-AT01",
+        "C15-AT02",
+        "C15-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C15-AT01",
+      "scenario_and_expected_result": "Similar branch names resolve by stable IDs.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C15-AT02",
+      "scenario_and_expected_result": "Moving an asset preserves historical visits at the old site.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C15-AT03",
+      "scenario_and_expected_result": "Restoring two branches leaves the third child ticket open.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Organization hierarchy, approver limits and actual shared dependencies need confirmation.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Hierarchical incidents, effective asset locations and scoped approval routing are extensions.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

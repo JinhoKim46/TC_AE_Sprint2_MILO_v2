@@ -1,0 +1,67 @@
+{
+  "playbook_id": "P12",
+  "title": "Senior technicians are the only knowledge base",
+  "synthetic": true,
+  "source_case_ids": [
+    "C12"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Juniors call seniors while both are on jobs. Manuals and old notes are scattered across folders and chat. A recurring school printer configuration is repeatedly rediscovered. End-of-day notes just say fixed, and seniors worry about procedures being applied without their exceptions.",
+    "workflow_context": "13 staff; two long-serving technicians carry most customer-specific knowledge."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Is the fix general or site-specific?",
+      "synthetic_answer": "It depends on the school’s print-server configuration.",
+      "diagnostic_value": "Generalizing can be harmful.",
+      "id": "C12-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If the problem requires specialist judgement or physical experience, documents may reduce interruptions but cannot replace training."
+    },
+    {
+      "question": "Do notes describe applicability?",
+      "synthetic_answer": "They rarely include software version or prerequisites.",
+      "diagnostic_value": "Retrieval needs conditions.",
+      "id": "C12-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Who approves knowledge entries?",
+      "synthetic_answer": "Nobody currently owns review.",
+      "diagnostic_value": "Unreviewed notes cannot become authoritative procedures.",
+      "id": "C12-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Can capture happen during work?",
+      "synthetic_answer": "Short dictated notes are feasible; long forms are not.",
+      "diagnostic_value": "Reduce capture burden.",
+      "id": "C12-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Resolution context is not captured, scoped, reviewed or retired, so experience cannot transfer reliably.",
+  "counterexample": "If the problem requires specialist judgement or physical experience, documents may reduce interruptions but cannot replace training.",
+  "minimum_evidence": [
+    "A simulated ticket sequence repeats the same configuration issue.",
+    "A simulated folder contains obsolete instructions.",
+    "A simulated senior review identifies a missing version prerequisite."
+  ],
+  "process_intervention": "Capture symptoms, environment, tests, result and exceptions; assign review owners and retirement dates.",
+  "automation_candidate": "Draft knowledge articles from redacted job notes; retrieve by environment and scope; show sources and review status to technicians.",
+  "unknowns": [
+    "Actual solution accuracy requires expert review; synthetic procedures must never become device repair authority."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "document-data-entry"
+    ],
+    "proposed_extension": "Reviewed technical knowledge management and retrieval need a dedicated extension.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

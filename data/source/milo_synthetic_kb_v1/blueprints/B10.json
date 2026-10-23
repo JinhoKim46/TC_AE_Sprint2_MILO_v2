@@ -1,0 +1,119 @@
+{
+  "blueprint_id": "B10",
+  "title": "Subcontractor work lacks acceptance evidence",
+  "synthetic": true,
+  "source_case_ids": [
+    "C10"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Send a concise work order with scope, escalation contact and evidence requirements; separate technical completion from customer acceptance.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "work_order_id",
+    "partner_id",
+    "permitted_site",
+    "scope",
+    "spending_limit",
+    "accepted_at",
+    "appointment_window",
+    "arrived_at",
+    "completion_evidence",
+    "customer_acceptance"
+  ],
+  "business_rules": [
+    {
+      "id": "C10-R01",
+      "statement": "Partners can access only assigned jobs.",
+      "rationale": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+      "evidence_refs": [
+        "C10-E01",
+        "C10-E02",
+        "C10-E03"
+      ],
+      "verification_refs": [
+        "C10-AT01",
+        "C10-AT02",
+        "C10-AT03"
+      ]
+    },
+    {
+      "id": "C10-R02",
+      "statement": "Extra spending requires the authorized customer approver.",
+      "rationale": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+      "evidence_refs": [
+        "C10-E01",
+        "C10-E02",
+        "C10-E03"
+      ],
+      "verification_refs": [
+        "C10-AT01",
+        "C10-AT02",
+        "C10-AT03"
+      ]
+    },
+    {
+      "id": "C10-R03",
+      "statement": "Done is not accepted when mandatory evidence is missing.",
+      "rationale": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+      "evidence_refs": [
+        "C10-E01",
+        "C10-E02",
+        "C10-E03"
+      ],
+      "verification_refs": [
+        "C10-AT01",
+        "C10-AT02",
+        "C10-AT03"
+      ]
+    },
+    {
+      "id": "C10-R04",
+      "statement": "Expired access links cannot reveal job data.",
+      "rationale": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+      "evidence_refs": [
+        "C10-E01",
+        "C10-E02",
+        "C10-E03"
+      ],
+      "verification_refs": [
+        "C10-AT01",
+        "C10-AT02",
+        "C10-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C10-AT01",
+      "scenario_and_expected_result": "A branch employee cannot approve head-office-only expenditure.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C10-AT02",
+      "scenario_and_expected_result": "One partner cannot view another partner’s jobs.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C10-AT03",
+      "scenario_and_expected_result": "Missing evidence creates follow-up rather than fabricated completion.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Partner access, payout terms and required evidence must be agreed contractually.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "External partner access and spend authorization need separate engineering.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

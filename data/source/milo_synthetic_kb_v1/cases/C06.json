@@ -1,0 +1,244 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C06",
+  "title": "Contract coverage discovered after repair",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 6,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "18 staff; approximately 110 mixed PC, printer and network maintenance customers.",
+  "owner_narrative": "We dispatch when the customer is under contract, but that does not mean the device or work is covered. A personal laptop was repaired at an office, and a part replacement was waived because nobody warned the customer about the charge. Lists are outdated.",
+  "current_workflow": [
+    "Customer calls",
+    "Company contract checked",
+    "Technician dispatched",
+    "Work performed",
+    "Office checks chargeability",
+    "Dispute or invoice"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Is coverage organization-wide or asset-specific?",
+      "synthetic_answer": "Both exist, depending on the agreement.",
+      "diagnostic_value": "A customer match alone is insufficient.",
+      "id": "C06-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "An unlisted device may be covered by a site-wide agreement; never classify it as excluded solely because the asset list is incomplete."
+    },
+    {
+      "question": "Who authorizes out-of-scope work?",
+      "synthetic_answer": "Some site contacts may approve labor but not parts.",
+      "diagnostic_value": "Authority must be scoped.",
+      "id": "C06-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Do technicians know a device is unlisted?",
+      "synthetic_answer": "Serial lists are incomplete.",
+      "diagnostic_value": "Unknown is different from excluded.",
+      "id": "C06-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Can goodwill exceptions be made?",
+      "synthetic_answer": "The owner allows small exceptions but records no reason.",
+      "diagnostic_value": "Formalize discretion without claiming coverage.",
+      "id": "C06-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C06-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated device record identifies personal ownership."
+    },
+    {
+      "id": "C06-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated contract excludes replacement parts."
+    },
+    {
+      "id": "C06-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated work report contains no charge approval."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C06-D01",
+      "hypothesis": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C06-E01",
+        "C06-E02",
+        "C06-E03"
+      ],
+      "counterhypothesis": "An unlisted device may be covered by a site-wide agreement; never classify it as excluded solely because the asset list is incomplete.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Define covered, excluded and uncertain states; provide a pre-work approval path and documented goodwill authority.",
+    "deterministic_and_assisted_automation": "Retrieve the effective agreement and asset scope; surface coverage evidence; create approval requests when scope changes.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B06",
+    "fields": [
+      "contract_id",
+      "effective_version",
+      "asset_owner",
+      "service_category",
+      "coverage_state",
+      "coverage_basis",
+      "approval_limit",
+      "approver_id",
+      "approved_scope",
+      "goodwill_reason"
+    ],
+    "requirements": [
+      {
+        "id": "C06-R01",
+        "statement": "Uncertain coverage cannot silently become a billable authorization.",
+        "rationale": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+        "evidence_refs": [
+          "C06-E01",
+          "C06-E02",
+          "C06-E03"
+        ],
+        "verification_refs": [
+          "C06-AT01",
+          "C06-AT02",
+          "C06-AT03"
+        ]
+      },
+      {
+        "id": "C06-R02",
+        "statement": "Approval binds to amount, scope and version.",
+        "rationale": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+        "evidence_refs": [
+          "C06-E01",
+          "C06-E02",
+          "C06-E03"
+        ],
+        "verification_refs": [
+          "C06-AT01",
+          "C06-AT02",
+          "C06-AT03"
+        ]
+      },
+      {
+        "id": "C06-R03",
+        "statement": "A scope change invalidates an inadequate prior approval.",
+        "rationale": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+        "evidence_refs": [
+          "C06-E01",
+          "C06-E02",
+          "C06-E03"
+        ],
+        "verification_refs": [
+          "C06-AT01",
+          "C06-AT02",
+          "C06-AT03"
+        ]
+      },
+      {
+        "id": "C06-R04",
+        "statement": "Goodwill is recorded separately from contractual inclusion.",
+        "rationale": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+        "evidence_refs": [
+          "C06-E01",
+          "C06-E02",
+          "C06-E03"
+        ],
+        "verification_refs": [
+          "C06-AT01",
+          "C06-AT02",
+          "C06-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C06-AT01",
+        "scenario_and_expected_result": "A personal laptop prompts verification.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C06-AT02",
+        "scenario_and_expected_result": "A site-wide contract can cover a newly added device after review.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C06-AT03",
+        "scenario_and_expected_result": "A higher-cost replacement requires renewed approval.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation",
+        "document-data-entry"
+      ],
+      "proposed_extension": "Effective-dated coverage checks and approval controls are new capabilities.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Chargeable jobs with valid pre-work authorization / chargeable jobs; track waived charges and approval delay.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Define covered, excluded and uncertain states; provide a pre-work approval path and documented goodwill authority. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "An unlisted device may be covered by a site-wide agreement; never classify it as excluded solely because the asset list is incomplete.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Spending limits and contract interpretation require owner confirmation."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+    "do_not_assume": "An unlisted device may be covered by a site-wide agreement; never classify it as excluded solely because the asset list is incomplete.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C10",
+    "C14",
+    "C15"
+  ]
+}

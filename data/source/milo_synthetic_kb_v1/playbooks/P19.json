@@ -1,0 +1,67 @@
+{
+  "playbook_id": "P19",
+  "title": "Service software increases duplicate work",
+  "synthetic": true,
+  "source_case_ids": [
+    "C19"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "The office creates tickets then messages technicians because chat gets noticed. Updates return by chat and are copied back. Long mobile forms and poor connectivity push reporting into the evening. Management asks for separate Excel totals because the dashboard is incomplete.",
+    "workflow_context": "19 staff; service management software introduced eight months ago."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Which fields prevent completion?",
+      "synthetic_answer": "Several mandatory fields do not apply to simple jobs.",
+      "diagnostic_value": "Workflow configuration may be the obstacle.",
+      "id": "C19-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If essential features genuinely cannot be configured or integrated, replacement may be justified after a bounded trial; do not assume another app is always wrong."
+    },
+    {
+      "question": "Can staff save offline drafts?",
+      "synthetic_answer": "No reliable path exists at some sites.",
+      "diagnostic_value": "Connectivity is a concrete constraint.",
+      "id": "C19-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Why does management use Excel?",
+      "synthetic_answer": "Dashboard totals omit late entries.",
+      "diagnostic_value": "Trust and timing form a feedback loop.",
+      "id": "C19-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Does one staff member’s apparent productivity depend on reporting detail?",
+      "synthetic_answer": "Yes; careful entries record more time.",
+      "diagnostic_value": "Avoid unfair comparisons from incomplete data.",
+      "id": "C19-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+  "counterexample": "If essential features genuinely cannot be configured or integrated, replacement may be justified after a bounded trial; do not assume another app is always wrong.",
+  "minimum_evidence": [
+    "A simulated observation records duplicate entry in chat and the app.",
+    "A simulated form contains irrelevant mandatory fields.",
+    "A simulated dashboard differs from the later reconciled list."
+  ],
+  "process_intervention": "Observe actual work; remove unjustified fields; define one authoritative queue and reconcile exceptions before retiring the shadow sheet.",
+  "automation_candidate": "First configure existing software; add reliable notifications and offline draft synchronization only where supported and needed.",
+  "unknowns": [
+    "Existing software configuration and API/offline support must be tested before proposing custom development."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation"
+    ],
+    "proposed_extension": "Offline synchronization may require vendor support; configuration-first intervention precedes a new product.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

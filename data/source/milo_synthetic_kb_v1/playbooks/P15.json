@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P15",
+  "title": "Branch access and head-office approval conflict",
+  "synthetic": true,
+  "source_case_ids": [
+    "C15"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Head office pays and approves parts, but branches call and control access. Branches expect appointments before approval arrives. Equipment moves between similar-named locations. Several apparently separate failures turned out to follow one central configuration change.",
+    "workflow_context": "Maintenance provider for multi-site retail and education groups; one customer has 28 branches."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Who approves expenditure and access?",
+      "synthetic_answer": "Head office approves cost; the branch agrees access.",
+      "diagnostic_value": "These are separate permissions.",
+      "id": "C15-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Similar symptoms across branches may be independent hardware faults; common timing is a hypothesis, not proof."
+    },
+    {
+      "question": "Are assets tracked after moves?",
+      "synthetic_answer": "The spreadsheet often keeps the old branch.",
+      "diagnostic_value": "Location needs effective dates.",
+      "id": "C15-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Did failures start together?",
+      "synthetic_answer": "Three branches failed after a central print change.",
+      "diagnostic_value": "Correlation can reveal a shared incident.",
+      "id": "C15-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Who should see updates?",
+      "synthetic_answer": "Branches need their jobs; head office needs a consolidated view.",
+      "diagnostic_value": "Scope notifications and access.",
+      "id": "C15-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Customer hierarchy, device location and approval dependencies are not modelled consistently.",
+  "counterexample": "Similar symptoms across branches may be independent hardware faults; common timing is a hypothesis, not proof.",
+  "minimum_evidence": [
+    "A simulated move record conflicts with the asset sheet.",
+    "Simulated tickets share a configuration-change timestamp.",
+    "A simulated approval matrix separates branch and central authority."
+  ],
+  "process_intervention": "Establish organization/site/device identities and separate access approval from spending approval; retain local child tickets under confirmed shared incidents.",
+  "automation_candidate": "Link related incidents for review; route approvals to scoped authorities; provide role-filtered views and readiness checks.",
+  "unknowns": [
+    "Organization hierarchy, approver limits and actual shared dependencies need confirmation."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Hierarchical incidents, effective asset locations and scoped approval routing are extensions.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

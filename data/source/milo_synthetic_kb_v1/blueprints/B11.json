@@ -1,0 +1,115 @@
+{
+  "blueprint_id": "B11",
+  "title": "Contract revenue hides service burden",
+  "synthetic": true,
+  "source_case_ids": [
+    "C11"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Collect lightweight activity categories and parts attribution; disclose completeness; agree direct cost and overhead conventions separately.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "contract_id",
+    "activity_type",
+    "staff_minutes",
+    "travel_minutes",
+    "material_cost",
+    "attribution_basis",
+    "cost_rate_version",
+    "revenue_period",
+    "completeness_flag"
+  ],
+  "business_rules": [
+    {
+      "id": "C11-R01",
+      "statement": "Do not equate ticket count with effort.",
+      "rationale": "Inconsistent activity and cost attribution prevents meaningful contract-level economics.",
+      "evidence_refs": [
+        "C11-E01",
+        "C11-E02",
+        "C11-E03"
+      ],
+      "verification_refs": [
+        "C11-AT01",
+        "C11-AT02",
+        "C11-AT03"
+      ]
+    },
+    {
+      "id": "C11-R02",
+      "statement": "Do not label contribution margin as net profit.",
+      "rationale": "Inconsistent activity and cost attribution prevents meaningful contract-level economics.",
+      "evidence_refs": [
+        "C11-E01",
+        "C11-E02",
+        "C11-E03"
+      ],
+      "verification_refs": [
+        "C11-AT01",
+        "C11-AT02",
+        "C11-AT03"
+      ]
+    },
+    {
+      "id": "C11-R03",
+      "statement": "Avoid counting shared travel twice.",
+      "rationale": "Inconsistent activity and cost attribution prevents meaningful contract-level economics.",
+      "evidence_refs": [
+        "C11-E01",
+        "C11-E02",
+        "C11-E03"
+      ],
+      "verification_refs": [
+        "C11-AT01",
+        "C11-AT02",
+        "C11-AT03"
+      ]
+    },
+    {
+      "id": "C11-R04",
+      "statement": "Suppress precise margin when material cost inputs are missing.",
+      "rationale": "Inconsistent activity and cost attribution prevents meaningful contract-level economics.",
+      "evidence_refs": [
+        "C11-E01",
+        "C11-E02",
+        "C11-E03"
+      ],
+      "verification_refs": [
+        "C11-AT01",
+        "C11-AT02",
+        "C11-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C11-AT01",
+      "scenario_and_expected_result": "A five-minute call and two-person visit receive different effort totals.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C11-AT02",
+      "scenario_and_expected_result": "Missing rates result in unavailable cost, not zero cost.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C11-AT03",
+      "scenario_and_expected_result": "Shared travel allocation reconciles to total travel.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Loaded labor rates, overhead policy and actual usage must be measured locally.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [],
+    "proposed_extension": "Cost attribution and contract analytics are outside the existing six modules.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

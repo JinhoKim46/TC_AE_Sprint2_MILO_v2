@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P16",
+  "title": "Clinic support must respect operational windows",
+  "synthetic": true,
+  "source_case_ids": [
+    "C16"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Reception problems are urgent when patients are waiting, but we cannot restart systems whenever we like. Vendors handle clinical software and devices. An intermittent problem disappeared during a short visit and returned next morning. We need useful notes without patient details.",
+    "workflow_context": "Seven staff supporting clinic office IT, printers, networks and backups; clinical devices excluded."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Which service is in our scope?",
+      "synthetic_answer": "Reception PCs and network, not clinical equipment.",
+      "diagnostic_value": "Avoid unsupported responsibility.",
+      "id": "C16-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A vendor outage or clinical-device failure needs routing to the responsible supplier, not an invented IT repair procedure."
+    },
+    {
+      "question": "Who authorizes interruption?",
+      "synthetic_answer": "The practice manager coordinates acceptable downtime.",
+      "diagnostic_value": "Work timing is an approval constraint.",
+      "id": "C16-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "What evidence reproduces the fault?",
+      "synthetic_answer": "Time, workstation and error code help; patient screenshots are unnecessary.",
+      "diagnostic_value": "Minimize sensitive collection.",
+      "id": "C16-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Was disappearance treated as resolution?",
+      "synthetic_answer": "Yes, although no cause was found.",
+      "diagnostic_value": "Distinguish unable-to-reproduce from resolved.",
+      "id": "C16-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+  "counterexample": "A vendor outage or clinical-device failure needs routing to the responsible supplier, not an invented IT repair procedure.",
+  "minimum_evidence": [
+    "A simulated support agreement excludes clinical equipment.",
+    "A simulated visit has no reproduction or confirmed fix.",
+    "A simulated manager note restricts restart timing."
+  ],
+  "process_intervention": "Record operational impact using non-patient information; identify the authorized coordinator and approved work window; retain monitoring follow-up.",
+  "automation_candidate": "Guide privacy-minimizing intake, scope routing and authorization tracking; draft updates without clinical details.",
+  "unknowns": [
+    "Customer privacy procedures, criticality and exact authorization policy need local confirmation."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Operational-window and privacy controls require explicit engineering and customer review.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

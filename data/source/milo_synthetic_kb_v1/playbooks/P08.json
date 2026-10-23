@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P08",
+  "title": "Remote-first support creates another delay",
+  "synthetic": true,
+  "source_case_ids": [
+    "C08"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "We visit for simple settings problems, but attempted remote support can also waste 25 minutes before a visit. The remote tool may be absent, the internet down or the caller unauthorized. Customers repeat symptoms to several staff members.",
+    "workflow_context": "12 staff supporting approximately 75 small businesses."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Is network connectivity available?",
+      "synthetic_answer": "Some affected PCs cannot connect at all.",
+      "diagnostic_value": "Excludes many remote workflows.",
+      "id": "C08-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If remote readiness is high but a hardware replacement is evident, dispatch directly; remote-first is not a universal objective."
+    },
+    {
+      "question": "Who may authorize a session?",
+      "synthetic_answer": "Some customers require a named on-site contact.",
+      "diagnostic_value": "Consent and access are prerequisites.",
+      "id": "C08-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are remote attempts time-boxed?",
+      "synthetic_answer": "No; technicians keep troubleshooting connection setup.",
+      "diagnostic_value": "Avoid an unbounded extra stage.",
+      "id": "C08-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Do dispatch notes contain remote findings?",
+      "synthetic_answer": "They usually say remote failed.",
+      "diagnostic_value": "Negative results must transfer.",
+      "id": "C08-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "There is no eligibility gate or structured handover for remote support.",
+  "counterexample": "If remote readiness is high but a hardware replacement is evident, dispatch directly; remote-first is not a universal objective.",
+  "minimum_evidence": [
+    "A simulated call records loss of internet before the remote attempt.",
+    "A simulated customer policy requires attended access.",
+    "A simulated visit repeats checks absent from the ticket."
+  ],
+  "process_intervention": "Ask connectivity, authorization and symptom questions first; agree a limited remote attempt and a clear escalation point.",
+  "automation_candidate": "Apply a deterministic eligibility checklist; suggest remote or site triage; retain tests, errors and consent references.",
+  "unknowns": [
+    "Approved tools, access policies and practical time-box thresholds need local validation."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "staff-assignment"
+    ],
+    "proposed_extension": "Remote eligibility logic is new; remote-control software itself is not provided.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

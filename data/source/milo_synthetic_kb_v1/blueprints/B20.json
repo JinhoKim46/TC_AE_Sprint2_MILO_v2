@@ -1,0 +1,120 @@
+{
+  "blueprint_id": "B20",
+  "title": "Owner memory is the operating system",
+  "synthetic": true,
+  "source_case_ids": [
+    "C20"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Create one lightweight commitment board with owner, next action and blocker; publish agreed routine decision boundaries.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "commitment_id",
+    "customer_id",
+    "source_ref",
+    "promise",
+    "responsible_person",
+    "next_action",
+    "blocker",
+    "due_at",
+    "delegated_limit",
+    "invoice_hold",
+    "release_condition"
+  ],
+  "business_rules": [
+    {
+      "id": "C20-R01",
+      "statement": "Extracted promises remain drafts until confirmed.",
+      "rationale": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+      "evidence_refs": [
+        "C20-E01",
+        "C20-E02",
+        "C20-E03"
+      ],
+      "verification_refs": [
+        "C20-AT01",
+        "C20-AT02",
+        "C20-AT03"
+      ]
+    },
+    {
+      "id": "C20-R02",
+      "statement": "Invoice holds require an explicit release decision.",
+      "rationale": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+      "evidence_refs": [
+        "C20-E01",
+        "C20-E02",
+        "C20-E03"
+      ],
+      "verification_refs": [
+        "C20-AT01",
+        "C20-AT02",
+        "C20-AT03"
+      ]
+    },
+    {
+      "id": "C20-R03",
+      "statement": "A missing part blocks a visit that requires it.",
+      "rationale": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+      "evidence_refs": [
+        "C20-E01",
+        "C20-E02",
+        "C20-E03"
+      ],
+      "verification_refs": [
+        "C20-AT01",
+        "C20-AT02",
+        "C20-AT03"
+      ]
+    },
+    {
+      "id": "C20-R04",
+      "statement": "Decisions beyond authority escalate instead of guessing.",
+      "rationale": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+      "evidence_refs": [
+        "C20-E01",
+        "C20-E02",
+        "C20-E03"
+      ],
+      "verification_refs": [
+        "C20-AT01",
+        "C20-AT02",
+        "C20-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C20-AT01",
+      "scenario_and_expected_result": "Pending part prevents a misleading ready-to-visit state.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C20-AT02",
+      "scenario_and_expected_result": "Staff can handle an approved routine decision during owner absence.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C20-AT03",
+      "scenario_and_expected_result": "A complaint hold survives unrelated job completion.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Actual delegation limits and which promises are binding require the owner’s review.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Commitment extraction and a formal delegation matrix require new rules and review.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

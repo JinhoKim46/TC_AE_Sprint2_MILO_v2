@@ -1,0 +1,246 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C02",
+  "title": "Dispatch disruption and access constraints",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 2,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "22 staff; 15 field technicians covering a city and surrounding towns.",
+  "owner_narrative": "Our dispatcher plans tomorrow in a spreadsheet, but urgent morning calls dismantle the route. The nearest worker may lack the skill, part or customer authorization. We redirected someone to a school whose key holder was absent, losing both the urgent visit and the original slot.",
+  "current_workflow": [
+    "Dispatcher plans route",
+    "Urgent request arrives",
+    "Dispatcher calls technicians",
+    "Appointment changes",
+    "Technician waits or works",
+    "Times recorded inconsistently"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "What makes a job urgent?",
+      "synthetic_answer": "We often accept the caller’s wording without checking affected users or available workarounds.",
+      "diagnostic_value": "Separates business impact from vocal customer pressure.",
+      "id": "C02-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If all jobs are feasible but demand exceeds available hours, a better schedule cannot create capacity; measure backlog and service obligations."
+    },
+    {
+      "question": "Is access confirmed before travel?",
+      "synthetic_answer": "A school contact was not asked whether the room would be available.",
+      "diagnostic_value": "Identifies a feasibility constraint.",
+      "id": "C02-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are skills and parts considered?",
+      "synthetic_answer": "The dispatcher remembers skills but cannot see van stock.",
+      "diagnostic_value": "A distance-only optimizer is insufficient.",
+      "id": "C02-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Do technicians acknowledge revised schedules?",
+      "synthetic_answer": "A message can arrive while driving and go unread.",
+      "diagnostic_value": "Schedule publication is not acceptance.",
+      "id": "C02-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C02-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated route log shows an avoidable arrival outside the access window."
+    },
+    {
+      "id": "C02-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated assignment review finds the required part in a different van."
+    },
+    {
+      "id": "C02-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "Simulated call notes record urgency without impact."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C02-D01",
+      "hypothesis": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C02-E01",
+        "C02-E02",
+        "C02-E03"
+      ],
+      "counterhypothesis": "If all jobs are feasible but demand exceeds available hours, a better schedule cannot create capacity; measure backlog and service obligations.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Collect impact, access window and required skills before replanning; freeze a near-term travel window unless the dispatcher explicitly overrides it.",
+    "deterministic_and_assisted_automation": "Rank feasible assignments; display travel, skills, stock and access tradeoffs; issue versioned schedule changes requiring acknowledgement.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B02",
+    "fields": [
+      "job_id",
+      "impact",
+      "workaround",
+      "access_window",
+      "skill_tags",
+      "required_parts",
+      "technician_id",
+      "acknowledged_version",
+      "travel_start",
+      "arrived_at",
+      "work_start",
+      "work_end"
+    ],
+    "requirements": [
+      {
+        "id": "C02-R01",
+        "statement": "Access and skill constraints take precedence over distance.",
+        "rationale": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+        "evidence_refs": [
+          "C02-E01",
+          "C02-E02",
+          "C02-E03"
+        ],
+        "verification_refs": [
+          "C02-AT01",
+          "C02-AT02",
+          "C02-AT03"
+        ]
+      },
+      {
+        "id": "C02-R02",
+        "statement": "Dispatcher confirms any displaced appointment.",
+        "rationale": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+        "evidence_refs": [
+          "C02-E01",
+          "C02-E02",
+          "C02-E03"
+        ],
+        "verification_refs": [
+          "C02-AT01",
+          "C02-AT02",
+          "C02-AT03"
+        ]
+      },
+      {
+        "id": "C02-R03",
+        "statement": "Unacknowledged changes escalate; do not assume delivery equals acceptance.",
+        "rationale": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+        "evidence_refs": [
+          "C02-E01",
+          "C02-E02",
+          "C02-E03"
+        ],
+        "verification_refs": [
+          "C02-AT01",
+          "C02-AT02",
+          "C02-AT03"
+        ]
+      },
+      {
+        "id": "C02-R04",
+        "statement": "Retain original promised time separately from revised estimates.",
+        "rationale": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+        "evidence_refs": [
+          "C02-E01",
+          "C02-E02",
+          "C02-E03"
+        ],
+        "verification_refs": [
+          "C02-AT01",
+          "C02-AT02",
+          "C02-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C02-AT01",
+        "scenario_and_expected_result": "A nearby unqualified worker is not recommended as feasible.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C02-AT02",
+        "scenario_and_expected_result": "An urgent job outside access hours is flagged for coordination.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C02-AT03",
+        "scenario_and_expected_result": "A stale acknowledgement cannot confirm a newer schedule.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "staff-assignment",
+        "customer-status-updates"
+      ],
+      "proposed_extension": "Constraint-aware routing and live stock integration exceed basic skill/availability suggestions.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Visits completed within agreed windows / scheduled visits; separately report travel minutes, waiting minutes and overdue backlog.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Collect impact, access window and required skills before replanning; freeze a near-term travel window unless the dispatcher explicitly overrides it. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "If all jobs are feasible but demand exceeds available hours, a better schedule cannot create capacity; measure backlog and service obligations.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Travel estimates, availability freshness and contractual response definitions require validation."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+    "do_not_assume": "If all jobs are feasible but demand exceeds available hours, a better schedule cannot create capacity; measure backlog and service obligations.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C03",
+    "C09",
+    "C15"
+  ]
+}

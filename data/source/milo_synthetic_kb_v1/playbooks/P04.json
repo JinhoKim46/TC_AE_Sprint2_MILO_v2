@@ -1,0 +1,67 @@
+{
+  "playbook_id": "P04",
+  "title": "Toner stock exists but cannot be found",
+  "synthetic": true,
+  "source_case_ids": [
+    "C04"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "The spreadsheet says five cartridges, but some are in vans, reserved or already delivered. Customers identify a printer by its location and sometimes photograph the wrong one. Leaving spare toner helped some sites but caused others to stockpile it.",
+    "workflow_context": "Printer rental and consumables provider; approximately 650 managed devices."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Is the warning an empty cartridge?",
+      "synthetic_answer": "Some callers report the first low-toner warning while a spare is already on-site.",
+      "diagnostic_value": "Demand needs verification.",
+      "id": "C04-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If physical counts are accurate but consumption exceeds replenishment lead time, reorder policy rather than data capture is the main issue."
+    },
+    {
+      "question": "What does stock count include?",
+      "synthetic_answer": "Reservations and van stock are mixed with warehouse stock.",
+      "diagnostic_value": "Available-to-promise differs from ownership.",
+      "id": "C04-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "How is compatibility verified?",
+      "synthetic_answer": "Staff use memory or a customer photograph.",
+      "diagnostic_value": "Model-to-SKU mapping needs review.",
+      "id": "C04-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are deliveries recorded immediately?",
+      "synthetic_answer": "Often at the end of the week.",
+      "diagnostic_value": "Stock freshness is a root issue.",
+      "id": "C04-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+  "counterexample": "If physical counts are accurate but consumption exceeds replenishment lead time, reorder policy rather than data capture is the main issue.",
+  "minimum_evidence": [
+    "A simulated stock audit separates warehouse, reserved and van quantities.",
+    "A simulated delivery receipt is absent from the stock sheet.",
+    "A simulated customer check finds two unopened spares."
+  ],
+  "process_intervention": "Count high-use stock; assign device IDs; log transfers at handover; ask about usable on-site spare stock before urgent delivery.",
+  "automation_candidate": "Maintain a location ledger and compatibility table; reserve stock atomically; suggest replenishment for human approval until counts are reliable.",
+  "unknowns": [
+    "OEM compatibility, supplier lead times and actual usage distributions are not supplied."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation"
+    ],
+    "proposed_extension": "Inventory ledger, asset compatibility and replenishment logic are proposed extensions.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

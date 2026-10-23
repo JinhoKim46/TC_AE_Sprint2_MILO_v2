@@ -1,0 +1,244 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C18",
+  "title": "Warehouse, van and customer stock diverge",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 18,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "24 staff; 16 field technicians, central warehouse and customer-held loan equipment.",
+  "owner_narrative": "Purchases, warehouse counts and van notes never agree. We buy parts that another technician already has. Faulty items return without job references, losing warranty credits. Cheap cables should not require the same administration as expensive serialized components.",
+  "current_workflow": [
+    "Purchase",
+    "Receive",
+    "Transfer to van",
+    "Install or loan",
+    "Return faulty item",
+    "Seek credit or scrap",
+    "Reconcile sporadically"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Which items need individual tracking?",
+      "synthetic_answer": "Loaners and high-value components; cheap cables can use bin counts.",
+      "diagnostic_value": "Match control cost to risk.",
+      "id": "C18-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "For low-cost bulk consumables, detailed serial tracking would add waste; use replenishment bins and periodic counts."
+    },
+    {
+      "question": "Are faulty and usable parts separated?",
+      "synthetic_answer": "Not consistently.",
+      "diagnostic_value": "Inventory disposition matters.",
+      "id": "C18-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Can a return be traced to purchase?",
+      "synthetic_answer": "Often no job or purchase reference survives.",
+      "diagnostic_value": "Warranty recovery needs provenance.",
+      "id": "C18-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are transfers acknowledged?",
+      "synthetic_answer": "Staff send messages but do not confirm receipt.",
+      "diagnostic_value": "Movement needs both endpoints.",
+      "id": "C18-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C18-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated count finds stock in a van that purchasing considered unavailable."
+    },
+    {
+      "id": "C18-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated faulty return has no purchase reference."
+    },
+    {
+      "id": "C18-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated loaner remains at a customer after job closure."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C18-D01",
+      "hypothesis": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C18-E01",
+        "C18-E02",
+        "C18-E03"
+      ],
+      "counterhypothesis": "For low-cost bulk consumables, detailed serial tracking would add waste; use replenishment bins and periodic counts.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Segment stock by tracking needs; log high-value transfers and returns; quarantine faulty items and assign return owners.",
+    "deterministic_and_assisted_automation": "Use barcode-assisted movements, location balances, loan obligations and warranty deadline tracking.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B18",
+    "fields": [
+      "item_id",
+      "sku",
+      "serial_nullable",
+      "tracking_class",
+      "from_location",
+      "to_location",
+      "disposition",
+      "movement_id",
+      "job_ref",
+      "purchase_ref",
+      "loan_due",
+      "warranty_case"
+    ],
+    "requirements": [
+      {
+        "id": "C18-R01",
+        "statement": "Quarantined stock is not available for assignment.",
+        "rationale": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+        "evidence_refs": [
+          "C18-E01",
+          "C18-E02",
+          "C18-E03"
+        ],
+        "verification_refs": [
+          "C18-AT01",
+          "C18-AT02",
+          "C18-AT03"
+        ]
+      },
+      {
+        "id": "C18-R02",
+        "statement": "Serialized items have one current custody location.",
+        "rationale": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+        "evidence_refs": [
+          "C18-E01",
+          "C18-E02",
+          "C18-E03"
+        ],
+        "verification_refs": [
+          "C18-AT01",
+          "C18-AT02",
+          "C18-AT03"
+        ]
+      },
+      {
+        "id": "C18-R03",
+        "statement": "Movement retries are idempotent.",
+        "rationale": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+        "evidence_refs": [
+          "C18-E01",
+          "C18-E02",
+          "C18-E03"
+        ],
+        "verification_refs": [
+          "C18-AT01",
+          "C18-AT02",
+          "C18-AT03"
+        ]
+      },
+      {
+        "id": "C18-R04",
+        "statement": "Scrap and write-off require the designated authority.",
+        "rationale": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+        "evidence_refs": [
+          "C18-E01",
+          "C18-E02",
+          "C18-E03"
+        ],
+        "verification_refs": [
+          "C18-AT01",
+          "C18-AT02",
+          "C18-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C18-AT01",
+        "scenario_and_expected_result": "A serialized loaner cannot be issued to two customers.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C18-AT02",
+        "scenario_and_expected_result": "A faulty return increases quarantine, not usable stock.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C18-AT03",
+        "scenario_and_expected_result": "Repeated scan submission creates one transfer.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [],
+      "proposed_extension": "Inventory custody and warranty tracking are new modules, not implied by ticket creation.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Value-weighted stock accuracy and recoverable warranty credits collected; track entry time per movement.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Segment stock by tracking needs; log high-value transfers and returns; quarantine faulty items and assign return owners. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "For low-cost bulk consumables, detailed serial tracking would add waste; use replenishment bins and periodic counts.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Tracking thresholds, warranty eligibility and opening balances need approval and physical checks."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+    "do_not_assume": "For low-cost bulk consumables, detailed serial tracking would add waste; use replenishment bins and periodic counts.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C04",
+    "C07",
+    "C11"
+  ]
+}

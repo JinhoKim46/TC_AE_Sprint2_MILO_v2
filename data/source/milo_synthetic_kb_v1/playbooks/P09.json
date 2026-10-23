@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P09",
+  "title": "Installation readiness discovered on site",
+  "synthetic": true,
+  "source_case_ids": [
+    "C09"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Sales surveys are scattered across photos and messages. On installation day we discover missing ports, unexpected software or data migration expectations. Maintenance emergencies pull technicians away from projects during the busiest school-holiday weeks.",
+    "workflow_context": "17 staff; school maintenance plus holiday computer-room projects."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Who signs off the deployment configuration?",
+      "synthetic_answer": "Sales and the school discussed it, but no version was approved.",
+      "diagnostic_value": "Rework originates before imaging.",
+      "id": "C09-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A late customer change after a documented sign-off is change control, not necessarily an initial survey failure."
+    },
+    {
+      "question": "Are access and ports verified?",
+      "synthetic_answer": "Photos do not establish working network capacity.",
+      "diagnostic_value": "A survey needs functional checks.",
+      "id": "C09-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Is migration included?",
+      "synthetic_answer": "Teachers assumed it, while the quote was silent.",
+      "diagnostic_value": "Surface scope ambiguity before commitment.",
+      "id": "C09-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Is maintenance capacity reserved?",
+      "synthetic_answer": "Project and service calendars are separate.",
+      "diagnostic_value": "Capacity conflict spans both work types.",
+      "id": "C09-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+  "counterexample": "A late customer change after a documented sign-off is change control, not necessarily an initial survey failure.",
+  "minimum_evidence": [
+    "A simulated survey lacks port test results.",
+    "A simulated quote does not mention migration.",
+    "A simulated project plan allocates staff already on reactive coverage."
+  ],
+  "process_intervention": "Introduce a named readiness owner and configuration sign-off; reserve service capacity and use explicit scope-change decisions.",
+  "automation_candidate": "Track prerequisites, dependencies and approved configuration versions; block release when essential readiness evidence is missing.",
+  "unknowns": [
+    "Customer data handling and software licensing decisions need explicit approval."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "staff-assignment"
+    ],
+    "proposed_extension": "Project dependency and readiness management extend the current catalogue.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

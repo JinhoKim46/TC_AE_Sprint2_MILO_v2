@@ -1,0 +1,47 @@
+{
+  "customer_facts": [
+    {
+      "fact_id": "F1",
+      "statement": "Owner reports that two technicians sometimes attend one school.",
+      "source_ref": "customer_turn_1",
+      "status": "reported"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "claim": "Assignments may be duplicated across contact channels.",
+      "customer_fact_refs": [
+        "F1"
+      ],
+      "analogy_case_refs": [
+        "C01"
+      ],
+      "status": "unresolved",
+      "counterhypothesis": "Two workers may be intentional, or may serve different assets."
+    }
+  ],
+  "questions": [
+    "On the latest occurrence, were they working on the same device and fault, and was a second worker intentionally requested?",
+    "Were both assignments visible before either person left?"
+  ],
+  "recommendations": [
+    {
+      "action": "Review a small sample of allegedly duplicated visits with device and assignment records.",
+      "basis_hypothesis_refs": [
+        "H1"
+      ],
+      "condition": "Investigation only; deduplication is not yet justified.",
+      "capability_status": "process_only",
+      "human_review": "Coordinator adjudicates the purpose of both visits.",
+      "acceptance_criteria": [
+        "Each sampled visit is classified as intentional, unnecessary or unresolved with evidence."
+      ]
+    }
+  ],
+  "unknowns": [
+    "Frequency and avoidable cost of true duplicates",
+    "Whether channel capture is feasible"
+  ],
+  "numbers_status": "withheld_missing_customer_evidence"
+}

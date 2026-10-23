@@ -1,0 +1,121 @@
+{
+  "blueprint_id": "B02",
+  "title": "Dispatch disruption and access constraints",
+  "synthetic": true,
+  "source_case_ids": [
+    "C02"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Collect impact, access window and required skills before replanning; freeze a near-term travel window unless the dispatcher explicitly overrides it.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "job_id",
+    "impact",
+    "workaround",
+    "access_window",
+    "skill_tags",
+    "required_parts",
+    "technician_id",
+    "acknowledged_version",
+    "travel_start",
+    "arrived_at",
+    "work_start",
+    "work_end"
+  ],
+  "business_rules": [
+    {
+      "id": "C02-R01",
+      "statement": "Access and skill constraints take precedence over distance.",
+      "rationale": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+      "evidence_refs": [
+        "C02-E01",
+        "C02-E02",
+        "C02-E03"
+      ],
+      "verification_refs": [
+        "C02-AT01",
+        "C02-AT02",
+        "C02-AT03"
+      ]
+    },
+    {
+      "id": "C02-R02",
+      "statement": "Dispatcher confirms any displaced appointment.",
+      "rationale": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+      "evidence_refs": [
+        "C02-E01",
+        "C02-E02",
+        "C02-E03"
+      ],
+      "verification_refs": [
+        "C02-AT01",
+        "C02-AT02",
+        "C02-AT03"
+      ]
+    },
+    {
+      "id": "C02-R03",
+      "statement": "Unacknowledged changes escalate; do not assume delivery equals acceptance.",
+      "rationale": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+      "evidence_refs": [
+        "C02-E01",
+        "C02-E02",
+        "C02-E03"
+      ],
+      "verification_refs": [
+        "C02-AT01",
+        "C02-AT02",
+        "C02-AT03"
+      ]
+    },
+    {
+      "id": "C02-R04",
+      "statement": "Retain original promised time separately from revised estimates.",
+      "rationale": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+      "evidence_refs": [
+        "C02-E01",
+        "C02-E02",
+        "C02-E03"
+      ],
+      "verification_refs": [
+        "C02-AT01",
+        "C02-AT02",
+        "C02-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C02-AT01",
+      "scenario_and_expected_result": "A nearby unqualified worker is not recommended as feasible.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C02-AT02",
+      "scenario_and_expected_result": "An urgent job outside access hours is flagged for coordination.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C02-AT03",
+      "scenario_and_expected_result": "A stale acknowledgement cannot confirm a newer schedule.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Travel estimates, availability freshness and contractual response definitions require validation.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "staff-assignment",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Constraint-aware routing and live stock integration exceed basic skill/availability suggestions.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

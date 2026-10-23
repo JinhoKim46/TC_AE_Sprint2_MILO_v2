@@ -1,0 +1,246 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C13",
+  "title": "Completed work waits for paperwork",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 13,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "16 staff; institutional customers require service documents before invoicing.",
+  "owner_narrative": "Technicians use paper or photos, and office staff retype reports for each customer. Signatures or device identifiers are missing. Chargeable jobs wait for invoices even though repairs are complete. Sometimes the contact is absent when work finishes.",
+  "current_workflow": [
+    "Repair completed",
+    "Paper notes captured",
+    "Office transcribes",
+    "Missing information chased",
+    "Customer report prepared",
+    "Acceptance obtained",
+    "Invoice released"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Which fields actually block invoicing?",
+      "synthetic_answer": "Device, work description and acceptance evidence vary by customer.",
+      "diagnostic_value": "Use customer-specific requirements.",
+      "id": "C13-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If complete reports are waiting on a customer’s payment dispute, automating documents does not resolve the commercial issue."
+    },
+    {
+      "question": "When are omissions discovered?",
+      "synthetic_answer": "During office transcription, often the next day.",
+      "diagnostic_value": "Validate while context is fresh.",
+      "id": "C13-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "What does a signature mean?",
+      "synthetic_answer": "Usually acceptance of the described work, not merely attendance.",
+      "diagnostic_value": "Preserve acceptance semantics.",
+      "id": "C13-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "What if the contact is absent?",
+      "synthetic_answer": "Technicians leave a blank signature and the office chases it.",
+      "diagnostic_value": "A legitimate pending state is needed.",
+      "id": "C13-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C13-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated report lacks a device ID."
+    },
+    {
+      "id": "C13-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated invoice hold cites missing acceptance."
+    },
+    {
+      "id": "C13-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated template review shows differing required fields."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C13-D01",
+      "hypothesis": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C13-E01",
+        "C13-E02",
+        "C13-E03"
+      ],
+      "counterhypothesis": "If complete reports are waiting on a customer’s payment dispute, automating documents does not resolve the commercial issue.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Use a short on-site checklist aligned to required evidence; represent completed work and accepted work separately.",
+    "deterministic_and_assisted_automation": "Capture structured notes and evidence once; render reviewed customer templates; queue missing acceptance for follow-up.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B13",
+    "fields": [
+      "job_id",
+      "asset_id",
+      "fault",
+      "work_done",
+      "parts_used",
+      "evidence_refs",
+      "template_version",
+      "technical_completion_at",
+      "acceptance_status",
+      "signatory_id",
+      "acceptance_time"
+    ],
+    "requirements": [
+      {
+        "id": "C13-R01",
+        "statement": "Never synthesize a signature or imply acceptance from an absent contact.",
+        "rationale": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+        "evidence_refs": [
+          "C13-E01",
+          "C13-E02",
+          "C13-E03"
+        ],
+        "verification_refs": [
+          "C13-AT01",
+          "C13-AT02",
+          "C13-AT03"
+        ]
+      },
+      {
+        "id": "C13-R02",
+        "statement": "Template fields must map to recorded facts.",
+        "rationale": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+        "evidence_refs": [
+          "C13-E01",
+          "C13-E02",
+          "C13-E03"
+        ],
+        "verification_refs": [
+          "C13-AT01",
+          "C13-AT02",
+          "C13-AT03"
+        ]
+      },
+      {
+        "id": "C13-R03",
+        "statement": "Corrected reports retain revision history.",
+        "rationale": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+        "evidence_refs": [
+          "C13-E01",
+          "C13-E02",
+          "C13-E03"
+        ],
+        "verification_refs": [
+          "C13-AT01",
+          "C13-AT02",
+          "C13-AT03"
+        ]
+      },
+      {
+        "id": "C13-R04",
+        "statement": "Invoice readiness follows the customer’s actual acceptance rules.",
+        "rationale": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+        "evidence_refs": [
+          "C13-E01",
+          "C13-E02",
+          "C13-E03"
+        ],
+        "verification_refs": [
+          "C13-AT01",
+          "C13-AT02",
+          "C13-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C13-AT01",
+        "scenario_and_expected_result": "Absent contact produces pending acceptance.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C13-AT02",
+        "scenario_and_expected_result": "Missing device ID is flagged before report finalization.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C13-AT03",
+        "scenario_and_expected_result": "A revised parts list generates a new report revision.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "document-data-entry",
+        "customer-status-updates"
+      ],
+      "proposed_extension": "Structured completion capture and template rendering extend scanned-form extraction.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Days from technical completion to invoice readiness; track first-pass document acceptance.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Use a short on-site checklist aligned to required evidence; represent completed work and accepted work separately. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "If complete reports are waiting on a customer’s payment dispute, automating documents does not resolve the commercial issue.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Customer submission formats, signatory authority and portal integration feasibility need confirmation."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+    "do_not_assume": "If complete reports are waiting on a customer’s payment dispute, automating documents does not resolve the commercial issue.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C05",
+    "C10",
+    "C19"
+  ]
+}

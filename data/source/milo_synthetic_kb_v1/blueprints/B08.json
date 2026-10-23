@@ -1,0 +1,103 @@
+{
+  "blueprint_id": "B08",
+  "title": "Remote-first support creates another delay",
+  "synthetic": true,
+  "source_case_ids": [
+    "C08"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Ask connectivity, authorization and symptom questions first; agree a limited remote attempt and a clear escalation point.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "connectivity_state",
+    "remote_tool_ready",
+    "authorized_contact",
+    "consent_ref",
+    "symptom_scope",
+    "attempted_steps",
+    "attempt_start",
+    "escalation_reason",
+    "appointment_window"
+  ],
+  "business_rules": [
+    {
+      "id": "C08-R01",
+      "statement": "Do not initiate control without applicable authorization.",
+      "rationale": "There is no eligibility gate or structured handover for remote support.",
+      "evidence_refs": [
+        "C08-E01",
+        "C08-E02",
+        "C08-E03"
+      ],
+      "verification_refs": [
+        "C08-AT01",
+        "C08-AT02",
+        "C08-AT03"
+      ]
+    },
+    {
+      "id": "C08-R02",
+      "statement": "Disconnected or obvious physical faults may bypass remote support.",
+      "rationale": "There is no eligibility gate or structured handover for remote support.",
+      "evidence_refs": [
+        "C08-E01",
+        "C08-E02",
+        "C08-E03"
+      ],
+      "verification_refs": [
+        "C08-AT01",
+        "C08-AT02",
+        "C08-AT03"
+      ]
+    },
+    {
+      "id": "C08-R03",
+      "statement": "Time-box is configured with the service owner, not invented by the model.",
+      "rationale": "There is no eligibility gate or structured handover for remote support.",
+      "evidence_refs": [
+        "C08-E01",
+        "C08-E02",
+        "C08-E03"
+      ],
+      "verification_refs": [
+        "C08-AT01",
+        "C08-AT02",
+        "C08-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C08-AT01",
+      "scenario_and_expected_result": "An offline PC goes to alternative triage without repeated connection attempts.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C08-AT02",
+      "scenario_and_expected_result": "Declined access creates no session.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C08-AT03",
+      "scenario_and_expected_result": "A failed attempt carries diagnostic notes into dispatch.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Approved tools, access policies and practical time-box thresholds need local validation.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "staff-assignment"
+    ],
+    "proposed_extension": "Remote eligibility logic is new; remote-control software itself is not provided.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

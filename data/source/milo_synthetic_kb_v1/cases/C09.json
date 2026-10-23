@@ -1,0 +1,230 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C09",
+  "title": "Installation readiness discovered on site",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 9,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "17 staff; school maintenance plus holiday computer-room projects.",
+  "owner_narrative": "Sales surveys are scattered across photos and messages. On installation day we discover missing ports, unexpected software or data migration expectations. Maintenance emergencies pull technicians away from projects during the busiest school-holiday weeks.",
+  "current_workflow": [
+    "Sales survey",
+    "Quote accepted",
+    "Equipment purchased",
+    "PCs prepared",
+    "Team attends",
+    "Missing prerequisites discovered",
+    "Rework"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Who signs off the deployment configuration?",
+      "synthetic_answer": "Sales and the school discussed it, but no version was approved.",
+      "diagnostic_value": "Rework originates before imaging.",
+      "id": "C09-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A late customer change after a documented sign-off is change control, not necessarily an initial survey failure."
+    },
+    {
+      "question": "Are access and ports verified?",
+      "synthetic_answer": "Photos do not establish working network capacity.",
+      "diagnostic_value": "A survey needs functional checks.",
+      "id": "C09-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Is migration included?",
+      "synthetic_answer": "Teachers assumed it, while the quote was silent.",
+      "diagnostic_value": "Surface scope ambiguity before commitment.",
+      "id": "C09-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Is maintenance capacity reserved?",
+      "synthetic_answer": "Project and service calendars are separate.",
+      "diagnostic_value": "Capacity conflict spans both work types.",
+      "id": "C09-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C09-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated survey lacks port test results."
+    },
+    {
+      "id": "C09-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated quote does not mention migration."
+    },
+    {
+      "id": "C09-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated project plan allocates staff already on reactive coverage."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C09-D01",
+      "hypothesis": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C09-E01",
+        "C09-E02",
+        "C09-E03"
+      ],
+      "counterhypothesis": "A late customer change after a documented sign-off is change control, not necessarily an initial survey failure.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Introduce a named readiness owner and configuration sign-off; reserve service capacity and use explicit scope-change decisions.",
+    "deterministic_and_assisted_automation": "Track prerequisites, dependencies and approved configuration versions; block release when essential readiness evidence is missing.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B09",
+    "fields": [
+      "project_id",
+      "room_id",
+      "port_test",
+      "access_confirmed",
+      "configuration_version",
+      "software_license_status",
+      "migration_scope",
+      "signoff_ref",
+      "equipment_received",
+      "resource_reservation"
+    ],
+    "requirements": [
+      {
+        "id": "C09-R01",
+        "statement": "Do not embed credentials in readiness documents.",
+        "rationale": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+        "evidence_refs": [
+          "C09-E01",
+          "C09-E02",
+          "C09-E03"
+        ],
+        "verification_refs": [
+          "C09-AT01",
+          "C09-AT02",
+          "C09-AT03"
+        ]
+      },
+      {
+        "id": "C09-R02",
+        "statement": "A post-signoff configuration change triggers impact review.",
+        "rationale": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+        "evidence_refs": [
+          "C09-E01",
+          "C09-E02",
+          "C09-E03"
+        ],
+        "verification_refs": [
+          "C09-AT01",
+          "C09-AT02",
+          "C09-AT03"
+        ]
+      },
+      {
+        "id": "C09-R03",
+        "statement": "A blocked project cannot be silently labeled ready to meet a date.",
+        "rationale": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+        "evidence_refs": [
+          "C09-E01",
+          "C09-E02",
+          "C09-E03"
+        ],
+        "verification_refs": [
+          "C09-AT01",
+          "C09-AT02",
+          "C09-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C09-AT01",
+        "scenario_and_expected_result": "Missing network test blocks deployment release.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C09-AT02",
+        "scenario_and_expected_result": "A revised image invalidates outdated configuration approval.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C09-AT03",
+        "scenario_and_expected_result": "Resource conflicts appear before appointments are promised.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation",
+        "staff-assignment"
+      ],
+      "proposed_extension": "Project dependency and readiness management extend the current catalogue.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Installation hours spent on unplanned rework / installation hours; track readiness pass rate and reactive service backlog.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Introduce a named readiness owner and configuration sign-off; reserve service capacity and use explicit scope-change decisions. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "A late customer change after a documented sign-off is change control, not necessarily an initial survey failure.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Customer data handling and software licensing decisions need explicit approval."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+    "do_not_assume": "A late customer change after a documented sign-off is change control, not necessarily an initial survey failure.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C02",
+    "C03",
+    "C19"
+  ]
+}

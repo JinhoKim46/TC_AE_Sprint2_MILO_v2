@@ -1,0 +1,120 @@
+{
+  "blueprint_id": "B13",
+  "title": "Completed work waits for paperwork",
+  "synthetic": true,
+  "source_case_ids": [
+    "C13"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Use a short on-site checklist aligned to required evidence; represent completed work and accepted work separately.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "job_id",
+    "asset_id",
+    "fault",
+    "work_done",
+    "parts_used",
+    "evidence_refs",
+    "template_version",
+    "technical_completion_at",
+    "acceptance_status",
+    "signatory_id",
+    "acceptance_time"
+  ],
+  "business_rules": [
+    {
+      "id": "C13-R01",
+      "statement": "Never synthesize a signature or imply acceptance from an absent contact.",
+      "rationale": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+      "evidence_refs": [
+        "C13-E01",
+        "C13-E02",
+        "C13-E03"
+      ],
+      "verification_refs": [
+        "C13-AT01",
+        "C13-AT02",
+        "C13-AT03"
+      ]
+    },
+    {
+      "id": "C13-R02",
+      "statement": "Template fields must map to recorded facts.",
+      "rationale": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+      "evidence_refs": [
+        "C13-E01",
+        "C13-E02",
+        "C13-E03"
+      ],
+      "verification_refs": [
+        "C13-AT01",
+        "C13-AT02",
+        "C13-AT03"
+      ]
+    },
+    {
+      "id": "C13-R03",
+      "statement": "Corrected reports retain revision history.",
+      "rationale": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+      "evidence_refs": [
+        "C13-E01",
+        "C13-E02",
+        "C13-E03"
+      ],
+      "verification_refs": [
+        "C13-AT01",
+        "C13-AT02",
+        "C13-AT03"
+      ]
+    },
+    {
+      "id": "C13-R04",
+      "statement": "Invoice readiness follows the customer’s actual acceptance rules.",
+      "rationale": "Evidence capture is disconnected from customer document requirements and acceptance workflow.",
+      "evidence_refs": [
+        "C13-E01",
+        "C13-E02",
+        "C13-E03"
+      ],
+      "verification_refs": [
+        "C13-AT01",
+        "C13-AT02",
+        "C13-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C13-AT01",
+      "scenario_and_expected_result": "Absent contact produces pending acceptance.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C13-AT02",
+      "scenario_and_expected_result": "Missing device ID is flagged before report finalization.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C13-AT03",
+      "scenario_and_expected_result": "A revised parts list generates a new report revision.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Customer submission formats, signatory authority and portal integration feasibility need confirmation.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "document-data-entry",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Structured completion capture and template rendering extend scanned-form extraction.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}
