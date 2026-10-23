@@ -34,16 +34,30 @@ class LangChainChat:
     def invoke(
         self, messages: list[dict[str, Any]], tools: list[Any] | None = None
     ) -> ChatReply:
+        if tools:
+            raise NotImplementedError("tool binding arrives in M3")
         msg = self.model.invoke(messages)
-        assert isinstance(msg, AIMessage)
+        if not isinstance(msg, AIMessage):
+            raise TypeError(f"expected an AIMessage, got {type(msg).__name__}")
         usage = msg.usage_metadata or {}
         return ChatReply(
-            content=msg.content if isinstance(msg.content, str) else str(msg.content),
+            content=text_of(msg.content),
             tool_calls=[
                 ToolCall(c["id"] or "", c["name"], c["args"]) for c in msg.tool_calls
             ],
             usage=Usage(usage.get("input_tokens", 0), usage.get("output_tokens", 0)),
         )
+
+
+def text_of(content: str | list[Any]) -> str:
+    """The text of a message. Some providers (Anthropic among them) return a list of content blocks."""
+    if isinstance(content, str):
+        return content
+    return "".join(
+        b if isinstance(b, str) else str(b.get("text", ""))
+        for b in content
+        if isinstance(b, str) or b.get("type") == "text"
+    )
 
 
 def live_chat_model() -> LangChainChat:

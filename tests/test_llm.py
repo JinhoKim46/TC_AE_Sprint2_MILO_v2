@@ -55,3 +55,31 @@ def test_adapter_returns_the_kit_reply_shape() -> None:
     assert reply.content == "Hello."
     assert reply.tool_calls == []
     assert (reply.usage.input_tokens, reply.usage.output_tokens) == (12, 3)
+
+
+def test_adapter_joins_content_blocks() -> None:
+    blocks = [{"type": "text", "text": "Two "}, {"type": "text", "text": "parts."}]
+    fake = FakeMessagesListChatModel(responses=[AIMessage(content=blocks)])
+    reply = LangChainChat(fake, (0.1, 0.5)).invoke([{"role": "user", "content": "Hi"}])
+    assert reply.content == "Two parts."
+
+
+def test_adapter_refuses_tools_until_m3() -> None:
+    fake = FakeMessagesListChatModel(responses=[AIMessage(content="x")])
+    with pytest.raises(NotImplementedError):
+        LangChainChat(fake, (0.1, 0.5)).invoke([], tools=[object()])
+
+
+def test_default_paths_open_no_socket(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The fake-model adapter and build_app run with sockets blocked and no warning filter."""
+    from milo.app import build_app
+
+    monkeypatch.delenv("MILO_LIVE", raising=False)
+    fake = FakeMessagesListChatModel(responses=[AIMessage(content="ok")])
+    assert (
+        LangChainChat(fake, (0.1, 0.5))
+        .invoke([{"role": "user", "content": "x"}])
+        .content
+        == "ok"
+    )
+    assert build_app(None, None, None).ask("hi", "u1", "t1").error is None

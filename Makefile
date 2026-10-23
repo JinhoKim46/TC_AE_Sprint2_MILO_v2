@@ -1,4 +1,4 @@
-# Kit location: the course's project kit, three levels up from sprint2/milo-v2 (override with KIT_SRC=...).
+# Location of the project kit (override with KIT_SRC=<path>).
 KIT_SRC ?= ../../../project-kit
 
 .PHONY: check lint test kit-sync contract
