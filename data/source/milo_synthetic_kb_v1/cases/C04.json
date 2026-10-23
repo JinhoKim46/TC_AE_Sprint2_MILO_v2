@@ -1,0 +1,242 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C04",
+  "title": "Toner stock exists but cannot be found",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 4,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "Printer rental and consumables provider; approximately 650 managed devices.",
+  "owner_narrative": "The spreadsheet says five cartridges, but some are in vans, reserved or already delivered. Customers identify a printer by its location and sometimes photograph the wrong one. Leaving spare toner helped some sites but caused others to stockpile it.",
+  "current_workflow": [
+    "Customer reports toner warning",
+    "Office identifies device",
+    "Spreadsheet checked",
+    "Cartridge picked",
+    "Delivery made",
+    "Stock updated later"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Is the warning an empty cartridge?",
+      "synthetic_answer": "Some callers report the first low-toner warning while a spare is already on-site.",
+      "diagnostic_value": "Demand needs verification.",
+      "id": "C04-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If physical counts are accurate but consumption exceeds replenishment lead time, reorder policy rather than data capture is the main issue."
+    },
+    {
+      "question": "What does stock count include?",
+      "synthetic_answer": "Reservations and van stock are mixed with warehouse stock.",
+      "diagnostic_value": "Available-to-promise differs from ownership.",
+      "id": "C04-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "How is compatibility verified?",
+      "synthetic_answer": "Staff use memory or a customer photograph.",
+      "diagnostic_value": "Model-to-SKU mapping needs review.",
+      "id": "C04-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are deliveries recorded immediately?",
+      "synthetic_answer": "Often at the end of the week.",
+      "diagnostic_value": "Stock freshness is a root issue.",
+      "id": "C04-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C04-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated stock audit separates warehouse, reserved and van quantities."
+    },
+    {
+      "id": "C04-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated delivery receipt is absent from the stock sheet."
+    },
+    {
+      "id": "C04-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated customer check finds two unopened spares."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C04-D01",
+      "hypothesis": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C04-E01",
+        "C04-E02",
+        "C04-E03"
+      ],
+      "counterhypothesis": "If physical counts are accurate but consumption exceeds replenishment lead time, reorder policy rather than data capture is the main issue.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Count high-use stock; assign device IDs; log transfers at handover; ask about usable on-site spare stock before urgent delivery.",
+    "deterministic_and_assisted_automation": "Maintain a location ledger and compatibility table; reserve stock atomically; suggest replenishment for human approval until counts are reliable.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B04",
+    "fields": [
+      "sku",
+      "asset_id",
+      "compatibility_revision",
+      "location_id",
+      "quantity",
+      "reservation_id",
+      "movement_id",
+      "customer_spare_count",
+      "warning_level",
+      "counted_at"
+    ],
+    "requirements": [
+      {
+        "id": "C04-R01",
+        "statement": "Available stock equals physical quantity minus valid reservations at that location.",
+        "rationale": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+        "evidence_refs": [
+          "C04-E01",
+          "C04-E02",
+          "C04-E03"
+        ],
+        "verification_refs": [
+          "C04-AT01",
+          "C04-AT02",
+          "C04-AT03"
+        ]
+      },
+      {
+        "id": "C04-R02",
+        "statement": "An incompatible or uncertain SKU blocks picking.",
+        "rationale": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+        "evidence_refs": [
+          "C04-E01",
+          "C04-E02",
+          "C04-E03"
+        ],
+        "verification_refs": [
+          "C04-AT01",
+          "C04-AT02",
+          "C04-AT03"
+        ]
+      },
+      {
+        "id": "C04-R03",
+        "statement": "A retry with the same movement ID cannot decrement twice.",
+        "rationale": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+        "evidence_refs": [
+          "C04-E01",
+          "C04-E02",
+          "C04-E03"
+        ],
+        "verification_refs": [
+          "C04-AT01",
+          "C04-AT02",
+          "C04-AT03"
+        ]
+      },
+      {
+        "id": "C04-R04",
+        "statement": "Reorder proposals include lead time and confidence in counts.",
+        "rationale": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+        "evidence_refs": [
+          "C04-E01",
+          "C04-E02",
+          "C04-E03"
+        ],
+        "verification_refs": [
+          "C04-AT01",
+          "C04-AT02",
+          "C04-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C04-AT01",
+        "scenario_and_expected_result": "Two reservations cannot consume the same final cartridge.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C04-AT02",
+        "scenario_and_expected_result": "A van-to-site delivery changes both locations once.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C04-AT03",
+        "scenario_and_expected_result": "An unknown model requires verification before fulfillment.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation"
+      ],
+      "proposed_extension": "Inventory ledger, asset compatibility and replenishment logic are proposed extensions.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Emergency toner trips / toner fulfillments; also track stock accuracy and stockout days to avoid improving trips by overstocking.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Count high-use stock; assign device IDs; log transfers at handover; ask about usable on-site spare stock before urgent delivery. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "If physical counts are accurate but consumption exceeds replenishment lead time, reorder policy rather than data capture is the main issue.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "OEM compatibility, supplier lead times and actual usage distributions are not supplied."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Missing location and reservation accounting combines with unreliable device and customer-stock identification.",
+    "do_not_assume": "If physical counts are accurate but consumption exceeds replenishment lead time, reorder policy rather than data capture is the main issue.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C05",
+    "C18"
+  ]
+}

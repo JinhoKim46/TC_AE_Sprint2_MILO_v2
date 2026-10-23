@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P10",
+  "title": "Subcontractor work lacks acceptance evidence",
+  "synthetic": true,
+  "source_case_ids": [
+    "C10"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "We send partners addresses and symptoms by message. Some return detailed reports; others only say done. One replaced a part with branch permission, but head office refused to pay. Assignment time was mistaken for an agreed arrival time during another complaint.",
+    "workflow_context": "Eight internal staff plus regional external service partners."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Who may approve additional cost?",
+      "synthetic_answer": "Head office, not the branch contact.",
+      "diagnostic_value": "Separate site access from spending authority.",
+      "id": "C10-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If detailed instructions were acknowledged and repeatedly ignored, partner performance management may be needed beyond software."
+    },
+    {
+      "question": "Do we record acceptance and appointment times?",
+      "synthetic_answer": "Only the outbound message time.",
+      "diagnostic_value": "Dispatch is not a commitment.",
+      "id": "C10-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "What evidence is mandatory?",
+      "synthetic_answer": "Requirements are not included consistently.",
+      "diagnostic_value": "Standardize instructions before measuring compliance.",
+      "id": "C10-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Will partners install our application?",
+      "synthetic_answer": "Most will use a simple phone page but resist another account workflow.",
+      "diagnostic_value": "Adoption constrains interface design.",
+      "id": "C10-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+  "counterexample": "If detailed instructions were acknowledged and repeatedly ignored, partner performance management may be needed beyond software.",
+  "minimum_evidence": [
+    "A simulated partner invoice includes an unapproved replacement.",
+    "A simulated assignment contains no spending limit.",
+    "A simulated report says only done."
+  ],
+  "process_intervention": "Send a concise work order with scope, escalation contact and evidence requirements; separate technical completion from customer acceptance.",
+  "automation_candidate": "Provide authenticated, job-scoped mobile reporting; record acceptance, agreed window, actual arrival, parts and approval requests.",
+  "unknowns": [
+    "Partner access, payout terms and required evidence must be agreed contractually."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "External partner access and spend authorization need separate engineering.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

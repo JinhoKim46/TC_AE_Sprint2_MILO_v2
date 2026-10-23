@@ -1,0 +1,244 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C10",
+  "title": "Subcontractor work lacks acceptance evidence",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 10,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "Eight internal staff plus regional external service partners.",
+  "owner_narrative": "We send partners addresses and symptoms by message. Some return detailed reports; others only say done. One replaced a part with branch permission, but head office refused to pay. Assignment time was mistaken for an agreed arrival time during another complaint.",
+  "current_workflow": [
+    "Coordinator sends job",
+    "Partner accepts",
+    "Appointment agreed",
+    "Work performed",
+    "Short message returned",
+    "Customer report and partner payment"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Who may approve additional cost?",
+      "synthetic_answer": "Head office, not the branch contact.",
+      "diagnostic_value": "Separate site access from spending authority.",
+      "id": "C10-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If detailed instructions were acknowledged and repeatedly ignored, partner performance management may be needed beyond software."
+    },
+    {
+      "question": "Do we record acceptance and appointment times?",
+      "synthetic_answer": "Only the outbound message time.",
+      "diagnostic_value": "Dispatch is not a commitment.",
+      "id": "C10-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "What evidence is mandatory?",
+      "synthetic_answer": "Requirements are not included consistently.",
+      "diagnostic_value": "Standardize instructions before measuring compliance.",
+      "id": "C10-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Will partners install our application?",
+      "synthetic_answer": "Most will use a simple phone page but resist another account workflow.",
+      "diagnostic_value": "Adoption constrains interface design.",
+      "id": "C10-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C10-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated partner invoice includes an unapproved replacement."
+    },
+    {
+      "id": "C10-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated assignment contains no spending limit."
+    },
+    {
+      "id": "C10-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated report says only done."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C10-D01",
+      "hypothesis": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C10-E01",
+        "C10-E02",
+        "C10-E03"
+      ],
+      "counterhypothesis": "If detailed instructions were acknowledged and repeatedly ignored, partner performance management may be needed beyond software.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Send a concise work order with scope, escalation contact and evidence requirements; separate technical completion from customer acceptance.",
+    "deterministic_and_assisted_automation": "Provide authenticated, job-scoped mobile reporting; record acceptance, agreed window, actual arrival, parts and approval requests.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B10",
+    "fields": [
+      "work_order_id",
+      "partner_id",
+      "permitted_site",
+      "scope",
+      "spending_limit",
+      "accepted_at",
+      "appointment_window",
+      "arrived_at",
+      "completion_evidence",
+      "customer_acceptance"
+    ],
+    "requirements": [
+      {
+        "id": "C10-R01",
+        "statement": "Partners can access only assigned jobs.",
+        "rationale": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+        "evidence_refs": [
+          "C10-E01",
+          "C10-E02",
+          "C10-E03"
+        ],
+        "verification_refs": [
+          "C10-AT01",
+          "C10-AT02",
+          "C10-AT03"
+        ]
+      },
+      {
+        "id": "C10-R02",
+        "statement": "Extra spending requires the authorized customer approver.",
+        "rationale": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+        "evidence_refs": [
+          "C10-E01",
+          "C10-E02",
+          "C10-E03"
+        ],
+        "verification_refs": [
+          "C10-AT01",
+          "C10-AT02",
+          "C10-AT03"
+        ]
+      },
+      {
+        "id": "C10-R03",
+        "statement": "Done is not accepted when mandatory evidence is missing.",
+        "rationale": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+        "evidence_refs": [
+          "C10-E01",
+          "C10-E02",
+          "C10-E03"
+        ],
+        "verification_refs": [
+          "C10-AT01",
+          "C10-AT02",
+          "C10-AT03"
+        ]
+      },
+      {
+        "id": "C10-R04",
+        "statement": "Expired access links cannot reveal job data.",
+        "rationale": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+        "evidence_refs": [
+          "C10-E01",
+          "C10-E02",
+          "C10-E03"
+        ],
+        "verification_refs": [
+          "C10-AT01",
+          "C10-AT02",
+          "C10-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C10-AT01",
+        "scenario_and_expected_result": "A branch employee cannot approve head-office-only expenditure.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C10-AT02",
+        "scenario_and_expected_result": "One partner cannot view another partner’s jobs.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C10-AT03",
+        "scenario_and_expected_result": "Missing evidence creates follow-up rather than fabricated completion.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation",
+        "customer-status-updates"
+      ],
+      "proposed_extension": "External partner access and spend authorization need separate engineering.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Partner jobs accepted without documentation rework / completed partner jobs; track unauthorized spend and missed agreed windows.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Send a concise work order with scope, escalation contact and evidence requirements; separate technical completion from customer acceptance. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "If detailed instructions were acknowledged and repeatedly ignored, partner performance management may be needed beyond software.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Partner access, payout terms and required evidence must be agreed contractually."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Delegated work lacks explicit scope, authority, milestones and a completion contract.",
+    "do_not_assume": "If detailed instructions were acknowledged and repeatedly ignored, partner performance management may be needed beyond software.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C06",
+    "C13",
+    "C15"
+  ]
+}

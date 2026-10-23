@@ -1,0 +1,244 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C16",
+  "title": "Clinic support must respect operational windows",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 16,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "Seven staff supporting clinic office IT, printers, networks and backups; clinical devices excluded.",
+  "owner_narrative": "Reception problems are urgent when patients are waiting, but we cannot restart systems whenever we like. Vendors handle clinical software and devices. An intermittent problem disappeared during a short visit and returned next morning. We need useful notes without patient details.",
+  "current_workflow": [
+    "Clinic reports disruption",
+    "Determine affected service",
+    "Seek authorization",
+    "Attempt diagnosis within window",
+    "Escalate vendor or schedule work",
+    "Confirm restoration"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Which service is in our scope?",
+      "synthetic_answer": "Reception PCs and network, not clinical equipment.",
+      "diagnostic_value": "Avoid unsupported responsibility.",
+      "id": "C16-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A vendor outage or clinical-device failure needs routing to the responsible supplier, not an invented IT repair procedure."
+    },
+    {
+      "question": "Who authorizes interruption?",
+      "synthetic_answer": "The practice manager coordinates acceptable downtime.",
+      "diagnostic_value": "Work timing is an approval constraint.",
+      "id": "C16-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "What evidence reproduces the fault?",
+      "synthetic_answer": "Time, workstation and error code help; patient screenshots are unnecessary.",
+      "diagnostic_value": "Minimize sensitive collection.",
+      "id": "C16-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Was disappearance treated as resolution?",
+      "synthetic_answer": "Yes, although no cause was found.",
+      "diagnostic_value": "Distinguish unable-to-reproduce from resolved.",
+      "id": "C16-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C16-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated support agreement excludes clinical equipment."
+    },
+    {
+      "id": "C16-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated visit has no reproduction or confirmed fix."
+    },
+    {
+      "id": "C16-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated manager note restricts restart timing."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C16-D01",
+      "hypothesis": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C16-E01",
+        "C16-E02",
+        "C16-E03"
+      ],
+      "counterhypothesis": "A vendor outage or clinical-device failure needs routing to the responsible supplier, not an invented IT repair procedure.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Record operational impact using non-patient information; identify the authorized coordinator and approved work window; retain monitoring follow-up.",
+    "deterministic_and_assisted_automation": "Guide privacy-minimizing intake, scope routing and authorization tracking; draft updates without clinical details.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B16",
+    "fields": [
+      "affected_service",
+      "scope_owner",
+      "impact",
+      "device_alias",
+      "error_code",
+      "occurrence_time",
+      "permitted_window",
+      "interruption_approval",
+      "reproduction_status",
+      "monitoring_due"
+    ],
+    "requirements": [
+      {
+        "id": "C16-R01",
+        "statement": "Do not collect patient records for routine IT triage.",
+        "rationale": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+        "evidence_refs": [
+          "C16-E01",
+          "C16-E02",
+          "C16-E03"
+        ],
+        "verification_refs": [
+          "C16-AT01",
+          "C16-AT02",
+          "C16-AT03"
+        ]
+      },
+      {
+        "id": "C16-R02",
+        "statement": "Disruptive changes require current scope-specific approval.",
+        "rationale": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+        "evidence_refs": [
+          "C16-E01",
+          "C16-E02",
+          "C16-E03"
+        ],
+        "verification_refs": [
+          "C16-AT01",
+          "C16-AT02",
+          "C16-AT03"
+        ]
+      },
+      {
+        "id": "C16-R03",
+        "statement": "Not reproduced remains distinct from confirmed resolution.",
+        "rationale": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+        "evidence_refs": [
+          "C16-E01",
+          "C16-E02",
+          "C16-E03"
+        ],
+        "verification_refs": [
+          "C16-AT01",
+          "C16-AT02",
+          "C16-AT03"
+        ]
+      },
+      {
+        "id": "C16-R04",
+        "statement": "Clinical advice and clinical-device procedures stay outside this case.",
+        "rationale": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+        "evidence_refs": [
+          "C16-E01",
+          "C16-E02",
+          "C16-E03"
+        ],
+        "verification_refs": [
+          "C16-AT01",
+          "C16-AT02",
+          "C16-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C16-AT01",
+        "scenario_and_expected_result": "A patient-bearing screenshot is flagged for controlled handling, not indexed.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C16-AT02",
+        "scenario_and_expected_result": "No restart is scheduled outside the approved window.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C16-AT03",
+        "scenario_and_expected_result": "A recurring symptom reopens investigation with prior evidence.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation",
+        "customer-status-updates"
+      ],
+      "proposed_extension": "Operational-window and privacy controls require explicit engineering and customer review.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Unplanned service interruption minutes caused by maintenance; track recurrence and time to appropriate supplier engagement.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Record operational impact using non-patient information; identify the authorized coordinator and approved work window; retain monitoring follow-up. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "A vendor outage or clinical-device failure needs routing to the responsible supplier, not an invented IT repair procedure.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Customer privacy procedures, criticality and exact authorization policy need local confirmation."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Scope, interruption authority and intermittent-fault evidence are missing from triage and closure criteria.",
+    "do_not_assume": "A vendor outage or clinical-device failure needs routing to the responsible supplier, not an invented IT repair procedure.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C08",
+    "C13",
+    "C17"
+  ]
+}

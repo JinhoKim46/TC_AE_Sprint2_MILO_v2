@@ -1,0 +1,69 @@
+{
+  "playbook_id": "P01",
+  "title": "Duplicate dispatch across contact channels",
+  "synthetic": true,
+  "source_case_ids": [
+    "C01"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Teachers contact our office, their usual technician, or me. Our office uses Excel and group chat. Two technicians attended the same printer after different teachers described the problem differently. Other requests disappear because everybody assumes somebody else accepted them. Customers will keep calling, so a mandatory customer portal will not solve this alone.",
+    "workflow_context": "14 staff; nine field technicians; approximately 90 office and school customers; monthly maintenance with some parts extra."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Were both visits for the same device and fault?",
+      "synthetic_answer": "A serial-number photo and visit notes identify the same printer; both describe an offline queue.",
+      "diagnostic_value": "Distinguishes an unnecessary duplicate from legitimate parallel work.",
+      "id": "C01-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If both assignments were visible and intentionally required different skills, deduplication would be wrong; examine assignment reasons before merging."
+    },
+    {
+      "question": "Were both requests visible before assignment?",
+      "synthetic_answer": "The direct message remained on the regular technician’s phone until after arrival.",
+      "diagnostic_value": "Locates the failure before dispatch rather than in routing.",
+      "id": "C01-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Who can accept a direct request?",
+      "synthetic_answer": "Technicians promise a visit without informing the coordinator.",
+      "diagnostic_value": "Reveals missing commitment ownership.",
+      "id": "C01-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Can staff record an incomplete request?",
+      "synthetic_answer": "The current sheet expects a device model, which callers often do not know.",
+      "diagnostic_value": "Missing optional data must not prevent intake.",
+      "id": "C01-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Requests and commitments bypass the shared queue; asset ambiguity makes the bypass harder to detect.",
+  "counterexample": "If both assignments were visible and intentionally required different skills, deduplication would be wrong; examine assignment reasons before merging.",
+  "minimum_evidence": [
+    "Simulated incident D-101 contains two reporter messages and one device serial.",
+    "Simulated dispatch timeline shows the second assignment before the first message entered the shared log.",
+    "A simulated coordinator interview confirms no shared acceptance rule."
+  ],
+  "process_intervention": "Nominate the coordinator as assignment owner; require a short direct-contact capture before promising attendance, allowing an urgent exception with later reconciliation.",
+  "automation_candidate": "Create intake drafts from supported channels; show related open incidents and active assignments; require a coordinator decision on ambiguous duplicates.",
+  "unknowns": [
+    "Channel capture permissions and a practical direct-call logging method are unverified."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "phone-intake",
+      "ticket-creation",
+      "staff-assignment"
+    ],
+    "proposed_extension": "Cross-channel identity resolution and transactional assignment safeguards need separate implementation.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

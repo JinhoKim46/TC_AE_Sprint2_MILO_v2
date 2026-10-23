@@ -472,6 +472,7 @@ source = { editable = "." }
 dependencies = [
     { name = "langchain-core" },
     { name = "langchain-openai" },
+    { name = "pyyaml" },
 ]
 
 [package.dev-dependencies]
@@ -485,6 +486,7 @@ dev = [
 requires-dist = [
     { name = "langchain-core", specifier = "==1.6.13" },
     { name = "langchain-openai", specifier = "==1.7.2" },
+    { name = "pyyaml", specifier = "==6.0.3" },
 ]
 
 [package.metadata.requires-dev]

@@ -1,0 +1,119 @@
+{
+  "blueprint_id": "B05",
+  "title": "Meter readings delay and corrupt invoices",
+  "synthetic": true,
+  "source_case_ids": [
+    "C05"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Normalize reviewed contract terms; record installation and removal readings; hold unresolved segments for accounts review.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "device_id",
+    "reading_id",
+    "capture_time",
+    "mono_counter",
+    "color_counter",
+    "source_hash",
+    "install_reading",
+    "removal_reading",
+    "tariff_version",
+    "allowance_pool",
+    "billing_period"
+  ],
+  "business_rules": [
+    {
+      "id": "C05-R01",
+      "statement": "Negative deltas block ordinary billing unless an approved reset or replacement segment explains them.",
+      "rationale": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+      "evidence_refs": [
+        "C05-E01",
+        "C05-E02",
+        "C05-E03"
+      ],
+      "verification_refs": [
+        "C05-AT01",
+        "C05-AT02",
+        "C05-AT03"
+      ]
+    },
+    {
+      "id": "C05-R02",
+      "statement": "Pool allowance is applied once per defined group and period.",
+      "rationale": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+      "evidence_refs": [
+        "C05-E01",
+        "C05-E02",
+        "C05-E03"
+      ],
+      "verification_refs": [
+        "C05-AT01",
+        "C05-AT02",
+        "C05-AT03"
+      ]
+    },
+    {
+      "id": "C05-R03",
+      "statement": "OCR confidence never authorizes invoice sending.",
+      "rationale": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+      "evidence_refs": [
+        "C05-E01",
+        "C05-E02",
+        "C05-E03"
+      ],
+      "verification_refs": [
+        "C05-AT01",
+        "C05-AT02",
+        "C05-AT03"
+      ]
+    },
+    {
+      "id": "C05-R04",
+      "statement": "Corrected readings retain the original and reason.",
+      "rationale": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+      "evidence_refs": [
+        "C05-E01",
+        "C05-E02",
+        "C05-E03"
+      ],
+      "verification_refs": [
+        "C05-AT01",
+        "C05-AT02",
+        "C05-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C05-AT01",
+      "scenario_and_expected_result": "Old and new devices are calculated as distinct segments.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C05-AT02",
+      "scenario_and_expected_result": "A repeated image hash raises a duplicate warning.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C05-AT03",
+      "scenario_and_expected_result": "A pooled allowance is not subtracted once per device.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Proration, taxes, minimum charges, resets and rounding rules must come from the customer’s approved terms.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "document-data-entry"
+    ],
+    "proposed_extension": "Meter billing and invoicing are explicitly outside the current ticket module; implement separately.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

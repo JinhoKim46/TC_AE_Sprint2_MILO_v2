@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MILO synthetic case v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "case_id",
+    "title",
+    "synthetic",
+    "evidence_origin",
+    "review_status",
+    "diagnostic_interview",
+    "evidence",
+    "diagnoses",
+    "automation_spec",
+    "evaluation",
+    "implementation"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "milo.synthetic.case.v1"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^C[0-9]{2}$"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "evidence_origin": {
+      "const": "synthetic_fixture"
+    },
+    "review_status": {
+      "const": "author_generated_not_domain_validated"
+    },
+    "diagnostic_interview": {
+      "type": "array",
+      "minItems": 4
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 3
+    },
+    "diagnoses": {
+      "type": "array",
+      "minItems": 1
+    },
+    "automation_spec": {
+      "type": "object",
+      "required": [
+        "fields",
+        "requirements",
+        "acceptance_tests",
+        "capability_boundary"
+      ]
+    },
+    "evaluation": {
+      "type": "object",
+      "required": [
+        "baseline_value",
+        "post_value",
+        "target",
+        "numeric_status"
+      ],
+      "properties": {
+        "baseline_value": {
+          "type": "null"
+        },
+        "post_value": {
+          "type": "null"
+        },
+        "target": {
+          "type": "null"
+        },
+        "numeric_status": {
+          "const": "not_measured"
+        }
+      }
+    }
+  }
+}

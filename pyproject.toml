@@ -6,6 +6,7 @@ requires-python = ">=3.12"
 dependencies = [
     "langchain-core==1.6.13",
     "langchain-openai==1.7.2",
+    "pyyaml==6.0.3",
 ]
 
 [build-system]
@@ -26,7 +27,7 @@ dev = [
 ]
 
 [tool.ruff]
-extend-exclude = ["contract", "scripts/check_project_data.py"]
+extend-exclude = ["contract", "scripts/check_project_data.py", "data/source"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

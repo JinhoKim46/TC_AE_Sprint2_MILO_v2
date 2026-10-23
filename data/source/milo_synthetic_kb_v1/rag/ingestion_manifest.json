@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "allowlist": [
+    "rag/knowledge_chunks.jsonl"
+  ],
+  "excluded": [
+    "evaluation/**",
+    "examples/**",
+    "docs/**",
+    "scripts/**",
+    "schemas/**"
+  ],
+  "records": 120,
+  "case_count": 20,
+  "warning": "Never recursively ingest the ZIP. Only the allowlisted JSONL is the knowledge corpus. Do not also ingest Markdown mirrors, which duplicate content.",
+  "chunking": "Section-based; consumers may subchunk long sections but must preserve case ID, provenance and whole question/answer or requirement units."
+}

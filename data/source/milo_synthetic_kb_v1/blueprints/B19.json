@@ -1,0 +1,117 @@
+{
+  "blueprint_id": "B19",
+  "title": "Service software increases duplicate work",
+  "synthetic": true,
+  "source_case_ids": [
+    "C19"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Observe actual work; remove unjustified fields; define one authoritative queue and reconcile exceptions before retiring the shadow sheet.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "job_id",
+    "required_field_profile",
+    "draft_id",
+    "local_revision",
+    "server_revision",
+    "sync_state",
+    "completion_time",
+    "entered_time",
+    "notification_ack"
+  ],
+  "business_rules": [
+    {
+      "id": "C19-R01",
+      "statement": "Offline draft is not server-confirmed completion.",
+      "rationale": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+      "evidence_refs": [
+        "C19-E01",
+        "C19-E02",
+        "C19-E03"
+      ],
+      "verification_refs": [
+        "C19-AT01",
+        "C19-AT02",
+        "C19-AT03"
+      ]
+    },
+    {
+      "id": "C19-R02",
+      "statement": "Resolve conflicting edits visibly.",
+      "rationale": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+      "evidence_refs": [
+        "C19-E01",
+        "C19-E02",
+        "C19-E03"
+      ],
+      "verification_refs": [
+        "C19-AT01",
+        "C19-AT02",
+        "C19-AT03"
+      ]
+    },
+    {
+      "id": "C19-R03",
+      "statement": "Do not judge employee performance from incomparable recording completeness.",
+      "rationale": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+      "evidence_refs": [
+        "C19-E01",
+        "C19-E02",
+        "C19-E03"
+      ],
+      "verification_refs": [
+        "C19-AT01",
+        "C19-AT02",
+        "C19-AT03"
+      ]
+    },
+    {
+      "id": "C19-R04",
+      "statement": "Preserve a documented fallback when synchronization fails.",
+      "rationale": "The configured workflow does not fit field conditions and management maintains a competing source of truth.",
+      "evidence_refs": [
+        "C19-E01",
+        "C19-E02",
+        "C19-E03"
+      ],
+      "verification_refs": [
+        "C19-AT01",
+        "C19-AT02",
+        "C19-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C19-AT01",
+      "scenario_and_expected_result": "A minimal simple-job form can be submitted without irrelevant data.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C19-AT02",
+      "scenario_and_expected_result": "Reconnection does not create duplicate jobs.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C19-AT03",
+      "scenario_and_expected_result": "Conflicting edits appear for resolution rather than overwriting silently.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Existing software configuration and API/offline support must be tested before proposing custom development.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation"
+    ],
+    "proposed_extension": "Offline synchronization may require vendor support; configuration-first intervention precedes a new product.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C17",
+  "title": "Vendor escalation becomes a ticket graveyard",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 17,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "Ten-person office network, Wi-Fi and general IT service provider.",
+  "owner_narrative": "The internet provider wants wired tests; the application vendor wants logs. Our notes rarely say where or when tests occurred. Second technicians repeat them. An access point replacement did not fix a meeting-room problem that returned during busy events. Waiting for vendor can last indefinitely.",
+  "current_workflow": [
+    "Customer reports slowness",
+    "Technician tests locally",
+    "Suspected supplier contacted",
+    "More evidence requested",
+    "Customer waits",
+    "Workaround applied",
+    "Ticket closed or forgotten"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Which conditions reproduce the issue?",
+      "synthetic_answer": "Busy meetings, but tests were done in an empty room.",
+      "diagnostic_value": "Test context matters.",
+      "id": "C17-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A supplier may have a real unresolved external defect; the service firm can manage evidence and communications without claiming to fix it."
+    },
+    {
+      "question": "Are results timestamped and tied to a device?",
+      "synthetic_answer": "Usually not.",
+      "diagnostic_value": "Prevent ambiguous or duplicated evidence.",
+      "id": "C17-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Who follows up with the vendor?",
+      "synthetic_answer": "No named owner after escalation.",
+      "diagnostic_value": "Waiting still requires ownership.",
+      "id": "C17-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Was the workaround verified under original conditions?",
+      "synthetic_answer": "No.",
+      "diagnostic_value": "Restoration is not causal resolution.",
+      "id": "C17-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C17-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated test log omits load conditions."
+    },
+    {
+      "id": "C17-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated vendor request remains unanswered."
+    },
+    {
+      "id": "C17-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated closure note records only temporary restoration."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C17-D01",
+      "hypothesis": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C17-E01",
+        "C17-E02",
+        "C17-E03"
+      ],
+      "counterhypothesis": "A supplier may have a real unresolved external defect; the service firm can manage evidence and communications without claiming to fix it.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Record test context, results and next vendor action; separate restored, monitoring and resolved states.",
+    "deterministic_and_assisted_automation": "Build structured investigation timelines and vendor follow-up tasks; draft evidence packages with sensitive information removed.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B17",
+    "fields": [
+      "incident_id",
+      "test_id",
+      "timestamp",
+      "endpoint",
+      "connection_type",
+      "load_context",
+      "observation",
+      "vendor_case_id",
+      "followup_owner",
+      "due_at",
+      "workaround",
+      "verification_plan"
+    ],
+    "requirements": [
+      {
+        "id": "C17-R01",
+        "statement": "A workaround cannot automatically close the underlying investigation.",
+        "rationale": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+        "evidence_refs": [
+          "C17-E01",
+          "C17-E02",
+          "C17-E03"
+        ],
+        "verification_refs": [
+          "C17-AT01",
+          "C17-AT02",
+          "C17-AT03"
+        ]
+      },
+      {
+        "id": "C17-R02",
+        "statement": "Every waiting state has an owner and review date.",
+        "rationale": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+        "evidence_refs": [
+          "C17-E01",
+          "C17-E02",
+          "C17-E03"
+        ],
+        "verification_refs": [
+          "C17-AT01",
+          "C17-AT02",
+          "C17-AT03"
+        ]
+      },
+      {
+        "id": "C17-R03",
+        "statement": "Vendor evidence exports exclude credentials and unrelated customer data.",
+        "rationale": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+        "evidence_refs": [
+          "C17-E01",
+          "C17-E02",
+          "C17-E03"
+        ],
+        "verification_refs": [
+          "C17-AT01",
+          "C17-AT02",
+          "C17-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C17-AT01",
+        "scenario_and_expected_result": "A second technician sees prior conditions and results.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C17-AT02",
+        "scenario_and_expected_result": "Overdue vendor follow-up escalates internally.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C17-AT03",
+        "scenario_and_expected_result": "Recurrence under original load prevents confirmed-resolution status.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation",
+        "customer-status-updates"
+      ],
+      "proposed_extension": "Structured technical investigation and supplier-case linking are additional capabilities.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Age of externally blocked incidents and repeated diagnostic effort; track recurrence after closure.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Record test context, results and next vendor action; separate restored, monitoring and resolved states. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "A supplier may have a real unresolved external defect; the service firm can manage evidence and communications without claiming to fix it.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Supplier support windows and permissible diagnostic data vary by agreement."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+    "do_not_assume": "A supplier may have a real unresolved external defect; the service firm can manage evidence and communications without claiming to fix it.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C08",
+    "C12",
+    "C15"
+  ]
+}

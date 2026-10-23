@@ -1,0 +1,106 @@
+{
+  "blueprint_id": "B17",
+  "title": "Vendor escalation becomes a ticket graveyard",
+  "synthetic": true,
+  "source_case_ids": [
+    "C17"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Record test context, results and next vendor action; separate restored, monitoring and resolved states.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "incident_id",
+    "test_id",
+    "timestamp",
+    "endpoint",
+    "connection_type",
+    "load_context",
+    "observation",
+    "vendor_case_id",
+    "followup_owner",
+    "due_at",
+    "workaround",
+    "verification_plan"
+  ],
+  "business_rules": [
+    {
+      "id": "C17-R01",
+      "statement": "A workaround cannot automatically close the underlying investigation.",
+      "rationale": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+      "evidence_refs": [
+        "C17-E01",
+        "C17-E02",
+        "C17-E03"
+      ],
+      "verification_refs": [
+        "C17-AT01",
+        "C17-AT02",
+        "C17-AT03"
+      ]
+    },
+    {
+      "id": "C17-R02",
+      "statement": "Every waiting state has an owner and review date.",
+      "rationale": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+      "evidence_refs": [
+        "C17-E01",
+        "C17-E02",
+        "C17-E03"
+      ],
+      "verification_refs": [
+        "C17-AT01",
+        "C17-AT02",
+        "C17-AT03"
+      ]
+    },
+    {
+      "id": "C17-R03",
+      "statement": "Vendor evidence exports exclude credentials and unrelated customer data.",
+      "rationale": "Evidence lacks reproducible context and escalations lose accountable ownership.",
+      "evidence_refs": [
+        "C17-E01",
+        "C17-E02",
+        "C17-E03"
+      ],
+      "verification_refs": [
+        "C17-AT01",
+        "C17-AT02",
+        "C17-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C17-AT01",
+      "scenario_and_expected_result": "A second technician sees prior conditions and results.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C17-AT02",
+      "scenario_and_expected_result": "Overdue vendor follow-up escalates internally.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C17-AT03",
+      "scenario_and_expected_result": "Recurrence under original load prevents confirmed-resolution status.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Supplier support windows and permissible diagnostic data vary by agreement.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Structured technical investigation and supplier-case linking are additional capabilities.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

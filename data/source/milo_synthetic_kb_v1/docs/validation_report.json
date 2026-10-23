@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "checks": [
+    "20 unique case IDs and readable mirrors",
+    "80 diagnostic questions",
+    "case/evidence/requirement/test references",
+    "20 playbooks and 20 blueprints linked to cases",
+    "120 unique retrieval chunks with synthetic provenance",
+    "30 development scenarios with valid case references",
+    "allowlisted retrieval corpus excludes evaluation files",
+    "content hashes",
+    "empty and unmatched search behavior",
+    "meter billing retrieval smoke test"
+  ],
+  "limits": [
+    "No full JSON Schema validator was available; core structure and reference invariants checked by bundled script.",
+    "No LLM diagnosis evaluation performed.",
+    "No integration or production deployment performed.",
+    "Content requires domain expert review."
+  ]
+}

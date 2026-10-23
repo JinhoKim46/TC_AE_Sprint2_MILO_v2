@@ -1,0 +1,234 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C07",
+  "title": "Repairs stall between diagnosis and parts arrival",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 7,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "Nine-person business PC and laptop repair provider.",
+  "owner_narrative": "Technicians identify a part, office staff ask suppliers, and customers approve quotes. The gaps between those steps last days. An approval sent to a technician never reached purchasing. Shelves and spreadsheets disagree, and warranty return dates get missed.",
+  "current_workflow": [
+    "Diagnose",
+    "Identify exact part",
+    "Request supplier quote",
+    "Seek customer approval",
+    "Order",
+    "Receive",
+    "Repair",
+    "Return loaner and close"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "What is waiting right now?",
+      "synthetic_answer": "The sheet says waiting for parts, but a supplier is actually waiting for a submodel.",
+      "diagnostic_value": "Status must expose the next dependency.",
+      "id": "C07-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A confirmed manufacturer backorder will not be shortened by reminders; communicate alternatives and expected dates instead."
+    },
+    {
+      "question": "Where does approval arrive?",
+      "synthetic_answer": "Email and direct messages, sometimes only to the technician.",
+      "diagnostic_value": "Capture approval in the repair record.",
+      "id": "C07-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Who checks overdue items?",
+      "synthetic_answer": "Whoever receives a customer complaint.",
+      "diagnostic_value": "Follow-up ownership is absent.",
+      "id": "C07-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are return and loaner obligations tracked?",
+      "synthetic_answer": "They are handwritten on paper labels.",
+      "diagnostic_value": "Repair closure is not the only completion condition.",
+      "id": "C07-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C07-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated approval message predates purchase by four days."
+    },
+    {
+      "id": "C07-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated supplier request lacks the full part number."
+    },
+    {
+      "id": "C07-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated return label has an approaching deadline."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C07-D01",
+      "hypothesis": "Handoffs lack an accountable next action, complete part identity and explicit deadlines.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C07-E01",
+        "C07-E02",
+        "C07-E03"
+      ],
+      "counterhypothesis": "A confirmed manufacturer backorder will not be shortened by reminders; communicate alternatives and expected dates instead.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Assign one repair owner; require exact part verification before purchase; separate waiting for information, approval, supplier and customer.",
+    "deterministic_and_assisted_automation": "Track dependency states, deadline reminders and linked loan/return obligations; prepare customer updates from verified status.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B07",
+    "fields": [
+      "repair_id",
+      "serial",
+      "submodel",
+      "part_number",
+      "next_action",
+      "action_owner",
+      "due_at",
+      "approval_ref",
+      "order_ref",
+      "supplier_eta",
+      "return_deadline",
+      "loaner_id"
+    ],
+    "requirements": [
+      {
+        "id": "C07-R01",
+        "statement": "No purchase without applicable approval and verified part identity.",
+        "rationale": "Handoffs lack an accountable next action, complete part identity and explicit deadlines.",
+        "evidence_refs": [
+          "C07-E01",
+          "C07-E02",
+          "C07-E03"
+        ],
+        "verification_refs": [
+          "C07-AT01",
+          "C07-AT02",
+          "C07-AT03"
+        ]
+      },
+      {
+        "id": "C07-R02",
+        "statement": "A supplier ETA is not a confirmed appointment.",
+        "rationale": "Handoffs lack an accountable next action, complete part identity and explicit deadlines.",
+        "evidence_refs": [
+          "C07-E01",
+          "C07-E02",
+          "C07-E03"
+        ],
+        "verification_refs": [
+          "C07-AT01",
+          "C07-AT02",
+          "C07-AT03"
+        ]
+      },
+      {
+        "id": "C07-R03",
+        "statement": "Closing repair does not erase an open loaner or return obligation.",
+        "rationale": "Handoffs lack an accountable next action, complete part identity and explicit deadlines.",
+        "evidence_refs": [
+          "C07-E01",
+          "C07-E02",
+          "C07-E03"
+        ],
+        "verification_refs": [
+          "C07-AT01",
+          "C07-AT02",
+          "C07-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C07-AT01",
+        "scenario_and_expected_result": "Direct-message approval becomes a reviewable linked record.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C07-AT02",
+        "scenario_and_expected_result": "Overdue supplier clarification alerts the responsible person.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C07-AT03",
+        "scenario_and_expected_result": "A repaired laptop with an outstanding loaner retains that obligation.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation",
+        "customer-status-updates"
+      ],
+      "proposed_extension": "Purchasing, loaner and warranty lifecycle extensions are required.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Median and 90th-percentile elapsed repair days, decomposed into active work and dependency waiting.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Assign one repair owner; require exact part verification before purchase; separate waiting for information, approval, supplier and customer. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "A confirmed manufacturer backorder will not be shortened by reminders; communicate alternatives and expected dates instead.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Supplier return policies and alternative-parts approval rules remain unverified."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Handoffs lack an accountable next action, complete part identity and explicit deadlines.",
+    "do_not_assume": "A confirmed manufacturer backorder will not be shortened by reminders; communicate alternatives and expected dates instead.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C10",
+    "C17",
+    "C18",
+    "C20"
+  ]
+}

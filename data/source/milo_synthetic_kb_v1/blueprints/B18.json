@@ -1,0 +1,118 @@
+{
+  "blueprint_id": "B18",
+  "title": "Warehouse, van and customer stock diverge",
+  "synthetic": true,
+  "source_case_ids": [
+    "C18"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Segment stock by tracking needs; log high-value transfers and returns; quarantine faulty items and assign return owners.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "item_id",
+    "sku",
+    "serial_nullable",
+    "tracking_class",
+    "from_location",
+    "to_location",
+    "disposition",
+    "movement_id",
+    "job_ref",
+    "purchase_ref",
+    "loan_due",
+    "warranty_case"
+  ],
+  "business_rules": [
+    {
+      "id": "C18-R01",
+      "statement": "Quarantined stock is not available for assignment.",
+      "rationale": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+      "evidence_refs": [
+        "C18-E01",
+        "C18-E02",
+        "C18-E03"
+      ],
+      "verification_refs": [
+        "C18-AT01",
+        "C18-AT02",
+        "C18-AT03"
+      ]
+    },
+    {
+      "id": "C18-R02",
+      "statement": "Serialized items have one current custody location.",
+      "rationale": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+      "evidence_refs": [
+        "C18-E01",
+        "C18-E02",
+        "C18-E03"
+      ],
+      "verification_refs": [
+        "C18-AT01",
+        "C18-AT02",
+        "C18-AT03"
+      ]
+    },
+    {
+      "id": "C18-R03",
+      "statement": "Movement retries are idempotent.",
+      "rationale": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+      "evidence_refs": [
+        "C18-E01",
+        "C18-E02",
+        "C18-E03"
+      ],
+      "verification_refs": [
+        "C18-AT01",
+        "C18-AT02",
+        "C18-AT03"
+      ]
+    },
+    {
+      "id": "C18-R04",
+      "statement": "Scrap and write-off require the designated authority.",
+      "rationale": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+      "evidence_refs": [
+        "C18-E01",
+        "C18-E02",
+        "C18-E03"
+      ],
+      "verification_refs": [
+        "C18-AT01",
+        "C18-AT02",
+        "C18-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C18-AT01",
+      "scenario_and_expected_result": "A serialized loaner cannot be issued to two customers.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C18-AT02",
+      "scenario_and_expected_result": "A faulty return increases quarantine, not usable stock.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C18-AT03",
+      "scenario_and_expected_result": "Repeated scan submission creates one transfer.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Tracking thresholds, warranty eligibility and opening balances need approval and physical checks.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [],
+    "proposed_extension": "Inventory custody and warranty tracking are new modules, not implied by ticket creation.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "blueprint_id": "B06",
+  "title": "Contract coverage discovered after repair",
+  "synthetic": true,
+  "source_case_ids": [
+    "C06"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Define covered, excluded and uncertain states; provide a pre-work approval path and documented goodwill authority.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "contract_id",
+    "effective_version",
+    "asset_owner",
+    "service_category",
+    "coverage_state",
+    "coverage_basis",
+    "approval_limit",
+    "approver_id",
+    "approved_scope",
+    "goodwill_reason"
+  ],
+  "business_rules": [
+    {
+      "id": "C06-R01",
+      "statement": "Uncertain coverage cannot silently become a billable authorization.",
+      "rationale": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+      "evidence_refs": [
+        "C06-E01",
+        "C06-E02",
+        "C06-E03"
+      ],
+      "verification_refs": [
+        "C06-AT01",
+        "C06-AT02",
+        "C06-AT03"
+      ]
+    },
+    {
+      "id": "C06-R02",
+      "statement": "Approval binds to amount, scope and version.",
+      "rationale": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+      "evidence_refs": [
+        "C06-E01",
+        "C06-E02",
+        "C06-E03"
+      ],
+      "verification_refs": [
+        "C06-AT01",
+        "C06-AT02",
+        "C06-AT03"
+      ]
+    },
+    {
+      "id": "C06-R03",
+      "statement": "A scope change invalidates an inadequate prior approval.",
+      "rationale": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+      "evidence_refs": [
+        "C06-E01",
+        "C06-E02",
+        "C06-E03"
+      ],
+      "verification_refs": [
+        "C06-AT01",
+        "C06-AT02",
+        "C06-AT03"
+      ]
+    },
+    {
+      "id": "C06-R04",
+      "statement": "Goodwill is recorded separately from contractual inclusion.",
+      "rationale": "Coverage decisions occur after irreversible work because scope and approval authority are not available at the point of service.",
+      "evidence_refs": [
+        "C06-E01",
+        "C06-E02",
+        "C06-E03"
+      ],
+      "verification_refs": [
+        "C06-AT01",
+        "C06-AT02",
+        "C06-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C06-AT01",
+      "scenario_and_expected_result": "A personal laptop prompts verification.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C06-AT02",
+      "scenario_and_expected_result": "A site-wide contract can cover a newly added device after review.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C06-AT03",
+      "scenario_and_expected_result": "A higher-cost replacement requires renewed approval.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Spending limits and contract interpretation require owner confirmation.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "document-data-entry"
+    ],
+    "proposed_extension": "Effective-dated coverage checks and approval controls are new capabilities.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

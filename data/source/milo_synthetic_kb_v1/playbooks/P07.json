@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P07",
+  "title": "Repairs stall between diagnosis and parts arrival",
+  "synthetic": true,
+  "source_case_ids": [
+    "C07"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Technicians identify a part, office staff ask suppliers, and customers approve quotes. The gaps between those steps last days. An approval sent to a technician never reached purchasing. Shelves and spreadsheets disagree, and warranty return dates get missed.",
+    "workflow_context": "Nine-person business PC and laptop repair provider."
+  },
+  "discriminating_questions": [
+    {
+      "question": "What is waiting right now?",
+      "synthetic_answer": "The sheet says waiting for parts, but a supplier is actually waiting for a submodel.",
+      "diagnostic_value": "Status must expose the next dependency.",
+      "id": "C07-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "A confirmed manufacturer backorder will not be shortened by reminders; communicate alternatives and expected dates instead."
+    },
+    {
+      "question": "Where does approval arrive?",
+      "synthetic_answer": "Email and direct messages, sometimes only to the technician.",
+      "diagnostic_value": "Capture approval in the repair record.",
+      "id": "C07-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Who checks overdue items?",
+      "synthetic_answer": "Whoever receives a customer complaint.",
+      "diagnostic_value": "Follow-up ownership is absent.",
+      "id": "C07-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are return and loaner obligations tracked?",
+      "synthetic_answer": "They are handwritten on paper labels.",
+      "diagnostic_value": "Repair closure is not the only completion condition.",
+      "id": "C07-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Handoffs lack an accountable next action, complete part identity and explicit deadlines.",
+  "counterexample": "A confirmed manufacturer backorder will not be shortened by reminders; communicate alternatives and expected dates instead.",
+  "minimum_evidence": [
+    "A simulated approval message predates purchase by four days.",
+    "A simulated supplier request lacks the full part number.",
+    "A simulated return label has an approaching deadline."
+  ],
+  "process_intervention": "Assign one repair owner; require exact part verification before purchase; separate waiting for information, approval, supplier and customer.",
+  "automation_candidate": "Track dependency states, deadline reminders and linked loan/return obligations; prepare customer updates from verified status.",
+  "unknowns": [
+    "Supplier return policies and alternative-parts approval rules remain unverified."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Purchasing, loaner and warranty lifecycle extensions are required.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

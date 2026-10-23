@@ -1,0 +1,68 @@
+{
+  "playbook_id": "P02",
+  "title": "Dispatch disruption and access constraints",
+  "synthetic": true,
+  "source_case_ids": [
+    "C02"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Our dispatcher plans tomorrow in a spreadsheet, but urgent morning calls dismantle the route. The nearest worker may lack the skill, part or customer authorization. We redirected someone to a school whose key holder was absent, losing both the urgent visit and the original slot.",
+    "workflow_context": "22 staff; 15 field technicians covering a city and surrounding towns."
+  },
+  "discriminating_questions": [
+    {
+      "question": "What makes a job urgent?",
+      "synthetic_answer": "We often accept the caller’s wording without checking affected users or available workarounds.",
+      "diagnostic_value": "Separates business impact from vocal customer pressure.",
+      "id": "C02-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If all jobs are feasible but demand exceeds available hours, a better schedule cannot create capacity; measure backlog and service obligations."
+    },
+    {
+      "question": "Is access confirmed before travel?",
+      "synthetic_answer": "A school contact was not asked whether the room would be available.",
+      "diagnostic_value": "Identifies a feasibility constraint.",
+      "id": "C02-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are skills and parts considered?",
+      "synthetic_answer": "The dispatcher remembers skills but cannot see van stock.",
+      "diagnostic_value": "A distance-only optimizer is insufficient.",
+      "id": "C02-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Do technicians acknowledge revised schedules?",
+      "synthetic_answer": "A message can arrive while driving and go unread.",
+      "diagnostic_value": "Schedule publication is not acceptance.",
+      "id": "C02-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Replanning occurs without explicit feasibility constraints or acknowledged commitments.",
+  "counterexample": "If all jobs are feasible but demand exceeds available hours, a better schedule cannot create capacity; measure backlog and service obligations.",
+  "minimum_evidence": [
+    "A simulated route log shows an avoidable arrival outside the access window.",
+    "A simulated assignment review finds the required part in a different van.",
+    "Simulated call notes record urgency without impact."
+  ],
+  "process_intervention": "Collect impact, access window and required skills before replanning; freeze a near-term travel window unless the dispatcher explicitly overrides it.",
+  "automation_candidate": "Rank feasible assignments; display travel, skills, stock and access tradeoffs; issue versioned schedule changes requiring acknowledgement.",
+  "unknowns": [
+    "Travel estimates, availability freshness and contractual response definitions require validation."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "staff-assignment",
+      "customer-status-updates"
+    ],
+    "proposed_extension": "Constraint-aware routing and live stock integration exceed basic skill/availability suggestions.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

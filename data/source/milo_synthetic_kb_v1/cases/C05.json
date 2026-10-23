@@ -1,0 +1,244 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C05",
+  "title": "Meter readings delay and corrupt invoices",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 5,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "Managed print provider; approximately 420 devices with usage-based agreements.",
+  "owner_narrative": "Our administrator collects meter photos, remote readings and technician notes. Contracts have different color and monochrome allowances; some pool machines. A replacement device’s opening reading was attached to the old machine, producing a disputed bill.",
+  "current_workflow": [
+    "Collect reading",
+    "Match machine",
+    "Enter counters",
+    "Apply contract terms",
+    "Review exceptions",
+    "Send billing data"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Can counters be linked to device identity?",
+      "synthetic_answer": "Photos often omit the serial, and filenames identify only the customer.",
+      "diagnostic_value": "Device linkage is necessary before arithmetic.",
+      "id": "C05-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If identity and readings are correct but a tariff formula is wrong, repair the calculation; do not demand additional photographs."
+    },
+    {
+      "question": "What happens at replacement?",
+      "synthetic_answer": "We do not consistently capture the old closing and new opening readings.",
+      "diagnostic_value": "Billing needs separate device segments.",
+      "id": "C05-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are special allowances structured?",
+      "synthetic_answer": "Some exist only in emails and the administrator’s memory.",
+      "diagnostic_value": "Correct extraction cannot fix missing commercial rules.",
+      "id": "C05-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Can a counter decrease legitimately?",
+      "synthetic_answer": "A replacement or reset can cause it, but ordinary readings should not.",
+      "diagnostic_value": "Detect exceptions rather than forcing a plausible value.",
+      "id": "C05-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C05-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated replacement worksheet lacks a closing reading."
+    },
+    {
+      "id": "C05-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated photo links to the wrong serial."
+    },
+    {
+      "id": "C05-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated agreement contains a pooled allowance."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C05-D01",
+      "hypothesis": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C05-E01",
+        "C05-E02",
+        "C05-E03"
+      ],
+      "counterhypothesis": "If identity and readings are correct but a tariff formula is wrong, repair the calculation; do not demand additional photographs.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Normalize reviewed contract terms; record installation and removal readings; hold unresolved segments for accounts review.",
+    "deterministic_and_assisted_automation": "Extract reading drafts with image references; validate chronology and counters; calculate usage with deterministic decimal rules and produce an exception queue.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B05",
+    "fields": [
+      "device_id",
+      "reading_id",
+      "capture_time",
+      "mono_counter",
+      "color_counter",
+      "source_hash",
+      "install_reading",
+      "removal_reading",
+      "tariff_version",
+      "allowance_pool",
+      "billing_period"
+    ],
+    "requirements": [
+      {
+        "id": "C05-R01",
+        "statement": "Negative deltas block ordinary billing unless an approved reset or replacement segment explains them.",
+        "rationale": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+        "evidence_refs": [
+          "C05-E01",
+          "C05-E02",
+          "C05-E03"
+        ],
+        "verification_refs": [
+          "C05-AT01",
+          "C05-AT02",
+          "C05-AT03"
+        ]
+      },
+      {
+        "id": "C05-R02",
+        "statement": "Pool allowance is applied once per defined group and period.",
+        "rationale": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+        "evidence_refs": [
+          "C05-E01",
+          "C05-E02",
+          "C05-E03"
+        ],
+        "verification_refs": [
+          "C05-AT01",
+          "C05-AT02",
+          "C05-AT03"
+        ]
+      },
+      {
+        "id": "C05-R03",
+        "statement": "OCR confidence never authorizes invoice sending.",
+        "rationale": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+        "evidence_refs": [
+          "C05-E01",
+          "C05-E02",
+          "C05-E03"
+        ],
+        "verification_refs": [
+          "C05-AT01",
+          "C05-AT02",
+          "C05-AT03"
+        ]
+      },
+      {
+        "id": "C05-R04",
+        "statement": "Corrected readings retain the original and reason.",
+        "rationale": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+        "evidence_refs": [
+          "C05-E01",
+          "C05-E02",
+          "C05-E03"
+        ],
+        "verification_refs": [
+          "C05-AT01",
+          "C05-AT02",
+          "C05-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C05-AT01",
+        "scenario_and_expected_result": "Old and new devices are calculated as distinct segments.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C05-AT02",
+        "scenario_and_expected_result": "A repeated image hash raises a duplicate warning.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C05-AT03",
+        "scenario_and_expected_result": "A pooled allowance is not subtracted once per device.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "document-data-entry"
+      ],
+      "proposed_extension": "Meter billing and invoicing are explicitly outside the current ticket module; implement separately.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Invoices requiring correction / invoices issued; separately measure days from period close to review-ready billing.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Normalize reviewed contract terms; record installation and removal readings; hold unresolved segments for accounts review. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "If identity and readings are correct but a tariff formula is wrong, repair the calculation; do not demand additional photographs.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Proration, taxes, minimum charges, resets and rounding rules must come from the customer’s approved terms."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+    "do_not_assume": "If identity and readings are correct but a tariff formula is wrong, repair the calculation; do not demand additional photographs.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C04",
+    "C06",
+    "C14"
+  ]
+}

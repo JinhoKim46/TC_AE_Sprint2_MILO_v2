@@ -1,0 +1,104 @@
+{
+  "blueprint_id": "B09",
+  "title": "Installation readiness discovered on site",
+  "synthetic": true,
+  "source_case_ids": [
+    "C09"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Introduce a named readiness owner and configuration sign-off; reserve service capacity and use explicit scope-change decisions.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "project_id",
+    "room_id",
+    "port_test",
+    "access_confirmed",
+    "configuration_version",
+    "software_license_status",
+    "migration_scope",
+    "signoff_ref",
+    "equipment_received",
+    "resource_reservation"
+  ],
+  "business_rules": [
+    {
+      "id": "C09-R01",
+      "statement": "Do not embed credentials in readiness documents.",
+      "rationale": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+      "evidence_refs": [
+        "C09-E01",
+        "C09-E02",
+        "C09-E03"
+      ],
+      "verification_refs": [
+        "C09-AT01",
+        "C09-AT02",
+        "C09-AT03"
+      ]
+    },
+    {
+      "id": "C09-R02",
+      "statement": "A post-signoff configuration change triggers impact review.",
+      "rationale": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+      "evidence_refs": [
+        "C09-E01",
+        "C09-E02",
+        "C09-E03"
+      ],
+      "verification_refs": [
+        "C09-AT01",
+        "C09-AT02",
+        "C09-AT03"
+      ]
+    },
+    {
+      "id": "C09-R03",
+      "statement": "A blocked project cannot be silently labeled ready to meet a date.",
+      "rationale": "Project release is based on a calendar date rather than verified scope, site readiness and resource capacity.",
+      "evidence_refs": [
+        "C09-E01",
+        "C09-E02",
+        "C09-E03"
+      ],
+      "verification_refs": [
+        "C09-AT01",
+        "C09-AT02",
+        "C09-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C09-AT01",
+      "scenario_and_expected_result": "Missing network test blocks deployment release.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C09-AT02",
+      "scenario_and_expected_result": "A revised image invalidates outdated configuration approval.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C09-AT03",
+      "scenario_and_expected_result": "Resource conflicts appear before appointments are promised.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Customer data handling and software licensing decisions need explicit approval.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "ticket-creation",
+      "staff-assignment"
+    ],
+    "proposed_extension": "Project dependency and readiness management extend the current catalogue.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

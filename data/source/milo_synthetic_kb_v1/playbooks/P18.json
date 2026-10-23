@@ -1,0 +1,65 @@
+{
+  "playbook_id": "P18",
+  "title": "Warehouse, van and customer stock diverge",
+  "synthetic": true,
+  "source_case_ids": [
+    "C18"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Purchases, warehouse counts and van notes never agree. We buy parts that another technician already has. Faulty items return without job references, losing warranty credits. Cheap cables should not require the same administration as expensive serialized components.",
+    "workflow_context": "24 staff; 16 field technicians, central warehouse and customer-held loan equipment."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Which items need individual tracking?",
+      "synthetic_answer": "Loaners and high-value components; cheap cables can use bin counts.",
+      "diagnostic_value": "Match control cost to risk.",
+      "id": "C18-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "For low-cost bulk consumables, detailed serial tracking would add waste; use replenishment bins and periodic counts."
+    },
+    {
+      "question": "Are faulty and usable parts separated?",
+      "synthetic_answer": "Not consistently.",
+      "diagnostic_value": "Inventory disposition matters.",
+      "id": "C18-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Can a return be traced to purchase?",
+      "synthetic_answer": "Often no job or purchase reference survives.",
+      "diagnostic_value": "Warranty recovery needs provenance.",
+      "id": "C18-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are transfers acknowledged?",
+      "synthetic_answer": "Staff send messages but do not confirm receipt.",
+      "diagnostic_value": "Movement needs both endpoints.",
+      "id": "C18-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Inventory lacks a consistent movement ledger, disposition and serialized-loan lifecycle.",
+  "counterexample": "For low-cost bulk consumables, detailed serial tracking would add waste; use replenishment bins and periodic counts.",
+  "minimum_evidence": [
+    "A simulated count finds stock in a van that purchasing considered unavailable.",
+    "A simulated faulty return has no purchase reference.",
+    "A simulated loaner remains at a customer after job closure."
+  ],
+  "process_intervention": "Segment stock by tracking needs; log high-value transfers and returns; quarantine faulty items and assign return owners.",
+  "automation_candidate": "Use barcode-assisted movements, location balances, loan obligations and warranty deadline tracking.",
+  "unknowns": [
+    "Tracking thresholds, warranty eligibility and opening balances need approval and physical checks."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [],
+    "proposed_extension": "Inventory custody and warranty tracking are new modules, not implied by ticket creation.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

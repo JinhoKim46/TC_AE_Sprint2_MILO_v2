@@ -1,0 +1,67 @@
+{
+  "playbook_id": "P05",
+  "title": "Meter readings delay and corrupt invoices",
+  "synthetic": true,
+  "source_case_ids": [
+    "C05"
+  ],
+  "retrieve_on": {
+    "symptom_narrative": "Our administrator collects meter photos, remote readings and technician notes. Contracts have different color and monochrome allowances; some pool machines. A replacement device’s opening reading was attached to the old machine, producing a disputed bill.",
+    "workflow_context": "Managed print provider; approximately 420 devices with usage-based agreements."
+  },
+  "discriminating_questions": [
+    {
+      "question": "Can counters be linked to device identity?",
+      "synthetic_answer": "Photos often omit the serial, and filenames identify only the customer.",
+      "diagnostic_value": "Device linkage is necessary before arithmetic.",
+      "id": "C05-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "If identity and readings are correct but a tariff formula is wrong, repair the calculation; do not demand additional photographs."
+    },
+    {
+      "question": "What happens at replacement?",
+      "synthetic_answer": "We do not consistently capture the old closing and new opening readings.",
+      "diagnostic_value": "Billing needs separate device segments.",
+      "id": "C05-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Are special allowances structured?",
+      "synthetic_answer": "Some exist only in emails and the administrator’s memory.",
+      "diagnostic_value": "Correct extraction cannot fix missing commercial rules.",
+      "id": "C05-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Can a counter decrease legitimately?",
+      "synthetic_answer": "A replacement or reset can cause it, but ordinary readings should not.",
+      "diagnostic_value": "Detect exceptions rather than forcing a plausible value.",
+      "id": "C05-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "positive_mechanism": "Reading provenance and effective-dated device/contract mapping are missing from billing preparation.",
+  "counterexample": "If identity and readings are correct but a tariff formula is wrong, repair the calculation; do not demand additional photographs.",
+  "minimum_evidence": [
+    "A simulated replacement worksheet lacks a closing reading.",
+    "A simulated photo links to the wrong serial.",
+    "A simulated agreement contains a pooled allowance."
+  ],
+  "process_intervention": "Normalize reviewed contract terms; record installation and removal readings; hold unresolved segments for accounts review.",
+  "automation_candidate": "Extract reading drafts with image references; validate chronology and counters; calculate usage with deterministic decimal rules and produce an exception queue.",
+  "unknowns": [
+    "Proration, taxes, minimum charges, resets and rounding rules must come from the customer’s approved terms."
+  ],
+  "stop_rule": "If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "document-data-entry"
+    ],
+    "proposed_extension": "Meter billing and invoicing are explicitly outside the current ticket module; implement separately.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

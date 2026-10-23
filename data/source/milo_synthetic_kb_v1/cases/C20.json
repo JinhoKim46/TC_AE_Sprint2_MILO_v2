@@ -1,0 +1,244 @@
+{
+  "schema_version": "milo.synthetic.case.v1",
+  "case_id": "C20",
+  "title": "Owner memory is the operating system",
+  "synthetic": true,
+  "evidence_origin": "synthetic_fixture",
+  "review_status": "author_generated_not_domain_validated",
+  "source_story_number": 20,
+  "source_story": "User-provided fictional owner stories in this conversation; opening narrative below is a faithful condensed adaptation, not a verbatim transcript.",
+  "business_context": "Six staff: owner, four technicians and administrator; plans to hire two more technicians.",
+  "owner_narrative": "I coordinate everything through messages and memory. When I took three days away, someone revisited a customer before the part arrived, and invoices stopped because nobody knew what I promised. We have spreadsheets and calendars, but I connect them in my head.",
+  "current_workflow": [
+    "Owner reviews messages",
+    "Owner directs staff",
+    "Staff ask owner for decisions",
+    "Owner resolves exceptions",
+    "Owner tells office what to bill"
+  ],
+  "diagnostic_interview": [
+    {
+      "question": "Which commitments exist only in your head?",
+      "synthetic_answer": "Call-before-visit rules, parts approvals and invoice holds.",
+      "diagnostic_value": "Capture operational exceptions first.",
+      "id": "C20-Q01",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Some decisions legitimately require the owner’s commercial judgement; do not automate every escalation or assume full delegation is desired."
+    },
+    {
+      "question": "Which decisions can staff safely make?",
+      "synthetic_answer": "Routine scheduling and approved parts use, but spending limits are unwritten.",
+      "diagnostic_value": "Delegation needs boundaries.",
+      "id": "C20-Q02",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "Why did the premature visit happen?",
+      "synthetic_answer": "Nobody could see the pending part dependency.",
+      "diagnostic_value": "Missing next-action visibility, not technician competence.",
+      "id": "C20-Q03",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    },
+    {
+      "question": "How much implementation time is realistic?",
+      "synthetic_answer": "Short daily reviews; no lengthy parallel data entry.",
+      "diagnostic_value": "Start small and retire duplication.",
+      "id": "C20-Q04",
+      "answer_status": "synthetic_author_assumption",
+      "branch_if_answer_differs": "Revise the causal hypothesis and request the corresponding source record; do not reuse this fictional answer for a new customer."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "C20-E01",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated message contains a parts promise absent from the calendar."
+    },
+    {
+      "id": "C20-E02",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated invoice has an owner-only hold condition."
+    },
+    {
+      "id": "C20-E03",
+      "origin": "synthetic_fixture",
+      "status": "simulated_observation",
+      "description": "A simulated absence review identifies repeated routine questions."
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "C20-D01",
+      "hypothesis": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+      "status": "supported_within_synthetic_case",
+      "evidence_refs": [
+        "C20-E01",
+        "C20-E02",
+        "C20-E03"
+      ],
+      "counterhypothesis": "Some decisions legitimately require the owner’s commercial judgement; do not automate every escalation or assume full delegation is desired.",
+      "confidence_policy": "Qualitative case-world support only; requires fresh customer evidence before reuse."
+    }
+  ],
+  "interventions": {
+    "process_first": "Create one lightweight commitment board with owner, next action and blocker; publish agreed routine decision boundaries.",
+    "deterministic_and_assisted_automation": "Capture message-derived task drafts for confirmation; remind responsible staff about dependencies; escalate exceptions beyond agreed authority.",
+    "rejected_default": "Do not replace the whole service platform or deploy autonomous agents solely because the owner reports inefficiency.",
+    "selection_basis": "Choose the least complex intervention addressing the supported handoff failure; compare added administration and integration burden."
+  },
+  "automation_spec": {
+    "blueprint_id": "B20",
+    "fields": [
+      "commitment_id",
+      "customer_id",
+      "source_ref",
+      "promise",
+      "responsible_person",
+      "next_action",
+      "blocker",
+      "due_at",
+      "delegated_limit",
+      "invoice_hold",
+      "release_condition"
+    ],
+    "requirements": [
+      {
+        "id": "C20-R01",
+        "statement": "Extracted promises remain drafts until confirmed.",
+        "rationale": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+        "evidence_refs": [
+          "C20-E01",
+          "C20-E02",
+          "C20-E03"
+        ],
+        "verification_refs": [
+          "C20-AT01",
+          "C20-AT02",
+          "C20-AT03"
+        ]
+      },
+      {
+        "id": "C20-R02",
+        "statement": "Invoice holds require an explicit release decision.",
+        "rationale": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+        "evidence_refs": [
+          "C20-E01",
+          "C20-E02",
+          "C20-E03"
+        ],
+        "verification_refs": [
+          "C20-AT01",
+          "C20-AT02",
+          "C20-AT03"
+        ]
+      },
+      {
+        "id": "C20-R03",
+        "statement": "A missing part blocks a visit that requires it.",
+        "rationale": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+        "evidence_refs": [
+          "C20-E01",
+          "C20-E02",
+          "C20-E03"
+        ],
+        "verification_refs": [
+          "C20-AT01",
+          "C20-AT02",
+          "C20-AT03"
+        ]
+      },
+      {
+        "id": "C20-R04",
+        "statement": "Decisions beyond authority escalate instead of guessing.",
+        "rationale": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+        "evidence_refs": [
+          "C20-E01",
+          "C20-E02",
+          "C20-E03"
+        ],
+        "verification_refs": [
+          "C20-AT01",
+          "C20-AT02",
+          "C20-AT03"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "C20-AT01",
+        "scenario_and_expected_result": "Pending part prevents a misleading ready-to-visit state.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C20-AT02",
+        "scenario_and_expected_result": "Staff can handle an approved routine decision during owner absence.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      },
+      {
+        "id": "C20-AT03",
+        "scenario_and_expected_result": "A complaint hold survives unrelated job completion.",
+        "type": "proposed_acceptance_criterion",
+        "execution_status": "not_executed_against_MILO"
+      }
+    ],
+    "shared_controls_ref": "blueprints/shared_controls.json",
+    "capability_boundary": {
+      "existing_module_candidates": [
+        "ticket-creation",
+        "customer-status-updates"
+      ],
+      "proposed_extension": "Commitment extraction and a formal delegation matrix require new rules and review.",
+      "mapping_status": "partial_reuse_candidates_not_full_support",
+      "pricing": "No price assigned; current rate card must not be extended by analogy."
+    }
+  },
+  "evaluation": {
+    "primary_metric_definition": "Owner interruptions for routine decisions per staffed day; track overdue commitments and incorrect delegated decisions.",
+    "baseline_value": null,
+    "post_value": null,
+    "target": null,
+    "numeric_status": "not_measured",
+    "measurement_cautions": [
+      "Use a stable denominator and comparable operating periods.",
+      "Record missingness and changed case mix.",
+      "Include administrative overhead and rework.",
+      "Do not infer staff reductions from reclaimed task minutes."
+    ]
+  },
+  "implementation": {
+    "status": "fictional_case_world_only",
+    "baseline": "Collect at least one representative operating cycle before rollout; for monthly billing or maintenance include the relevant full cycle. Extend sampling when volumes or seasonality make the sample unrepresentative.",
+    "scope": "Start with one consenting customer group and the staff who own its handoffs; include a normal case and each listed exception.",
+    "sequence": [
+      "Reconcile identities and existing obligations with the process owner.",
+      "Run the proposed rules in shadow mode; record disagreements and missed exceptions.",
+      "Approve a bounded live pilot only after requirements and exceptions have named owners.",
+      "Review outcome metrics, added administrative work and failure logs before expanding."
+    ],
+    "simulated_resolution": "In this fictional case, MILO introduced the process change: Create one lightweight commitment board with owner, next action and blocker; publish agreed routine decision boundaries. The team adopted the proposed workflow for the pilot scope. Routine coordination became explicit; unresolved exceptions continued to require a person.",
+    "simulated_lesson": "Some decisions legitimately require the owner’s commercial judgement; do not automate every escalation or assume full delegation is desired.",
+    "real_world_outcomes_available": false,
+    "observed_savings": null,
+    "rollback": "Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator. Reconcile queued events before resuming to avoid duplicate actions.",
+    "go_no_go": "Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload. No fixed performance threshold is claimed without customer agreement."
+  },
+  "open_questions": [
+    "Actual delegation limits and which promises are binding require the owner’s review."
+  ],
+  "transfer_rules": {
+    "applicable_when": "Commitments, dependencies and delegated authority are person-bound rather than recorded in a shared workflow.",
+    "do_not_assume": "Some decisions legitimately require the owner’s commercial judgement; do not automate every escalation or assume full delegation is desired.",
+    "requires_new_customer_evidence": true
+  },
+  "related_case_ids": [
+    "C07",
+    "C14",
+    "C19"
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "blueprint_id": "B14",
+  "title": "Renewal dates and terms diverge",
+  "synthetic": true,
+  "source_case_ids": [
+    "C14"
+  ],
+  "trigger": "An authorized operator accepts a relevant request or scheduled obligation into the shared workflow.",
+  "preconditions": [
+    "Review the current agreement and amendments; assign an account owner and separate notice, review and end dates.",
+    "Verify customer-specific permissions, identities, rules and system integration support."
+  ],
+  "data_fields": [
+    "agreement_id",
+    "version",
+    "amendment_ref",
+    "effective_date",
+    "end_date",
+    "notice_deadline",
+    "account_owner",
+    "service_summary",
+    "equipment_condition",
+    "renewal_stage"
+  ],
+  "business_rules": [
+    {
+      "id": "C14-R01",
+      "statement": "Conflicting dates require review before reminders claim certainty.",
+      "rationale": "Agreement versions and decision deadlines are not reconciled into an owned renewal workflow.",
+      "evidence_refs": [
+        "C14-E01",
+        "C14-E02",
+        "C14-E03"
+      ],
+      "verification_refs": [
+        "C14-AT01",
+        "C14-AT02",
+        "C14-AT03"
+      ]
+    },
+    {
+      "id": "C14-R02",
+      "statement": "No automatic renewal offer without account-owner approval.",
+      "rationale": "Agreement versions and decision deadlines are not reconciled into an owned renewal workflow.",
+      "evidence_refs": [
+        "C14-E01",
+        "C14-E02",
+        "C14-E03"
+      ],
+      "verification_refs": [
+        "C14-AT01",
+        "C14-AT02",
+        "C14-AT03"
+      ]
+    },
+    {
+      "id": "C14-R03",
+      "statement": "A new amendment supersedes applicable fields while preserving history.",
+      "rationale": "Agreement versions and decision deadlines are not reconciled into an owned renewal workflow.",
+      "evidence_refs": [
+        "C14-E01",
+        "C14-E02",
+        "C14-E03"
+      ],
+      "verification_refs": [
+        "C14-AT01",
+        "C14-AT02",
+        "C14-AT03"
+      ]
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "C14-AT01",
+      "scenario_and_expected_result": "Conflicting expiry dates create a review item.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C14-AT02",
+      "scenario_and_expected_result": "Notice deadline triggers earlier than expiry when configured.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    },
+    {
+      "id": "C14-AT03",
+      "scenario_and_expected_result": "Open service complaints appear in the review brief.",
+      "type": "proposed_acceptance_criterion",
+      "execution_status": "not_executed_against_MILO"
+    }
+  ],
+  "human_review": "Notice interpretations, negotiation lead time and completeness of amendments need review.",
+  "shared_controls_ref": "blueprints/shared_controls.json",
+  "implementation_status": "proposed_not_implemented",
+  "capability_boundary": {
+    "existing_module_candidates": [
+      "document-data-entry",
+      "ticket-creation"
+    ],
+    "proposed_extension": "Agreement versioning and renewal management are proposed additions.",
+    "mapping_status": "partial_reuse_candidates_not_full_support",
+    "pricing": "No price assigned; current rate card must not be extended by analogy."
+  }
+}

@@ -1,0 +1,48 @@
+# The tools MILO v2 offers the model (names, arguments, risk tiers). M3 builds the JSON schemas from this file; the
+# tool cases and attacks in data/ use these names. Risk: read (no change), write (changes the owner's own record),
+# destructive (needs the owner's approval first).
+tools:
+  - name: search_knowledge
+    risk: read
+    description: Search the knowledge base for synthetic cases, modules, pricing, policies and consultation notes.
+    args:
+      query: {type: string, required: true}
+      section: {type: string, enum: [cases, solutions, pricing, policies, consultation], required: false}
+  - name: record_fact
+    risk: write
+    description: Record one fact the owner stated about their business, with the owner's own words as evidence.
+    args:
+      field_id: {type: string, enum_from: fact_fields, required: true}
+      value: {type: [string, number, array], required: true}
+      evidence_text: {type: string, required: true}
+  - name: get_recorded_facts
+    risk: read
+    description: Show the facts recorded so far for this owner.
+    args: {}
+  - name: estimate_cost
+    risk: read
+    description: Ask for an indicative monthly and setup cost for chosen modules; the technician count and integrations come from the recorded facts.
+    args:
+      module_ids: {type: array, items_from: catalogue.modules, required: true}
+  - name: withdraw_submission
+    risk: destructive
+    description: Withdraw one of the owner's own submitted diagnoses. Needs the owner's approval first.
+    args:
+      submission_id: {type: integer, required: true}
+# Facts the diagnosis records (record_fact field ids).
+fact_fields:
+  - {id: company_name, type: string}
+  - {id: staff_count, type: number}
+  - {id: technician_count, type: number, pricing: true}
+  - {id: customer_count, type: number}
+  - {id: device_count, type: number}
+  - {id: contract_model, type: string}
+  - {id: request_channels, type: array}
+  - {id: current_tools, type: array}
+  - {id: integrations, type: array, pricing: true}
+  - {id: pain_points, type: array}
+  - {id: main_goal, type: string}
+# Owner-to-submission map used by the tool cases and attacks (fictional).
+owners:
+  u1: {submissions: [1]}
+  u2: {submissions: [2]}
