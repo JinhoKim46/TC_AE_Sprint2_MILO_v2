@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+# the contract kit is synced in by `make kit-sync`, not tracked
+contract/
+scripts/check_project_data.py
+data/index/
