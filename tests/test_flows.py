@@ -99,5 +99,5 @@ def test_flow_endpoints_and_dashboard_page(tmp_path) -> None:
     flows = c.get("/api/flows").get_json()
     assert flows["summary"]["questions"] == 1 and flows["flows"][0]["steps"]
     page = c.get("/dashboard").get_data(as_text=True)
-    assert "flow dashboard" in page.lower() and "/api/flows" in page
+    assert "How MILO works" in page and "/api/flows" in page
     assert json.dumps(flows)  # serialisable

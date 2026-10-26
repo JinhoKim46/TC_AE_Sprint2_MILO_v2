@@ -42,16 +42,17 @@ def client(chat):
     return create_app(milo, secret_key="test").test_client()
 
 
-def test_page_has_the_chat_composer_inspector_and_progress() -> None:
+def test_page_has_the_chat_composer_and_plain_language_panels() -> None:
     page = client(ToolThenAnswer()).get("/").get_data(as_text=True)
     for needle in (
         "New conversation",
-        "MILO is working",
-        "Details",
+        "How MILO works",
         "Session cost",
         'aria-live="polite"',
         "/api/ask",
         "/api/history",
+        "Show technical details",
+        "MILO is reading your question",
     ):
         assert needle in page, needle
 
