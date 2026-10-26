@@ -2,50 +2,50 @@
  "schema": 2,
  "scope": ["scripts", "src"],
  "summary": {
-  "files": 35,
-  "lines": 5982,
-  "functions": 146,
-  "methods": 96,
-  "classes": 27,
+  "files": 40,
+  "lines": 6590,
+  "functions": 172,
+  "methods": 101,
+  "classes": 29,
   "routes": 22,
   "route_functions": 22,
-  "call_sites": 1745,
-  "resolved_internal": 446,
-  "resolved_external": 452,
-  "resolved_builtin": 580,
+  "call_sites": 1977,
+  "resolved_internal": 516,
+  "resolved_external": 512,
+  "resolved_builtin": 658,
   "resolved_by_convention": 0,
-  "unresolved": 267,
-  "resolved_ratio": 0.847,
-  "graph_coverage": 0.8676,
+  "unresolved": 291,
+  "resolved_ratio": 0.8528,
+  "graph_coverage": 0.8697,
   "inferred_edges": 7,
-  "override_edges": 1,
-  "unresolved_value_like": 130,
-  "internal_edges": 445,
-  "reference_edges": 17,
+  "override_edges": 4,
+  "unresolved_value_like": 137,
+  "internal_edges": 515,
+  "reference_edges": 18,
   "sql_sites": 19,
   "gateway_sites": 0,
-  "external_sites": 11,
+  "external_sites": 16,
   "tables": 7,
   "orm_models": 0,
   "import_cycles": 0,
   "lazy_import_cycles": 0,
   "parse_errors": 0,
   "profiles": {
-   "llm": 10
+   "llm": 12
   },
   "infra_resources": 0,
   "infra_lambdas": 0,
   "infra_lambdas_linked": 0,
   "top_unresolved_names": [
-   ["get", 88],
-   ["read_text", 25],
-   ["strip", 21],
-   ["write_text", 13],
-   ["items", 9],
-   ["append", 7],
-   ["mkdir", 7],
+   ["get", 89],
+   ["read_text", 28],
+   ["strip", 25],
+   ["write_text", 15],
+   ["items", 10],
+   ["mkdir", 10],
+   ["append", 9],
+   ["splitlines", 8],
    ["relative_to", 6],
-   ["splitlines", 6],
    ["embed", 5],
    ["startswith", 5],
    ["split", 4],
@@ -89,6 +89,24 @@
    "lazy_imports": [],
    "call_sites": 41,
    "unresolved": 4
+  },
+  "milo.agent_arm": {
+   "file": "src/milo/agent_arm.py",
+   "lines": 75,
+   "doc": "The same tools run by LangChain's `create_agent`, to compare with the app's own loop (`milo.app.App`).",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "langchain",
+    "langchain_core",
+    "langgraph",
+    "typing"
+   ],
+   "imports": ["milo.app", "milo.tools"],
+   "lazy_imports": [],
+   "call_sites": 16,
+   "unresolved": 0
   },
   "milo.app": {
    "file": "src/milo/app.py",
@@ -255,6 +273,25 @@
    "lazy_imports": [],
    "call_sites": 48,
    "unresolved": 5
+  },
+  "milo.mcp_server": {
+   "file": "src/milo/mcp_server.py",
+   "lines": 160,
+   "doc": "MILO's six tools served as an MCP server (streamable HTTP), so other MCP clients can call them.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "contextvars",
+    "json",
+    "mcp",
+    "os",
+    "typing"
+   ],
+   "imports": ["milo.store", "milo.tools"],
+   "lazy_imports": [],
+   "call_sites": 45,
+   "unresolved": 3
   },
   "milo.metrics": {
    "file": "src/milo/metrics.py",
@@ -523,6 +560,32 @@
    "call_sites": 25,
    "unresolved": 0
   },
+  "scripts.demo_server": {
+   "file": "scripts/demo_server.py",
+   "lines": 50,
+   "doc": "A throwaway demo server for recording the video: the real live model and embeddings, an in-memory store, and one demo customer account. Nothing here is saved; restarting the server clears it.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "os",
+    "pathlib",
+    "sys"
+   ],
+   "imports": [
+    "milo.app",
+    "milo.embed",
+    "milo.llm",
+    "milo.serve",
+    "milo.store",
+    "milo.tools",
+    "milo.users",
+    "milo.web"
+   ],
+   "lazy_imports": [],
+   "call_sites": 24,
+   "unresolved": 0
+  },
   "scripts.eval_advanced": {
    "file": "scripts/eval_advanced.py",
    "lines": 159,
@@ -549,6 +612,35 @@
    "call_sites": 74,
    "unresolved": 6
   },
+  "scripts.eval_agent_arm": {
+   "file": "scripts/eval_agent_arm.py",
+   "lines": 125,
+   "doc": "Compare the app's own tool loop with LangChain's create_agent on the same tool cases.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "eval_tools",
+    "json",
+    "langchain_openai",
+    "os",
+    "pathlib",
+    "sys",
+    "typing"
+   ],
+   "imports": ["milo.types", "scripts.eval_tools"],
+   "lazy_imports": [
+    "milo.agent_arm",
+    "milo.app",
+    "milo.embed",
+    "milo.llm",
+    "milo.store",
+    "milo.tools"
+   ],
+   "call_sites": 47,
+   "unresolved": 9
+  },
   "scripts.eval_attacks": {
    "file": "scripts/eval_attacks.py",
    "lines": 258,
@@ -574,9 +666,37 @@
    "call_sites": 91,
    "unresolved": 20
   },
+  "scripts.eval_hybrid": {
+   "file": "scripts/eval_hybrid.py",
+   "lines": 173,
+   "doc": "Hybrid retrieval against dense-only on the held-out set, read once.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "eval_retrieval",
+    "json",
+    "math",
+    "os",
+    "pathlib",
+    "random",
+    "re",
+    "sys"
+   ],
+   "imports": [
+    "milo.embed",
+    "milo.index",
+    "milo.metrics",
+    "scripts.eval_retrieval"
+   ],
+   "lazy_imports": [],
+   "call_sites": 85,
+   "unresolved": 3
+  },
   "scripts.eval_retrieval": {
    "file": "scripts/eval_retrieval.py",
-   "lines": 178,
+   "lines": 203,
    "doc": "M1 retrieval baseline on the dev gold set.",
    "cli": true,
    "exports": [],
@@ -597,8 +717,8 @@
     "milo.metrics"
    ],
    "lazy_imports": [],
-   "call_sites": 76,
-   "unresolved": 19
+   "call_sites": 91,
+   "unresolved": 28
   },
   "scripts.eval_tools": {
    "file": "scripts/eval_tools.py",
@@ -801,6 +921,56 @@
    "doc": "Accept only a dict with keys from ALLOWED_KEYS and values from the known enums. Anything else is rejected.",
    "params": [
     "raw"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.agent_arm:make_tools": {
+   "kind": "function",
+   "file": "src/milo/agent_arm.py",
+   "line": 21,
+   "end": 41,
+   "doc": "",
+   "params": ["backend", "user_id", "calls"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.agent_arm:make_tools.tool_for": {
+   "kind": "nested",
+   "file": "src/milo/agent_arm.py",
+   "line": 26,
+   "end": 39,
+   "doc": "",
+   "params": [
+    "spec"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.agent_arm:make_tools.tool_for.run": {
+   "kind": "nested",
+   "file": "src/milo/agent_arm.py",
+   "line": 27,
+   "end": 32,
+   "doc": "",
+   "params": [
+    "**args"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.agent_arm:run_agent": {
+   "kind": "function",
+   "file": "src/milo/agent_arm.py",
+   "line": 44,
+   "end": 75,
+   "doc": "One question through `create_agent`. Returns the answer, the calls made, and any calls waiting for approval.",
+   "params": [
+    "question",
+    "backend",
+    "user_id",
+    "model",
+    "thread_id"
    ],
    "decorators": [],
    "async": false
@@ -1470,6 +1640,182 @@
    "doc": "Our role/content dicts as LangChain messages. Assistant tool calls and tool results keep their ids.",
    "params": [
     "m"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.mcp_server:<module>": {
+   "kind": "module",
+   "file": "src/milo/mcp_server.py",
+   "line": 1,
+   "end": 160,
+   "doc": "MILO's six tools served as an MCP server (streamable HTTP), so other MCP clients can call them.",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.mcp_server:Approvals": {
+   "kind": "class",
+   "file": "src/milo/mcp_server.py",
+   "line": 32,
+   "end": 42,
+   "doc": "Owner approvals of destructive actions, kept on the server. Each approval covers one (owner, diagnosis) pair.",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.mcp_server:Approvals.__init__": {
+   "kind": "method",
+   "file": "src/milo/mcp_server.py",
+   "line": 35,
+   "end": 36,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.mcp_server:Approvals.grant": {
+   "kind": "method",
+   "file": "src/milo/mcp_server.py",
+   "line": 38,
+   "end": 39,
+   "doc": "",
+   "params": ["self", "owner", "diagnosis_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.mcp_server:Approvals.has": {
+   "kind": "method",
+   "file": "src/milo/mcp_server.py",
+   "line": 41,
+   "end": 42,
+   "doc": "",
+   "params": ["self", "owner", "diagnosis_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.mcp_server:build_server": {
+   "kind": "function",
+   "file": "src/milo/mcp_server.py",
+   "line": 45,
+   "end": 149,
+   "doc": "",
+   "params": ["backend", "tokens", "approvals"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.mcp_server:build_server.call": {
+   "kind": "nested",
+   "file": "src/milo/mcp_server.py",
+   "line": 69,
+   "end": 81,
+   "doc": "",
+   "params": ["name", "args", "ctx"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.mcp_server:build_server.draft_diagnosis": {
+   "kind": "nested",
+   "file": "src/milo/mcp_server.py",
+   "line": 137,
+   "end": 138,
+   "doc": "",
+   "params": ["area_id", "ctx"],
+   "decorators": [
+    "mcp.tool"
+   ],
+   "async": false
+  },
+  "milo.mcp_server:build_server.estimate_effect": {
+   "kind": "nested",
+   "file": "src/milo/mcp_server.py",
+   "line": 129,
+   "end": 130,
+   "doc": "",
+   "params": ["area_id", "ctx"],
+   "decorators": [
+    "mcp.tool"
+   ],
+   "async": false
+  },
+  "milo.mcp_server:build_server.get_recorded_facts": {
+   "kind": "nested",
+   "file": "src/milo/mcp_server.py",
+   "line": 121,
+   "end": 122,
+   "doc": "",
+   "params": [
+    "ctx"
+   ],
+   "decorators": [
+    "mcp.tool"
+   ],
+   "async": false
+  },
+  "milo.mcp_server:build_server.owner_of": {
+   "kind": "nested",
+   "file": "src/milo/mcp_server.py",
+   "line": 52,
+   "end": 67,
+   "doc": "",
+   "params": [
+    "ctx"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.mcp_server:build_server.record_fact": {
+   "kind": "nested",
+   "file": "src/milo/mcp_server.py",
+   "line": 96,
+   "end": 114,
+   "doc": "",
+   "params": [
+    "field_id",
+    "value",
+    "status",
+    "evidence_text",
+    "unit",
+    "ctx"
+   ],
+   "decorators": [
+    "mcp.tool"
+   ],
+   "async": false
+  },
+  "milo.mcp_server:build_server.reset_diagnosis": {
+   "kind": "nested",
+   "file": "src/milo/mcp_server.py",
+   "line": 145,
+   "end": 146,
+   "doc": "",
+   "params": ["diagnosis_id", "ctx"],
+   "decorators": [
+    "mcp.tool"
+   ],
+   "async": false
+  },
+  "milo.mcp_server:build_server.search_knowledge": {
+   "kind": "nested",
+   "file": "src/milo/mcp_server.py",
+   "line": 88,
+   "end": 91,
+   "doc": "",
+   "params": ["query", "section", "ctx"],
+   "decorators": [
+    "mcp.tool"
+   ],
+   "async": false
+  },
+  "milo.mcp_server:set_current_user": {
+   "kind": "function",
+   "file": "src/milo/mcp_server.py",
+   "line": 27,
+   "end": 29,
+   "doc": "For in-memory tests and local runs without HTTP: the owner the calls are made for.",
+   "params": [
+    "user_id"
    ],
    "decorators": [],
    "async": false
@@ -3304,6 +3650,16 @@
    "decorators": [],
    "async": false
   },
+  "scripts.demo_server:main": {
+   "kind": "function",
+   "file": "scripts/demo_server.py",
+   "line": 25,
+   "end": 46,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
   "scripts.eval_advanced:decide": {
    "kind": "function",
    "file": "scripts/eval_advanced.py",
@@ -3355,6 +3711,60 @@
    "end": 118,
    "doc": "",
    "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_agent_arm:cases": {
+   "kind": "function",
+   "file": "scripts/eval_agent_arm.py",
+   "line": 31,
+   "end": 32,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_agent_arm:live": {
+   "kind": "function",
+   "file": "scripts/eval_agent_arm.py",
+   "line": 77,
+   "end": 114,
+   "doc": "",
+   "params": [
+    "max_cost"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_agent_arm:run_agent_arm": {
+   "kind": "function",
+   "file": "scripts/eval_agent_arm.py",
+   "line": 65,
+   "end": 74,
+   "doc": "",
+   "params": ["case", "model"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_agent_arm:run_app_arm": {
+   "kind": "function",
+   "file": "scripts/eval_agent_arm.py",
+   "line": 54,
+   "end": 62,
+   "doc": "",
+   "params": ["case", "chat"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_agent_arm:seeded_backend": {
+   "kind": "function",
+   "file": "scripts/eval_agent_arm.py",
+   "line": 35,
+   "end": 51,
+   "doc": "",
+   "params": [
+    "case"
+   ],
    "decorators": [],
    "async": false
   },
@@ -3492,11 +3902,106 @@
    "decorators": [],
    "async": false
   },
+  "scripts.eval_hybrid:BM25": {
+   "kind": "class",
+   "file": "scripts/eval_hybrid.py",
+   "line": 39,
+   "end": 69,
+   "doc": "",
+   "bases": [],
+   "decorators": []
+  },
+  "scripts.eval_hybrid:BM25.__init__": {
+   "kind": "method",
+   "file": "scripts/eval_hybrid.py",
+   "line": 40,
+   "end": 48,
+   "doc": "",
+   "params": [
+    "self",
+    "texts",
+    "k1",
+    "b"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_hybrid:BM25.ranking": {
+   "kind": "method",
+   "file": "scripts/eval_hybrid.py",
+   "line": 50,
+   "end": 69,
+   "doc": "",
+   "params": ["self", "query"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_hybrid:fuse": {
+   "kind": "function",
+   "file": "scripts/eval_hybrid.py",
+   "line": 72,
+   "end": 77,
+   "doc": "",
+   "params": [
+    "*rankings"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_hybrid:live": {
+   "kind": "function",
+   "file": "scripts/eval_hybrid.py",
+   "line": 102,
+   "end": 166,
+   "doc": "",
+   "params": [
+    "max_cost"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_hybrid:paired_ci": {
+   "kind": "function",
+   "file": "scripts/eval_hybrid.py",
+   "line": 87,
+   "end": 99,
+   "doc": "",
+   "params": [
+    "a",
+    "b",
+    "n_boot",
+    "seed"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_hybrid:rank_of_gold": {
+   "kind": "function",
+   "file": "scripts/eval_hybrid.py",
+   "line": 80,
+   "end": 84,
+   "doc": "",
+   "params": ["order", "chunks", "quotes"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_hybrid:tokens": {
+   "kind": "function",
+   "file": "scripts/eval_hybrid.py",
+   "line": 35,
+   "end": 36,
+   "doc": "",
+   "params": [
+    "text"
+   ],
+   "decorators": [],
+   "async": false
+  },
   "scripts.eval_retrieval:dev_rows": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 81,
-   "end": 82,
+   "line": 106,
+   "end": 107,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -3515,8 +4020,8 @@
   "scripts.eval_retrieval:main": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 157,
-   "end": 174,
+   "line": 182,
+   "end": 199,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -3525,8 +4030,8 @@
   "scripts.eval_retrieval:metrics": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 85,
-   "end": 97,
+   "line": 110,
+   "end": 122,
    "doc": "",
    "params": [
     "rows"
@@ -3546,11 +4051,21 @@
    "decorators": [],
    "async": false
   },
+  "scripts.eval_retrieval:read_heldout_once": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 61,
+   "end": 77,
+   "doc": "The held-out rows. Read once: the read is logged, and a second read is refused.",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
   "scripts.eval_retrieval:replay": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 141,
-   "end": 154,
+   "line": 166,
+   "end": 179,
    "doc": "",
    "params": [
     "path"
@@ -3561,8 +4076,8 @@
   "scripts.eval_retrieval:run": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 100,
-   "end": 138,
+   "line": 125,
+   "end": 163,
    "doc": "",
    "params": ["embedder_name", "max_cost", "split"],
    "decorators": [],
@@ -3571,8 +4086,8 @@
   "scripts.eval_retrieval:split_rows": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 55,
-   "end": 78,
+   "line": 80,
+   "end": 103,
    "doc": "The rows of one split. The test split is read once: every read is logged, and a second read is refused.",
    "params": [
     "split"
@@ -4045,6 +4560,11 @@
   ["milo.advanced:self_query", "milo.advanced:_tokens", 112],
   ["milo.advanced:self_query", "milo.advanced:validate_filters", 130],
   ["milo.advanced:translate_keywords", "milo.advanced:_tokens", 80],
+  ["milo.agent_arm:make_tools", "milo.agent_arm:make_tools.tool_for", 41],
+  ["milo.agent_arm:make_tools", "milo.tools:specs", 24],
+  ["milo.agent_arm:make_tools.tool_for.run", "milo.tools:Backend.call", 32],
+  ["milo.agent_arm:make_tools.tool_for.run", "milo.tools:validate_args", 28],
+  ["milo.agent_arm:run_agent", "milo.agent_arm:make_tools", 51],
   ["milo.app:App.__init__", "milo.store:MemoryStore", 75],
   ["milo.app:App._ask", "milo.app:App._cost", 222],
   ["milo.app:App._ask", "milo.app:App._input_problem", 158],
@@ -4112,6 +4632,21 @@
   ["milo.llm:LocalOllamaChat.invoke", "milo.types:Usage", 163],
   ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
   ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
+  ["milo.mcp_server:<module>", "milo.mcp_server:build_server", 158],
+  ["milo.mcp_server:<module>", "milo.store:MemoryStore", 158],
+  ["milo.mcp_server:<module>", "milo.tools:Backend", 158],
+  ["milo.mcp_server:build_server", "milo.mcp_server:Approvals", 48],
+  ["milo.mcp_server:build_server", "milo.tools:specs", 49],
+  ["milo.mcp_server:build_server.call", "milo.mcp_server:Approvals.has", 75],
+  ["milo.mcp_server:build_server.call", "milo.mcp_server:build_server.owner_of", 74],
+  ["milo.mcp_server:build_server.call", "milo.tools:Backend.call", 81],
+  ["milo.mcp_server:build_server.call", "milo.tools:validate_args", 71],
+  ["milo.mcp_server:build_server.draft_diagnosis", "milo.mcp_server:build_server.call", 138],
+  ["milo.mcp_server:build_server.estimate_effect", "milo.mcp_server:build_server.call", 130],
+  ["milo.mcp_server:build_server.get_recorded_facts", "milo.mcp_server:build_server.call", 122],
+  ["milo.mcp_server:build_server.record_fact", "milo.mcp_server:build_server.call", 104],
+  ["milo.mcp_server:build_server.reset_diagnosis", "milo.mcp_server:build_server.call", 146],
+  ["milo.mcp_server:build_server.search_knowledge", "milo.mcp_server:build_server.call", 91],
   ["milo.pgstore:PostgresStore.user_store", "milo.pgstore:PostgresUserStore", 27],
   ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 249],
   ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 228],
@@ -4360,6 +4895,19 @@
   ["scripts.create_admin:main", "milo.pgstore:PostgresUserStore.create", 40],
   ["scripts.create_admin:main", "milo.users:check_new_account", 33],
   ["scripts.create_admin:main", "milo.users:hash_password", 40],
+  ["scripts.demo_server:<module>", "scripts.demo_server:main", 50],
+  ["scripts.demo_server:main", "milo.app:App", 34],
+  ["scripts.demo_server:main", "milo.app:App.ingest", 41],
+  ["scripts.demo_server:main", "milo.embed:OpenRouterEmbedder", 36],
+  ["scripts.demo_server:main", "milo.llm:live_chat_model", 35],
+  ["scripts.demo_server:main", "milo.llm:local_chat_model", 38],
+  ["scripts.demo_server:main", "milo.serve:load_documents", 41],
+  ["scripts.demo_server:main", "milo.store:MemoryStore", 33],
+  ["scripts.demo_server:main", "milo.tools:Backend", 37],
+  ["scripts.demo_server:main", "milo.users:MemoryUserStore", 42],
+  ["scripts.demo_server:main", "milo.users:MemoryUserStore.create", 43],
+  ["scripts.demo_server:main", "milo.users:hash_password", 43],
+  ["scripts.demo_server:main", "milo.web:create_app", 44],
   ["scripts.eval_advanced:<module>", "scripts.eval_advanced:main", 159],
   ["scripts.eval_advanced:decide", "scripts.eval_advanced:paired_ci", 52],
   ["scripts.eval_advanced:main", "scripts.eval_advanced:replay", 150],
@@ -4383,6 +4931,24 @@
   ["scripts.eval_advanced:run", "scripts.eval_retrieval:load_chunks", 58],
   ["scripts.eval_advanced:run", "scripts.eval_retrieval:norm", 70],
   ["scripts.eval_advanced:run", "scripts.eval_retrieval:norm", 87],
+  ["scripts.eval_agent_arm:<module>", "milo.types:Document", 27],
+  ["scripts.eval_agent_arm:<module>", "scripts.eval_agent_arm:live", 123],
+  ["scripts.eval_agent_arm:live", "milo.llm:live_chat_model", 84],
+  ["scripts.eval_agent_arm:live", "scripts.eval_agent_arm:cases", 94],
+  ["scripts.eval_agent_arm:live", "scripts.eval_agent_arm:run_agent_arm", 97],
+  ["scripts.eval_agent_arm:live", "scripts.eval_agent_arm:run_app_arm", 96],
+  ["scripts.eval_agent_arm:live", "scripts.eval_tools:aggregate", 108],
+  ["scripts.eval_agent_arm:live", "scripts.eval_tools:score", 105],
+  ["scripts.eval_agent_arm:run_agent_arm", "milo.agent_arm:run_agent", 69],
+  ["scripts.eval_agent_arm:run_agent_arm", "scripts.eval_agent_arm:seeded_backend", 68],
+  ["scripts.eval_agent_arm:run_app_arm", "milo.app:App.ask", 61],
+  ["scripts.eval_agent_arm:run_app_arm", "milo.app:App.ingest", 60],
+  ["scripts.eval_agent_arm:run_app_arm", "milo.app:build_app", 59],
+  ["scripts.eval_agent_arm:run_app_arm", "milo.embed:LexicalEmbedder", 59],
+  ["scripts.eval_agent_arm:run_app_arm", "scripts.eval_agent_arm:seeded_backend", 58],
+  ["scripts.eval_agent_arm:seeded_backend", "milo.store:MemoryStore", 39],
+  ["scripts.eval_agent_arm:seeded_backend", "milo.tools:Backend", 39],
+  ["scripts.eval_agent_arm:seeded_backend", "milo.tools:Backend.call", 41],
   ["scripts.eval_attacks:<module>", "scripts.eval_attacks:main", 258],
   ["scripts.eval_attacks:RecordingBackend.__init__", "milo.tools:Backend.__init__", 57],
   ["scripts.eval_attacks:RecordingBackend.call", "milo.tools:Backend.call", 62],
@@ -4409,24 +4975,43 @@
   ["scripts.eval_attacks:run", "scripts.eval_attacks:build", 189],
   ["scripts.eval_attacks:run", "scripts.eval_attacks:check", 170],
   ["scripts.eval_attacks:run", "scripts.eval_attacks:load_docs", 163],
-  ["scripts.eval_retrieval:<module>", "scripts.eval_retrieval:main", 178],
-  ["scripts.eval_retrieval:dev_rows", "scripts.eval_retrieval:split_rows", 82],
+  ["scripts.eval_hybrid:<module>", "scripts.eval_hybrid:live", 173],
+  ["scripts.eval_hybrid:BM25.__init__", "scripts.eval_hybrid:tokens", 41],
+  ["scripts.eval_hybrid:BM25.ranking", "scripts.eval_hybrid:tokens", 51],
+  ["scripts.eval_hybrid:live", "milo.embed:OpenRouterEmbedder", 107],
+  ["scripts.eval_hybrid:live", "milo.embed:OpenRouterEmbedder.embed", 108],
+  ["scripts.eval_hybrid:live", "milo.embed:OpenRouterEmbedder.embed", 109],
+  ["scripts.eval_hybrid:live", "milo.index:Index", 108],
+  ["scripts.eval_hybrid:live", "milo.index:Index.search", 115],
+  ["scripts.eval_hybrid:live", "milo.metrics:mean_ci", 134],
+  ["scripts.eval_hybrid:live", "milo.metrics:ndcg_at_k", 129],
+  ["scripts.eval_hybrid:live", "scripts.eval_hybrid:BM25", 110],
+  ["scripts.eval_hybrid:live", "scripts.eval_hybrid:BM25.ranking", 119],
+  ["scripts.eval_hybrid:live", "scripts.eval_hybrid:fuse", 120],
+  ["scripts.eval_hybrid:live", "scripts.eval_hybrid:paired_ci", 140],
+  ["scripts.eval_hybrid:live", "scripts.eval_hybrid:rank_of_gold", 127],
+  ["scripts.eval_hybrid:live", "scripts.eval_retrieval:load_chunks", 106],
+  ["scripts.eval_hybrid:live", "scripts.eval_retrieval:norm", 114],
+  ["scripts.eval_hybrid:live", "scripts.eval_retrieval:read_heldout_once", 105],
+  ["scripts.eval_hybrid:rank_of_gold", "scripts.eval_retrieval:norm", 82],
+  ["scripts.eval_retrieval:<module>", "scripts.eval_retrieval:main", 203],
+  ["scripts.eval_retrieval:dev_rows", "scripts.eval_retrieval:split_rows", 107],
   ["scripts.eval_retrieval:load_chunks", "milo.chunk:chunk_article", 48],
-  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 165],
-  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 174],
-  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:run", 167],
-  ["scripts.eval_retrieval:metrics", "milo.metrics:mean_ci", 92],
-  ["scripts.eval_retrieval:replay", "scripts.eval_retrieval:metrics", 143],
-  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 102],
-  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 102],
-  ["scripts.eval_retrieval:run", "milo.index:Index", 105],
-  ["scripts.eval_retrieval:run", "milo.index:Index.search", 112],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:load_chunks", 104],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:metrics", 136],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 111],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 115],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 118],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:split_rows", 106],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 190],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 199],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:run", 192],
+  ["scripts.eval_retrieval:metrics", "milo.metrics:mean_ci", 117],
+  ["scripts.eval_retrieval:replay", "scripts.eval_retrieval:metrics", 168],
+  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 127],
+  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 127],
+  ["scripts.eval_retrieval:run", "milo.index:Index", 130],
+  ["scripts.eval_retrieval:run", "milo.index:Index.search", 137],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:load_chunks", 129],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:metrics", 161],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 136],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 140],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 143],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:split_rows", 131],
   ["scripts.eval_tools:<module>", "scripts.eval_tools:main", 201],
   ["scripts.eval_tools:live", "milo.app:App.ask", 162],
   ["scripts.eval_tools:live", "milo.app:App.ingest", 159],
@@ -4488,6 +5073,7 @@
   ["scripts.run_judge:main", "scripts.run_judge:judge_all", 113]
  ],
  "refs": [
+  ["milo.agent_arm:make_tools.tool_for", "milo.agent_arm:make_tools.tool_for.run", 38],
   ["milo.app:App.__init__", "milo.app:App._retrieve", 78],
   ["milo.app:App.__init__", "milo.index:Index", 73],
   ["milo.app:App.__init__", "milo.store:Store", 75],
@@ -4503,8 +5089,8 @@
   ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 87],
   ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 88],
   ["scripts.eval_attacks:RecordingBackend", "milo.tools:Backend", 53],
-  ["scripts.eval_retrieval:metrics", "milo.metrics:ndcg_at_k", 91],
-  ["scripts.eval_retrieval:metrics", "milo.metrics:recall_at_k", 91]
+  ["scripts.eval_retrieval:metrics", "milo.metrics:ndcg_at_k", 116],
+  ["scripts.eval_retrieval:metrics", "milo.metrics:recall_at_k", 116]
  ],
  "constructs": [
   ["milo.app:App.__init__", "milo.store:MemoryStore", 75],
@@ -4529,6 +5115,9 @@
   ["milo.llm:LocalOllamaChat.invoke", "milo.types:Usage", 163],
   ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
   ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
+  ["milo.mcp_server:<module>", "milo.store:MemoryStore", 158],
+  ["milo.mcp_server:<module>", "milo.tools:Backend", 158],
+  ["milo.mcp_server:build_server", "milo.mcp_server:Approvals", 48],
   ["milo.pgstore:PostgresStore.user_store", "milo.pgstore:PostgresUserStore", 27],
   ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 249],
   ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 228],
@@ -4549,8 +5138,17 @@
   ["scripts.build_kb:render_all", "scripts.build_kb:Writer", 275],
   ["scripts.build_kb:render_method", "scripts.build_kb:Writer", 258],
   ["scripts.create_admin:main", "milo.pgstore:PostgresStore", 36],
+  ["scripts.demo_server:main", "milo.app:App", 34],
+  ["scripts.demo_server:main", "milo.embed:OpenRouterEmbedder", 36],
+  ["scripts.demo_server:main", "milo.store:MemoryStore", 33],
+  ["scripts.demo_server:main", "milo.tools:Backend", 37],
+  ["scripts.demo_server:main", "milo.users:MemoryUserStore", 42],
   ["scripts.eval_advanced:run", "milo.embed:LexicalEmbedder", 57],
   ["scripts.eval_advanced:run", "milo.index:Index", 59],
+  ["scripts.eval_agent_arm:<module>", "milo.types:Document", 27],
+  ["scripts.eval_agent_arm:run_app_arm", "milo.embed:LexicalEmbedder", 59],
+  ["scripts.eval_agent_arm:seeded_backend", "milo.store:MemoryStore", 39],
+  ["scripts.eval_agent_arm:seeded_backend", "milo.tools:Backend", 39],
   ["scripts.eval_attacks:build", "milo.app:App", 135],
   ["scripts.eval_attacks:build", "milo.store:MemoryStore", 121],
   ["scripts.eval_attacks:build", "milo.types:Document", 138],
@@ -4558,9 +5156,12 @@
   ["scripts.eval_attacks:run", "milo.embed:LexicalEmbedder", 160],
   ["scripts.eval_attacks:run", "milo.embed:OpenRouterEmbedder", 160],
   ["scripts.eval_attacks:run", "scripts.eval_attacks:CachedEmbedder", 159],
-  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 102],
-  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 102],
-  ["scripts.eval_retrieval:run", "milo.index:Index", 105],
+  ["scripts.eval_hybrid:live", "milo.embed:OpenRouterEmbedder", 107],
+  ["scripts.eval_hybrid:live", "milo.index:Index", 108],
+  ["scripts.eval_hybrid:live", "scripts.eval_hybrid:BM25", 110],
+  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 127],
+  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 127],
+  ["scripts.eval_retrieval:run", "milo.index:Index", 130],
   ["scripts.eval_tools:live", "milo.embed:LexicalEmbedder", 158],
   ["scripts.eval_tools:live", "milo.tools:Backend", 146],
   ["scripts.eval_tools:live", "milo.types:Document", 160],
@@ -4585,6 +5186,9 @@
   ["scripts.eval_attacks:run", "milo.app:App.ask", 195]
  ],
  "override_calls": [
+  ["milo.agent_arm:make_tools.tool_for.run", "scripts.eval_attacks:RecordingBackend.call", 32],
+  ["milo.mcp_server:build_server.call", "scripts.eval_attacks:RecordingBackend.call", 81],
+  ["scripts.eval_agent_arm:seeded_backend", "scripts.eval_attacks:RecordingBackend.call", 41],
   ["scripts.eval_tools:live", "scripts.eval_attacks:RecordingBackend.call", 148]
  ],
  "binds": [],
@@ -4722,6 +5326,36 @@
  "gateways": [],
  "external": [
   {
+   "symbol": "milo.agent_arm:run_agent",
+   "line": 49,
+   "service": "LangChain",
+   "call": "langchain.agents.create_agent"
+  },
+  {
+   "symbol": "milo.agent_arm:run_agent",
+   "line": 53,
+   "service": "LangChain",
+   "call": "langchain.agents.middleware.HumanInTheLoopMiddleware"
+  },
+  {
+   "symbol": "milo.agent_arm:run_agent",
+   "line": 56,
+   "service": "LangChain",
+   "call": "langchain.agents.create_agent().invoke"
+  },
+  {
+   "symbol": "milo.agent_arm:run_agent",
+   "line": 61,
+   "service": "LangChain",
+   "call": "langchain.agents.create_agent().invoke().get"
+  },
+  {
+   "symbol": "milo.agent_arm:run_agent",
+   "line": 62,
+   "service": "LangChain",
+   "call": "langchain.agents.create_agent().invoke().get()[].value.get"
+  },
+  {
    "symbol": "milo.llm:LocalOllamaChat.invoke",
    "line": 158,
    "service": "HTTP (httpx)",
@@ -4791,6 +5425,7 @@
  "import_cycles": [],
  "lazy_import_cycles": [],
  "dead_candidates": [
+  "milo.mcp_server:Approvals.grant",
   "milo.pgstore:PostgresStore.add_feedback",
   "milo.pgstore:PostgresStore.append_turns",
   "milo.pgstore:PostgresStore.diagnoses",
@@ -4808,16 +5443,19 @@
  "test_only": [
   "milo.advanced:retrieve",
   "milo.flows:read_flows",
+  "milo.mcp_server:set_current_user",
   "milo.pgstore:PostgresStore.delete_owner",
   "milo.store:MemoryStore.append_turns",
   "milo.store:MemoryStore.diagnoses",
   "milo.store:MemoryStore.facts",
   "milo.store:MemoryStore.history"
  ],
- "test_files": 17,
+ "test_files": 18,
  "duplicate_names": {
   "_page": ["milo.auth_pages:_page", "milo.kb_pages:_page"],
+  "live": ["scripts.eval_agent_arm:live", "scripts.eval_hybrid:live", "scripts.eval_tools:live"],
   "norm": ["scripts.check_project_data:norm", "scripts.eval_retrieval:norm"],
+  "paired_ci": ["scripts.eval_advanced:paired_ci", "scripts.eval_hybrid:paired_ci"],
   "replay": ["scripts.eval_advanced:replay", "scripts.eval_retrieval:replay"]
  },
  "parse_errors": [],
@@ -4873,6 +5511,29 @@
     "settings": {},
     "message_roles": [],
     "label": "ask"
+   },
+   {
+    "symbol": "scripts.eval_agent_arm:live",
+    "line": 85,
+    "provider": "LangChain/OpenAI",
+    "call": "ChatOpenAI",
+    "settings": {
+     "model": "os.environ.get('MILO_CHAT_MODEL', 'anthropic/claude-haiku-5.5')",
+     "temperature": "0",
+     "timeout": "30"
+    },
+    "message_roles": []
+   },
+   {
+    "kind": "gateway",
+    "symbol": "scripts.eval_agent_arm:run_app_arm",
+    "line": 61,
+    "provider": "LangChain",
+    "call": "App.ask",
+    "gateway": "milo.app:App.ask",
+    "settings": {},
+    "message_roles": [],
+    "label": "run_app_arm"
    },
    {
     "kind": "gateway",
