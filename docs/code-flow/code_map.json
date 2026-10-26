@@ -2,25 +2,25 @@
  "schema": 2,
  "scope": ["scripts", "src"],
  "summary": {
-  "files": 29,
-  "lines": 4685,
-  "functions": 111,
+  "files": 30,
+  "lines": 4959,
+  "functions": 113,
   "methods": 66,
   "classes": 23,
   "routes": 11,
   "route_functions": 11,
-  "call_sites": 1466,
-  "resolved_internal": 336,
-  "resolved_external": 359,
-  "resolved_builtin": 521,
+  "call_sites": 1475,
+  "resolved_internal": 339,
+  "resolved_external": 360,
+  "resolved_builtin": 526,
   "resolved_by_convention": 0,
   "unresolved": 250,
-  "resolved_ratio": 0.8295,
-  "graph_coverage": 0.8445,
+  "resolved_ratio": 0.8305,
+  "graph_coverage": 0.8452,
   "inferred_edges": 6,
   "override_edges": 1,
   "unresolved_value_like": 122,
-  "internal_edges": 335,
+  "internal_edges": 338,
   "reference_edges": 13,
   "sql_sites": 13,
   "gateway_sites": 0,
@@ -202,6 +202,22 @@
    "call_sites": 83,
    "unresolved": 32
   },
+  "milo.landing": {
+   "file": "src/milo/landing.py",
+   "lines": 267,
+   "doc": "The MILO product page at the root address: what MILO is, how it works, the demo, and how to start.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__"
+   ],
+   "imports": [
+    "milo.shell"
+   ],
+   "lazy_imports": [],
+   "call_sites": 8,
+   "unresolved": 0
+  },
   "milo.llm": {
    "file": "src/milo/llm.py",
    "lines": 169,
@@ -237,7 +253,7 @@
   },
   "milo.page": {
    "file": "src/milo/page.py",
-   "lines": 925,
+   "lines": 931,
    "doc": "The MILO pages: the chat and the overview. One HTML document each, with its CSS and script.",
    "cli": false,
    "exports": [],
@@ -367,7 +383,7 @@
   },
   "milo.web": {
    "file": "src/milo/web.py",
-   "lines": 176,
+   "lines": 177,
    "doc": "M6: a Flask chat page. The owner id is bound to the browser session on the server; the page never sends one.",
    "cli": false,
    "exports": [],
@@ -384,8 +400,13 @@
     "uuid"
    ],
    "imports": ["milo.app", "milo.page", "milo.shell"],
-   "lazy_imports": ["milo.flows", "milo.kb_pages", "milo.status"],
-   "call_sites": 81,
+   "lazy_imports": [
+    "milo.flows",
+    "milo.kb_pages",
+    "milo.landing",
+    "milo.status"
+   ],
+   "call_sites": 82,
    "unresolved": 7
   },
   "scripts.build_kb": {
@@ -1143,6 +1164,26 @@
    "file": "src/milo/kb_pages.py",
    "line": 89,
    "end": 110,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.landing:_mock": {
+   "kind": "function",
+   "file": "src/milo/landing.py",
+   "line": 78,
+   "end": 88,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.landing:landing_page": {
+   "kind": "function",
+   "file": "src/milo/landing.py",
+   "line": 91,
+   "end": 267,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -1947,7 +1988,7 @@
    "kind": "function",
    "file": "src/milo/web.py",
    "line": 27,
-   "end": 176,
+   "end": 177,
    "doc": "",
    "params": ["milo_app", "secret_key"],
    "decorators": [],
@@ -1956,8 +1997,8 @@
   "milo.web:create_app.ask": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 155,
-   "end": 174,
+   "line": 156,
+   "end": 175,
    "doc": "",
    "params": [],
    "decorators": [
@@ -1992,8 +2033,8 @@
   "milo.web:create_app.dashboard": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 69,
-   "end": 76,
+   "line": 70,
+   "end": 77,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2004,8 +2045,8 @@
   "milo.web:create_app.demo": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 137,
-   "end": 146,
+   "line": 138,
+   "end": 147,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2016,8 +2057,8 @@
   "milo.web:create_app.feedback": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 79,
-   "end": 108,
+   "line": 80,
+   "end": 109,
    "doc": "One thumbs vote on an answer. Stores the rating, a reason from a fixed list and a hashed owner. No text.",
    "params": [],
    "decorators": [
@@ -2028,8 +2069,8 @@
   "milo.web:create_app.flows": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 62,
-   "end": 66,
+   "line": 63,
+   "end": 67,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2040,8 +2081,8 @@
   "milo.web:create_app.history": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 149,
-   "end": 152,
+   "line": 150,
+   "end": 153,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2053,7 +2094,7 @@
    "kind": "nested",
    "file": "src/milo/web.py",
    "line": 57,
-   "end": 59,
+   "end": 60,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2064,8 +2105,8 @@
   "milo.web:create_app.kb_document": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 117,
-   "end": 123,
+   "line": 118,
+   "end": 124,
    "doc": "",
    "params": [
     "doc_id"
@@ -2078,8 +2119,8 @@
   "milo.web:create_app.kb_index": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 111,
-   "end": 114,
+   "line": 112,
+   "end": 115,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2100,8 +2141,8 @@
   "milo.web:create_app.status": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 126,
-   "end": 134,
+   "line": 127,
+   "end": 135,
    "doc": "",
    "params": [],
    "decorators": [
@@ -3068,6 +3109,9 @@
   ["milo.kb_pages:index_page", "milo.kb_pages:_page", 110],
   ["milo.kb_pages:index_page", "milo.shell:brand_html", 104],
   ["milo.kb_pages:index_page", "milo.shell:nav_html", 104],
+  ["milo.landing:landing_page", "milo.landing:_mock", 217],
+  ["milo.landing:landing_page", "milo.shell:brand_html", 202],
+  ["milo.landing:landing_page", "milo.shell:nav_html", 205],
   ["milo.llm:LangChainChat.invoke", "milo.llm:openai_tool", 39],
   ["milo.llm:LangChainChat.invoke", "milo.llm:text_of", 45],
   ["milo.llm:LangChainChat.invoke", "milo.llm:to_message", 40],
@@ -3109,25 +3153,25 @@
   ["milo.tools:Backend.specs", "milo.tools:specs", 121],
   ["milo.tools:specs", "milo.tools:_schema", 65],
   ["milo.tools:specs", "milo.types:ToolSpec", 65],
-  ["milo.web:create_app.ask", "milo.app:App.ask", 163],
-  ["milo.web:create_app.ask", "milo.web:create_app.owner", 162],
+  ["milo.web:create_app.ask", "milo.app:App.ask", 164],
+  ["milo.web:create_app.ask", "milo.web:create_app.owner", 163],
   ["milo.web:create_app.chat", "milo.web:create_app.chat_page", 54],
   ["milo.web:create_app.chat", "milo.web:create_app.owner", 53],
   ["milo.web:create_app.chat_page", "milo.shell:brand_html", 42],
   ["milo.web:create_app.chat_page", "milo.shell:nav_html", 43],
-  ["milo.web:create_app.dashboard", "milo.shell:brand_html", 71],
-  ["milo.web:create_app.dashboard", "milo.shell:nav_html", 72],
-  ["milo.web:create_app.feedback", "milo.flows:owner_hash", 100],
-  ["milo.web:create_app.feedback", "milo.web:create_app.owner", 100],
-  ["milo.web:create_app.flows", "milo.flows:read_flows", 65],
-  ["milo.web:create_app.flows", "milo.flows:summarize", 66],
-  ["milo.web:create_app.flows", "milo.web:create_app.owner", 65],
-  ["milo.web:create_app.history", "milo.store:Store.history", 151],
-  ["milo.web:create_app.history", "milo.web:create_app.owner", 150],
-  ["milo.web:create_app.index", "milo.web:create_app.chat", 59],
-  ["milo.web:create_app.kb_document", "milo.kb_pages:document_page", 120],
-  ["milo.web:create_app.kb_index", "milo.kb_pages:index_page", 114],
-  ["milo.web:create_app.status", "milo.status:snapshot", 134],
+  ["milo.web:create_app.dashboard", "milo.shell:brand_html", 72],
+  ["milo.web:create_app.dashboard", "milo.shell:nav_html", 73],
+  ["milo.web:create_app.feedback", "milo.flows:owner_hash", 101],
+  ["milo.web:create_app.feedback", "milo.web:create_app.owner", 101],
+  ["milo.web:create_app.flows", "milo.flows:read_flows", 66],
+  ["milo.web:create_app.flows", "milo.flows:summarize", 67],
+  ["milo.web:create_app.flows", "milo.web:create_app.owner", 66],
+  ["milo.web:create_app.history", "milo.store:Store.history", 152],
+  ["milo.web:create_app.history", "milo.web:create_app.owner", 151],
+  ["milo.web:create_app.index", "milo.landing:landing_page", 60],
+  ["milo.web:create_app.kb_document", "milo.kb_pages:document_page", 121],
+  ["milo.web:create_app.kb_index", "milo.kb_pages:index_page", 115],
+  ["milo.web:create_app.status", "milo.status:snapshot", 135],
   ["scripts.build_kb:<module>", "scripts.build_kb:main", 327],
   ["scripts.build_kb:Writer._emit", "scripts.build_kb:sentences", 133],
   ["scripts.build_kb:Writer.items", "scripts.build_kb:Writer._emit", 148],
@@ -3667,7 +3711,7 @@
    {
     "kind": "gateway",
     "symbol": "milo.web:create_app.ask",
-    "line": 163,
+    "line": 164,
     "provider": "LangChain",
     "call": "App.ask",
     "gateway": "milo.app:App.ask",

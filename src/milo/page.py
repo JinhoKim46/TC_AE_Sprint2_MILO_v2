@@ -612,6 +612,12 @@ PAGE = (
         b.addEventListener("click", () => runStory(st, b));
         list.appendChild(b);
       });
+      const wanted = new URLSearchParams(window.location.search).get("story");
+      const chosen = (data.storylines || []).find((st) => st.id === wanted);
+      if (chosen) {
+        const button = [...list.children].find((c) => c.textContent.startsWith(chosen.title));
+        if (button) runStory(chosen, button);
+      }
     } catch (err) {
       /* demos are optional */
     }

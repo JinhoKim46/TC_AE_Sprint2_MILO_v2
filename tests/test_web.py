@@ -46,7 +46,7 @@ def client(chat):
 
 
 def test_page_has_the_chat_composer_and_plain_language_panels() -> None:
-    page = client(ToolThenAnswer()).get("/").get_data(as_text=True)
+    page = client(ToolThenAnswer()).get("/chat").get_data(as_text=True)
     for needle in (
         "New conversation",
         "How MILO works",
@@ -62,7 +62,7 @@ def test_page_has_the_chat_composer_and_plain_language_panels() -> None:
 
 def test_history_returns_the_stored_turns_for_this_browser() -> None:
     c = client(ToolThenAnswer())
-    c.get("/")
+    c.get("/chat")
     c.post("/api/ask", json={"question": "When are invoices issued each month?"})
     turns = c.get("/api/history").get_json()["turns"]
     assert [t["role"] for t in turns] == ["user", "assistant"]
@@ -70,9 +70,9 @@ def test_history_returns_the_stored_turns_for_this_browser() -> None:
 
 def test_new_conversation_starts_an_empty_thread() -> None:
     c = client(ToolThenAnswer())
-    c.get("/")
+    c.get("/chat")
     c.post("/api/ask", json={"question": "When are invoices issued each month?"})
-    c.get("/?new=1")
+    c.get("/chat?new=1")
     assert c.get("/api/history").get_json()["turns"] == []
 
 
@@ -123,8 +123,8 @@ def test_owner_comes_from_the_session_not_the_request() -> None:
     milo.ask = spy
     a = web.test_client()
     b = web.test_client()
-    a.get("/")
-    b.get("/")
+    a.get("/chat")
+    b.get("/chat")
     a.post(
         "/api/ask",
         json={
@@ -144,7 +144,7 @@ def test_feedback_stores_rating_and_reason_with_a_hashed_owner(tmp_path) -> None
     milo.trace_path = tmp_path / "trace.jsonl"
     web = create_app(milo, secret_key="test")
     c = web.test_client()
-    c.get("/")
+    c.get("/chat")
     ok = c.post("/api/feedback", json={"rating": "down", "reason": "missing_source"})
     assert ok.get_json()["ok"] is True
     bad_rating = c.post("/api/feedback", json={"rating": "maybe"})

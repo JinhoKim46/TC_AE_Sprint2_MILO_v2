@@ -55,8 +55,9 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
 
     @web.get("/")
     def index() -> Response:
-        # The landing page replaces this route. Until then the chat stays available at the root too.
-        return chat()
+        from milo.landing import landing_page
+
+        return Response(landing_page(), mimetype="text/html")
 
     @web.get("/api/flows")
     def flows() -> Any:

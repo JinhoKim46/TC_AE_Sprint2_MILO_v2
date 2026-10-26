@@ -91,7 +91,7 @@ def test_flow_endpoints_and_dashboard_page(tmp_path) -> None:
         [Document("kb/x", "Invoices are issued on the first day of each month.", {})]
     )
     c = create_app(app, secret_key="test").test_client()
-    c.get("/")
+    c.get("/chat")
     body = c.post(
         "/api/ask", json={"question": "When are invoices issued each month?"}
     ).get_json()
