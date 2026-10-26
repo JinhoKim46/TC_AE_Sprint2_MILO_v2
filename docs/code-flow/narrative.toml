@@ -1,0 +1,792 @@
+# Narrative for the code-flow report — the only hand-written input.
+#
+# Structure (modules, functions, call edges, routes, SQL access, boundaries) comes from code_map.json.
+# This file adds the explanation around it. Every `symbol` / `module` / `table` named here is checked
+# against the code on every build; a name that no longer exists fails the build and the staleness test.
+# Never write line numbers — the builder adds file:line from the code map.
+#
+# Proposed by `codeflow.py draft`. Replace every "TODO: …" (the report shows how many are left).
+# Severities: high | medium | low | info.  Stages: born | transform | update | store | archive | restore | read | delete.
+# A finding with a `check` retires itself: once the code no longer shows it, it moves to the page's Fixed list.
+# Layer `modules` may use "pkg.*" patterns. With [[layers]] present, every module must match one.
+# [module_notes."pkg.mod"]: purpose / does / flow (+ optional note) per module — written from the code, never a copied docstring.
+
+
+[meta]
+title = "MILO v2"
+lede = "MILO answers questions about a service business from a knowledge base of past cases and service areas. Each question passes through retrieval, a model call with an optional tool loop, and a store, and every step is written to a trace."
+audience = "evaluators and colleagues who need to understand the MILO project and its implementation"
+
+[module_notes.milo]
+purpose = "Marks src/milo as an importable Python package, so the other modules can import each other as milo.*."
+does = "Holds no code and no state; it only gives the package its name."
+flow = "Imported implicitly whenever any milo.* module is loaded (milo.serve, the scripts.* evaluation runners, the tests). It reads and writes nothing."
+
+[module_notes."milo.advanced"]
+purpose = "Offline query rewriting and metadata filtering for retrieval, so the retrieval A/B test can run without a model or a key."
+does = "Rewrites a question into search words by dropping question words and adding area vocabulary (translate_keywords). Guesses the product area and section a question points to and returns them as filters (self_query). Rejects any filter outside a fixed schema (validate_filters). Searches with the filter and falls back to an unfiltered search if the filter is missing, invalid or finds nothing (retrieve)."
+flow = "Called only by the evaluation scripts (scripts.eval_advanced), not by the web app. self_query/translate_keywords produce the filter or rewritten query, then retrieve passes the question vector to milo.index.Index.search with a where clause and repeats without it when there are no hits. Writes nothing."
+note = "The fallback is deliberate: a wrong or empty filter must never leave the user with zero results. A tie between two areas yields no product filter instead of a guess."
+
+[module_notes."milo.app"]
+purpose = "The core of MILO: it turns one user question into a grounded, cited answer, and without it there is no chatbot."
+does = "Ingests knowledge-base documents into chunks and a vector index. Answers a question: checks the input, retrieves passages, calls the model, and abstains when nothing relevant is found. Runs a bounded tool loop in which every model-requested tool call is validated against its spec, blocked if destructive, and run with the server-side user id. Retries the primary model, then switches once to the local fallback; totals the cost per answer."
+flow = "milo.web (/api/ask) and the scripts call App.ask; milo.serve builds it and calls ingest. ask reads history from the Store (turns), then _ask goes through _input_problem, _retrieve (milo.index, embeddings), _invoke (milo.llm models) and _run_tool (milo.tools.validate_args, Backend.call). On success it appends the user and assistant turns to the Store, and always appends one JSON line (hashed owner and thread, steps, cost) to logs/trace.jsonl via _write_trace."
+note = "The user id passed to tools comes from the server session, never from model output. A destructive tool stops the loop with 'needs approval' and is not run. A failed answer is not saved to the thread history. Fallback calls never offer tools in practice because LocalOllamaChat ignores them."
+
+[module_notes."milo.chunk"]
+purpose = "Cuts knowledge-base articles into passages small enough to embed and cite, keeping each passage tied to its document, section and product."
+does = "Splits the front matter (title, section, product) from the article body. Starts a new chunk at every heading. Packs whole paragraphs into chunks of up to 800 characters and cuts only over-long paragraphs, at sentence ends with a 100-character overlap."
+flow = "milo.serve.load_documents calls front_matter for each .md file under data/kb; milo.app.App.ingest calls chunk_body per document; scripts.eval_retrieval calls it for the evaluation. The resulting Chunk records (id like doc#000) go to milo.embed for vectors and then into milo.index.Index. Writes nothing itself."
+note = "A chunk never crosses a heading, and a paragraph that fits is never cut, so a quoted gold sentence lands whole in one chunk. An article without front matter raises ValueError."
+
+[module_notes."milo.embed"]
+purpose = "Turns text into vectors, with an offline version for tests and a paid live version, so retrieval can run with or without network."
+does = "Provides a deterministic offline embedder that hashes words and word pairs into a 512-number vector. Provides the live google/gemini-embedding-2 embedder through OpenRouter, in batches of at most 100 texts. Refuses to start unless MILO_LIVE=1 and a key are set, and stops before a batch that would exceed the cost cap."
+flow = "milo.serve picks one (live only if MILO_LIVE=1 and OPENROUTER_API_KEY exist, with a 0.05 USD cap) and gives it to milo.app.App. App.ingest embeds all chunks, App._retrieve embeds each question; the evaluation scripts use it too. The live version calls OpenRouter over HTTP; nothing is stored here."
+note = "The cost is only estimated (about 4 characters per token at the listed price), not read back from the provider. The lexical embedder uses crc32 so vectors are identical across runs."
+
+[module_notes."milo.flows"]
+purpose = "Gives the overview page its data by reading back what the app logged, so people can see what MILO did without a database."
+does = "Reads logs/trace.jsonl and returns only the requesting owner's most recent questions with their steps. Summarises them: question count, error rate, average time, cost, tokens, model and tool use, tool decisions, which tables were touched, and average top retrieval score."
+flow = "milo.web serves /api/flows by calling read_flows with the session owner and then summarize; the /dashboard page (milo.page.DASHBOARD) fetches it. The trace lines it reads are written by milo.app.App._write_trace. It only reads."
+note = "Matching uses a 12-character SHA-256 hash of the owner id (owner_hash), the same one App writes; the raw id is never in the file. It calls no model and no database."
+
+[module_notes."milo.index"]
+purpose = "The searchable store of passage vectors: without it there is no way to find which passages relate to a question."
+does = "Builds an in-memory Chroma collection with cosine distance from chunks and their vectors, keeping doc_id, section and product as metadata. Returns the top k passages as (chunk_id, text, score) with score = 1 minus cosine distance, optionally filtered by metadata."
+flow = "milo.app.App.ingest creates one Index per start-up from chunks from milo.chunk and vectors from milo.embed; App._retrieve and milo.advanced.retrieve call search. The scripts.eval_* runners build their own. Data lives only in process memory (chromadb EphemeralClient) and is rebuilt on every start."
+note = "Each Index uses a unique collection name, so several can coexist in one process. A vector count different from the chunk count raises ValueError."
+
+[module_notes."milo.llm"]
+purpose = "The single place that talks to chat models, so the app can use the paid model, a local one or a test fake behind the same call."
+does = "Adapts a LangChain chat model to the app's invoke(messages, tools) and returns text, tool calls and token usage. Builds the live ChatOpenAI client pointed at OpenRouter (default anthropic/claude-haiku-5.5), only when MILO_LIVE=1 and a key are set. Provides the local Ollama fallback (qwen3:8b), which answers from the passages only and is offered no tools."
+flow = "milo.serve creates the primary (live_chat_model or, offline, the local model) and the fallback (local_chat_model) and hands them to milo.app.App; App._invoke calls invoke, retrying the primary and then trying the fallback. The scripts (run_judge, eval_tools, eval_attacks) use it too. Calls go over HTTP to OpenRouter or to localhost:11434; nothing is stored."
+note = "Config names: MILO_CHAT_MODEL, MILO_PRICE_IN, MILO_PRICE_OUT, MILO_LOCAL_MODEL. The client is built with max_retries=0 so retries stay visible and bounded in App._invoke. The fallback costs 0 and cannot call tools, so a degraded answer can never act."
+
+[module_notes."milo.metrics"]
+purpose = "The scoring formulas for retrieval experiments, so the choice between retrieval variants rests on numbers rather than impressions."
+does = "Scores one query as hit or miss within the top k (recall_at_k). Scores how high the right passage ranks (ndcg_at_k). Averages many queries with a bootstrap 95% confidence interval (mean_ci), repeatable for a fixed seed."
+flow = "Called by scripts.eval_retrieval and scripts.eval_advanced after they have run each question through milo.embed and milo.index and found the rank of the gold quote. The numbers go into those scripts' result files; the web app does not use this module."
+note = "Rank is the 1-based position of the first chunk containing the gold quote, or None; with a single relevant chunk, ideal DCG is 1."
+
+[module_notes."milo.page"]
+purpose = "The two browser pages people see, kept as plain HTML strings so the app needs no front-end build."
+does = "Defines the chat page (question box, answer, sources, tool-call panel with the policy decision, progress and cost) and the overview dashboard. Shows plain-language answers by default and hides raw scores and arguments behind a 'Show details' control."
+flow = "milo.web returns PAGE for GET / and DASHBOARD for GET /dashboard. The page scripts then call the web app's JSON routes (/api/ask, /api/history, /api/flows, /api/status, /api/demo) in the browser. It contains no Python functions and stores nothing on the server."
+note = "All server text is inserted with textContent, never as HTML, so model output cannot inject markup into the page."
+
+[module_notes."milo.pgstore"]
+purpose = "Keeps conversations, recorded facts and diagnosis cards in PostgreSQL so they survive a restart, which the in-memory store cannot do."
+does = "Saves user and assistant turns per thread and reads back the latest ones in order. Saves and lists facts and diagnoses per owner. Deletes everything one owner has stored."
+flow = "milo.serve.build_store creates it when MILO_STORE=postgres, using MILO_DATABASE_URL. milo.app.App (history, append_turns) and milo.tools.Backend (facts, diagnoses) call it through the Store interface. It writes milo_v2.threads, milo_v2.turns, milo_v2.facts and milo_v2.diagnoses, and reads turns, facts and diagnoses."
+note = "Every query filters by owner_id. One autocommit connection is shared behind a lock for Flask's threads. delete_owner exists for tests and a future owner-deletion request; no route exposes it yet."
+
+[module_notes."milo.serve"]
+purpose = "The start-up wiring: it chooses real or offline parts from the environment and assembles the running web app."
+does = "Reads the knowledge-base files under data/kb into documents. Picks the memory or PostgreSQL store (MILO_STORE). Picks live OpenRouter model and embeddings only when MILO_LIVE=1 and a key exist, otherwise the offline versions. Builds the App, ingests the documents and returns the Flask app."
+flow = "Run as python -m milo.serve, or imported by scripts (eval_attacks, make_judge_*) that need a ready app. build_web goes through build_store (milo.store or milo.pgstore), milo.embed, milo.llm, milo.tools.Backend, milo.app.App.ingest (milo.chunk) and milo.web.create_app. It serves on 127.0.0.1:5000 and writes the trace to logs/trace.jsonl."
+note = "Without live mode the page still starts but the offline chat model gives no real answers. The live embedder gets a hard 0.05 USD cap. The fallback is always the local Ollama model."
+
+[module_notes."milo.status"]
+purpose = "Answers 'is the system healthy and what has it cost' for the monitor view, without anyone looking at logs."
+does = "Pings the database and counts rows in threads, turns, facts and diagnoses. Checks whether the local Ollama model is reachable and which models it has. Reports whether a key is set and live mode is on, as booleans only. Adds up the cost of web answers from the trace file."
+flow = "milo.web serves /api/status by calling snapshot with the store kind, MILO_DATABASE_URL, the trace path and the chat model name. snapshot goes through _ping_database (psycopg, milo_v2 tables), _ping_local_model (HTTP to localhost:11434) and _spend (logs/trace.jsonl). It only reads."
+note = "Never returns the key or the database URL. Reports failure as data instead of raising, so the status page works when parts are down. Spend counts web answers only; evaluation runs log in their own files. The 3.00 USD course cap is a constant here."
+
+[module_notes."milo.store"]
+purpose = "The one contract for where state lives, so the app and tools never hold conversation or fact data themselves and storage can be swapped."
+does = "Defines the Store methods for turns, facts and diagnoses, all keyed by owner. Provides MemoryStore, which keeps everything in process dictionaries. Limits the history sent to the model to the last 20 messages."
+flow = "milo.app.App reads history and appends turns; milo.tools uses the fact and diagnosis methods; milo.serve picks MemoryStore by default, or milo.pgstore.PostgresStore. MemoryStore writes only to in-process dicts and is lost on restart."
+note = "The module docstring says only MemoryStore exists, but milo.pgstore.PostgresStore now implements the same interface (doc is stale). Older turns are kept but not sent to the model."
+
+[module_notes."milo.tools"]
+purpose = "Turns the tool definitions in data/tools.yaml into checked, executable tools: without it the model could name a tool but nothing would validate or run it."
+does = "Builds the JSON-schema tool specs the chat model sees; checks arguments (missing, unexpected, wrong type, value outside the enum) before any handler runs; runs the handlers for search_knowledge, record_fact, get_recorded_facts, estimate_effect, draft_diagnosis and reset_diagnosis; computes the time-saved estimate from recorded facts, never from a model number."
+flow = "milo.app and milo.serve build a Backend and pass its specs to the model; when the model asks for a tool, milo.app validates with validate_args, applies the policy, then calls Backend.call(name, args, user_id) → the _<name> handler → milo.store (facts and diagnoses per owner; MemoryStore by default, the Postgres store when milo.serve injects it). search_knowledge calls back into the app's retrieval through attach_search. The eval scripts (eval_attacks, eval_tools, make_judge_*) reuse it."
+note = "reset_diagnosis is a stub that always returns 'needs approval': the policy layer decides, and the handler never deletes anything. estimate_effect labels the baseline and new minutes as assumed and returns needs_input when the event count is missing."
+
+[module_notes."milo.types"]
+purpose = "One shared vocabulary of plain data classes, so the model wrapper, the app, the tools and the web layer pass the same shapes."
+does = "Defines the model reply (ChatReply, ToolCall, Usage), what retrieval returns (Document, Source), what a tool run records (ToolResult with its policy decision) and the final Response with answer, sources, cost, stop flag, error and trace; also ToolSpec with its risk level (read, write, destructive)."
+flow = "Created in milo.llm (model replies) and milo.app (Response, ToolResult, Source); milo.tools builds ToolSpec; milo.serve and the eval scripts build Document; milo.web serialises Response with dataclasses.asdict into the /api/ask JSON. It imports nothing and writes nowhere."
+note = "These are MILO's own copies of the kit's interface types; the kit's tests read them by attribute, so field names must not change."
+
+[module_notes."milo.web"]
+purpose = "The browser-facing HTTP layer: without it there is no chat page, and nothing binds a browser to an owner."
+does = "Serves the chat page and the dashboard page; takes a question as JSON and returns answer, sources, tool results, cost and trace; keeps the owner id and conversation thread in the server-side session so the page cannot choose them; exposes read-only endpoints for the owner's request flows, the system status, the demo storylines and the thread history."
+flow = "milo.serve builds the Flask app with create_app(milo_app). POST /api/ask → owner() (session) → App.ask(question, user_id, thread_id) → asdict of the Response as JSON. GET /api/flows → milo.flows.read_flows over the trace file; GET /api/status → milo.status.snapshot (database, model, spend); GET /api/history → store.history; GET /api/demo reads data/demo_storylines.json. Writes only the session cookie; App.ask does the persistence."
+note = "A non-string question gets a 400. The secret key comes from MILO_SECRET_KEY, otherwise a random key is made at start, so sessions (and owner ids) reset on every restart."
+
+[module_notes."scripts.build_kb"]
+purpose = "Produces the knowledge-base articles the whole system retrieves from, reproducibly, from the synthetic source package."
+does = "Reads the owner's JSON package (cases, playbooks, blueprints) and writes one Markdown article per case family; moves sentences shared by four or more families into one method-notes article so cases do not look alike; tags each article with its v2 module from data/catalogue.yaml; with --check, fails if the written files differ from a fresh render."
+flow = "Run by hand (uv run python scripts/build_kb.py). Reads data/source/milo_synthetic_kb_v1/ and data/catalogue.yaml → load_families, boilerplate, render_family, render_method → writes data/kb/cases/ and consultation/method-notes.md. No model call, no network, no database. milo.serve and the retrieval evals later read data/kb."
+note = "Output is meant to be deterministic (fixed UPDATED date), so --check can serve as a drift test for the committed articles."
+
+[module_notes."scripts.check_project_data"]
+purpose = "The M0 gate: confirms the data folder meets the kit's minimum before any later milestone builds on it."
+does = "Checks the knowledge base (at least 20 documents with title, section and updated front matter), gold questions (at least 30, with minimum counts of unanswerable, identifier and filter questions), tool cases and attacks; verifies that every gold evidence quote appears verbatim in its named document; exits 1 listing the problems."
+flow = "Run by hand on data/ (or on templates with --templates). Reads kb/**/*.md, gold.jsonl, tool_cases.jsonl and attacks.jsonl → check_gold, check_tools, check_attacks → prints errors and an exit code. Standard library only; writes nothing, calls no model."
+note = "It validates the dev and test split labels but never reads or scores the test questions' results."
+
+[module_notes."scripts.eval_advanced"]
+purpose = "Decides, with a rule fixed beforehand, whether each advanced retrieval technique (translation, self-query filter, both) beats the plain baseline."
+does = "Runs four arms on the dev gold questions with the offline lexical embedder; compares each arm's nDCG@5 with the baseline per question using a paired bootstrap 95% interval; marks an arm ADOPTED only if the whole interval is above zero; can recompute everything from stored ranks."
+flow = "Run by hand. Imports dev_rows, load_chunks and norm from scripts.eval_retrieval → milo.index.Index over chunks embedded by milo.embed.LexicalEmbedder → milo.advanced (translate_keywords, self_query) → milo.metrics.ndcg_at_k → writes evals/results/advanced/dev_ab.json. Reads the dev split only. Makes no paid call; --replay reads the stored JSON."
+note = "Self-query revision 2 was changed after looking at dev, so this dev A/B is not held out; the script's own header says so."
+
+[module_notes."scripts.eval_attacks"]
+purpose = "Measures how often the real app can be attacked successfully and how often it wrongly refuses harmless questions."
+does = "Replays every attack in data/attacks.jsonl (direct, through a poisoned retrieved passage, through a poisoned tool output) against the real App with a canary-token system prompt and a second owner's seeded data; judges success by each attack's rule (output leak, destructive tool executed, identity changed); asks five benign dev questions to count false refusals; --rules self-tests the scoring offline."
+flow = "Run by hand. Reads data/attacks.jsonl and the dev rows of data/gold.jsonl → build() assembles an App with RecordingBackend (a milo.tools.Backend that records which tools ran, for which owner) and MemoryStore → App.ask → check → writes evals/results/security/attacks.json. Paid only with MILO_LIVE=1 (OpenRouterEmbedder with --max-cost, default 0.02 USD, plus the live chat model); otherwise it embeds with the lexical embedder. Reads the dev split for the benign questions."
+note = "The canary exists only in this harness's test prompt; the shipped prompt has none. CachedEmbedder embeds each text once so re-indexing per attack does not burn the spend cap."
+
+[module_notes."scripts.eval_retrieval"]
+purpose = "The M1 baseline: scores how well chunking plus embedding finds the gold evidence, so every later change has a number to beat."
+does = "Chunks the knowledge base, embeds chunks and questions, and for each answerable gold question finds the rank of the first top-5 chunk containing the quote; reports recall@5 and nDCG@5 with confidence intervals; guards the test split so it can be read only once; can replay all metrics from stored ranks."
+flow = "Run by hand, and imported by scripts.eval_advanced. Reads data/kb and data/gold.jsonl → milo.chunk.chunk_article → milo.index.Index with LexicalEmbedder (free) or OpenRouterEmbedder (paid, --max-cost default 0.02 USD, needs MILO_LIVE=1) → milo.metrics → writes evals/results/retrieval/<split>_<embedder>.json. Reads dev by default; --split test is allowed once."
+note = "split_rows refuses a second test-split read by counting lines in evals/results/test_access.log, which it appends to on the first read."
+
+[module_notes."scripts.eval_tools"]
+purpose = "Checks that the model picks the right tool with the right arguments, and does not call tools when none is needed."
+does = "Scores each case on tool selection, strict and lenient parameter match, and over-eager calls; a --selftest proves the scorer catches a wrong tool, a wrong value and an unneeded call without any model; a --live run lets the real chat model choose tools."
+flow = "Run by hand. --selftest runs offline. --live (requires MILO_LIVE=1, --max-cost default 0.02 USD) reads data/tool_cases.jsonl → seeds a fresh milo.tools.Backend with each case's facts through record_fact → milo.app.build_app with the live chat model and a LexicalEmbedder → App.ask → score on the ToolResults → writes evals/results/tools/tool_eval.json. Uses the case file, not the gold splits."
+note = "Free-text arguments (evidence_text, unit, query) are ignored in the lenient score; only the strict score demands them equal."
+
+[module_notes."scripts.make_judge_extra"]
+purpose = "Adds a second batch of ten answers for hand labelling, so the judge calibration has more than 30 items."
+does = "Takes the headlines of owner stories S11 to S20, asks the live app each one, and writes the answers with their full passages, a labelling sheet and an empty labels file."
+flow = "Run by hand with MILO_LIVE=1 (small paid spend: OpenRouterEmbedder and the live chat model). Reads data/stories/owner_stories.md → builds an App with a MemoryStore and milo.tools.Backend, ingests milo.serve.load_documents → App.ask per story → writes evals/judge/answers_extra.json, sheet_extra.md and labels_extra.csv. Uses no gold split: the stories are demo data."
+note = "It overwrites labels_extra.csv with blanks, so rerunning it after labelling destroys the labels."
+
+[module_notes."scripts.make_judge_sheet"]
+purpose = "Creates the first judge test set: real app answers a person can label, against which the LLM judge is later measured."
+does = "Collects 20 dev gold questions (16 answerable, 4 unanswerable) plus the headlines of owner stories S01 to S10; asks the live app each one; saves the answers with their passages for the judge and a Markdown sheet and blank label file for the human."
+flow = "Run by hand with MILO_LIVE=1 (about 0.05 USD: OpenRouterEmbedder plus the live chat model). Reads data/gold.jsonl (dev split only) and data/stories/owner_stories.md → App with MemoryStore and milo.tools.Backend, ingests milo.serve.load_documents → App.ask → writes evals/judge/answers.json (read later by scripts.run_judge), sheet.md and labels.csv."
+note = "The sheet shows at most five passages cut to 300 characters, while answers.json keeps the full passages the judge reads; the labeller may therefore see less than the judge does. Rerunning overwrites labels.csv with blanks."
+
+[module_notes."scripts.migrate"]
+purpose = "Creates and upgrades the PostgreSQL schema: without it the Postgres store has no tables."
+does = "Applies the SQL files in db/migrations in name order, each inside one transaction; records each applied file so a rerun skips it; creates the milo_v2 schema and its schema_migrations table on first use."
+flow = "Run by hand before using the Postgres store. Reads MILO_DATABASE_URL from the environment, falling back to a line in the project's .env → psycopg connection → create schema milo_v2 and milo_v2.schema_migrations → executes each unapplied db/migrations/*.sql and inserts its name into schema_migrations. No model call."
+note = "The --schema-only-check flag in the usage line is not read by the code; any argument is ignored."
+
+[module_notes."scripts.run_judge"]
+purpose = "Tests whether an LLM can stand in for the human labeller on faithfulness and relevance, using a threshold set in advance."
+does = "Has a judge model grade each saved answer against its passages (JSON of faithful and relevant, 0 or 1); computes Cohen's kappa against the hand labels with a 2000-resample bootstrap interval; declares the judge usable for faithfulness only if kappa is at least 0.60 and the interval's lower end at least 0.30; reports only raw agreement for relevance because all human labels are 1."
+flow = "Run by hand. Live (MILO_LIVE=1, about 0.05 USD) reads evals/judge/answers.json → milo.llm.LangChainChat over ChatOpenAI on OpenRouter, model from JUDGE_MODEL (default Haiku) → parse → writes judge_outputs_<model>.json; --replay reads that file instead. Then compares with evals/judge/labels.csv and writes judge_result_<model>.json."
+note = "Only the first batch (answers.json, labels.csv) is read; the second batch from make_judge_extra is not part of this run. Files are named after the judge model, so changing JUDGE_MODEL never overwrites an earlier result."
+
+[[layers]]
+id = "milo"
+name = "milo"
+owns = "The application: retrieval, the answer loop, tools, storage, the web pages and the status endpoint."
+modules = ["milo.*"]
+
+[[layers]]
+id = "scripts"
+name = "scripts"
+owns = "Offline evaluation and maintenance scripts. Those that call a paid model require an explicit live flag."
+modules = ["scripts.*"]
+
+[[journeys]]
+id = "ask-question"
+title = "Ask a question in the chat"
+actor = "service-business owner · browser"
+trigger = "POST /api/ask"
+summary = "The chat page sends one question; the app reads the thread's earlier turns, retrieves the top 5 passages, and lets the model answer from them, calling tools up to 4 rounds. The answer, sources, tool results and cost go back as JSON, and the question and answer are saved as two new turns."
+  [[journeys.steps]]
+  symbol = "milo.web:create_app.ask"
+  actor = "browser (chat page script)"
+  action = "Reads the JSON body, rejects a question that is not text with 400, takes the owner and thread ids from the server-side session, and calls App.ask."
+  receives = "JSON body {question}"
+  returns = "JSON with answer, error, cost_usd, stopped, sources, tool_results and trace; or 400 invalid_input"
+  stores = "nothing itself; a first visit gets new owner and thread ids in the session cookie"
+  payload = '''
+{"question": "Our two technicians spend most mornings re-entering printer service tickets. What would automating that save?"}
+
+'''
+  note = "The page never sends an owner id; create_app.owner assigns one on the server, so one browser cannot read another's thread."
+  [[journeys.steps]]
+  symbol = "milo.app:App.ask"
+  action = "Reads the last 20 turns of this owner's thread, runs the answer pipeline, saves the exchange when there is no error, and appends one line to the trace log."
+  receives = "question, user_id (owner id), thread_id"
+  returns = "Response (answer, sources, tool_results, cost_usd, stopped, error, trace)"
+  stores = "logs/trace.jsonl (one record per question, owner and thread hashed)"
+  tables = ["milo_v2.turns"]
+  payload = '''
+{"step": "history_read", "turns": 4, "ms": 2.1, "table": "turns"}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.app:App._ask"
+  action = "Checks the input (empty, over 4000 characters, control characters) and returns a plain-text refusal with error invalid_input if it fails."
+  receives = "question, user_id, trace list, prior turns"
+  returns = "Response with INVALID_MSG on a bad input; otherwise continues to retrieval"
+  stores = "nothing"
+  [[journeys.steps]]
+  symbol = "milo.app:App._retrieve"
+  action = "Embeds the question and asks the Chroma index for the top 5 chunks, keeping only those with a positive score; no hits means _ask abstains without calling the model."
+  receives = "question text"
+  returns = "list of Source (chunk_id, doc_id, score, text)"
+  stores = "nothing (the index lives in memory)"
+  payload = '''
+[{"chunk_id": "cases/print-fleet-acme#2", "doc_id": "cases/print-fleet-acme", "score": 0.61, "text": "Tickets were typed twice ..."}]
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.app:App._invoke"
+  action = "_ask builds the messages (system rules, prior turns, numbered passages plus the question) and calls the primary chat model with the tool specs; it retries twice with back-off, then tries the local fallback model once."
+  receives = "messages, tool specs"
+  returns = "(ChatReply with content, tool_calls and token usage, 'primary' or 'fallback'); raises if both fail, which _ask turns into PROVIDER_MSG"
+  stores = "nothing"
+  payload = '''
+{"content": "", "tool_calls": [{"id": "call_1", "name": "estimate_effect", "args": {"area_id": "request-dispatch"}}], "usage": {"input_tokens": 1830, "output_tokens": 42}}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.app:App._run_tool"
+  action = "For each tool call: checks the arguments against the spec, stops for approval if the tool is destructive, otherwise runs it with the session's owner id and puts the result back into the messages for the next model round."
+  receives = "tool name, arguments from the model, specs, user_id"
+  returns = "(ToolResult, decision 'allowed' | 'denied' | 'needs_approval')"
+  stores = "depends on the tool: record_fact writes facts, draft_diagnosis writes diagnoses"
+  note = "The loop runs at most MAX_STEPS = 4 model rounds; a 'needs_approval' decision ends the answer with stopped = true."
+  [[journeys.steps]]
+  symbol = "milo.app:App._cost"
+  action = "After every model round, adds the reply's token cost using the chat model's price per million tokens; a reply with no tool calls ends the loop and becomes the answer."
+  receives = "ChatReply"
+  returns = "cost in USD (float), summed into Response.cost_usd"
+  stores = "nothing"
+  payload = '''
+{"answer": "About 8 hours per week (range 6.4 to 9.6) [1]", "cost_usd": 0.00214, "stopped": false}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.pgstore:PostgresStore.append_turns"
+  action = "Back in App.ask, when there is no error, the store saves the user question and the assistant answer as two turns, creating the thread row if it is new (MemoryStore does the same in a dictionary)."
+  receives = "owner, thread, [{role: user, content}, {role: assistant, content}]"
+  returns = "None"
+  stores = "PostgreSQL schema milo_v2 when MILO_STORE=postgres; otherwise process memory"
+  tables = ["milo_v2.threads", "milo_v2.turns"]
+  payload = '''
+[{"role": "user", "content": "Our two technicians spend ..."}, {"role": "assistant", "content": "About 6 hours per week ..."}]
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.app:App._write_trace"
+  action = "Appends one JSON line with the step list, total time, error and cost; the owner and thread ids are stored only as 12-character SHA-256 prefixes."
+  receives = "thread_id, user_id, question, trace steps, Response, total_ms"
+  returns = "None"
+  stores = "logs/trace.jsonl"
+  payload = '''
+{"ts": "2026-10-20T09:14:02", "owner": "3f9a1c0b7e21", "question_chars": 96, "total_ms": 2410.5, "error": null, "cost_usd": 0.00214}
+
+'''
+
+[[journeys]]
+id = "open-chat"
+title = "Open the chat page and load earlier messages"
+actor = "visitor · browser"
+trigger = "GET / then GET /api/history"
+summary = "The server returns the static chat page and makes sure the session has an owner and a thread id. The page script then asks for the thread's last 40 turns and draws them."
+  [[journeys.steps]]
+  symbol = "milo.web:create_app.index"
+  actor = "browser"
+  action = "Starts a fresh thread when the URL has ?new=1, makes sure the session has an owner id, and returns the chat page HTML."
+  receives = "GET /, optional query parameter new"
+  returns = "text/html (the PAGE template from milo.page)"
+  stores = "session cookie: owner and thread ids (new on a first visit)"
+  [[journeys.steps]]
+  symbol = "milo.web:create_app.owner"
+  action = "Returns the owner id from the session, creating random owner and thread ids on the first visit; the page cannot choose them."
+  receives = "the Flask session"
+  returns = "owner id (32 hex characters)"
+  stores = "session cookie"
+  payload = '''
+{"owner": "a41c9e0d5b7f4e2a9c13d8f06b2e7a55", "thread": "0e6b2f9a1d3c4b8e8f7a6c5d4e3b2a10"}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.web:create_app.history"
+  actor = "browser (loadHistory in the page script)"
+  action = "Reads up to 40 turns of this owner's current thread and returns them as JSON for the page to draw."
+  receives = "GET /api/history (owner and thread from the session)"
+  returns = "JSON {turns: [{role, content}]}"
+  stores = "nothing"
+  payload = '''
+{"turns": [{"role": "user", "content": "How do we stop double entry of tickets?"}, {"role": "assistant", "content": "Passage [2] describes ..."}]}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.pgstore:PostgresStore.history"
+  action = "Selects the newest turns for this owner and thread, then reverses them into time order (MemoryStore slices its list instead)."
+  receives = "owner, thread, limit = 40"
+  returns = "list of {role, content}, oldest first"
+  stores = "nothing (read only)"
+  tables = ["milo_v2.turns"]
+
+[[journeys]]
+id = "monitor-status"
+title = "Check system status"
+actor = "operator · browser or curl"
+trigger = "GET /api/status"
+summary = "The status route gathers one snapshot: the store kind and row counts, whether the primary model key is set, whether the local Ollama model answers, and the spend logged by the web app. It only reads and never returns a secret."
+  [[journeys.steps]]
+  symbol = "milo.web:create_app.status"
+  actor = "operator (direct request; no page in the repo calls this route)"
+  action = "Works out the store kind (postgres or memory), reads the database URL and chat model name from the environment, and returns the snapshot as JSON."
+  receives = "GET /api/status"
+  returns = "JSON snapshot {app, store, models, spend}"
+  stores = "nothing"
+  payload = '''
+{"store": {"kind": "postgres", "database": {"reachable": true, "threads": 12, "turns": 88}}, "models": {"fallback": {"reachable": true}}, "spend": {"web_answers": 40, "web_cost_usd": 0.0812, "course_cap_usd": 3.0}}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.status:_ping_database"
+  action = "Only for a postgres store: connects with a 5-second timeout and counts rows in the four tables; any failure is reported as reachable = false with the error type."
+  receives = "database URL"
+  returns = "{reachable, latency_ms, threads, turns, facts, diagnoses} or {reachable: false, error}"
+  stores = "nothing (read only)"
+  tables = ["milo_v2.threads", "milo_v2.turns", "milo_v2.facts", "milo_v2.diagnoses"]
+  [[journeys.steps]]
+  symbol = "milo.status:_ping_local_model"
+  action = "Calls the local Ollama tags endpoint with a 3-second timeout and lists the installed model names."
+  receives = "nothing"
+  returns = "{reachable: true, models: [...]} or {reachable: false, error}"
+  stores = "nothing"
+  payload = '''
+{"reachable": true, "models": ["qwen3:8b"]}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.status:_spend"
+  action = "Reads logs/trace.jsonl and sums cost_usd over every web answer; evaluation runs are not counted here."
+  receives = "trace path"
+  returns = "{web_answers, web_cost_usd}"
+  stores = "nothing (reads logs/trace.jsonl)"
+
+[[journeys]]
+id = "start-up"
+title = "Start the app and build the index"
+actor = "operator (CLI)"
+trigger = "uv run python -m milo.serve"
+summary = "build_web picks the store, the embedder and the chat models from the environment, loads every knowledge-base article, chunks and embeds it, and puts the vectors in an in-memory Chroma index. It then wraps the app in the Flask routes and serves on 127.0.0.1:5000."
+  [[journeys.steps]]
+  symbol = "milo.serve:build_web"
+  actor = "operator (CLI)"
+  action = "Decides live or offline mode (live needs MILO_LIVE=1 and an OpenRouter key), chooses the embedder and chat model to match, and builds the App with the tools Backend and the local fallback model."
+  receives = "environment: MILO_LIVE, OPENROUTER_API_KEY (presence only), MILO_STORE"
+  returns = "Flask app from create_app"
+  stores = "nothing yet"
+  note = "Offline mode uses LexicalEmbedder and the local model, so the page starts without a key and without spend."
+  [[journeys.steps]]
+  symbol = "milo.serve:build_store"
+  action = "Returns a PostgresStore on MILO_DATABASE_URL when MILO_STORE=postgres, otherwise a MemoryStore; the same store is shared by the App and the tools Backend."
+  receives = "environment: MILO_STORE, MILO_DATABASE_URL"
+  returns = "PostgresStore or MemoryStore"
+  stores = "opens one autocommit PostgreSQL connection for the postgres store"
+  [[journeys.steps]]
+  symbol = "milo.serve:load_documents"
+  action = "Reads every Markdown file under data/kb, splits off its front matter, and makes a Document whose id is the path without the extension."
+  receives = "files in data/kb/**/*.md"
+  returns = "list of Document (doc_id, text, metadata)"
+  stores = "nothing"
+  payload = '''
+{"doc_id": "cases/print-fleet-acme", "metadata": {"section": "cases", "product": "request-dispatch"}, "text": "## Situation\nACME Ltd runs 40 printers ..."}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.app:App.ingest"
+  action = "Chunks every document body with its metadata, embeds all chunk texts in one call, and builds the index and the chunk lookup table."
+  receives = "list of Document"
+  returns = "None (sets App.index and App.chunks)"
+  stores = "process memory"
+  payload = '''
+{"chunk_id": "cases/print-fleet-acme#0", "doc_id": "cases/print-fleet-acme", "section": "cases", "vector_len": 1024}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.index:Index"
+  action = "Creates an ephemeral Chroma collection with cosine distance and adds one entry per chunk: id, vector, text and metadata (doc_id, section, product)."
+  receives = "chunks, vectors (one per chunk, else ValueError)"
+  returns = "Index ready for search"
+  stores = "in-memory Chroma collection, lost on restart"
+  [[journeys.steps]]
+  symbol = "milo.web:create_app"
+  action = "Wraps the App in a Flask app with the session secret from MILO_SECRET_KEY (or a random one) and registers the page and API routes."
+  receives = "App, optional secret key"
+  returns = "Flask app, run on 127.0.0.1:5000"
+  stores = "nothing"
+
+[[journeys]]
+id = "tool-call-effect"
+title = "Estimate the effect of automating one area"
+actor = "chat model (inside a question)"
+trigger = "tool call estimate_effect from the model"
+summary = "During the tool loop the model asks for estimate_effect on one service area. The app checks the call, the backend reads this owner's recorded facts and computes the hours saved in code, and the result goes back to the model."
+  [[journeys.steps]]
+  symbol = "milo.app:App._run_tool"
+  actor = "milo.app:App._ask (tool loop)"
+  action = "Checks the arguments against the estimate_effect spec (area_id must be a catalogue module); the tool's risk is read, so it runs at once with the session's owner id, never an id the model wrote."
+  receives = "name 'estimate_effect', args {area_id}, specs, user_id"
+  returns = "(ToolResult(output, ok = true, decision 'allowed'), 'allowed'); a ValueError, KeyError or TypeError becomes an error output for the model"
+  stores = "nothing"
+  payload = '''
+{"name": "estimate_effect", "args": {"area_id": "request-dispatch"}}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.tools:Backend.call"
+  action = "Looks up the handler method named _<tool name> and calls it with the arguments and the owner id."
+  receives = "name, args, user_id"
+  returns = "the handler's output"
+  stores = "nothing"
+  [[journeys.steps]]
+  symbol = "milo.tools:Backend._estimate_effect"
+  action = "Finds the area's effect inputs in the catalogue, reads the owner's facts, and computes events x (baseline minutes - new minutes) / 60 with a 0.8 to 1.2 range; without an events fact it returns needs_input instead of a number."
+  receives = "args {area_id}, user_id"
+  returns = "{status, unit, central, range, assumed} or {status: needs_input, needed}"
+  stores = "nothing (read only)"
+  payload = '''
+{"status": "ok", "unit": "hours per week", "central": 8.0, "range": [6.4, 9.6], "assumed": ["minutes_to_assign (assumed 12)", "new_minutes (assumed 4): ..."]}
+
+'''
+  note = "A missing baseline uses the catalogue default and is listed in 'assumed'; the model never supplies a number."
+  [[journeys.steps]]
+  symbol = "milo.pgstore:PostgresStore.facts"
+  action = "Selects every fact of this owner in insertion order and groups them by field id; _latest then takes the newest value whose status is not unknown."
+  receives = "owner"
+  returns = "{field_id: [{value, unit, status, evidence_text}]}"
+  stores = "nothing (read only)"
+  tables = ["milo_v2.facts"]
+  payload = '''
+{"requests_per_week": [{"value": 60, "unit": "requests/week", "status": "reported", "evidence_text": "about 60 requests a week"}]}
+
+'''
+
+[[journeys]]
+id = "evaluate-retrieval"
+title = "Evaluate retrieval on the dev or test split"
+actor = "developer (CLI)"
+trigger = "uv run python scripts/eval_retrieval.py --embedder lexical --split dev"
+summary = "The script chunks and embeds the knowledge base, runs every gold question of one split through the index, and records the rank of the first top-5 chunk that contains a gold quote. It writes recall@5 and nDCG@5 with bootstrap intervals to a result file, then replays the file to confirm the metrics."
+  [[journeys.steps]]
+  symbol = "scripts.eval_retrieval:main"
+  actor = "developer (CLI)"
+  action = "Parses --embedder, --max-cost, --split and --replay; a replay only recomputes metrics from a stored file, otherwise it runs the evaluation, writes the result and replays it."
+  receives = "command-line arguments"
+  returns = "exit code (1 on a replay mismatch)"
+  stores = "evals/results/retrieval/<split>_<embedder>.json"
+  [[journeys.steps]]
+  symbol = "scripts.eval_retrieval:run"
+  action = "Builds the embedder (gemini through OpenRouter needs MILO_LIVE=1 and is capped by --max-cost; lexical is free), chunks the knowledge base and builds the Index."
+  receives = "embedder name, max cost, split"
+  returns = "result dict: embedder, chunk settings, chunk_count, metrics, rows"
+  stores = "nothing itself"
+  [[journeys.steps]]
+  symbol = "scripts.eval_retrieval:split_rows"
+  action = "Reads data/gold.jsonl and keeps the rows of the split that have gold evidence; the test split is logged on every read and a second read is refused unless MILO_TEST_REREAD=1."
+  receives = "split name"
+  returns = "list of gold rows {qid, type, question, gold_evidence}"
+  stores = "evals/results/test_access.log (test split only)"
+  payload = '''
+{"qid": "d07", "split": "dev", "type": "case", "question": "How did a print shop cut double ticket entry?", "gold_evidence": [{"quote": "tickets were typed twice"}]}
+
+'''
+  [[journeys.steps]]
+  symbol = "milo.index:Index.search"
+  action = "For each embedded question, returns the top 5 chunks; run records the position of the first chunk whose normalised text contains a gold quote."
+  receives = "question vector, k = 5"
+  returns = "[(chunk_id, text, score)]"
+  stores = "nothing"
+  payload = '''
+{"qid": "d07", "type": "case", "rank": 2, "top5": ["cases/print-fleet-acme#1", "cases/print-fleet-acme#2", "..."]}
+
+'''
+  [[journeys.steps]]
+  symbol = "scripts.eval_retrieval:metrics"
+  action = "Groups rows by question type plus 'all' and computes mean recall@5 and nDCG@5 with a bootstrap 95% interval for each."
+  receives = "stored rows with ranks"
+  returns = "{type: {n, recall5: {mean, ci}, ndcg5: {mean, ci}}}"
+  stores = "nothing"
+  payload = '''
+{"all": {"n": 30, "recall5": {"mean": 0.8333, "ci": [0.7, 0.9667]}, "ndcg5": {"mean": 0.7012, "ci": [0.5803, 0.8155]}}}
+
+'''
+  [[journeys.steps]]
+  symbol = "scripts.eval_retrieval:replay"
+  action = "Reloads the written file, recomputes the metrics from the stored ranks, and prints OK or MISMATCH with one line per question type."
+  receives = "result file path"
+  returns = "None; exits 1 on a mismatch"
+  stores = "nothing"
+
+[[roles]]
+id = "http-httpx"
+name = "HTTP to the local Ollama server (httpx)"
+kind = "external"
+symbols = ["milo.llm:LocalOllamaChat.invoke", "milo.status:_ping_local_model"]
+purpose = "The app talks to a local Ollama server over plain HTTP: once per question when the local model answers (the fallback, or the primary when the app runs without MILO_LIVE), and once per status request to list the installed models. Calls to OpenRouter do not go through this code; they go through LangChain ChatOpenAI (see the model cards)."
+input = "LocalOllamaChat.invoke keeps only the system, user and assistant messages and drops tool calls and tool results, so the local model never sees or offers a tool."
+message = ["POST /api/chat on localhost:11434: model name, the plain messages, stream false, think false, options.temperature 0", "GET /api/tags on localhost:11434 (status page only): no body"]
+config = "Model name from MILO_LOCAL_MODEL (default qwen3:8b); the base URL is the constant LOCAL_BASE_URL in milo.llm. No key."
+output = "/api/chat returns message.content plus prompt_eval_count and eval_count, which become ChatReply content and Usage; a non-2xx status raises (raise_for_status). /api/tags returns the model list; the status card shows the names."
+validation = "Timeout 120 s per chat call (timeout_s), 3 s for the status ping. No retry inside LocalOllamaChat: App._invoke calls the fallback exactly once, and if it raises, App._ask returns PROVIDER_MSG with error provider_error:<type>. The status ping catches every exception and reports reachable false."
+logging = "App._ask writes one trace step per model call (model 'fallback' or 'primary', ms, token counts) to logs/trace.jsonl through App._write_trace."
+cost = "No money: price_usd_per_mtok is (0.0, 0.0). Latency was noted in the M5 lesson (about 10 s for the first call, about 5 s after); otherwise not measured."
+result_use = "The reply becomes the answer of the turn (no tool calls are possible); the tag list feeds the models.fallback block of /api/status."
+
+[[roles]]
+id = "postgresql"
+name = "PostgreSQL (Supabase), schema milo_v2"
+kind = "external"
+symbols = ["milo.pgstore:PostgresStore.__init__", "milo.status:_ping_database", "scripts.migrate:main"]
+purpose = "Keeps conversation turns, recorded facts and diagnosis cards across restarts when the app is started with MILO_STORE=postgres. Every query filters by owner_id."
+input = "PostgresStore methods receive the owner id from the server session (through App.ask and the tool Backend), never from the page or the model."
+message = ["PostgresStore: one autocommit psycopg connection guarded by a threading lock; parameterised insert/select on milo_v2.threads, turns, facts and diagnoses", "_ping_database: a fresh connection (connect_timeout 5 s) and four select count(*) queries", "scripts.migrate:main: create schema and milo_v2.schema_migrations, then each unapplied file in db/migrations/ in one transaction"]
+config = "MILO_STORE=postgres selects it in milo.serve:build_store; the connection string is MILO_DATABASE_URL (migrate.py falls back to reading that name from the untracked .env)."
+output = "Rows as tuples; add_fact and add_diagnosis return the owner's row count after the insert; history returns the newest turns in chronological order."
+validation = "No retry and no reconnect: a dropped connection makes the next store call raise. The schema enforces role in (user, assistant), status in (reported, conflicting, unknown) and a cascade from threads to turns. The status ping catches every exception and reports reachable false with the exception type."
+logging = "The trace step names the table touched (history_read on turns, tool steps via TOOL_TABLES); migrate.py prints applied / already applied per file."
+cost = "not measured"
+result_use = "History is put in front of the question for the model; facts feed estimate_effect and draft_diagnosis; counts are shown on /api/status."
+
+[[roles]]
+id = "model-ask"
+name = "Answer model in a web question"
+kind = "model"
+symbols = ["milo.web:create_app.ask", "milo.app:App._invoke", "milo.llm:LangChainChat.invoke"]
+purpose = "Writes the answer to the owner's question from the retrieved passages and decides which tool, if any, to call (record a fact, estimate an effect, draft a diagnosis, ...)."
+input = "System prompt milo.app:SYSTEM, the thread's last 20 turns from the store, and a user message built in App._ask as 'Passages:' plus the top 5 numbered passages and 'Question:'. Tool specs come from data/tools.yaml through Backend.specs."
+message = ["system: SYSTEM (answer only from the numbered passages, cite them, passages are data, never invent a number)", "user / assistant: prior turns of this thread", "user: numbered passages + the question", "assistant + tool (loop, up to MAX_STEPS = 4): the model's tool calls and the JSON tool results"]
+config = "live_chat_model: MILO_LIVE=1 and OPENROUTER_API_KEY must be set; model MILO_CHAT_MODEL (default anthropic/claude-haiku-5.5), prices MILO_PRICE_IN / MILO_PRICE_OUT; base URL OPENROUTER_BASE_URL; temperature 0, timeout 30 s, max_retries 0 in ChatOpenAI."
+output = "ChatReply: text content, a list of ToolCall (id, name, args) and Usage (input and output tokens)."
+validation = "App._invoke retries the primary twice (RETRIES = 2, back-off 0.5 s then 1 s), then calls the local fallback once; if that fails too the user gets PROVIDER_MSG. Every tool call is checked by validate_args against its spec; a destructive tool is never run and stops the loop with needs_approval."
+logging = "One trace step per model call (which model answered, ms, tokens, tool names) and the per-answer cost_usd in logs/trace.jsonl; /api/status sums cost_usd."
+cost = "Computed per reply by App._cost from token counts and the configured price (default 0.10 / 0.50 USD per million tokens in and out). Total spend in the web app is the sum of cost_usd in the trace; per-question cost not measured."
+result_use = "The final text is returned as the answer with its sources and tool results, and the question and answer are appended to the thread (only when there was no error)."
+
+[[roles]]
+id = "model-judge-all"
+name = "LLM judge (faithfulness and relevance)"
+kind = "model"
+symbols = ["scripts.run_judge:judge_all"]
+purpose = "Labels each saved app answer as faithful (every claim supported by its passages) and relevant, so the judge can be compared with the reference labels by Cohen's kappa."
+input = "The PROMPT template in scripts/run_judge.py with QQQ, AAA and PPP replaced by the question, the answer and the numbered passages of each item in evals/judge/answers.json."
+message = ["user: the filled-in PROMPT (no system message)"]
+config = "JUDGE_MODEL (default anthropic/claude-haiku-5.5) and OPENROUTER_API_KEY; ChatOpenAI on the OpenRouter base URL, temperature 0, timeout 120 s, max_retries 0. Runs only without --replay."
+output = "JSON {\"faithful\": 0|1, \"relevant\": 0|1}, read by parse with a regular expression around the first {...} block."
+validation = "No retry and no repair: a reply without valid JSON stops the run with an exception. The run is not gated by MILO_LIVE; the docstring asks for it but judge_all only needs the key."
+logging = "Writes evals/judge/judge_outputs_<model>.json and judge_result_<model>.json; no token count or cost is recorded (the price is passed as 0, 0)."
+cost = "The script's docstring estimates about 0.05 USD per run; not measured by the code."
+result_use = "main computes kappa with a bootstrap 95% interval and marks the judge usable only if kappa >= 0.60 and the lower bound >= 0.30."
+
+[[roles]]
+id = "model-live"
+name = "Live model in the tool-selection evaluation"
+kind = "model"
+symbols = ["scripts.eval_tools:live", "milo.llm:live_chat_model"]
+purpose = "Runs the real chat model through build_app on each tool-selection case to measure whether it calls the expected tools with the expected arguments."
+input = "Each case of the tool cases file: its facts are pre-recorded through Backend.call, one placeholder passage is ingested, and the case query goes through App.ask with the app's SYSTEM prompt."
+message = ["system: milo.app:SYSTEM", "user: the single placeholder passage + the case query", "assistant + tool: tool calls and their results, as in the web app"]
+config = "--live and MILO_LIVE=1 on the command line, then live_chat_model (OPENROUTER_API_KEY, MILO_CHAT_MODEL). Embeddings are the offline LexicalEmbedder, so only chat calls are paid."
+output = "The called tools and arguments per case, scored against expected_calls by score and aggregate."
+validation = "The same retry rule as the app (App._invoke), but no fallback model is given to build_app. The --max-cost value is accepted but not enforced (see the finding)."
+logging = "Writes the per-case rows and metrics to the results file (RESULTS) and prints the metrics."
+cost = "Estimated under 0.01 USD for 20 cases in the M3 lesson; not measured by the code."
+result_use = "Reported in the M3 lesson as strict and lenient tool-selection scores."
+
+[[roles]]
+id = "model-main"
+name = "Live app answers for the judge sheets"
+kind = "model"
+symbols = ["scripts.make_judge_sheet:main", "scripts.make_judge_extra:main"]
+purpose = "Produces the answers the judge is calibrated on: the full live app (live chat model, OpenRouter embeddings, tools, in-memory store) answers the dev gold questions and owner-story headlines."
+input = "The knowledge base from milo.serve:load_documents; questions from the gold set and the headlines in data/stories/owner_stories.md (S01-S10 for the sheet, S11-S20 for the extra batch)."
+message = ["Same messages as the web answer model: system SYSTEM, user passages + question, tool loop"]
+config = "MILO_LIVE=1 (checked in main), live_chat_model (OPENROUTER_API_KEY, MILO_CHAT_MODEL); OpenRouterEmbedder with a 0.05 USD cap."
+output = "Answers with their passages, saved as evals/judge/answers.json / answers_extra.json, and a Markdown sheet for labelling."
+validation = "App._invoke retries; no fallback model is passed, so a provider failure gives the PROVIDER_MSG answer in the saved file. Embedding spend stops at its cap; chat spend has no cap in these scripts."
+logging = "Only the output files; no trace path is set, so no trace lines are written."
+cost = "The sheet script's docstring estimates about 0.05 USD; not measured by the code."
+result_use = "The answers become the items run_judge.py judges and the rows of labels.csv / labels_extra.csv."
+
+[[input_flows]]
+id = "in-create-app-ask"
+source = "Request to /api/ask (TODO: what the client sends)"
+sink = "Conversation turns, facts and diagnoses in the milo_v2 schema of the database (or in memory), and one trace line per question in logs/trace.jsonl."
+  [[input_flows.steps]]
+  symbol = "milo.web:create_app.ask"
+  guard = "Rejects a question that is not text (400, invalid_input). Empty, over-length and control-character input are rejected later, in App."
+  [[input_flows.steps]]
+  symbol = "milo.web:create_app.owner"
+  guard = "Creates the owner and thread ids in the server session; the request body cannot set them."
+  [[input_flows.steps]]
+  symbol = "milo.app:App.ask"
+  guard = "Checks length, emptiness and control characters before any model call; returns invalid_input without calling the model."
+
+[[entities]]
+id = "milo-v2-diagnoses"
+name = "milo_v2.diagnoses"
+table = "milo_v2.diagnoses"
+summary = "One row = one drafted diagnosis card for one automation area: area_id plus the card as JSON (status full or conditional, the missing must-have fields, and the effect estimate)."
+  [[entities.events]]
+  stage = "born"
+  symbol = "milo.pgstore:PostgresStore.add_diagnosis"
+  by = "the draft_diagnosis tool (milo.tools:Backend._draft_diagnosis)"
+  text = "Inserted with the card built in code; the returned row count becomes the diagnosis_id shown to the model."
+  [[entities.events]]
+  stage = "read"
+  symbol = "milo.pgstore:PostgresStore.diagnoses"
+  by = "tests only"
+  text = "No app route or tool reads the cards back yet; the page shows the card only in the tool result of the turn that drafted it."
+  [[entities.events]]
+  stage = "read"
+  symbol = "milo.status:_ping_database"
+  by = "GET /api/status"
+  text = "Counted."
+  [[entities.events]]
+  stage = "delete"
+  symbol = "milo.pgstore:PostgresStore.delete_owner"
+  by = "tests (reset_diagnosis is blocked as destructive and never deletes)"
+  text = "Deleted per owner."
+
+[[entities]]
+id = "milo-v2-facts"
+name = "milo_v2.facts"
+table = "milo_v2.facts"
+summary = "One row = one fact the owner stated during intake: the harness field (field_id), its value as JSON, unit, status (reported, conflicting, unknown) and the owner's own words as evidence. A new statement adds a row; old rows are kept."
+  [[entities.events]]
+  stage = "born"
+  symbol = "milo.pgstore:PostgresStore.add_fact"
+  by = "the record_fact tool (milo.tools:Backend._record_fact), called by the model"
+  text = "Inserted after the status is checked against STATUSES; returns how many rows this owner has for the field."
+  [[entities.events]]
+  stage = "read"
+  symbol = "milo.pgstore:PostgresStore.facts"
+  by = "get_recorded_facts, estimate_effect and draft_diagnosis tools"
+  text = "All of the owner's facts in insert order, grouped by field; estimate_effect uses the latest value that is not 'unknown'."
+  [[entities.events]]
+  stage = "read"
+  symbol = "milo.status:_ping_database"
+  by = "GET /api/status"
+  text = "Counted."
+  [[entities.events]]
+  stage = "delete"
+  symbol = "milo.pgstore:PostgresStore.delete_owner"
+  by = "tests"
+  text = "Deleted per owner."
+
+[[entities]]
+id = "milo-v2-turns"
+name = "milo_v2.turns"
+table = "milo_v2.turns"
+summary = "One row = one message in a thread: role (user or assistant), the text, and its order (id). Each answered question adds two rows."
+  [[entities.events]]
+  stage = "born"
+  symbol = "milo.pgstore:PostgresStore.append_turns"
+  by = "App.ask (only when response.error is None)"
+  text = "The question and the answer are inserted together; failed answers are not stored."
+  [[entities.events]]
+  stage = "read"
+  symbol = "milo.pgstore:PostgresStore.history"
+  by = "App.ask (last 20 messages, sent to the model) and GET /api/history (last 40, shown on the page)"
+  text = "Selected by owner and thread, newest first, then reversed to chronological order."
+  [[entities.events]]
+  stage = "read"
+  symbol = "milo.status:_ping_database"
+  by = "GET /api/status"
+  text = "Counted."
+  [[entities.events]]
+  stage = "delete"
+  symbol = "milo.pgstore:PostgresStore.delete_owner"
+  by = "tests"
+  text = "Deleted per owner (also cascades when a thread is deleted)."
+
+[[entities]]
+id = "milo-v2-threads"
+name = "milo_v2.threads"
+table = "milo_v2.threads"
+summary = "One row = one conversation of one owner: the pair (owner_id, thread_id) and when it started. Both ids are random hex values made in the server session."
+  [[entities.events]]
+  stage = "born"
+  symbol = "milo.pgstore:PostgresStore.append_turns"
+  by = "App.ask after a successful answer"
+  text = "Inserted with 'on conflict do nothing' before the turns, so the first answered question creates it."
+  [[entities.events]]
+  stage = "read"
+  symbol = "milo.status:_ping_database"
+  by = "GET /api/status"
+  text = "Only counted for the status page; no code lists threads."
+  [[entities.events]]
+  stage = "delete"
+  symbol = "milo.pgstore:PostgresStore.delete_owner"
+  by = "tests (the owner-deletion request is not exposed yet)"
+  text = "Deleted with all of the owner's turns, facts and diagnoses."
+
+[[decisions]]
+decision = "What the fallback model may do"
+by = "code"
+how = "LocalOllamaChat.invoke drops tool specs, tool calls and tool results and sends only plain messages, so the local model answers from the passages and can never record, draft or delete. Reason in the class docstring: 'a fallback can never act'. Trade-off: during an outage the bot still answers but cannot record facts or estimate, and a half-finished tool loop loses its tool context."
+symbol = "milo.llm:LocalOllamaChat.invoke"
+
+[[decisions]]
+decision = "Where conversation state is kept by default"
+by = "people (config file)"
+how = "milo.serve:build_store returns MemoryStore unless MILO_STORE=postgres; the store docstring says state is lost on restart 'as issue #2 specifies'. Trade-off: the app starts with no database and tests stay offline, but every restart forgets threads, facts and diagnoses unless the PostgreSQL store is chosen."
+symbol = "milo.serve:build_store"
+
+[[decisions]]
+decision = "Who computes the time-saving estimate"
+by = "code"
+how = "Backend._estimate_effect computes events x (baseline - new minutes) / 60 with a RANGE band from recorded facts; a missing event count returns needs_input instead of a guess, and assumed inputs are labelled. Reason (tools docstring, M3 lesson): 'The model never supplies a number.' Trade-off: the estimate only covers what the catalogue formula models, and the model must call the tool and then ask for missing data."
+symbol = "milo.tools:Backend._estimate_effect"
+
+[[decisions]]
+decision = "Whose data a request may touch"
+by = "code"
+how = "The owner id is a random value stored in the server-side Flask session by create_app.owner; /api/ask reads only 'question' from the body and passes the session owner to App.ask, which passes it to every tool. Reason (M6 lesson): a page that sends its own owner id can be pointed at someone else's data. Trade-off: identity is per browser cookie, with no login, so clearing cookies or a new MILO_SECRET_KEY (random when unset) starts a new owner."
+symbol = "milo.web:create_app.owner"
+
+[[decisions]]
+decision = "How provider failures are retried"
+by = "code"
+how = "App._invoke retries the primary twice (RETRIES = 2, back-off 0.5 s and 1 s; ChatOpenAI itself has max_retries 0), then the fallback once, then the user gets a fixed PROVIDER_MSG. Reason (M5 lesson): 'Bound every retry'. Trade-off: the worst case is known, but a slow provider can make one question wait for three 30 s timeouts plus the 120 s fallback."
+symbol = "milo.app:App._invoke"
+
+[[decisions]]
+decision = "Whether a destructive tool runs"
+by = "code"
+how = "App._run_tool never calls a tool whose spec has risk 'destructive'; it returns needs_approval and App._ask stops the loop with 'This action needs your approval first.' Trade-off: reset_diagnosis can never run, because no approval path exists yet."
+symbol = "milo.app:App._run_tool"
+
+[[findings]]
+id = "eval-tools-max-cost-ignored"
+severity = "medium"
+category = "risk"
+title = "eval_tools.py --max-cost is accepted but never enforced"
+detail = "scripts/eval_tools.py documents 'MILO_LIVE=1 ... --live --max-cost 0.02', and main passes args.max_cost into live, but live never reads max_cost: it builds live_chat_model and runs every case through App.ask with no spend check. Trigger: a larger case file, a pricier MILO_CHAT_MODEL or a model that loops on tools. Reach: paid OpenRouter spend in that script only (the app and the embedder have their own accounting/cap)."
+symbols = ["scripts.eval_tools:live"]
+evidence = "Read scripts.eval_tools:live and scripts.eval_tools:main; grep for max_cost in scripts/eval_tools.py matches only the live signature and the call in main. Compare milo.embed:OpenRouterEmbedder, which checks max_cost_usd before each call."
+check = {kind = "text_in", pattern = "def live\\(max_cost: float\\) -> None:\\s+import os"}
+
+[[findings]]
+id = "serve-doc-offline-model"
+severity = "low"
+category = "doc vs code"
+title = "serve.py says the offline app uses 'a model that answers nothing'; it uses the local Ollama model"
+detail = "The milo.serve module docstring says that without MILO_LIVE 'a model that answers nothing' is used so the page still starts. build_web uses local_chat_model() as the primary and again as the fallback. Trigger: starting the page without MILO_LIVE and without Ollama running; every question then tries Ollama three times with back-off and once more as fallback before PROVIDER_MSG, instead of starting quietly. Reach: local demos and anyone following the docstring."
+symbols = ["milo.serve:build_web"]
+evidence = "Read milo.serve module docstring and milo.serve:build_web ('chat = live_chat_model() if live else local_chat_model()', fallback_chat=local_chat_model()); milo.app:App._invoke for the retry count."
+check = {kind = "calls", target = "milo.llm:local_chat_model"}
+
+[[findings]]
+id = "store-doc-only-memory"
+severity = "low"
+category = "doc vs code"
+title = "store.py says only MemoryStore exists, but PostgresStore implements the same interface"
+detail = "The milo.store module docstring says 'Only MemoryStore exists ... A database store (SQLite or PostgreSQL) implements the same methods later'. milo.pgstore:PostgresStore exists, is selected by MILO_STORE=postgres in milo.serve:build_store, and writes to the four milo_v2 tables. Trigger: a reader of store.py concludes nothing persists. Reach: documentation only; behaviour is correct."
+symbols = ["milo.pgstore:PostgresStore.__init__", "milo.serve:build_store"]
+evidence = "Read the milo.store module docstring, milo.pgstore:PostgresStore and milo.serve:build_store; codeflow find PostgresStore lists 10 symbols in src/milo/pgstore.py."
+check = "symbol_exists"
