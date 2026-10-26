@@ -111,6 +111,8 @@ PAGE = (
 .src-link{font-size:13px;color:var(--accent);text-decoration:none}
 .src-link:hover{text-decoration:underline}
 .stage-detail{margin-top:4px}
+.tool-row{display:flex;flex-direction:column;gap:3px;padding:10px 0;border-top:1px solid var(--line)}
+.tool-row:first-of-type{border-top:0}
 .md-h{font-size:15px;margin:10px 0 4px}
 .md-list{margin:6px 0;padding-left:22px}
 .text code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--bg);padding:1px 5px;border-radius:4px}
@@ -164,6 +166,7 @@ PAGE = (
     <header class="topbar">
       <h1>Diagnosis chat</h1>
       <span class="spacer"></span>
+      <button class="button" id="summarize" type="button">Summary and spec</button>
       <button class="button" id="sources-toggle" type="button" aria-controls="panel">Sources</button>
       <a class="button" href="/chat?new=1" id="new">New conversation</a>
       <span class="muted" id="cost" hidden></span>
@@ -454,6 +457,29 @@ PAGE = (
     return box;
   }
 
+  // One tool call: what it was for, its technical name, the arguments it got, what it returned, and the policy decision.
+  function toolRow(t) {
+    const d = DECISION[t.policy_decision] || ["", t.policy_decision];
+    const row = el("div", "tool-row");
+    row.appendChild(el("b", "", TOOL[t.name] || t.name));
+    row.appendChild(el("span", "tech", t.name));
+    const args = Object.entries(t.arguments || {}).map(([k, v]) => k + ": " + JSON.stringify(v)).join(", ");
+    row.appendChild(el("span", "muted", "Arguments: " + (args || "none")));
+    row.appendChild(el("span", "muted", "Result: " + resultLine(t)));
+    row.appendChild(el("span", "pill " + d[0], d[1]));
+    return row;
+  }
+
+  function resultLine(t) {
+    const o = t.output || {};
+    if (o.status === "ok") return o.range[0] + " to " + o.range[1] + " " + o.unit;
+    if (o.status === "needs_input") return "needs " + String(o.needed || "more facts").replace(/_/g, " ");
+    if (Array.isArray(o.passages)) return o.passages.length + " passages";
+    if (o.facts) return Object.keys(o.facts).length + " facts recorded";
+    const text = JSON.stringify(o);
+    return text.length > 120 ? text.slice(0, 120) + "..." : text;
+  }
+
   function stageDetail(m, idx) {
     const box = el("div", "found stage-detail");
     const sources = m.sources || [];
@@ -468,10 +494,7 @@ PAGE = (
     } else if (idx === 2) {
       box.appendChild(el("h3", "", "What MILO used tools for"));
       if (!tools.length) box.appendChild(el("p", "", "No tool was needed for this answer."));
-      tools.forEach((t) => {
-        const d = DECISION[t.policy_decision];
-        box.appendChild(el("p", "", (TOOL[t.name] || t.name) + " (" + (d ? d[1] : t.policy_decision) + ")"));
-      });
+      tools.forEach((t) => box.appendChild(toolRow(t)));
     } else {
       box.appendChild(el("h3", "", "How the answer was written"));
       box.appendChild(el("p", "", "The answer was written only from the passages above. Each number in the text points to a source in the list."));
@@ -479,6 +502,7 @@ PAGE = (
     return box;
   }
 
+  const summarizeBtn = document.getElementById("summarize");
   let viewer = null;
 
   async function openDocument(src) {
@@ -556,6 +580,12 @@ PAGE = (
     if (m.stopped) card.appendChild(el("div", "approval", "MILO needs your approval before it changes anything. Nothing was changed."));
 
     const follow = el("div", "chips");
+    if ((m.tool_results || []).some((t) => t.name === "estimate_effect" && t.output && t.output.status === "ok")) {
+      const wrap = el("button", "chip", "Summarize and propose the spec");
+      wrap.type = "button";
+      wrap.addEventListener("click", summarize);
+      follow.appendChild(wrap);
+    }
     const shorter = el("button", "chip", "Shorter answer");
     shorter.type = "button";
     shorter.addEventListener("click", () => { if (!busy && m.question) ask("In two sentences: " + m.question); });
@@ -618,6 +648,7 @@ PAGE = (
     }
     messages.forEach((m) => {
       if (m.role === "user") inner.appendChild(el("div", "you", m.text));
+      else if (m.role === "summary") inner.appendChild(summaryCard(m.data));
       else inner.appendChild(answerCard(m));
     });
     thread.appendChild(inner);
@@ -695,6 +726,62 @@ PAGE = (
     }
   });
   input.addEventListener("input", autosize);
+
+  // The end of the conversation: the facts recorded, the estimate per area, and the spec MILO proposes from them.
+  async function summarize() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const res = await fetch("/api/summary");
+      if (!res.ok) throw new Error("summary failed");
+      messages.push({role: "summary", data: await res.json()});
+    } catch (err) {
+      messages.push({role: "assistant", text: "", error: "The summary could not be made. Try again in a moment."});
+    } finally {
+      setBusy(false);
+      render();
+    }
+  }
+  summarizeBtn.addEventListener("click", summarize);
+
+  function summaryCard(d) {
+    const card = el("article", "answer summary-card");
+    card.appendChild(el("div", "answer-tag", "Summary and proposed spec"));
+    card.appendChild(el("h3", "", d.proposal.headline));
+    card.appendChild(el("p", "", d.proposal.body));
+    if (d.proposal.scope.length) {
+      card.appendChild(el("h4", "", "Included"));
+      const list = el("ul", "md-list");
+      d.proposal.scope.forEach((x) => list.appendChild(el("li", "", x)));
+      card.appendChild(list);
+    }
+    if (d.proposal.excluded.length) {
+      card.appendChild(el("h4", "", "Not included"));
+      const list = el("ul", "md-list");
+      d.proposal.excluded.forEach((x) => list.appendChild(el("li", "", x)));
+      card.appendChild(list);
+    }
+    card.appendChild(el("h4", "", "What MILO recorded"));
+    if (!d.facts.length) card.appendChild(el("p", "muted", "Nothing recorded yet."));
+    d.facts.forEach((f) => card.appendChild(el("p", "", f.field + ": " + f.value + " (" + f.status + ")")));
+    card.appendChild(el("h4", "", "Estimated saving by area"));
+    d.areas.forEach((a) => {
+      const e = a.estimate;
+      const text = e.status === "ok"
+        ? e.range[0] + " to " + e.range[1] + " " + e.unit
+        : "needs " + String(e.needed || "more facts").replace(/_/g, " ");
+      card.appendChild(el("p", "", a.name + ": " + text));
+    });
+    if (d.missing.length) {
+      card.appendChild(el("h4", "", "Still missing"));
+      card.appendChild(el("p", "", d.missing.join(", ")));
+    }
+    if (d.proposal.then && d.proposal.then.length) {
+      card.appendChild(el("p", "muted", "Next areas: " + d.proposal.then.join(", ")));
+    }
+    card.appendChild(el("p", "muted", "Computed in code from the facts recorded in this conversation. The assumptions are listed in the estimate. Nothing here is a price."));
+    return card;
+  }
 
   async function loadHistory() {
     try {

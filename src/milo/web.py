@@ -205,6 +205,13 @@ def create_app(
             return Response("Document not found", status=404, mimetype="text/plain")
         return html(page)
 
+    @web.get("/api/summary")
+    @login_needed()
+    def summary() -> Any:
+        from milo.summary import build_summary
+
+        return jsonify(build_summary(milo_app.tools, owner()))
+
     @web.get("/api/kb/<path:doc_id>")
     def kb_text(doc_id: str) -> Any:
         from milo.kb_pages import document_json
