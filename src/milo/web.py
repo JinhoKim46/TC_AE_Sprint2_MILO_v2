@@ -19,6 +19,7 @@ from flask import Flask, Response, jsonify, request, session
 
 from milo.app import App
 from milo.page import DASHBOARD, PAGE
+from milo.shell import FAVICON, SHELL_CSS, brand_html, nav_html
 
 REASONS = ("wrong", "outdated", "missing_source", "hard_to_follow")
 
@@ -36,14 +37,26 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
             session["thread"] = uuid.uuid4().hex
         return session["owner"]
 
+    def chat_page(active: str) -> str:
+        return (
+            PAGE.replace("<!--BRAND-->", brand_html("/"))
+            .replace("<!--NAV-->", nav_html(active))
+            .replace("<!--FAVICON-->", FAVICON)
+            .replace("<style>", "<style>" + SHELL_CSS, 1)
+        )
+
+    @web.get("/chat")
+    def chat() -> Response:
+        if request.args.get("new"):
+            # a fresh conversation for the same owner
+            session["thread"] = uuid.uuid4().hex
+        owner()
+        return Response(chat_page("chat"), mimetype="text/html")
+
     @web.get("/")
     def index() -> Response:
-        if request.args.get("new"):
-            session["thread"] = (
-                uuid.uuid4().hex
-            )  # a fresh conversation for the same owner
-        owner()
-        return Response(PAGE, mimetype="text/html")
+        # The landing page replaces this route. Until then the chat stays available at the root too.
+        return chat()
 
     @web.get("/api/flows")
     def flows() -> Any:
@@ -54,7 +67,13 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
 
     @web.get("/dashboard")
     def dashboard() -> Response:
-        return Response(DASHBOARD, mimetype="text/html")
+        page = (
+            DASHBOARD.replace("<!--BRAND-->", brand_html("/"))
+            .replace("<!--NAV-->", nav_html("overview"))
+            .replace("<!--FAVICON-->", FAVICON)
+            .replace("<style>", "<style>" + SHELL_CSS, 1)
+        )
+        return Response(page, mimetype="text/html")
 
     @web.post("/api/feedback")
     def feedback() -> Any:
@@ -87,6 +106,21 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
         with path.open("a") as f:
             f.write(json.dumps(record) + "\n")
         return jsonify({"ok": True})
+
+    @web.get("/kb")
+    def kb_index() -> Response:
+        from milo.kb_pages import index_page
+
+        return Response(index_page(), mimetype="text/html")
+
+    @web.get("/kb/<path:doc_id>")
+    def kb_document(doc_id: str) -> Any:
+        from milo.kb_pages import document_page
+
+        page = document_page(doc_id)
+        if page is None:
+            return Response("Document not found", status=404, mimetype="text/plain")
+        return Response(page, mimetype="text/html")
 
     @web.get("/api/status")
     def status() -> Any:

@@ -38,6 +38,7 @@ PAGE = (
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MILO · Diagnosis chat</title>
+<!--FAVICON-->
 <style>
 """
     + _BASE_CSS
@@ -74,6 +75,21 @@ PAGE = (
 .trust .label{font-size:14px;color:var(--mut)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .feedback{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}
+.cite{font:inherit;font-size:12px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--accent);cursor:pointer;vertical-align:middle;line-height:20px}
+.cite:hover{border-color:var(--accent)}
+.cite.static{cursor:default}
+.sources{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.source{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.source:focus{outline:none}
+.source.flash{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.src-head{display:flex;gap:8px;align-items:center}
+.src-excerpt{margin:6px 0;font-size:14px}
+.src-link{font-size:13px;color:var(--accent);text-decoration:none}
+.src-link:hover{text-decoration:underline}
+.stage-detail{margin-top:4px}
+.md-h{font-size:15px;margin:10px 0 4px}
+.md-list{margin:6px 0;padding-left:22px}
+.text code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--bg);padding:1px 5px;border-radius:4px}
 .chip{font:inherit;font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
 .chip:hover{border-color:var(--accent)}
 .found{background:var(--bg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
@@ -112,8 +128,9 @@ PAGE = (
 <body>
 <div class="layout">
   <aside class="side">
-    <div class="brand">MILO<span>Diagnosis assistant</span></div>
-    <a class="button" href="/?new=1" id="new">New conversation</a>
+    <!--BRAND-->
+    <!--NAV-->
+    <a class="button" href="/chat?new=1" id="new">New conversation</a>
     <div class="how">
       <h3>How MILO works</h3>
       <ol>
@@ -269,6 +286,118 @@ PAGE = (
     return row;
   }
 
+  // Minimal, safe Markdown: text is added with textContent, and only a fixed set of tags is created.
+  function inline(text, m, parent) {
+    const parts = String(text).split(/(\\*\\*[^*\\n]+\\*\\*|`[^`\\n]+`|\\*[^*\\n]+\\*|\\[\\d+\\])/g);
+    parts.forEach((part) => {
+      if (!part) return;
+      if (/^\\*\\*[^*]+\\*\\*$/.test(part)) parent.appendChild(el("strong", "", part.slice(2, -2)));
+      else if (/^`[^`]+`$/.test(part)) parent.appendChild(el("code", "", part.slice(1, -1)));
+      else if (/^\\*[^*]+\\*$/.test(part)) parent.appendChild(el("em", "", part.slice(1, -1)));
+      else if (/^\\[\\d+\\]$/.test(part)) {
+        const n = Number(part.slice(1, -1));
+        const b = el("button", "cite", String(n));
+        b.type = "button";
+        const src = (m.sources || [])[n - 1];
+        b.title = src ? docTitle(src.doc_id) : "Source " + n;
+        b.setAttribute("aria-label", "Source " + n + ": " + b.title);
+        b.addEventListener("click", () => highlightSource(m, n));
+        parent.appendChild(b);
+      } else parent.appendChild(document.createTextNode(part));
+    });
+    return parent;
+  }
+
+  function renderMarkdown(m) {
+    const wrap = el("div", "text");
+    let list = null;
+    let para = null;
+    String(m.text || "").split("\\n").forEach((raw) => {
+      const line = raw.trimEnd();
+      const heading = line.match(/^(#{1,3})\\s+(.*)$/);
+      const bullet = line.match(/^\\s*[-*]\\s+(.*)$/);
+      const ordered = line.match(/^\\s*\\d+[.)]\\s+(.*)$/);
+      if (!line.trim()) { list = null; para = null; return; }
+      if (heading) {
+        list = null; para = null;
+        inline(heading[2], m, wrap.appendChild(el("h4", "md-h")));
+      } else if (bullet || ordered) {
+        const tag = bullet ? "ul" : "ol";
+        if (!list || list.tagName.toLowerCase() !== tag) { list = el(tag, "md-list"); wrap.appendChild(list); }
+        para = null;
+        inline((bullet || ordered)[1], m, list.appendChild(el("li")));
+      } else {
+        if (!para) { para = wrap.appendChild(el("p")); list = null; }
+        inline(line + " ", m, para);
+      }
+    });
+    return wrap;
+  }
+
+  function highlightSource(m, n) {
+    const target = document.getElementById("src-" + m.key + "-" + n);
+    if (!target) return;
+    target.scrollIntoView({behavior: "smooth", block: "center"});
+    target.classList.remove("flash");
+    void target.offsetWidth;
+    target.classList.add("flash");
+    target.focus({preventScroll: true});
+  }
+
+  function sourceList(m) {
+    const box = el("div", "found");
+    box.appendChild(el("h3", "", "Sources for this answer"));
+    const list = el("ol", "sources");
+    (m.sources || []).forEach((src, i) => {
+      const n = i + 1;
+      const item = el("li", "source");
+      item.id = "src-" + m.key + "-" + n;
+      item.tabIndex = -1;
+      const head = el("div", "src-head");
+      head.append(el("span", "cite static", String(n)), el("b", "", docTitle(src.doc_id)));
+      item.append(head, el("div", "muted", docSection(src.doc_id)));
+      item.appendChild(el("p", "src-excerpt", src.text.slice(0, 220) + (src.text.length > 220 ? "..." : "")));
+      const link = el("a", "src-link", "Open the document");
+      link.href = "/kb/" + src.doc_id;
+      link.target = "_blank";
+      link.rel = "noopener";
+      item.appendChild(link);
+      list.appendChild(item);
+    });
+    box.appendChild(list);
+    return box;
+  }
+
+  function stageDetail(m, idx) {
+    const box = el("div", "found stage-detail");
+    const sources = m.sources || [];
+    const tools = m.tool_results || [];
+    if (idx === 0) {
+      box.appendChild(el("h3", "", "Read the conversation"));
+      box.appendChild(el("p", "", m.history_turns ? "MILO read " + m.history_turns + " earlier messages from this conversation, so that follow-up questions make sense." : "This was the first message, so there was no earlier conversation to read."));
+    } else if (idx === 1) {
+      box.appendChild(el("h3", "", "Passages found"));
+      if (!sources.length) box.appendChild(el("p", "", "No passage matched this question closely enough to be used."));
+      sources.forEach((src, i) => box.appendChild(el("p", "", (i + 1) + ". " + docTitle(src.doc_id))));
+    } else if (idx === 2) {
+      box.appendChild(el("h3", "", "What MILO used tools for"));
+      if (!tools.length) box.appendChild(el("p", "", "No tool was needed for this answer."));
+      tools.forEach((t) => {
+        const d = DECISION[t.policy_decision];
+        box.appendChild(el("p", "", (TOOL[t.name] || t.name) + " (" + (d ? d[1] : t.policy_decision) + ")"));
+      });
+    } else {
+      box.appendChild(el("h3", "", "How the answer was written"));
+      box.appendChild(el("p", "", "The answer was written only from the passages above. Each number in the text points to a source in the list."));
+    }
+    return box;
+  }
+
+  function docSection(docId) {
+    const kind = String(docId).split("/")[0];
+    return ({solutions: "Service area", cases: "Past case", consultation: "Method note", policies: "Policy"})[kind] || "Document";
+  }
+
   function answerCard(m) {
     const card = el("article", "answer");
     if (m.error) {
@@ -284,7 +413,7 @@ PAGE = (
       card.appendChild(box);
       return card;
     }
-    card.appendChild(el("div", "text", m.text));
+    card.appendChild(renderMarkdown(m));
 
     const c = confidence(m.sources || []);
     const trust = el("div", "trust");
@@ -297,20 +426,21 @@ PAGE = (
     if (m.stopped) card.appendChild(el("div", "approval", "MILO needs your approval before it changes anything. Nothing was changed."));
 
     const stages = el("div", "stages");
-    stageSummary(m).forEach((s) => {
-      const box = el("div", "stage");
-      box.append(el("b", "", s.title), el("span", "n", s.n), el("span", "muted", s.note));
+    stageSummary(m).forEach((st, idx) => {
+      const box = el("button", "stage");
+      box.type = "button";
+      box.setAttribute("aria-expanded", m.openStage === idx ? "true" : "false");
+      box.append(el("b", "", st.title), el("span", "n", st.n), el("span", "muted", st.note));
+      box.addEventListener("click", () => { m.openStage = m.openStage === idx ? null : idx; render(); });
       stages.appendChild(box);
     });
     card.appendChild(stages);
+    if (m.openStage !== undefined && m.openStage !== null) {
+      card.appendChild(stageDetail(m, m.openStage));
+    }
 
     if ((m.sources || []).length) {
-      const found = el("div", "found");
-      found.appendChild(el("h3", "", "Where this came from"));
-      const list = el("ul");
-      [...new Set(m.sources.map((s) => s.doc_id))].forEach((d) => list.appendChild(el("li", "", docTitle(d))));
-      found.appendChild(list);
-      card.appendChild(found);
+      card.appendChild(sourceList(m));
     }
 
     if ((m.tool_results || []).length) {
@@ -431,6 +561,7 @@ PAGE = (
         history_turns: ((data.trace || []).find((x) => x.step === "history_read") || {turns: 0}).turns,
         error: data.error ? "Something went wrong on our side. Please try again in a moment." : null,
       };
+      reply.key = messages.length;
       messages.push(reply);
       sessionCost += reply.cost_usd;
       costEl.textContent = "Session cost: " + money(sessionCost);
@@ -511,7 +642,8 @@ DASHBOARD = (
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MILO · How it works, with your data</title>
+<title>MILO · Overview</title>
+<!--FAVICON-->
 <style>
 """
     + _BASE_CSS
@@ -564,9 +696,12 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
 </head>
 <body>
 <header>
+  <!--BRAND-->
+  <span class="spacer"></span>
+  <!--NAV-->
   <h1>How MILO works, using your conversation</h1>
   <span class="spacer"></span>
-  <a class="button" href="/">Back to the chat</a>
+  <a class="button" href="/chat">Back to the chat</a>
   <button id="refresh" type="button">Refresh</button>
 </header>
 <main>
