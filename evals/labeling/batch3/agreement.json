@@ -1,0 +1,13 @@
+{
+  "batch": "batch3",
+  "n": 60,
+  "labels": {"positive": 30, "negative": 30},
+  "labelers": ["Astra (LLM, model label)", "second labeler (Opus sub-agent, independent)"],
+  "agreement": 1.0,
+  "kappa": 1.0,
+  "kappa_ci_95": [1.0, 1.0],
+  "rule_passed": true,
+  "accuracy_vs_key": {"astra": 1.0, "second": 1.0},
+  "by_difficulty": {"positive_hard": 1.0, "positive_easy": 1.0, "negative_hard": 1.0, "negative_easy": 1.0},
+  "caveat": "Hard means high word overlap with the question, chosen by a script. The key was built by construction, not checked by a human. No partial-answer or semantic near-miss items yet, so this does not show reliability on the hardest cases."
+}

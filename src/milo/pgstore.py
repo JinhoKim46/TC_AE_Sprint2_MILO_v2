@@ -35,7 +35,7 @@ class PostgresStore:
                 (owner, thread),
             )
             cur.executemany(
-                "insert into milo_v2.turns (owner_id, thread_id, role, content, sources) values (%s, %s, %s, %s, %s)",
+                "insert into milo_v2.turns (owner_id, thread_id, role, content, sources, tools) values (%s, %s, %s, %s, %s, %s)",
                 [
                     (
                         owner,
@@ -43,6 +43,7 @@ class PostgresStore:
                         t["role"],
                         t["content"],
                         json.dumps(t.get("sources", [])),
+                        json.dumps(t.get("tools", []), default=str),
                     )
                     for t in turns
                 ],
@@ -55,14 +56,14 @@ class PostgresStore:
             return []
         with self._lock, self._conn.cursor() as cur:
             cur.execute(
-                "select role, content, sources from milo_v2.turns where owner_id = %s and thread_id = %s "
+                "select role, content, sources, tools from milo_v2.turns where owner_id = %s and thread_id = %s "
                 "order by id desc limit %s",
                 (owner, thread, limit),
             )
             rows = cur.fetchall()
         return [
-            {"role": r, "content": c, "sources": src or []}
-            for r, c, src in reversed(rows)
+            {"role": r, "content": c, "sources": src or [], "tools": tools or []}
+            for r, c, src, tools in reversed(rows)
         ]
 
     def add_fact(self, owner: str, field_id: str, entry: dict[str, Any]) -> int:

@@ -113,6 +113,7 @@ PAGE = (
 .stage-detail{margin-top:4px}
 .tool-row{display:flex;flex-direction:column;gap:3px;padding:10px 0;border-top:1px solid var(--line)}
 .tool-row:first-of-type{border-top:0}
+.tool-row>*{min-width:0;overflow-wrap:anywhere;word-break:break-word}
 .md-h{font-size:15px;margin:10px 0 4px}
 .md-list{margin:6px 0;padding-left:22px}
 .text code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--bg);padding:1px 5px;border-radius:4px}
@@ -787,7 +788,7 @@ PAGE = (
     try {
       const res = await fetch("/api/history");
       const data = await res.json();
-      (data.turns || []).forEach((t, i) => messages.push({role: t.role === "user" ? "user" : "assistant", text: t.content, sources: t.sources || [], tool_results: [], cost_usd: 0, trace: [], key: i}));
+      (data.turns || []).forEach((t, i) => messages.push({role: t.role === "user" ? "user" : "assistant", text: t.content, sources: t.sources || [], tool_results: t.tools || [], cost_usd: 0, trace: [], key: i}));
     } catch (err) {
       /* history is optional */
     }

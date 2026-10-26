@@ -1,0 +1,12 @@
+{
+  "batch": "batch2",
+  "n": 20,
+  "labelers": ["Astra (LLM, model label)", "second labeler (Opus sub-agent, independent)"],
+  "label_counts": {"astra": {"1": 5, "0": 15}, "second": {"1": 5, "0": 15}},
+  "agreement": 1.0,
+  "kappa": 1.0,
+  "kappa_ci_95": [1.0, 1.0],
+  "disagreements": [],
+  "rule_passed": true,
+  "caveat": "The 15 negatives are unrelated sentences from the same folder, so they are easy. Agreement on them does not show reliability on hard negatives."
+}
