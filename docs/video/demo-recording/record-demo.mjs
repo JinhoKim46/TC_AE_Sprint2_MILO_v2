@@ -4,8 +4,20 @@ import puppeteer from "puppeteer-core";
 
 const [, , base, password, out, ffmpegPath] = process.argv;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const browser = await puppeteer.launch({ executablePath: "/usr/bin/google-chrome", args: ["--no-sandbox", "--disable-gpu"], defaultViewport: { width: 1440, height: 900 } });
-const page = await browser.newPage();
+// The virtual display only: the real desktop is never captured.
+const display = process.env.RECORD_DISPLAY ?? ":99";
+const browser = await puppeteer.launch({
+  headless: false,
+  env: { ...process.env, DISPLAY: display },
+  executablePath: "/usr/bin/google-chrome",
+  args: ["--no-sandbox", "--kiosk", "--test-type", "--disable-infobars", "--window-position=0,0", "--window-size=1440,900", "--force-device-scale-factor=1"],
+  defaultViewport: null,
+});
+const [page] = await browser.pages();
+// The screen grab starts first and runs in real time, so every scene keeps its real length.
+const { spawn } = await import("node:child_process");
+const grab = spawn(ffmpegPath, ["-y", "-loglevel", "error", "-f", "x11grab", "-framerate", "25", "-video_size", "1440x900", "-i", display + ".0+0,0", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", out]);
+await sleep(1500);
 const caption = (text) => page.evaluate((t) => {
   let el = document.getElementById("demo-caption");
   if (!el) {
@@ -20,20 +32,6 @@ const caption = (text) => page.evaluate((t) => {
 
 await page.goto(base + "/", { waitUntil: "networkidle0" });
 // Frames are taken on a clock and kept with their real times, so the video plays at real speed even when the page is still.
-const frames = [];
-const frameDir = out + ".frames";
-const fs = await import("node:fs");
-fs.mkdirSync(frameDir, { recursive: true });
-// Chrome's screencast gives each painted frame its own timestamp, so static parts keep their real length.
-const cdp = await page.createCDPSession();
-cdp.on("Page.screencastFrame", (f) => {
-  const name = `${frameDir}/${String(frames.length).padStart(6, "0")}.jpg`;
-  fs.writeFileSync(name, Buffer.from(f.data, "base64"));
-  frames.push({ name, at: f.metadata.timestamp });
-  cdp.send("Page.screencastFrameAck", { sessionId: f.sessionId }).catch(() => {});
-});
-await cdp.send("Page.startScreencast", { format: "jpeg", quality: 85, everyNthFrame: 1 });
-const t0 = Date.now() / 1000;
 await caption("MILO: a diagnosis chat that shows its work");
 await sleep(3500);
 
@@ -84,14 +82,7 @@ await sleep(4000);
 await caption("Every number comes from the recorded facts and the computed estimate");
 await sleep(3000);
 
-await cdp.send("Page.stopScreencast");
-await sleep(500);
-// The concat list gives every frame the time until the next one, so the timing is the real timing.
-const listPath = frameDir + "/list.txt";
-const lines = frames.map((f, i) => `file '${f.name}'\nduration ${((frames[i + 1]?.at ?? Date.now() / 1000) - f.at).toFixed(3)}`);
-lines.push(`file '${frames[frames.length - 1].name}'`);
-fs.writeFileSync(listPath, lines.join("\n") + "\n");
-const { execFileSync } = await import("node:child_process");
-execFileSync(ffmpegPath, ["-y", "-f", "concat", "-safe", "0", "-i", listPath, "-vf", "fps=25,format=yuv420p", "-c:v", "libx264", "-crf", "20", out]);
+grab.kill("SIGINT");
+await new Promise((r) => grab.on("exit", r));
 await browser.close();
-console.log("recorded", out, frames.length, "frames");
+console.log("recorded", out);
