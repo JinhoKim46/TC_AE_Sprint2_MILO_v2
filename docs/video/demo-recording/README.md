@@ -39,7 +39,9 @@ longer than its scene. The video is copied, not re-encoded.
 Two earlier methods gave a video whose length did not match the session (a timed screencast and a screenshot loop).
 They are replaced by the real-time grab above.
 
-## Subtitles
+## Subtitles (off by default)
+
+The final video is narration only. Run with `--subtitles` to burn the narration as subtitles instead.
 
 The recording has no on-screen captions (`RECORD_CAPTIONS=0`). The subtitles are made from the narration itself: each
 subtitle is the spoken sentence, shown from the start of its speech to its end. They sit at the top centre, white text on

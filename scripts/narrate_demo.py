@@ -149,6 +149,11 @@ def main() -> None:
     )
     ap.add_argument("--ffmpeg", default="ffmpeg")
     ap.add_argument("--out", required=True, type=Path)
+    ap.add_argument(
+        "--subtitles",
+        action="store_true",
+        help="also burn the narration as subtitles (off by default)",
+    )
     args = ap.parse_args()
 
     lines = json.loads(args.narration.read_text())
@@ -211,40 +216,68 @@ def main() -> None:
     subs = workdir / "subtitles.ass"
     write_subtitles(cues, subs)
 
-    # Burn the subtitles into the picture and add the mixed audio. The picture is encoded once here.
-    subprocess.run(
-        [
-            args.ffmpeg,
-            "-y",
-            "-loglevel",
-            "error",
-            "-i",
-            str(args.video),
-            "-i",
-            str(mixed),
-            "-filter_complex",
-            f"[0:v]ass={subs}[v]",
-            "-map",
-            "[v]",
-            "-map",
-            "1:a",
-            "-c:v",
-            "libx264",
-            "-preset",
-            "medium",
-            "-crf",
-            "20",
-            "-pix_fmt",
-            "yuv420p",
-            "-c:a",
-            "aac",
-            "-b:a",
-            "160k",
-            "-shortest",
-            str(args.out),
-        ],
-        check=True,
-    )
+    if args.subtitles:
+        # Burn the subtitles into the picture and add the mixed audio. The picture is encoded once here.
+        subprocess.run(
+            [
+                args.ffmpeg,
+                "-y",
+                "-loglevel",
+                "error",
+                "-i",
+                str(args.video),
+                "-i",
+                str(mixed),
+                "-filter_complex",
+                f"[0:v]ass={subs}[v]",
+                "-map",
+                "[v]",
+                "-map",
+                "1:a",
+                "-c:v",
+                "libx264",
+                "-preset",
+                "medium",
+                "-crf",
+                "20",
+                "-pix_fmt",
+                "yuv420p",
+                "-c:a",
+                "aac",
+                "-b:a",
+                "160k",
+                "-shortest",
+                str(args.out),
+            ],
+            check=True,
+        )
+    else:
+        # Narration only: the picture is copied as it is, and the mixed audio is added.
+        subprocess.run(
+            [
+                args.ffmpeg,
+                "-y",
+                "-loglevel",
+                "error",
+                "-i",
+                str(args.video),
+                "-i",
+                str(mixed),
+                "-map",
+                "0:v",
+                "-map",
+                "1:a",
+                "-c:v",
+                "copy",
+                "-c:a",
+                "aac",
+                "-b:a",
+                "160k",
+                "-shortest",
+                str(args.out),
+            ],
+            check=True,
+        )
     for at, _path, seconds, text in clips:
         print(f"{at:6.2f}s  {seconds:5.2f}s  {text}")
     print("wrote", args.out)
