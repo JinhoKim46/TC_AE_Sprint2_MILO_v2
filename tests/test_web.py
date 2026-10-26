@@ -1,0 +1,114 @@
+"""M6: the chat page and its JSON endpoint, through Flask's test client. Offline; the model is a fake."""
+
+from __future__ import annotations
+
+from milo.app import build_app
+from milo.embed import LexicalEmbedder
+from milo.tools import Backend
+from milo.types import ChatReply, Document, ToolCall, Usage
+from milo.web import create_app
+
+
+class ToolThenAnswer:
+    price_usd_per_mtok = (1.0, 1.0)
+
+    def __init__(self, tool_name: str | None = None, args: dict | None = None) -> None:
+        self.tool_name = tool_name
+        self.args = args or {}
+        self.calls = 0
+
+    def invoke(self, messages, tools=None):
+        self.calls += 1
+        if self.tool_name and self.calls == 1:
+            return ChatReply(
+                tool_calls=[ToolCall("c1", self.tool_name, self.args)],
+                usage=Usage(100, 50),
+            )
+        return ChatReply(
+            content="Invoices are issued on the first day of each month [1].",
+            usage=Usage(100, 50),
+        )
+
+
+def client(chat):
+    milo = build_app(chat, LexicalEmbedder(), Backend())
+    milo.ingest(
+        [
+            Document(
+                "kb/billing", "Invoices are issued on the first day of each month.", {}
+            )
+        ]
+    )
+    return create_app(milo, secret_key="test").test_client()
+
+
+def test_page_has_the_panels_and_the_progress_line() -> None:
+    page = client(ToolThenAnswer()).get("/").get_data(as_text=True)
+    for needle in (
+        "Sources",
+        "Tool calls",
+        "Thinking...",
+        "Cost of this answer",
+        'role="status"',
+    ):
+        assert needle in page, needle
+
+
+def test_answer_comes_back_with_sources_and_cost() -> None:
+    c = client(ToolThenAnswer())
+    body = c.post(
+        "/api/ask", json={"question": "When are invoices issued each month?"}
+    ).get_json()
+    assert body["answer"].startswith("Invoices")
+    assert body["sources"] and body["sources"][0]["doc_id"] == "kb/billing"
+    assert body["cost_usd"] > 0 and body["error"] is None
+
+
+def test_a_destructive_tool_call_shows_its_policy_decision_and_stops() -> None:
+    c = client(ToolThenAnswer("reset_diagnosis", {"diagnosis_id": 1}))
+    body = c.post(
+        "/api/ask", json={"question": "When are invoices issued each month?"}
+    ).get_json()
+    assert body["stopped"] is True
+    assert body["tool_results"][0]["policy_decision"] == "needs_approval"
+
+
+def test_bad_input_is_a_typed_error_not_a_traceback() -> None:
+    resp = client(ToolThenAnswer()).post("/api/ask", json={"question": ""})
+    body = resp.get_json()
+    assert body["error"].startswith("invalid_input")
+    assert "Traceback" not in str(body)
+
+
+def test_owner_comes_from_the_session_not_the_request() -> None:
+    chat = ToolThenAnswer()
+    milo = build_app(chat, LexicalEmbedder(), Backend())
+    milo.ingest(
+        [
+            Document(
+                "kb/billing", "Invoices are issued on the first day of each month.", {}
+            )
+        ]
+    )
+    web = create_app(milo, secret_key="test")
+    seen: list[str] = []
+    original = milo.ask
+
+    def spy(question, user_id, thread_id):
+        seen.append(user_id)
+        return original(question, user_id, thread_id)
+
+    milo.ask = spy
+    a = web.test_client()
+    b = web.test_client()
+    a.get("/")
+    b.get("/")
+    a.post(
+        "/api/ask",
+        json={
+            "question": "When are invoices issued each month?",
+            "user_id": "someone-else",
+        },
+    )
+    b.post("/api/ask", json={"question": "When are invoices issued each month?"})
+    assert seen[0] != seen[1] and "someone-else" not in seen
