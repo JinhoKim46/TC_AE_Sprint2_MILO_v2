@@ -1,0 +1,256 @@
+{
+  "embedder": "google/gemini-embedding-2",
+  "chunk_size": 800,
+  "overlap": 100,
+  "top_k": 5,
+  "split": "dev",
+  "chunk_count": 416,
+  "quotes_not_whole_in_a_chunk": 0,
+  "metrics": {
+    "identifier": {
+      "n": 5,
+      "recall5": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.9262,
+        "ci": [
+          0.7786,
+          1.0
+        ]
+      }
+    },
+    "paraphrase": {
+      "n": 11,
+      "recall5": {
+        "mean": 0.7273,
+        "ci": [
+          0.4545,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.5709,
+        "ci": [
+          0.3317,
+          0.8084
+        ]
+      }
+    },
+    "all": {
+      "n": 16,
+      "recall5": {
+        "mean": 0.8125,
+        "ci": [
+          0.625,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.6819,
+        "ci": [
+          0.4866,
+          0.8542
+        ]
+      }
+    }
+  },
+  "rows": [
+    {
+      "qid": "q001",
+      "type": "identifier",
+      "rank": 1,
+      "top5": [
+        "cases/C01#013",
+        "cases/C01#004",
+        "cases/C05#013",
+        "cases/C09#013",
+        "cases/C01#006"
+      ]
+    },
+    {
+      "qid": "q003",
+      "type": "identifier",
+      "rank": 2,
+      "top5": [
+        "cases/C04#005",
+        "cases/C04#013",
+        "cases/C04#000",
+        "cases/C04#007",
+        "cases/C04#008"
+      ]
+    },
+    {
+      "qid": "q005",
+      "type": "identifier",
+      "rank": 1,
+      "top5": [
+        "cases/C06#013",
+        "cases/C06#004",
+        "cases/C06#000",
+        "cases/C10#006",
+        "cases/C06#007"
+      ]
+    },
+    {
+      "qid": "q007",
+      "type": "identifier",
+      "rank": 1,
+      "top5": [
+        "cases/C08#013",
+        "cases/C08#006",
+        "cases/C08#005",
+        "cases/C08#007",
+        "cases/C08#000"
+      ]
+    },
+    {
+      "qid": "q009",
+      "type": "identifier",
+      "rank": 1,
+      "top5": [
+        "cases/C16#013",
+        "cases/C16#004",
+        "cases/C16#014",
+        "cases/C16#006",
+        "cases/C16#000"
+      ]
+    },
+    {
+      "qid": "q011",
+      "type": "paraphrase",
+      "rank": 5,
+      "top5": [
+        "cases/C10#011",
+        "cases/C15#001",
+        "cases/C15#002",
+        "cases/C07#011",
+        "solutions/request-dispatch#001"
+      ]
+    },
+    {
+      "qid": "q013",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C02#013",
+        "cases/C02#006",
+        "cases/C02#007",
+        "cases/C02#011",
+        "cases/C02#010"
+      ]
+    },
+    {
+      "qid": "q015",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "solutions/consumables-stock#003",
+        "solutions/consumables-stock#000",
+        "cases/C04#011",
+        "cases/C04#002",
+        "solutions/consumables-stock#001"
+      ]
+    },
+    {
+      "qid": "q017",
+      "type": "paraphrase",
+      "rank": 2,
+      "top5": [
+        "solutions/usage-billing-prep#000",
+        "solutions/usage-billing-prep#003",
+        "solutions/usage-billing-prep#002",
+        "solutions/usage-billing-prep#001",
+        "cases/C05#002"
+      ]
+    },
+    {
+      "qid": "q019",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C08#003",
+        "cases/C12#003",
+        "cases/C15#003",
+        "cases/C17#003",
+        "cases/C20#003"
+      ]
+    },
+    {
+      "qid": "q021",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "consultation/effect-estimate#003",
+        "consultation/effect-estimate#000",
+        "consultation/effect-estimate#005",
+        "consultation/effect-estimate#002",
+        "solutions/usage-billing-prep#004"
+      ]
+    },
+    {
+      "qid": "q023",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "consultation/effect-estimate#004",
+        "consultation/effect-estimate#005",
+        "consultation/effect-estimate#001",
+        "solutions/usage-billing-prep#004",
+        "consultation/effect-estimate#000"
+      ]
+    },
+    {
+      "qid": "q025",
+      "type": "paraphrase",
+      "rank": 2,
+      "top5": [
+        "consultation/interview-approach#006",
+        "consultation/interview-approach#005",
+        "cases/C01#007",
+        "cases/C14#007",
+        "consultation/interview-approach#004"
+      ]
+    },
+    {
+      "qid": "q027",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "policies/personal-data#003",
+        "cases/C16#015",
+        "policies/personal-data#000",
+        "policies/personal-data#004",
+        "policies/security-and-approvals#002"
+      ]
+    },
+    {
+      "qid": "q029",
+      "type": "paraphrase",
+      "rank": 2,
+      "top5": [
+        "policies/personal-data#000",
+        "policies/security-and-approvals#004",
+        "cases/C06#009",
+        "cases/C08#009",
+        "cases/C02#003"
+      ]
+    },
+    {
+      "qid": "q031",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C03#005",
+        "cases/C03#002",
+        "cases/C03#001",
+        "cases/C09#004",
+        "cases/C02#005"
+      ]
+    }
+  ]
+}

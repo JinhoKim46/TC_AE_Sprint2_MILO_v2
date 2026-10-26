@@ -21,6 +21,7 @@ EMBED_PRICE_USD_PER_TOKEN = (
     2e-7  # listed price, from the earlier project's comparison (2026-10-22)
 )
 DIM = 512
+BATCH = 100  # the provider accepts at most 100 requests in one batch
 TOKEN = re.compile(r"[a-z0-9]+")
 
 
@@ -54,7 +55,7 @@ class OpenRouterEmbedder:
     def __init__(self, max_cost_usd: float) -> None:
         if os.environ.get("MILO_LIVE") != "1":
             raise PermissionError("a live embedding needs MILO_LIVE=1 (paid call)")
-        key = os.environ.get("OPENROUTER_API_KEY", "")
+        key = os.environ.get("OPENROUTER_API_KEY", "").strip()
         if not key:
             raise PermissionError("OPENROUTER_API_KEY is not set")
         self.max_cost_usd = max_cost_usd
@@ -69,13 +70,17 @@ class OpenRouterEmbedder:
         )
 
     def embed(self, texts: list[str]) -> list[list[float]]:
-        est = (
-            sum(len(t) for t in texts) / 4 * EMBED_PRICE_USD_PER_TOKEN
-        )  # about 4 characters per token
-        if self.spent_usd + est > self.max_cost_usd:
-            raise RuntimeError(
-                f"estimated cost {est:.6f} USD would exceed the cap {self.max_cost_usd} USD"
-            )
-        vectors = self._client.embed_documents(texts)
-        self.spent_usd += est
+        """Embeds in batches of at most 100 texts, the provider's limit. The cap is checked before each batch."""
+        vectors: list[list[float]] = []
+        for start in range(0, len(texts), BATCH):
+            batch = texts[start : start + BATCH]
+            est = (
+                sum(len(t) for t in batch) / 4 * EMBED_PRICE_USD_PER_TOKEN
+            )  # about 4 characters per token
+            if self.spent_usd + est > self.max_cost_usd:
+                raise RuntimeError(
+                    f"estimated cost {est:.6f} USD would exceed the cap {self.max_cost_usd} USD"
+                )
+            vectors.extend(self._client.embed_documents(batch))
+            self.spent_usd += est
         return vectors

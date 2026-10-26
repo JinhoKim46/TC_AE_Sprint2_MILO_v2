@@ -64,7 +64,7 @@ def live_chat_model() -> LangChainChat:
     """`ChatOpenAI` on OpenRouter. Building it sends nothing; the first `invoke` does."""
     if os.environ.get("MILO_LIVE") != "1":
         raise PermissionError("a live model needs MILO_LIVE=1 (paid call)")
-    key = os.environ.get("OPENROUTER_API_KEY", "")
+    key = os.environ.get("OPENROUTER_API_KEY", "").strip()
     if not key:
         raise PermissionError("OPENROUTER_API_KEY is not set")
     from langchain_openai import ChatOpenAI
