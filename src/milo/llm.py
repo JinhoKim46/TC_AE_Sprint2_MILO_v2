@@ -10,7 +10,7 @@ import os
 from typing import Any
 
 from langchain_core.language_models import BaseChatModel
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 
 from milo.types import ChatReply, ToolCall, Usage
 
@@ -34,9 +34,10 @@ class LangChainChat:
     def invoke(
         self, messages: list[dict[str, Any]], tools: list[Any] | None = None
     ) -> ChatReply:
+        model = self.model
         if tools:
-            raise NotImplementedError("tool binding arrives in M3")
-        msg = self.model.invoke(messages)
+            model = self.model.bind_tools([openai_tool(t) for t in tools])
+        msg = model.invoke([to_message(m) for m in messages])
         if not isinstance(msg, AIMessage):
             raise TypeError(f"expected an AIMessage, got {type(msg).__name__}")
         usage = msg.usage_metadata or {}
@@ -47,6 +48,41 @@ class LangChainChat:
             ],
             usage=Usage(usage.get("input_tokens", 0), usage.get("output_tokens", 0)),
         )
+
+
+def openai_tool(spec: Any) -> dict[str, Any]:
+    """A tool spec in the function-calling shape the OpenRouter endpoint expects."""
+    return {
+        "type": "function",
+        "function": {
+            "name": spec.name,
+            "description": spec.description,
+            "parameters": spec.parameters,
+        },
+    }
+
+
+def to_message(m: dict[str, Any]) -> Any:
+    """Our role/content dicts as LangChain messages. Assistant tool calls and tool results keep their ids."""
+    role = m["role"]
+    if role == "system":
+        return SystemMessage(content=m["content"])
+    if role == "user":
+        return HumanMessage(content=m["content"])
+    if role == "assistant":
+        calls = [
+            {
+                "name": c["name"],
+                "args": c["arguments"],
+                "id": c["id"],
+                "type": "tool_call",
+            }
+            for c in m.get("tool_calls", [])
+        ]
+        return AIMessage(content=m.get("content", ""), tool_calls=calls)
+    if role == "tool":
+        return ToolMessage(content=m["content"], tool_call_id=m["tool_call_id"])
+    raise ValueError(f"unknown role {role}")
 
 
 def text_of(content: str | list[Any]) -> str:

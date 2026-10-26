@@ -13,6 +13,7 @@ modules:
     effect_inputs:
       events: requests_per_week
       baseline_minutes: minutes_to_assign
+      baseline_default: 12  # assumed when the owner gives no value
       new_minutes: {assumed: 4, note: minutes of staff time per request with one shared queue}
   - id: consumables-stock
     name: Consumables and stock management
@@ -24,6 +25,7 @@ modules:
     effect_inputs:
       events: searches_per_week
       baseline_minutes: minutes_per_search
+      baseline_default: 15  # assumed when the owner gives no value
       new_minutes: {assumed: 3, note: minutes per search with a location list}
   - id: usage-billing-prep
     name: Usage and billing preparation
@@ -35,6 +37,7 @@ modules:
     effect_inputs:
       events: readings_per_month
       baseline_minutes: minutes_per_reading
+      baseline_default: 6  # assumed when the owner gives no value
       new_minutes: {assumed: 1.5, note: minutes per reading with the checks}
   - id: operations-overview
     name: Operations overview
@@ -46,6 +49,7 @@ modules:
     effect_inputs:
       events: status_questions_per_week
       baseline_minutes: minutes_per_status_question
+      baseline_default: 10  # assumed when the owner gives no value
       new_minutes: {assumed: 2, note: minutes per status question with the board}
 later_areas:
   - id: process-linking

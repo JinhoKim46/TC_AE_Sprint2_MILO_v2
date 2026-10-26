@@ -1,7 +1,7 @@
 # Location of the project kit (override with KIT_SRC=<path>).
 KIT_SRC ?= ../../../project-kit
 
-.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay eval-advanced eval-advanced-replay
+.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay eval-advanced eval-advanced-replay eval-tools-selftest eval-tools-live
 
 check: lint test
 
@@ -36,3 +36,10 @@ eval-advanced:
 
 eval-advanced-replay:
 	uv run python scripts/eval_advanced.py --replay evals/results/advanced/dev_ab.json
+
+# M3: the tool evaluation. The self-test checks the scorer offline; the live run needs MILO_LIVE=1 and a key.
+eval-tools-selftest:
+	uv run python scripts/eval_tools.py --selftest
+
+eval-tools-live:
+	MILO_LIVE=1 uv run python scripts/eval_tools.py --live --max-cost 0.02

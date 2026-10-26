@@ -64,10 +64,30 @@ def test_adapter_joins_content_blocks() -> None:
     assert reply.content == "Two parts."
 
 
-def test_adapter_refuses_tools_until_m3() -> None:
-    fake = FakeMessagesListChatModel(responses=[AIMessage(content="x")])
-    with pytest.raises(NotImplementedError):
-        LangChainChat(fake, (0.1, 0.5)).invoke([], tools=[object()])
+def test_adapter_converts_tool_calls_and_results_both_ways() -> None:
+    """M3: an assistant tool call and its result keep their ids through the adapter's message conversion."""
+    from milo.llm import to_message
+
+    call = {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [{"id": "c1", "name": "t", "arguments": {"a": 1}}],
+    }
+    msg = to_message(call)
+    assert msg.tool_calls[0]["id"] == "c1" and msg.tool_calls[0]["args"] == {"a": 1}
+    result = to_message({"role": "tool", "tool_call_id": "c1", "content": "{}"})
+    assert result.tool_call_id == "c1"
+
+
+def test_adapter_offers_tools_in_function_shape() -> None:
+    from milo.llm import openai_tool
+    from milo.tools import specs
+
+    shape = openai_tool(specs()[0])
+    assert (
+        shape["type"] == "function" and shape["function"]["name"] == "search_knowledge"
+    )
+    assert shape["function"]["parameters"]["type"] == "object"
 
 
 def test_default_paths_open_no_socket(monkeypatch: pytest.MonkeyPatch) -> None:
