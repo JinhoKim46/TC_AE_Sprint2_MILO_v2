@@ -227,9 +227,9 @@ def landing_page(user=None) -> str:
         )
         + "</div></div></section>"
         '<section id="video"><div class="wrap"><p class="eyebrow">Video</p><h2>MILO in 40 seconds</h2>'
-        '<div class="video"><video controls preload="metadata" poster="/static/milo-mascot.svg" aria-label="MILO product video">'
+        '<div class="video"><video controls preload="metadata" poster="/static/milo-brag-poster.jpg" aria-label="MILO product video">'
         '<source src="/static/milo-brag.mp4" type="video/mp4">'
-        '<div class="fallback">The video is not available yet.</div></video></div></div></section>'
+        '<div class="fallback">The video could not be played in this browser. Download it from the project folder.</div></video></div></div></section>'
         '<section><div class="wrap"><p class="eyebrow">Who it is for</p><h2>Three people, one shared picture</h2>'
         '<div class="roles">'
         + "".join(
