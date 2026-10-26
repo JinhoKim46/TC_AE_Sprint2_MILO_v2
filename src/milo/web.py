@@ -205,6 +205,15 @@ def create_app(
             return Response("Document not found", status=404, mimetype="text/plain")
         return html(page)
 
+    @web.get("/api/kb/<path:doc_id>")
+    def kb_text(doc_id: str) -> Any:
+        from milo.kb_pages import document_json
+
+        doc = document_json(doc_id)
+        if doc is None:
+            return jsonify({"error": "not found"}), 404
+        return jsonify(doc)
+
     @web.get("/api/demo")
     def demo() -> Any:
         return jsonify(json.loads(DEMO_FILE.read_text()))

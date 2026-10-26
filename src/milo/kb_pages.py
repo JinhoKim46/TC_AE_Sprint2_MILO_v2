@@ -110,6 +110,20 @@ def index_page(user=None) -> str:
     return _page("MILO knowledge base", body)
 
 
+def document_json(doc_id: str) -> dict[str, str] | None:
+    """The full text of one document, for the viewer on the chat page. Same path check as the page."""
+    path = (KB / f"{doc_id}.md").resolve()
+    if KB.resolve() not in path.parents or not path.is_file():
+        return None
+    meta, body = front_matter(path.read_text())
+    return {
+        "id": doc_id,
+        "title": meta.get("title", doc_id),
+        "section": meta.get("section", ""),
+        "text": body,
+    }
+
+
 def document_page(doc_id: str, user=None) -> str | None:
     path = (KB / f"{doc_id}.md").resolve()
     if KB.resolve() not in path.parents or not path.is_file():

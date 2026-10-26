@@ -50,6 +50,19 @@ PAGE = (
 .panel-head h2{font-size:16px;flex:1}
 .panel-body{flex:1;min-height:0;overflow-y:auto;padding:16px 20px 24px;display:flex;flex-direction:column;gap:16px}
 .panel .stages{grid-template-columns:repeat(2,minmax(0,1fr))}
+.answer{cursor:pointer}
+.answer.is-active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.answer-tag{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.answer.is-active .answer-tag{color:var(--accent);font-weight:600}
+.src-read{font:inherit;font-size:13px;color:var(--accent);background:none;border:0;padding:0;margin-right:14px;cursor:pointer;text-decoration:underline}
+.doc-viewer{width:min(780px,92vw);max-height:82vh;padding:0;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);overflow:hidden;display:flex;flex-direction:column}
+.doc-viewer::backdrop{background:rgba(31,30,27,.35)}
+.doc-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.doc-head b{flex:1}
+.doc-text{padding:18px 22px 28px;white-space:pre-wrap;font-size:15px;line-height:1.75;overflow:auto;min-height:0}
+.doc-text{white-space:normal}
+.doc-text p,.doc-text li{max-width:70ch}
+.doc-text .hit{background:var(--accent-soft);border-radius:6px;padding:4px 8px;margin-left:-8px;margin-right:-8px}
 #sources-toggle{display:none}
 @media (max-width:1179px){#sources-toggle{display:inline-block}}
 @media (min-width:1180px){
@@ -306,7 +319,7 @@ PAGE = (
       if (/^\\*\\*[^*]+\\*\\*$/.test(part)) parent.appendChild(el("strong", "", part.slice(2, -2)));
       else if (/^`[^`]+`$/.test(part)) parent.appendChild(el("code", "", part.slice(1, -1)));
       else if (/^\\*[^*]+\\*$/.test(part)) parent.appendChild(el("em", "", part.slice(1, -1)));
-      else if (/^\\[\\d+\\]$/.test(part)) {
+      else if (/^\\[\\d+\\]$/.test(part) && m.key !== undefined) {
         const n = Number(part.slice(1, -1));
         const b = el("button", "cite", String(n));
         b.type = "button";
@@ -357,6 +370,7 @@ PAGE = (
 
   function setActive(key) {
     activeKey = key;
+    thread.querySelectorAll("article.answer").forEach((c) => c.classList.toggle("is-active", c.dataset.key === String(key)));
     renderPanel();
   }
 
@@ -369,7 +383,9 @@ PAGE = (
       panelBody.appendChild(el("p", "muted", "The sources and steps behind each answer appear here."));
       return;
     }
-    if (m.question) panelBody.appendChild(el("p", "muted", "For: " + m.question.slice(0, 140)));
+    const number = messages.filter((x) => x.role === "assistant" && !x.error).indexOf(m) + 1;
+    panelBody.appendChild(el("h3", "", "Answer " + number));
+    if (m.question) panelBody.appendChild(el("p", "muted", "To: " + m.question.slice(0, 140)));
     const c = confidence(m.sources || []);
     const trust = el("div", "trust");
     trust.append(el("span", "label", "How sure:"), el("span", "pill " + c.level, c.text));
@@ -422,12 +438,16 @@ PAGE = (
       const head = el("div", "src-head");
       head.append(el("span", "cite static", String(n)), el("b", "", docTitle(src.doc_id)));
       item.append(head, el("div", "muted", docSection(src.doc_id)));
-      item.appendChild(el("p", "src-excerpt", src.text.slice(0, 220) + (src.text.length > 220 ? "..." : "")));
-      const link = el("a", "src-link", "Open the document");
+      const short = src.text.length > 320 ? src.text.slice(0, 320) + "..." : src.text;
+      item.appendChild(renderMarkdown({text: short, sources: []}));
+      const read = el("button", "src-read", "Read in the full document");
+      read.type = "button";
+      read.addEventListener("click", () => openDocument(src));
+      const link = el("a", "src-link", "Open the page");
       link.href = "/kb/" + src.doc_id;
       link.target = "_blank";
       link.rel = "noopener";
-      item.appendChild(link);
+      item.append(read, link);
       list.appendChild(item);
     });
     box.appendChild(list);
@@ -459,6 +479,43 @@ PAGE = (
     return box;
   }
 
+  let viewer = null;
+
+  async function openDocument(src) {
+    if (!viewer) {
+      viewer = el("dialog", "doc-viewer");
+      viewer.setAttribute("aria-label", "Document");
+      document.body.appendChild(viewer);
+    }
+    viewer.replaceChildren(el("p", "muted", "Loading the document..."));
+    viewer.showModal();
+    try {
+      const res = await fetch("/api/kb/" + src.doc_id);
+      if (!res.ok) throw new Error("not found");
+      const doc = await res.json();
+      const head = el("div", "doc-head");
+      const close = el("button", "button", "Close");
+      close.type = "button";
+      close.addEventListener("click", () => viewer.close());
+      head.append(el("b", "", doc.title), el("span", "muted", docSection(src.doc_id)), close);
+      const body = el("div", "doc-text");
+      body.appendChild(renderMarkdown({text: doc.text, sources: []}));
+      viewer.replaceChildren(head, body);
+      // The blocks that hold the passage are highlighted; the text around them stays visible for context.
+      const plain = (t) => t.replace(/^\\s*-\\s+/gm, "").replace(/[*#`]/g, "").replace(/\\s+/g, " ").trim().toLowerCase();
+      const lines = src.text.split("\\n").filter((line) => line.trim());
+      const blocks = [...body.querySelectorAll("p, li, h2, h3, h4")];
+      const first = blocks.findIndex((b) => plain(b.textContent).includes(plain(lines[0])));
+      const last = blocks.findIndex((b, i) => i >= Math.max(first, 0) && plain(b.textContent).includes(plain(lines[lines.length - 1])));
+      if (lines.length && first >= 0) {
+        blocks.slice(first, (last >= first ? last : first) + 1).forEach((b) => b.classList.add("hit"));
+        blocks[first].scrollIntoView({block: "center"});
+      }
+    } catch (err) {
+      viewer.replaceChildren(el("p", "muted", "The document could not be loaded."));
+    }
+  }
+
   function docSection(docId) {
     const kind = String(docId).split("/")[0];
     return ({solutions: "Service area", cases: "Past case", consultation: "Method note", policies: "Policy"})[kind] || "Document";
@@ -479,6 +536,13 @@ PAGE = (
       card.appendChild(box);
       return card;
     }
+    card.dataset.key = String(m.key);
+    const number = messages.filter((x) => x.role === "assistant" && !x.error).indexOf(m) + 1;
+    card.appendChild(el("div", "answer-tag", "Answer " + number));
+    if (activeMessage() && activeMessage().key === m.key) card.classList.add("is-active");
+    card.addEventListener("click", (e) => {
+      if (!e.target.closest("button, a, details, summary, textarea, input")) setActive(m.key);
+    });
     card.appendChild(renderMarkdown(m));
 
     const c = confidence(m.sources || []);
