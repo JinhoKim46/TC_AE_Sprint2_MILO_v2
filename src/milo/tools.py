@@ -9,13 +9,13 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
 import yaml
 
+from milo.store import MemoryStore, Store
 from milo.types import ToolSpec
 
 DATA = Path(__file__).resolve().parents[2] / "data"
@@ -105,12 +105,13 @@ def validate_args(
 class Backend:
     """Holds each owner's facts and diagnoses in memory. Persistence is M4/M6's concern, not this milestone's."""
 
-    def __init__(self, search: Callable[[str], list[Any]] | None = None) -> None:
+    def __init__(
+        self,
+        search: Callable[[str], list[Any]] | None = None,
+        store: Store | None = None,
+    ) -> None:
         self._search = search or (lambda q: [])
-        self.facts: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(
-            lambda: defaultdict(list)
-        )
-        self.diagnoses: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        self.store: Store = store if store is not None else MemoryStore()
 
     def attach_search(self, search: Callable[[str], list[Any]]) -> None:
         """The app gives the backend its retrieval, so search_knowledge uses the same index as the answers."""
@@ -136,7 +137,9 @@ class Backend:
         ]
 
     def _get_recorded_facts(self, args: dict[str, Any], user_id: str) -> dict[str, Any]:
-        recorded = {fid: vals for fid, vals in self.facts[user_id].items() if vals}
+        recorded = {
+            fid: vals for fid, vals in self.store.facts(user_id).items() if vals
+        }
         missing = [
             s["id"] for s in SLOTS.values() if s["must"] and s["id"] not in recorded
         ]
@@ -145,7 +148,7 @@ class Backend:
     def _estimate_effect(self, args: dict[str, Any], user_id: str) -> dict[str, Any]:
         area = AREAS[args["area_id"]]
         effect = area["effect_inputs"]
-        facts = self.facts[user_id]
+        facts = self.store.facts(user_id)
         events = self._latest(facts, effect["events"])
         if events is None:
             return {"status": "needs_input", "needed": effect["events"]}
@@ -190,11 +193,11 @@ class Backend:
             "status": args["status"],
             "evidence_text": args["evidence_text"],
         }
-        self.facts[user_id][args["field_id"]].append(entry)
+        count = self.store.add_fact(user_id, args["field_id"], entry)
         return {
             "ok": True,
             "field_id": args["field_id"],
-            "recorded": len(self.facts[user_id][args["field_id"]]),
+            "recorded": count,
         }
 
     def _draft_diagnosis(self, args: dict[str, Any], user_id: str) -> dict[str, Any]:
@@ -213,8 +216,8 @@ class Backend:
             "missing_must": missing,
             "effect": effect,
         }
-        self.diagnoses[user_id].append(card)
-        return {"diagnosis_id": len(self.diagnoses[user_id]), **card}
+        number = self.store.add_diagnosis(user_id, card)
+        return {"diagnosis_id": number, **card}
 
     def _reset_diagnosis(self, args: dict[str, Any], user_id: str) -> dict[str, Any]:
         return {

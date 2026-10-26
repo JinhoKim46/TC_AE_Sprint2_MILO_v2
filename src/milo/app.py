@@ -16,6 +16,7 @@ from typing import Any
 
 from milo.chunk import chunk_body
 from milo.index import Index
+from milo.store import MemoryStore, Store
 from milo.tools import validate_args
 from milo.types import ChatReply, Document, Response, Source, ToolResult
 
@@ -46,6 +47,7 @@ class App:
         tools_backend: Any,
         fallback_chat: Any = None,
         trace_path: Path | None = None,
+        store: Store | None = None,
     ) -> None:
         self.chat = chat_model
         self.fallback = fallback_chat
@@ -54,7 +56,7 @@ class App:
         self.tools = tools_backend
         self.index: Index | None = None
         self.chunks: dict[str, Any] = {}
-        self.history: dict[tuple[str, str], list[dict[str, str]]] = {}
+        self.store: Store = store if store is not None else MemoryStore()
         if tools_backend is not None and hasattr(tools_backend, "attach_search"):
             tools_backend.attach_search(self._retrieve)
 
@@ -72,18 +74,18 @@ class App:
 
     def ask(self, question: str, user_id: str, thread_id: str) -> Response:
         trace: list[dict[str, Any]] = []
-        key = (
-            user_id,
-            thread_id,
-        )  # a thread is private to its owner: nothing crosses threads
-        response = self._ask(question, user_id, trace, self.history.get(key, []))
+        prior = self.store.history(
+            user_id, thread_id
+        )  # a thread is private to its owner
+        response = self._ask(question, user_id, trace, prior)
         if response.error is None:
-            turns = self.history.setdefault(key, [])
-            turns.extend(
+            self.store.append_turns(
+                user_id,
+                thread_id,
                 [
                     {"role": "user", "content": question},
                     {"role": "assistant", "content": response.answer},
-                ]
+                ],
             )
         self._write_trace(thread_id, user_id, question, trace, response)
         return response
