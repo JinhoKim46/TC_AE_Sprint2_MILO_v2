@@ -1,7 +1,7 @@
 # Location of the project kit (override with KIT_SRC=<path>).
 KIT_SRC ?= ../../../project-kit
 
-.PHONY: check lint test kit-sync contract
+.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay
 
 check: lint test
 
@@ -22,3 +22,10 @@ kit-sync:
 contract:
 	test -d contract || { echo "run make kit-sync first"; exit 1; }
 	PROJECT_APP=milo.app:build_app uv run pytest contract -p no:cacheprovider
+
+# M1: offline lexical baseline on the dev gold set, and the replay of its stored result (no model call).
+eval-retrieval:
+	uv run python scripts/eval_retrieval.py --embedder lexical
+
+eval-retrieval-replay:
+	uv run python scripts/eval_retrieval.py --replay evals/results/retrieval/dev_lexical.json
