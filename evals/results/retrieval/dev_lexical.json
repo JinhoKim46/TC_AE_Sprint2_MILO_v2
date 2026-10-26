@@ -1,0 +1,676 @@
+{
+  "embedder": "lexical-hash-512",
+  "chunk_size": 800,
+  "overlap": 100,
+  "top_k": 5,
+  "split": "dev",
+  "chunk_count": 416,
+  "quotes_not_whole_in_a_chunk": 0,
+  "metrics": {
+    "identifier": {
+      "n": 10,
+      "recall5": {
+        "mean": 0.3,
+        "ci": [
+          0.1,
+          0.6
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.2131,
+        "ci": [
+          0.05,
+          0.45
+        ]
+      }
+    },
+    "paraphrase": {
+      "n": 41,
+      "recall5": {
+        "mean": 0.2195,
+        "ci": [
+          0.0976,
+          0.3415
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.1827,
+        "ci": [
+          0.0818,
+          0.3006
+        ]
+      }
+    },
+    "all": {
+      "n": 51,
+      "recall5": {
+        "mean": 0.2353,
+        "ci": [
+          0.1176,
+          0.3529
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.1887,
+        "ci": [
+          0.0965,
+          0.2905
+        ]
+      }
+    }
+  },
+  "rows": [
+    {
+      "qid": "q001",
+      "type": "identifier",
+      "rank": null,
+      "top5": [
+        "cases/C04#005",
+        "cases/C03#016",
+        "cases/C07#016",
+        "cases/C12#016",
+        "consultation/effect-estimate#004"
+      ]
+    },
+    {
+      "qid": "q003",
+      "type": "identifier",
+      "rank": 1,
+      "top5": [
+        "cases/C04#013",
+        "cases/C10#012",
+        "cases/C01#015",
+        "cases/C04#016",
+        "cases/C04#005"
+      ]
+    },
+    {
+      "qid": "q005",
+      "type": "identifier",
+      "rank": null,
+      "top5": [
+        "cases/C04#005",
+        "cases/C06#006",
+        "solutions/operations-overview#003",
+        "policies/evidence-and-synthetic-cases#003",
+        "cases/C07#002"
+      ]
+    },
+    {
+      "qid": "q007",
+      "type": "identifier",
+      "rank": 3,
+      "top5": [
+        "solutions/operations-overview#002",
+        "cases/C16#015",
+        "cases/C08#013",
+        "cases/C04#005",
+        "solutions/request-dispatch#002"
+      ]
+    },
+    {
+      "qid": "q009",
+      "type": "identifier",
+      "rank": 2,
+      "top5": [
+        "cases/C14#016",
+        "cases/C16#013",
+        "cases/C16#005",
+        "cases/C16#006",
+        "policies/evidence-and-synthetic-cases#001"
+      ]
+    },
+    {
+      "qid": "q011",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C05#005",
+        "cases/C05#017",
+        "cases/C10#005",
+        "cases/C01#009",
+        "cases/C16#005"
+      ]
+    },
+    {
+      "qid": "q013",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C13#004",
+        "policies/security-and-approvals#004",
+        "cases/C12#004",
+        "cases/C07#004",
+        "solutions/consumables-stock#001"
+      ]
+    },
+    {
+      "qid": "q015",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C14#004",
+        "cases/C16#005",
+        "cases/C11#013",
+        "policies/security-and-approvals#001",
+        "policies/personal-data#004"
+      ]
+    },
+    {
+      "qid": "q017",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "solutions/operations-overview#001",
+        "policies/security-and-approvals#004",
+        "policies/evidence-and-synthetic-cases#003",
+        "solutions/request-dispatch#001",
+        "policies/personal-data#001"
+      ]
+    },
+    {
+      "qid": "q019",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "consultation/interview-approach#005",
+        "cases/C07#004",
+        "consultation/interview-approach#002",
+        "consultation/interview-approach#001",
+        "solutions/usage-billing-prep#002"
+      ]
+    },
+    {
+      "qid": "q021",
+      "type": "paraphrase",
+      "rank": 4,
+      "top5": [
+        "consultation/interview-approach#004",
+        "consultation/effect-estimate#000",
+        "cases/C16#004",
+        "consultation/effect-estimate#003",
+        "policies/security-and-approvals#003"
+      ]
+    },
+    {
+      "qid": "q023",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "policies/personal-data#001",
+        "consultation/interview-approach#004",
+        "policies/security-and-approvals#004",
+        "solutions/request-dispatch#001",
+        "solutions/request-dispatch#004"
+      ]
+    },
+    {
+      "qid": "q025",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C20#001",
+        "consultation/method-notes#002",
+        "solutions/operations-overview#001",
+        "solutions/request-dispatch#001",
+        "solutions/usage-billing-prep#001"
+      ]
+    },
+    {
+      "qid": "q027",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C20#001",
+        "policies/personal-data#002",
+        "consultation/method-notes#002",
+        "consultation/interview-approach#003",
+        "cases/C17#007"
+      ]
+    },
+    {
+      "qid": "q029",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C08#002",
+        "cases/C01#006",
+        "cases/C18#006",
+        "cases/C07#004",
+        "cases/C04#000"
+      ]
+    },
+    {
+      "qid": "q031",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C01#004",
+        "cases/C12#004",
+        "policies/security-and-approvals#004",
+        "cases/C17#017",
+        "cases/C10#004"
+      ]
+    },
+    {
+      "qid": "q101",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C05#001",
+        "solutions/usage-billing-prep#002",
+        "cases/C08#001",
+        "policies/security-and-approvals#002",
+        "cases/C07#004"
+      ]
+    },
+    {
+      "qid": "q102",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C17#001",
+        "policies/personal-data#001",
+        "cases/C01#017",
+        "policies/personal-data#003",
+        "cases/C13#007"
+      ]
+    },
+    {
+      "qid": "q103",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "policies/personal-data#001",
+        "consultation/interview-approach#004",
+        "policies/security-and-approvals#003",
+        "policies/personal-data#002",
+        "policies/personal-data#003"
+      ]
+    },
+    {
+      "qid": "q104",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "policies/security-and-approvals#004",
+        "cases/C07#004",
+        "consultation/interview-approach#004",
+        "policies/evidence-and-synthetic-cases#002",
+        "consultation/interview-approach#002"
+      ]
+    },
+    {
+      "qid": "q105",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C08#008",
+        "cases/C12#008",
+        "consultation/interview-approach#006",
+        "consultation/interview-approach#003",
+        "cases/C13#007"
+      ]
+    },
+    {
+      "qid": "q106",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "solutions/usage-billing-prep#002",
+        "cases/C20#010",
+        "consultation/interview-approach#005",
+        "cases/C20#008",
+        "solutions/operations-overview#002"
+      ]
+    },
+    {
+      "qid": "q107",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "solutions/request-dispatch#002",
+        "cases/C05#007",
+        "solutions/usage-billing-prep#002",
+        "policies/evidence-and-synthetic-cases#003",
+        "consultation/effect-estimate#002"
+      ]
+    },
+    {
+      "qid": "q108",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "policies/security-and-approvals#004",
+        "policies/evidence-and-synthetic-cases#001",
+        "consultation/interview-approach#001",
+        "policies/personal-data#003",
+        "solutions/consumables-stock#002"
+      ]
+    },
+    {
+      "qid": "q109",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "consultation/effect-estimate#003",
+        "consultation/method-notes#005",
+        "consultation/interview-approach#002",
+        "cases/C07#004",
+        "consultation/effect-estimate#002"
+      ]
+    },
+    {
+      "qid": "q110",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "consultation/interview-approach#005",
+        "consultation/interview-approach#001",
+        "policies/security-and-approvals#001",
+        "consultation/effect-estimate#000",
+        "policies/security-and-approvals#004"
+      ]
+    },
+    {
+      "qid": "q111",
+      "type": "paraphrase",
+      "rank": 2,
+      "top5": [
+        "policies/personal-data#001",
+        "consultation/interview-approach#001",
+        "consultation/interview-approach#004",
+        "policies/security-and-approvals#004",
+        "policies/personal-data#003"
+      ]
+    },
+    {
+      "qid": "q112",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "policies/evidence-and-synthetic-cases#002",
+        "consultation/interview-approach#004",
+        "policies/security-and-approvals#004",
+        "policies/personal-data#003",
+        "consultation/interview-approach#002"
+      ]
+    },
+    {
+      "qid": "q113",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "consultation/method-notes#002",
+        "policies/personal-data#003",
+        "policies/evidence-and-synthetic-cases#004",
+        "cases/C06#001",
+        "cases/C19#001"
+      ]
+    },
+    {
+      "qid": "q114",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C14#001",
+        "solutions/usage-billing-prep#002",
+        "policies/security-and-approvals#001",
+        "cases/C07#016",
+        "consultation/interview-approach#006"
+      ]
+    },
+    {
+      "qid": "q115",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "policies/evidence-and-synthetic-cases#002",
+        "policies/personal-data#001",
+        "consultation/interview-approach#004",
+        "policies/security-and-approvals#004",
+        "cases/C04#004"
+      ]
+    },
+    {
+      "qid": "q116",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "policies/evidence-and-synthetic-cases#001",
+        "policies/personal-data#002",
+        "cases/C01#004",
+        "solutions/operations-overview#001",
+        "policies/evidence-and-synthetic-cases#002"
+      ]
+    },
+    {
+      "qid": "q117",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "policies/personal-data#001",
+        "policies/security-and-approvals#004",
+        "consultation/interview-approach#003",
+        "cases/C01#008",
+        "cases/C02#000"
+      ]
+    },
+    {
+      "qid": "q118",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C09#000",
+        "cases/C11#000",
+        "cases/C08#005",
+        "cases/C05#010",
+        "cases/C17#000"
+      ]
+    },
+    {
+      "qid": "q119",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "policies/security-and-approvals#002",
+        "policies/evidence-and-synthetic-cases#002",
+        "policies/security-and-approvals#004",
+        "cases/C20#010",
+        "policies/security-and-approvals#001"
+      ]
+    },
+    {
+      "qid": "q120",
+      "type": "paraphrase",
+      "rank": 4,
+      "top5": [
+        "policies/personal-data#002",
+        "cases/C20#001",
+        "cases/C19#007",
+        "policies/security-and-approvals#004",
+        "cases/C13#012"
+      ]
+    },
+    {
+      "qid": "q121",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "solutions/request-dispatch#001",
+        "consultation/interview-approach#004",
+        "solutions/usage-billing-prep#001",
+        "cases/C02#001",
+        "policies/personal-data#001"
+      ]
+    },
+    {
+      "qid": "q122",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C05#008",
+        "cases/C20#008",
+        "cases/C20#010",
+        "policies/evidence-and-synthetic-cases#002",
+        "policies/evidence-and-synthetic-cases#003"
+      ]
+    },
+    {
+      "qid": "q123",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "policies/security-and-approvals#004",
+        "policies/evidence-and-synthetic-cases#004",
+        "solutions/request-dispatch#001",
+        "solutions/operations-overview#001",
+        "policies/evidence-and-synthetic-cases#002"
+      ]
+    },
+    {
+      "qid": "q124",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C07#014",
+        "cases/C01#004",
+        "cases/C19#008",
+        "cases/C19#010",
+        "cases/C10#010"
+      ]
+    },
+    {
+      "qid": "q125",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C06#000",
+        "cases/C04#006",
+        "cases/C03#000",
+        "cases/C09#000",
+        "cases/C20#008"
+      ]
+    },
+    {
+      "qid": "q126",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C20#010",
+        "cases/C20#008",
+        "policies/security-and-approvals#004",
+        "consultation/interview-approach#005",
+        "consultation/method-notes#005"
+      ]
+    },
+    {
+      "qid": "q127",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "solutions/request-dispatch#004",
+        "policies/personal-data#001",
+        "policies/personal-data#003",
+        "policies/personal-data#004",
+        "cases/C17#001"
+      ]
+    },
+    {
+      "qid": "q128",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C06#005",
+        "cases/C05#016",
+        "cases/C05#005",
+        "consultation/method-notes#001",
+        "cases/C08#015"
+      ]
+    },
+    {
+      "qid": "q129",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "consultation/effect-estimate#002",
+        "solutions/usage-billing-prep#002",
+        "cases/C05#007",
+        "cases/C07#004",
+        "solutions/consumables-stock#001"
+      ]
+    },
+    {
+      "qid": "q130",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "policies/personal-data#002",
+        "policies/evidence-and-synthetic-cases#003",
+        "policies/security-and-approvals#004",
+        "consultation/interview-approach#001",
+        "solutions/operations-overview#001"
+      ]
+    },
+    {
+      "qid": "q131",
+      "type": "identifier",
+      "rank": null,
+      "top5": [
+        "policies/personal-data#001",
+        "consultation/interview-approach#004",
+        "solutions/usage-billing-prep#001",
+        "consultation/interview-approach#003",
+        "consultation/effect-estimate#003"
+      ]
+    },
+    {
+      "qid": "q132",
+      "type": "identifier",
+      "rank": null,
+      "top5": [
+        "solutions/usage-billing-prep#004",
+        "consultation/interview-approach#003",
+        "consultation/interview-approach#004",
+        "solutions/operations-overview#004",
+        "consultation/interview-approach#002"
+      ]
+    },
+    {
+      "qid": "q133",
+      "type": "identifier",
+      "rank": null,
+      "top5": [
+        "solutions/usage-billing-prep#002",
+        "cases/C18#010",
+        "cases/C14#001",
+        "solutions/consumables-stock#001",
+        "cases/C18#008"
+      ]
+    },
+    {
+      "qid": "q134",
+      "type": "identifier",
+      "rank": null,
+      "top5": [
+        "solutions/operations-overview#001",
+        "policies/security-and-approvals#004",
+        "cases/C07#004",
+        "cases/C07#017",
+        "policies/evidence-and-synthetic-cases#002"
+      ]
+    },
+    {
+      "qid": "q135",
+      "type": "identifier",
+      "rank": null,
+      "top5": [
+        "consultation/interview-approach#005",
+        "cases/C20#008",
+        "consultation/effect-estimate#002",
+        "cases/C20#010",
+        "cases/C13#007"
+      ]
+    }
+  ]
+}

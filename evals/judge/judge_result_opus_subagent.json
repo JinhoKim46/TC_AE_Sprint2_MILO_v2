@@ -1,0 +1,23 @@
+{
+  "judge": "Opus sub-agent (independent of the labels, same inputs as the API judge)",
+  "n": 30,
+  "faithful": {
+    "kappa": 0.659,
+    "ci": [
+      0.28,
+      0.918
+    ],
+    "agreement": 0.867,
+    "usable": false
+  },
+  "relevant": {
+    "judge_ones": 30,
+    "note": "all labels and all judgements are 1; no information"
+  },
+  "disagreements": [
+    "S02",
+    "S06",
+    "S08",
+    "S10"
+  ]
+}

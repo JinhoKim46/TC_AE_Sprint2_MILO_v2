@@ -1,0 +1,21 @@
+{
+  "n": 30,
+  "faithful": {
+    "kappa": 0.162,
+    "ci": [
+      -0.186,
+      0.493
+    ],
+    "agreement": 0.633,
+    "judge_ones": 19,
+    "human_ones": 22,
+    "usable": false
+  },
+  "relevant": {
+    "agreement": 1.0,
+    "kappa": null,
+    "note": "all human labels are 1, so kappa is undefined"
+  },
+  "rule": "usable for faithfulness only if kappa >= 0.60 and the CI lower bound >= 0.30",
+  "judge_model": "anthropic/claude-haiku-5.5 (same family as the answering model)"
+}

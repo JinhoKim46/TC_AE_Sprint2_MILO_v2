@@ -17,7 +17,7 @@ class Usage:
 class ToolCall:
     id: str
     name: str
-    arguments: dict[str, Any]
+    args: dict[str, Any]
 
 
 @dataclass
@@ -59,3 +59,12 @@ class Response:
     cost_usd: float = 0.0
     stopped: bool = False
     error: str | None = None
+    trace: list[dict[str, Any]] = field(default_factory=list)
+
+
+@dataclass
+class ToolSpec:
+    name: str
+    description: str
+    parameters: dict[str, Any]
+    risk: str  # "read" | "write" | "destructive"

@@ -1,0 +1,490 @@
+{
+  "model": "anthropic/claude-haiku-5.5",
+  "cases": 20,
+  "metrics": {
+    "selection_rate": 0.6,
+    "parameter_rate": 0.3125,
+    "parameter_rate_lenient": 0.5625,
+    "false_call_rate": 0.0
+  },
+  "rows": [
+    {
+      "id": "tc01",
+      "expected": [],
+      "called": [],
+      "selection": true,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc02",
+      "expected": [],
+      "called": [],
+      "selection": true,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc03",
+      "expected": [],
+      "called": [],
+      "selection": true,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc04",
+      "expected": [],
+      "called": [],
+      "selection": true,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc05",
+      "expected": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "requests_per_week",
+            "value": 60,
+            "status": "reported",
+            "evidence_text": "We get about 60 requests in a normal week.",
+            "unit": "requests/week"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "requests_per_week",
+            "value": 60,
+            "status": "reported",
+            "evidence_text": "We get about 60 requests in a normal week.",
+            "unit": "requests per week"
+          }
+        }
+      ],
+      "selection": true,
+      "parameters": false,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc06",
+      "expected": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "staff_in_operations",
+            "value": 5,
+            "status": "reported",
+            "evidence_text": "There are 5 of us in the office handling calls, dispatch and stock.",
+            "unit": "count"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "staff_in_operations",
+            "value": 5,
+            "status": "reported",
+            "evidence_text": "There are 5 of us in the office handling calls, dispatch and stock."
+          }
+        }
+      ],
+      "selection": true,
+      "parameters": false,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc07",
+      "expected": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "business_type",
+            "value": "printers and copiers for small offices",
+            "status": "reported",
+            "evidence_text": "We service mostly printers and copiers for small offices.",
+            "unit": "text"
+          }
+        }
+      ],
+      "called": [],
+      "selection": false,
+      "parameters": false,
+      "parameters_lenient": false,
+      "over_eager": false
+    },
+    {
+      "id": "tc08",
+      "expected": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "request_channels",
+            "value": [
+              "phone",
+              "email",
+              "walk-in"
+            ],
+            "status": "reported",
+            "evidence_text": "Requests come in by phone and email, sometimes a walk-in.",
+            "unit": "list"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "request_channels",
+            "value": [
+              "phone",
+              "email",
+              "walk-in"
+            ],
+            "status": "reported",
+            "evidence_text": "Requests come in by phone and email, sometimes a walk-in."
+          }
+        }
+      ],
+      "selection": true,
+      "parameters": false,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc09",
+      "expected": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "minutes_per_search",
+            "value": 10,
+            "status": "reported",
+            "evidence_text": "Looking for toner takes me maybe 10 minutes each time.",
+            "unit": "minutes/search"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "minutes_per_search",
+            "value": 10,
+            "unit": "minutes",
+            "status": "reported",
+            "evidence_text": "Looking for toner takes me maybe 10 minutes each time."
+          }
+        }
+      ],
+      "selection": true,
+      "parameters": false,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc10",
+      "expected": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "readings_per_month",
+            "value": 400,
+            "status": "reported",
+            "evidence_text": "We take about 400 meter readings a month",
+            "unit": "readings/month"
+          }
+        },
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "reading_method",
+            "value": [
+              "photo"
+            ],
+            "status": "reported",
+            "evidence_text": "mostly from photos",
+            "unit": "list"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "readings_per_month",
+            "value": 400,
+            "unit": "readings per month",
+            "status": "reported",
+            "evidence_text": "We take about 400 meter readings a month, mostly from photos."
+          }
+        },
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "reading_method",
+            "value": "photos (mostly)",
+            "status": "reported",
+            "evidence_text": "We take about 400 meter readings a month, mostly from photos."
+          }
+        }
+      ],
+      "selection": true,
+      "parameters": false,
+      "parameters_lenient": false,
+      "over_eager": false
+    },
+    {
+      "id": "tc11",
+      "expected": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "status_questions_per_week",
+            "value": 30,
+            "status": "reported",
+            "evidence_text": "maybe 30 times a week",
+            "unit": "questions/week"
+          }
+        },
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "minutes_per_status_question",
+            "value": 5,
+            "status": "reported",
+            "evidence_text": "each answer takes 5 minutes",
+            "unit": "minutes/question"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "status_questions_per_week",
+            "value": 30,
+            "unit": "questions per week",
+            "status": "reported",
+            "evidence_text": "Customers ask 'where is my job' maybe 30 times a week"
+          }
+        },
+        {
+          "name": "record_fact",
+          "args": {
+            "field_id": "minutes_per_status_question",
+            "value": 5,
+            "unit": "minutes per question",
+            "status": "reported",
+            "evidence_text": "each answer takes 5 minutes"
+          }
+        },
+        {
+          "name": "get_recorded_facts",
+          "args": {}
+        }
+      ],
+      "selection": false,
+      "parameters": false,
+      "parameters_lenient": false,
+      "over_eager": false
+    },
+    {
+      "id": "tc12",
+      "expected": [
+        {
+          "name": "search_knowledge",
+          "args": {
+            "query": "requests lost phone only intake",
+            "section": "cases"
+          }
+        }
+      ],
+      "called": [],
+      "selection": false,
+      "parameters": false,
+      "parameters_lenient": false,
+      "over_eager": false
+    },
+    {
+      "id": "tc13",
+      "expected": [
+        {
+          "name": "search_knowledge",
+          "args": {
+            "query": "consumables spare parts stock tracking",
+            "section": "solutions"
+          }
+        }
+      ],
+      "called": [],
+      "selection": false,
+      "parameters": false,
+      "parameters_lenient": false,
+      "over_eager": false
+    },
+    {
+      "id": "tc14",
+      "expected": [
+        {
+          "name": "get_recorded_facts",
+          "args": {}
+        }
+      ],
+      "called": [
+        {
+          "name": "get_recorded_facts",
+          "args": {}
+        }
+      ],
+      "selection": true,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc15",
+      "expected": [
+        {
+          "name": "estimate_effect",
+          "args": {
+            "area_id": "request-dispatch"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "get_recorded_facts",
+          "args": {}
+        },
+        {
+          "name": "estimate_effect",
+          "args": {
+            "area_id": "request-dispatch"
+          }
+        }
+      ],
+      "selection": false,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc16",
+      "expected": [
+        {
+          "name": "estimate_effect",
+          "args": {
+            "area_id": "consumables-stock"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "estimate_effect",
+          "args": {
+            "area_id": "consumables-stock"
+          }
+        }
+      ],
+      "selection": true,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc17",
+      "expected": [
+        {
+          "name": "draft_diagnosis",
+          "args": {
+            "area_id": "usage-billing-prep"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "get_recorded_facts",
+          "args": {}
+        },
+        {
+          "name": "draft_diagnosis",
+          "args": {
+            "area_id": "usage-billing-prep"
+          }
+        }
+      ],
+      "selection": false,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc18",
+      "expected": [
+        {
+          "name": "draft_diagnosis",
+          "args": {
+            "area_id": "operations-overview"
+          }
+        }
+      ],
+      "called": [
+        {
+          "name": "draft_diagnosis",
+          "args": {
+            "area_id": "operations-overview"
+          }
+        }
+      ],
+      "selection": true,
+      "parameters": true,
+      "parameters_lenient": true,
+      "over_eager": false
+    },
+    {
+      "id": "tc19",
+      "expected": [
+        {
+          "name": "reset_diagnosis",
+          "args": {
+            "diagnosis_id": 1
+          }
+        }
+      ],
+      "called": [],
+      "selection": false,
+      "parameters": false,
+      "parameters_lenient": false,
+      "over_eager": false
+    },
+    {
+      "id": "tc20",
+      "expected": [
+        {
+          "name": "reset_diagnosis",
+          "args": {
+            "diagnosis_id": 2
+          }
+        }
+      ],
+      "called": [],
+      "selection": false,
+      "parameters": false,
+      "parameters_lenient": false,
+      "over_eager": false
+    }
+  ]
+}

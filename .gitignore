@@ -8,3 +8,6 @@ __pycache__/
 contract/
 scripts/check_project_data.py
 data/index/
+
+# traces written by the web app (question lengths and steps only)
+logs/

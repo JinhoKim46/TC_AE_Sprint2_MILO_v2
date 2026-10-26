@@ -1,0 +1,31 @@
+id,faithful,relevant,notes
+q001,1,1,Merge restrictions and report preservation match C01-R01/R02; device verification and legitimate parallel work match C01-Q01.
+q003,1,1,Available stock formula matches C04-R01; C04-Q02 distinguishes availability from ownership and mixed stock locations.
+q005,1,1,Uncertain coverage and incomplete asset-list guidance match C06-R01 and C06-Q01.
+q007,1,1,Authorization and remote-support limits match C08-R01/R02/R03 and C08-Q02; customer-specific authorization remains unknown.
+q009,1,1,Patient-data restrictions and screenshot handling match C16-R01 and C16-AT01; minimal triage evidence matches C16-Q03.
+q011,0,1,Addresses duplicate dispatch but request-dispatch#001 assigns dispatcher review to schedule suggestions; it does not require review of every duplicate flag.
+q013,1,1,Access constraints and collection before replanning match C02-R01 and C02#011; C02#010 supports the simulated access-window failure.
+q015,1,1,Automatic purchasing is excluded by consumables-stock#003; human-approved replenishment matches C04#011.
+q017,1,1,Invoice review and exception handling match usage-billing-prep#001/#002/#003; C05#002 does not establish automatic sending.
+q019,1,1,All five passages contain only Diagnostic questions headings; the answer appropriately says diagnosis capability cannot be established.
+q021,1,1,The 0.8-to-1.2 range and equivalent 20 percent band match effect-estimate#003.
+q023,1,1,Counting overlapping stages once matches effect-estimate#004.
+q025,1,1,Explicit unknowns and stopping or escalation rules match interview-approach#005/#006.
+q027,1,1,Operator deletion of session data and derived facts plus avoiding copied personal details match personal-data#003.
+q029,0,1,Answers the approval question correctly but falsely says passage 5 poses it; C10#003 contains only the Diagnostic questions heading.
+q031,0,1,Explains missing task evidence but adds that scheduled maintenance is missed after emergency calls; C03#001 instead describes returning for scheduled maintenance.
+q033,1,1,Correctly states that none of the supplied passages establishes Korean voice-call support.
+q035,1,1,Correctly distinguishes operational metrics and agreement-specific terms from an absent uptime guarantee.
+q037,1,1,Correctly distinguishes mobile reporting proposed in C10 from evidence that this service offers a technician app.
+q039,1,1,Correctly withholds a rollout duration; method-notes#005 supports shadow mode and comparable pilot periods.
+S01,1,1,Duplicate-dispatch analogy and checks before merging match C01#001 and C01-Q01 without inventing customer-specific volumes.
+S02,1,1,Schedule disruption and proposed constraints match C02#001/#002/#011 and request-dispatch#001; applicability remains conditional.
+S03,1,1,Agreement-specific obligations and separate attendance match C03-Q01; checklist and completion guidance match C13#011; metrics match C02/C15.
+S04,1,1,Stock-location problems and alternative reorder diagnosis match C04#001/#002 and C04-Q01; proposed measures match C04#016.
+S05,0,1,Addresses meter-photo collection but C04#001 does not establish wrong-device photographs as the likely cause of this invoicing search.
+S06,1,1,Coverage diagnosis and interventions match C06#009/#011/#010/#006; answers.json logs record_fact for the incident story while detailed operating facts remain unknown.
+S07,0,1,Relevant C07 interventions are supported but the two-week repair story is falsely attributed to C20-Q03; that passage only describes a premature visit and unseen part dependency.
+S08,0,1,Remote-support summary is relevant but the opening claim that the passages contain no question is contradicted by C08-Q03 asking whether remote attempts are time-boxed.
+S09,0,1,Relevant C09 analogy is supported but requiring real evidence before any diagnosis overstates passages about confirming applicability before reusing a pattern.
+S10,0,1,Work-order and reporting proposals match C10#011 but the promise of a record before a complaint arrives is not established by the passages.

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MILO">
+  <rect width="64" height="64" rx="16" fill="#2C6B5C"/>
+  <!-- open page: the passages MILO reads -->
+  <path d="M10 24 Q20 20 31 25 L31 47 Q20 43 10 46 Z" fill="#E6F0EC"/>
+  <path d="M54 24 Q44 20 33 25 L33 47 Q44 43 54 46 Z" fill="#CFE3DB"/>
+  <g stroke="#2C6B5C" stroke-width="2" stroke-linecap="round" opacity=".55">
+    <line x1="15" y1="31" x2="26" y2="32"/>
+    <line x1="15" y1="36" x2="26" y2="37"/>
+    <line x1="38" y1="32" x2="49" y2="31"/>
+    <line x1="38" y1="37" x2="49" y2="36"/>
+  </g>
+  <!-- MILO's face above the page -->
+  <circle cx="32" cy="19" r="9" fill="#FFFFFF"/>
+  <circle cx="28.5" cy="18" r="1.8" fill="#1D1C19"/>
+  <circle cx="35.5" cy="18" r="1.8" fill="#1D1C19"/>
+  <path d="M28.5 21.6 Q32 24 35.5 21.6" fill="none" stroke="#1D1C19" stroke-width="1.6" stroke-linecap="round"/>
+</svg>

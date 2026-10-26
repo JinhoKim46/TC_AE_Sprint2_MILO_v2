@@ -1,0 +1,4937 @@
+{
+ "schema": 2,
+ "scope": ["scripts", "src"],
+ "summary": {
+  "files": 35,
+  "lines": 5970,
+  "functions": 146,
+  "methods": 96,
+  "classes": 27,
+  "routes": 22,
+  "route_functions": 22,
+  "call_sites": 1743,
+  "resolved_internal": 446,
+  "resolved_external": 451,
+  "resolved_builtin": 580,
+  "resolved_by_convention": 0,
+  "unresolved": 266,
+  "resolved_ratio": 0.8474,
+  "graph_coverage": 0.8675,
+  "inferred_edges": 7,
+  "override_edges": 1,
+  "unresolved_value_like": 129,
+  "internal_edges": 445,
+  "reference_edges": 17,
+  "sql_sites": 19,
+  "gateway_sites": 0,
+  "external_sites": 11,
+  "tables": 7,
+  "orm_models": 0,
+  "import_cycles": 0,
+  "lazy_import_cycles": 0,
+  "parse_errors": 0,
+  "profiles": {
+   "llm": 10
+  },
+  "infra_resources": 0,
+  "infra_lambdas": 0,
+  "infra_lambdas_linked": 0,
+  "top_unresolved_names": [
+   ["get", 87],
+   ["read_text", 25],
+   ["strip", 21],
+   ["write_text", 13],
+   ["items", 9],
+   ["append", 7],
+   ["mkdir", 7],
+   ["relative_to", 6],
+   ["splitlines", 6],
+   ["embed", 5],
+   ["startswith", 5],
+   ["split", 4],
+   ["lstrip", 4],
+   ["as_posix", 4],
+   ["with_suffix", 4]
+  ]
+ },
+ "tables": [
+  "milo_v2.diagnoses",
+  "milo_v2.facts",
+  "milo_v2.feedback",
+  "milo_v2.flows",
+  "milo_v2.threads",
+  "milo_v2.turns",
+  "milo_v2.users"
+ ],
+ "orm_models": {},
+ "orm_uses": {},
+ "modules": {
+  "milo": {
+   "file": "src/milo/__init__.py",
+   "lines": 0,
+   "doc": "",
+   "cli": false,
+   "exports": [],
+   "packages": [],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 0,
+   "unresolved": 0
+  },
+  "milo.advanced": {
+   "file": "src/milo/advanced.py",
+   "lines": 141,
+   "doc": "M2 advanced retrieval: one query translation and a schema-validated self-query with a safe fallback.",
+   "cli": false,
+   "exports": [],
+   "packages": ["__future__", "re", "typing"],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 41,
+   "unresolved": 4
+  },
+  "milo.app": {
+   "file": "src/milo/app.py",
+   "lines": 380,
+   "doc": "The app the kit's contract suite builds: `build_app(chat_model, embeddings, tools_backend) -> App`.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "datetime",
+    "hashlib",
+    "json",
+    "pathlib",
+    "re",
+    "time",
+    "typing"
+   ],
+   "imports": [
+    "milo.chunk",
+    "milo.index",
+    "milo.store",
+    "milo.tools",
+    "milo.types"
+   ],
+   "lazy_imports": [],
+   "call_sites": 101,
+   "unresolved": 8
+  },
+  "milo.auth_pages": {
+   "file": "src/milo/auth_pages.py",
+   "lines": 119,
+   "doc": "The sign-up, sign-in and user-list pages. Plain forms; the server checks everything.",
+   "cli": false,
+   "exports": [],
+   "packages": ["__future__", "html"],
+   "imports": [
+    "milo.shell"
+   ],
+   "lazy_imports": [],
+   "call_sites": 18,
+   "unresolved": 0
+  },
+  "milo.chunk": {
+   "file": "src/milo/chunk.py",
+   "lines": 123,
+   "doc": "Heading-aware chunking of the knowledge-base articles.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "dataclasses",
+    "itertools",
+    "re"
+   ],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 47,
+   "unresolved": 6
+  },
+  "milo.embed": {
+   "file": "src/milo/embed.py",
+   "lines": 86,
+   "doc": "Embedders: the same interface for an offline baseline and for the chosen live model.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "itertools",
+    "langchain_openai",
+    "math",
+    "os",
+    "re",
+    "typing",
+    "zlib"
+   ],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 22,
+   "unresolved": 1
+  },
+  "milo.flows": {
+   "file": "src/milo/flows.py",
+   "lines": 82,
+   "doc": "Turns the trace file into per-request flows and an overview. Reads only; nothing here calls a model or a database.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "collections",
+    "hashlib",
+    "json",
+    "pathlib",
+    "typing"
+   ],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 46,
+   "unresolved": 12
+  },
+  "milo.index": {
+   "file": "src/milo/index.py",
+   "lines": 43,
+   "doc": "The vector index: Chroma, cosine distance, in memory. The embeddings are computed by the caller.",
+   "cli": false,
+   "exports": [],
+   "packages": ["__future__", "chromadb", "uuid"],
+   "imports": [
+    "milo.chunk"
+   ],
+   "lazy_imports": [],
+   "call_sites": 11,
+   "unresolved": 2
+  },
+  "milo.kb_pages": {
+   "file": "src/milo/kb_pages.py",
+   "lines": 167,
+   "doc": "Pages that show the knowledge base: an index of the documents and one page per document.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "html",
+    "pathlib",
+    "re"
+   ],
+   "imports": ["milo.chunk", "milo.shell"],
+   "lazy_imports": [],
+   "call_sites": 88,
+   "unresolved": 38
+  },
+  "milo.landing": {
+   "file": "src/milo/landing.py",
+   "lines": 316,
+   "doc": "The MILO product page at the root address: what MILO is, how it works, the demo, and how to start.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__"
+   ],
+   "imports": [
+    "milo.shell"
+   ],
+   "lazy_imports": [],
+   "call_sites": 9,
+   "unresolved": 0
+  },
+  "milo.llm": {
+   "file": "src/milo/llm.py",
+   "lines": 169,
+   "doc": "The model client: LangChain `ChatOpenAI` pointed at OpenRouter, behind the kit's `invoke(messages, tools)`.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "httpx",
+    "langchain_core",
+    "langchain_openai",
+    "os",
+    "typing"
+   ],
+   "imports": [
+    "milo.types"
+   ],
+   "lazy_imports": [],
+   "call_sites": 48,
+   "unresolved": 5
+  },
+  "milo.metrics": {
+   "file": "src/milo/metrics.py",
+   "lines": 36,
+   "doc": "Retrieval metrics on one query at a time, with bootstrap confidence intervals over queries.",
+   "cli": false,
+   "exports": [],
+   "packages": ["__future__", "math", "random"],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 11,
+   "unresolved": 0
+  },
+  "milo.page": {
+   "file": "src/milo/page.py",
+   "lines": 1120,
+   "doc": "The MILO pages: the chat and the overview. One HTML document each, with its CSS and script.",
+   "cli": false,
+   "exports": [],
+   "packages": [],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 0,
+   "unresolved": 0
+  },
+  "milo.pgstore": {
+   "file": "src/milo/pgstore.py",
+   "lines": 248,
+   "doc": "PostgreSQL implementation of the `Store` interface (schema `milo_v2`, see db/migrations/).",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "json",
+    "psycopg",
+    "threading",
+    "typing"
+   ],
+   "imports": ["milo.store", "milo.users"],
+   "lazy_imports": [],
+   "call_sites": 75,
+   "unresolved": 3
+  },
+  "milo.serve": {
+   "file": "src/milo/serve.py",
+   "lines": 68,
+   "doc": "Start the chat page. Choices come from the environment:",
+   "cli": true,
+   "exports": [],
+   "packages": ["__future__", "os", "pathlib"],
+   "imports": [
+    "milo.app",
+    "milo.chunk",
+    "milo.embed",
+    "milo.llm",
+    "milo.store",
+    "milo.tools",
+    "milo.types",
+    "milo.users",
+    "milo.web"
+   ],
+   "lazy_imports": [
+    "milo.pgstore"
+   ],
+   "call_sites": 33,
+   "unresolved": 6
+  },
+  "milo.shell": {
+   "file": "src/milo/shell.py",
+   "lines": 72,
+   "doc": "The one header every MILO page uses, and the brand mark.",
+   "cli": false,
+   "exports": [],
+   "packages": ["__future__", "html", "typing"],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 8,
+   "unresolved": 0
+  },
+  "milo.status": {
+   "file": "src/milo/status.py",
+   "lines": 75,
+   "doc": "System status for the owner's monitor: database, models and spend. Reads only; never prints a secret.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "httpx",
+    "os",
+    "psycopg",
+    "time",
+    "typing"
+   ],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 24,
+   "unresolved": 1
+  },
+  "milo.store": {
+   "file": "src/milo/store.py",
+   "lines": 83,
+   "doc": "The storage interface. The app and the tools keep their state here, never in their own attributes.",
+   "cli": false,
+   "exports": [],
+   "packages": ["__future__", "collections", "typing"],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 15,
+   "unresolved": 4
+  },
+  "milo.summary": {
+   "file": "src/milo/summary.py",
+   "lines": 78,
+   "doc": "The end-of-conversation summary: what MILO recorded, the estimate for each service area, and a proposed first spec.",
+   "cli": false,
+   "exports": [],
+   "packages": ["__future__", "typing"],
+   "imports": [
+    "milo.tools"
+   ],
+   "lazy_imports": [],
+   "call_sites": 14,
+   "unresolved": 6
+  },
+  "milo.tools": {
+   "file": "src/milo/tools.py",
+   "lines": 226,
+   "doc": "M3 tools: the specs come from data/tools.yaml; the handlers run in code, never in the model.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "collections",
+    "pathlib",
+    "typing",
+    "yaml"
+   ],
+   "imports": ["milo.store", "milo.types"],
+   "lazy_imports": [],
+   "call_sites": 56,
+   "unresolved": 11
+  },
+  "milo.types": {
+   "file": "src/milo/types.py",
+   "lines": 70,
+   "doc": "The data shapes of the kit's interface (contract/README.md). The kit's tests read these by attribute, so MILO keeps its own copies instead of importing the kit.",
+   "cli": false,
+   "exports": [],
+   "packages": ["__future__", "dataclasses", "typing"],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 6,
+   "unresolved": 0
+  },
+  "milo.users": {
+   "file": "src/milo/users.py",
+   "lines": 116,
+   "doc": "Accounts: password hashing and the user store (memory for tests and demos; PostgreSQL in the database store).",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "dataclasses",
+    "hashlib",
+    "hmac",
+    "secrets",
+    "time",
+    "typing"
+   ],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 30,
+   "unresolved": 0
+  },
+  "milo.web": {
+   "file": "src/milo/web.py",
+   "lines": 322,
+   "doc": "The MILO web app: landing page, accounts, the chat, the knowledge base, and the owner's overview.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "dataclasses",
+    "flask",
+    "json",
+    "os",
+    "pathlib",
+    "secrets",
+    "typing",
+    "uuid"
+   ],
+   "imports": [
+    "milo.app",
+    "milo.auth_pages",
+    "milo.flows",
+    "milo.page",
+    "milo.shell",
+    "milo.users"
+   ],
+   "lazy_imports": [
+    "milo.kb_pages",
+    "milo.landing",
+    "milo.status",
+    "milo.summary"
+   ],
+   "call_sites": 187,
+   "unresolved": 9
+  },
+  "scripts.build_kb": {
+   "file": "scripts/build_kb.py",
+   "lines": 327,
+   "doc": "Render the synthetic knowledge package into knowledge-base articles (M0).",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "collections",
+    "json",
+    "pathlib",
+    "re",
+    "sys",
+    "typing",
+    "yaml"
+   ],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 152,
+   "unresolved": 15
+  },
+  "scripts.check_project_data": {
+   "file": "scripts/check_project_data.py",
+   "lines": 217,
+   "doc": "Check a project's data folder (M0 checkpoint). Standard library only. Offline.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "json",
+    "pathlib",
+    "re",
+    "sys"
+   ],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 170,
+   "unresolved": 53
+  },
+  "scripts.create_admin": {
+   "file": "scripts/create_admin.py",
+   "lines": 48,
+   "doc": "Create the owner's account (role admin). Run once, from the terminal, with the database URL in the environment.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "getpass",
+    "os",
+    "pathlib",
+    "sys"
+   ],
+   "imports": ["milo.pgstore", "milo.users"],
+   "lazy_imports": [],
+   "call_sites": 25,
+   "unresolved": 0
+  },
+  "scripts.eval_advanced": {
+   "file": "scripts/eval_advanced.py",
+   "lines": 159,
+   "doc": "M2 A/B on the dev gold set, against the M1 baseline. Paired by question.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "eval_retrieval",
+    "json",
+    "pathlib",
+    "random",
+    "sys"
+   ],
+   "imports": [
+    "milo.advanced",
+    "milo.embed",
+    "milo.index",
+    "milo.metrics",
+    "scripts.eval_retrieval"
+   ],
+   "lazy_imports": [],
+   "call_sites": 74,
+   "unresolved": 6
+  },
+  "scripts.eval_attacks": {
+   "file": "scripts/eval_attacks.py",
+   "lines": 258,
+   "doc": "M4 attack evaluation: attack success rate (ASR) and false refusals on benign input, against the real app.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "json",
+    "os",
+    "pathlib",
+    "sys",
+    "typing"
+   ],
+   "imports": [
+    "milo.app",
+    "milo.store",
+    "milo.tools",
+    "milo.types"
+   ],
+   "lazy_imports": ["milo.embed", "milo.llm", "milo.serve"],
+   "call_sites": 91,
+   "unresolved": 20
+  },
+  "scripts.eval_retrieval": {
+   "file": "scripts/eval_retrieval.py",
+   "lines": 178,
+   "doc": "M1 retrieval baseline on the dev gold set.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "datetime",
+    "json",
+    "os",
+    "pathlib",
+    "re",
+    "sys"
+   ],
+   "imports": [
+    "milo.chunk",
+    "milo.embed",
+    "milo.index",
+    "milo.metrics"
+   ],
+   "lazy_imports": [],
+   "call_sites": 76,
+   "unresolved": 19
+  },
+  "scripts.eval_tools": {
+   "file": "scripts/eval_tools.py",
+   "lines": 201,
+   "doc": "M3 tool evaluation on data/tool_cases.jsonl: selection, parameters and over-eager calls.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "json",
+    "os",
+    "pathlib",
+    "re",
+    "sys",
+    "typing"
+   ],
+   "imports": [
+    "milo.types"
+   ],
+   "lazy_imports": [
+    "milo.app",
+    "milo.embed",
+    "milo.llm",
+    "milo.tools"
+   ],
+   "call_sites": 73,
+   "unresolved": 11
+  },
+  "scripts.make_judge_extra": {
+   "file": "scripts/make_judge_extra.py",
+   "lines": 86,
+   "doc": "Second batch of judge items: owner-story headlines S11 to S20 (demo data), answered by the live app.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "json",
+    "os",
+    "pathlib",
+    "re",
+    "sys"
+   ],
+   "imports": [
+    "milo.app",
+    "milo.embed",
+    "milo.llm",
+    "milo.serve",
+    "milo.store",
+    "milo.tools"
+   ],
+   "lazy_imports": [],
+   "call_sites": 28,
+   "unresolved": 4
+  },
+  "scripts.make_judge_sheet": {
+   "file": "scripts/make_judge_sheet.py",
+   "lines": 105,
+   "doc": "Builds the labelling sheet for the LLM judge: 30 answers from the live app, with their passages, for hand labels.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "json",
+    "os",
+    "pathlib",
+    "re",
+    "sys"
+   ],
+   "imports": [
+    "milo.app",
+    "milo.embed",
+    "milo.llm",
+    "milo.serve",
+    "milo.store",
+    "milo.tools"
+   ],
+   "lazy_imports": [],
+   "call_sites": 38,
+   "unresolved": 9
+  },
+  "scripts.migrate": {
+   "file": "scripts/migrate.py",
+   "lines": 56,
+   "doc": "Apply the SQL migrations in db/migrations/ in order. Reads MILO_DATABASE_URL from the environment or .env.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "os",
+    "pathlib",
+    "psycopg",
+    "sys"
+   ],
+   "imports": [],
+   "lazy_imports": [],
+   "call_sites": 28,
+   "unresolved": 7
+  },
+  "scripts.reset_password": {
+   "file": "scripts/reset_password.py",
+   "lines": 47,
+   "doc": "Set a new password for an account from the terminal. For the owner, when the password is forgotten.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "getpass",
+    "os",
+    "pathlib",
+    "sys"
+   ],
+   "imports": ["milo.pgstore", "milo.users"],
+   "lazy_imports": [],
+   "call_sites": 25,
+   "unresolved": 0
+  },
+  "scripts.run_judge": {
+   "file": "scripts/run_judge.py",
+   "lines": 148,
+   "doc": "LLM judge for faithfulness and relevance, calibrated against the hand labels in evals/judge/labels.csv.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "csv",
+    "json",
+    "langchain_openai",
+    "os",
+    "pathlib",
+    "random",
+    "re",
+    "sys"
+   ],
+   "imports": [],
+   "lazy_imports": [
+    "milo.llm"
+   ],
+   "call_sites": 73,
+   "unresolved": 6
+  }
+ },
+ "symbols": {
+  "milo.advanced:_tokens": {
+   "kind": "function",
+   "file": "src/milo/advanced.py",
+   "line": 74,
+   "end": 75,
+   "doc": "",
+   "params": [
+    "text"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.advanced:retrieve": {
+   "kind": "function",
+   "file": "src/milo/advanced.py",
+   "line": 133,
+   "end": 141,
+   "doc": "Filtered search when the filter is valid; unfiltered search when it is missing, invalid, or returns nothing.",
+   "params": [
+    "index",
+    "vector",
+    "k",
+    "where"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.advanced:self_query": {
+   "kind": "function",
+   "file": "src/milo/advanced.py",
+   "line": 104,
+   "end": 130,
+   "doc": "The filters a question implies, or None.",
+   "params": ["question", "case_products"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.advanced:translate_keywords": {
+   "kind": "function",
+   "file": "src/milo/advanced.py",
+   "line": 78,
+   "end": 85,
+   "doc": "",
+   "params": [
+    "question"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.advanced:validate_filters": {
+   "kind": "function",
+   "file": "src/milo/advanced.py",
+   "line": 88,
+   "end": 98,
+   "doc": "Accept only a dict with keys from ALLOWED_KEYS and values from the known enums. Anything else is rejected.",
+   "params": [
+    "raw"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App": {
+   "kind": "class",
+   "file": "src/milo/app.py",
+   "line": 57,
+   "end": 376,
+   "doc": "",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.app:App.__init__": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 58,
+   "end": 78,
+   "doc": "",
+   "params": [
+    "self",
+    "chat_model",
+    "embeddings",
+    "tools_backend",
+    "fallback_chat",
+    "trace_path",
+    "store",
+    "system_prompt"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App._ask": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 141,
+   "end": 268,
+   "doc": "",
+   "params": [
+    "self",
+    "question",
+    "user_id",
+    "trace",
+    "prior"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App._cost": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 372,
+   "end": 376,
+   "doc": "",
+   "params": ["self", "reply"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App._input_problem": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 288,
+   "end": 295,
+   "doc": "",
+   "params": [
+    "question"
+   ],
+   "decorators": [
+    "staticmethod"
+   ],
+   "async": false
+  },
+  "milo.app:App._invoke": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 270,
+   "end": 285,
+   "doc": "The primary model with bounded retries, then the local fallback once. Re-raises if both fail.",
+   "params": ["self", "messages", "specs"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App._retrieve": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 358,
+   "end": 370,
+   "doc": "",
+   "params": ["self", "question"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App._run_tool": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 335,
+   "end": 356,
+   "doc": "",
+   "params": [
+    "self",
+    "name",
+    "args",
+    "specs",
+    "user_id"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App._write_trace": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 297,
+   "end": 333,
+   "doc": "",
+   "params": [
+    "self",
+    "thread_id",
+    "user_id",
+    "question",
+    "steps",
+    "response",
+    "total_ms"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App.ask": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 92,
+   "end": 139,
+   "doc": "",
+   "params": [
+    "self",
+    "question",
+    "user_id",
+    "thread_id"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:App.ingest": {
+   "kind": "method",
+   "file": "src/milo/app.py",
+   "line": 80,
+   "end": 90,
+   "doc": "",
+   "params": ["self", "docs"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:_ms": {
+   "kind": "function",
+   "file": "src/milo/app.py",
+   "line": 53,
+   "end": 54,
+   "doc": "",
+   "params": [
+    "t0"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.app:build_app": {
+   "kind": "function",
+   "file": "src/milo/app.py",
+   "line": 379,
+   "end": 380,
+   "doc": "",
+   "params": ["chat_model", "embeddings", "tools_backend"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.auth_pages:_page": {
+   "kind": "function",
+   "file": "src/milo/auth_pages.py",
+   "line": 35,
+   "end": 43,
+   "doc": "",
+   "params": [
+    "title",
+    "active",
+    "user",
+    "body"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.auth_pages:login_page": {
+   "kind": "function",
+   "file": "src/milo/auth_pages.py",
+   "line": 46,
+   "end": 62,
+   "doc": "",
+   "params": ["error", "login_id", "next_url"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.auth_pages:password_page": {
+   "kind": "function",
+   "file": "src/milo/auth_pages.py",
+   "line": 100,
+   "end": 119,
+   "doc": "",
+   "params": ["user", "error", "saved"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.auth_pages:signup_page": {
+   "kind": "function",
+   "file": "src/milo/auth_pages.py",
+   "line": 65,
+   "end": 82,
+   "doc": "",
+   "params": ["error", "name", "login_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.auth_pages:users_page": {
+   "kind": "function",
+   "file": "src/milo/auth_pages.py",
+   "line": 85,
+   "end": 97,
+   "doc": "",
+   "params": ["user", "users"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.chunk:Chunk": {
+   "kind": "class",
+   "file": "src/milo/chunk.py",
+   "line": 28,
+   "end": 34,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.chunk:_cut": {
+   "kind": "function",
+   "file": "src/milo/chunk.py",
+   "line": 55,
+   "end": 72,
+   "doc": "Cut one long paragraph at sentence ends, repeating `overlap` characters between pieces.",
+   "params": ["paragraph", "size", "overlap"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.chunk:_sections": {
+   "kind": "function",
+   "file": "src/milo/chunk.py",
+   "line": 45,
+   "end": 52,
+   "doc": "",
+   "params": [
+    "body"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.chunk:chunk_article": {
+   "kind": "function",
+   "file": "src/milo/chunk.py",
+   "line": 96,
+   "end": 100,
+   "doc": "",
+   "params": [
+    "doc_id",
+    "raw",
+    "size",
+    "overlap"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.chunk:chunk_body": {
+   "kind": "function",
+   "file": "src/milo/chunk.py",
+   "line": 103,
+   "end": 123,
+   "doc": "",
+   "params": [
+    "doc_id",
+    "body",
+    "meta",
+    "size",
+    "overlap"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.chunk:chunk_section": {
+   "kind": "function",
+   "file": "src/milo/chunk.py",
+   "line": 75,
+   "end": 93,
+   "doc": "",
+   "params": ["section", "size", "overlap"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.chunk:front_matter": {
+   "kind": "function",
+   "file": "src/milo/chunk.py",
+   "line": 37,
+   "end": 42,
+   "doc": "",
+   "params": [
+    "raw"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.embed:Embedder": {
+   "kind": "class",
+   "file": "src/milo/embed.py",
+   "line": 28,
+   "end": 31,
+   "doc": "",
+   "bases": [
+    "Protocol"
+   ],
+   "decorators": []
+  },
+  "milo.embed:Embedder.embed": {
+   "kind": "method",
+   "file": "src/milo/embed.py",
+   "line": 31,
+   "end": 31,
+   "doc": "",
+   "params": ["self", "texts"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.embed:LexicalEmbedder": {
+   "kind": "class",
+   "file": "src/milo/embed.py",
+   "line": 34,
+   "end": 49,
+   "doc": "Hashed unigrams and bigrams, L2-normalised. Deterministic across runs (zlib.crc32, not hash()).",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.embed:LexicalEmbedder._one": {
+   "kind": "method",
+   "file": "src/milo/embed.py",
+   "line": 42,
+   "end": 49,
+   "doc": "",
+   "params": ["self", "text"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.embed:LexicalEmbedder.embed": {
+   "kind": "method",
+   "file": "src/milo/embed.py",
+   "line": 39,
+   "end": 40,
+   "doc": "",
+   "params": ["self", "texts"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.embed:OpenRouterEmbedder": {
+   "kind": "class",
+   "file": "src/milo/embed.py",
+   "line": 52,
+   "end": 86,
+   "doc": "",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.embed:OpenRouterEmbedder.__init__": {
+   "kind": "method",
+   "file": "src/milo/embed.py",
+   "line": 55,
+   "end": 70,
+   "doc": "",
+   "params": ["self", "max_cost_usd"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.embed:OpenRouterEmbedder.embed": {
+   "kind": "method",
+   "file": "src/milo/embed.py",
+   "line": 72,
+   "end": 86,
+   "doc": "Embeds in batches of at most 100 texts, the provider's limit. The cap is checked before each batch.",
+   "params": ["self", "texts"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.flows:owner_hash": {
+   "kind": "function",
+   "file": "src/milo/flows.py",
+   "line": 16,
+   "end": 17,
+   "doc": "",
+   "params": [
+    "owner_id"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.flows:read_flows": {
+   "kind": "function",
+   "file": "src/milo/flows.py",
+   "line": 20,
+   "end": 34,
+   "doc": "This owner's most recent flows, newest first. Other owners' lines are skipped.",
+   "params": ["trace_path", "owner_id", "limit"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.flows:summarize": {
+   "kind": "function",
+   "file": "src/milo/flows.py",
+   "line": 37,
+   "end": 82,
+   "doc": "",
+   "params": [
+    "flows"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.index:Index": {
+   "kind": "class",
+   "file": "src/milo/index.py",
+   "line": 12,
+   "end": 43,
+   "doc": "",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.index:Index.__init__": {
+   "kind": "method",
+   "file": "src/milo/index.py",
+   "line": 13,
+   "end": 28,
+   "doc": "",
+   "params": ["self", "chunks", "vectors"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.index:Index.search": {
+   "kind": "method",
+   "file": "src/milo/index.py",
+   "line": 30,
+   "end": 43,
+   "doc": "Top-k as (chunk_id, text, score), best first. Score = 1 - cosine distance. `where` filters on metadata.",
+   "params": [
+    "self",
+    "vector",
+    "k",
+    "where"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.kb_pages:_documents": {
+   "kind": "function",
+   "file": "src/milo/kb_pages.py",
+   "line": 72,
+   "end": 86,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.kb_pages:_page": {
+   "kind": "function",
+   "file": "src/milo/kb_pages.py",
+   "line": 161,
+   "end": 167,
+   "doc": "",
+   "params": ["title", "body"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.kb_pages:_paragraphs": {
+   "kind": "function",
+   "file": "src/milo/kb_pages.py",
+   "line": 48,
+   "end": 69,
+   "doc": "",
+   "params": [
+    "body"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.kb_pages:document_json": {
+   "kind": "function",
+   "file": "src/milo/kb_pages.py",
+   "line": 113,
+   "end": 124,
+   "doc": "The full text of one document, for the viewer on the chat page. Same path check as the page.",
+   "params": [
+    "doc_id"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.kb_pages:document_page": {
+   "kind": "function",
+   "file": "src/milo/kb_pages.py",
+   "line": 127,
+   "end": 158,
+   "doc": "",
+   "params": ["doc_id", "user"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.kb_pages:index_page": {
+   "kind": "function",
+   "file": "src/milo/kb_pages.py",
+   "line": 89,
+   "end": 110,
+   "doc": "",
+   "params": [
+    "user"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.landing:_mock": {
+   "kind": "function",
+   "file": "src/milo/landing.py",
+   "line": 90,
+   "end": 100,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.landing:_toc": {
+   "kind": "function",
+   "file": "src/milo/landing.py",
+   "line": 114,
+   "end": 140,
+   "doc": "The section index at the right edge (wide screens only). It marks the section in view and links back to the top.",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.landing:landing_page": {
+   "kind": "function",
+   "file": "src/milo/landing.py",
+   "line": 143,
+   "end": 316,
+   "doc": "",
+   "params": [
+    "user"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:LangChainChat": {
+   "kind": "class",
+   "file": "src/milo/llm.py",
+   "line": 25,
+   "end": 50,
+   "doc": "A LangChain chat model with the kit's interface and its price.",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.llm:LangChainChat.__init__": {
+   "kind": "method",
+   "file": "src/milo/llm.py",
+   "line": 28,
+   "end": 32,
+   "doc": "",
+   "params": ["self", "model", "price_usd_per_mtok"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:LangChainChat.invoke": {
+   "kind": "method",
+   "file": "src/milo/llm.py",
+   "line": 34,
+   "end": 50,
+   "doc": "",
+   "params": ["self", "messages", "tools"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:LocalOllamaChat": {
+   "kind": "class",
+   "file": "src/milo/llm.py",
+   "line": 128,
+   "end": 164,
+   "doc": "The fallback model. It answers from the passages only: tools are not offered, so a fallback can never act.",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.llm:LocalOllamaChat.__init__": {
+   "kind": "method",
+   "file": "src/milo/llm.py",
+   "line": 137,
+   "end": 139,
+   "doc": "",
+   "params": ["self", "model", "timeout_s"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:LocalOllamaChat.invoke": {
+   "kind": "method",
+   "file": "src/milo/llm.py",
+   "line": 141,
+   "end": 164,
+   "doc": "",
+   "params": ["self", "messages", "tools"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:live_chat_model": {
+   "kind": "function",
+   "file": "src/milo/llm.py",
+   "line": 99,
+   "end": 121,
+   "doc": "`ChatOpenAI` on OpenRouter. Building it sends nothing; the first `invoke` does.",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:local_chat_model": {
+   "kind": "function",
+   "file": "src/milo/llm.py",
+   "line": 167,
+   "end": 169,
+   "doc": "The fallback: a local Ollama model. No key, no spend.",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:openai_tool": {
+   "kind": "function",
+   "file": "src/milo/llm.py",
+   "line": 53,
+   "end": 62,
+   "doc": "A tool spec in the function-calling shape the OpenRouter endpoint expects.",
+   "params": [
+    "spec"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:text_of": {
+   "kind": "function",
+   "file": "src/milo/llm.py",
+   "line": 88,
+   "end": 96,
+   "doc": "The text of a message. Some providers (Anthropic among them) return a list of content blocks.",
+   "params": [
+    "content"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:to_message": {
+   "kind": "function",
+   "file": "src/milo/llm.py",
+   "line": 65,
+   "end": 85,
+   "doc": "Our role/content dicts as LangChain messages. Assistant tool calls and tool results keep their ids.",
+   "params": [
+    "m"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.metrics:mean_ci": {
+   "kind": "function",
+   "file": "src/milo/metrics.py",
+   "line": 24,
+   "end": 36,
+   "doc": "Mean with a percentile bootstrap 95% interval. Deterministic for a given seed.",
+   "params": ["values", "n_boot", "seed"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.metrics:ndcg_at_k": {
+   "kind": "function",
+   "file": "src/milo/metrics.py",
+   "line": 17,
+   "end": 21,
+   "doc": "Binary relevance with one relevant chunk: DCG = 1 / log2(rank + 1); ideal DCG = 1.",
+   "params": ["rank", "k"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.metrics:recall_at_k": {
+   "kind": "function",
+   "file": "src/milo/metrics.py",
+   "line": 13,
+   "end": 14,
+   "doc": "",
+   "params": ["rank", "k"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore": {
+   "kind": "class",
+   "file": "src/milo/pgstore.py",
+   "line": 18,
+   "end": 187,
+   "doc": "",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.pgstore:PostgresStore.__init__": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 19,
+   "end": 21,
+   "doc": "",
+   "params": ["self", "url"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.add_diagnosis": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 108,
+   "end": 117,
+   "doc": "",
+   "params": ["self", "owner", "card"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.add_fact": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 68,
+   "end": 86,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "field_id",
+    "entry"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.add_feedback": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 174,
+   "end": 179,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "rating",
+    "reason"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.append_turns": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 29,
+   "end": 49,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "turns"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.close": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 23,
+   "end": 24,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.delete_owner": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 181,
+   "end": 187,
+   "doc": "Remove everything one owner has stored. Used by tests and by the owner-deletion request (not yet exposed).",
+   "params": ["self", "owner"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.diagnoses": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 119,
+   "end": 125,
+   "doc": "",
+   "params": ["self", "owner"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.facts": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 88,
+   "end": 106,
+   "doc": "",
+   "params": ["self", "owner"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.flows": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 143,
+   "end": 172,
+   "doc": "",
+   "params": ["self", "owner", "limit"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.history": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 51,
+   "end": 66,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "limit"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.record_flow": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 127,
+   "end": 141,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "flow"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.user_store": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 26,
+   "end": 27,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresUserStore": {
+   "kind": "class",
+   "file": "src/milo/pgstore.py",
+   "line": 190,
+   "end": 248,
+   "doc": "Accounts in milo_v2.users. The same four methods as MemoryUserStore.",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.pgstore:PostgresUserStore.__init__": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 193,
+   "end": 195,
+   "doc": "",
+   "params": ["self", "conn"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresUserStore.all": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 243,
+   "end": 248,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresUserStore.by_id": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 218,
+   "end": 227,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresUserStore.by_login": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 207,
+   "end": 216,
+   "doc": "",
+   "params": ["self", "login_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresUserStore.create": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 197,
+   "end": 205,
+   "doc": "",
+   "params": [
+    "self",
+    "login_id",
+    "display_name",
+    "password_hash",
+    "role"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresUserStore.record_login": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 229,
+   "end": 234,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresUserStore.set_password": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 236,
+   "end": 241,
+   "doc": "",
+   "params": ["self", "user_id", "password_hash"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.serve:build_store": {
+   "kind": "function",
+   "file": "src/milo/serve.py",
+   "line": 39,
+   "end": 44,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.serve:build_web": {
+   "kind": "function",
+   "file": "src/milo/serve.py",
+   "line": 47,
+   "end": 64,
+   "doc": "",
+   "params": [
+    "secret_key"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.serve:load_documents": {
+   "kind": "function",
+   "file": "src/milo/serve.py",
+   "line": 31,
+   "end": 36,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.shell:_link": {
+   "kind": "function",
+   "file": "src/milo/shell.py",
+   "line": 39,
+   "end": 41,
+   "doc": "",
+   "params": [
+    "href",
+    "label",
+    "active",
+    "key"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.shell:site_header": {
+   "kind": "function",
+   "file": "src/milo/shell.py",
+   "line": 44,
+   "end": 72,
+   "doc": "",
+   "params": ["active", "user"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.status:_ping_database": {
+   "kind": "function",
+   "file": "src/milo/status.py",
+   "line": 12,
+   "end": 33,
+   "doc": "",
+   "params": [
+    "url"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.status:_ping_local_model": {
+   "kind": "function",
+   "file": "src/milo/status.py",
+   "line": 36,
+   "end": 42,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.status:snapshot": {
+   "kind": "function",
+   "file": "src/milo/status.py",
+   "line": 45,
+   "end": 75,
+   "doc": "",
+   "params": [
+    "store_kind",
+    "database_url",
+    "flows",
+    "chat_model"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore": {
+   "kind": "class",
+   "file": "src/milo/store.py",
+   "line": 39,
+   "end": 83,
+   "doc": "Dictionaries in memory. Every read is keyed by the owner, so one owner never sees another's data.",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.store:MemoryStore.__init__": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 42,
+   "end": 49,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.add_diagnosis": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 68,
+   "end": 70,
+   "doc": "",
+   "params": ["self", "owner", "card"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.add_fact": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 61,
+   "end": 63,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "field_id",
+    "entry"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.add_feedback": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 82,
+   "end": 83,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "rating",
+    "reason"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.append_turns": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 51,
+   "end": 54,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "turns"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.diagnoses": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 72,
+   "end": 73,
+   "doc": "",
+   "params": ["self", "owner"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.facts": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 65,
+   "end": 66,
+   "doc": "",
+   "params": ["self", "owner"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.flows": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 78,
+   "end": 80,
+   "doc": "",
+   "params": ["self", "owner", "limit"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.history": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 56,
+   "end": 59,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "limit"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.record_flow": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 75,
+   "end": 76,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "flow"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store": {
+   "kind": "class",
+   "file": "src/milo/store.py",
+   "line": 15,
+   "end": 36,
+   "doc": "",
+   "bases": [
+    "Protocol"
+   ],
+   "decorators": []
+  },
+  "milo.store:Store.add_diagnosis": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 28,
+   "end": 28,
+   "doc": "",
+   "params": ["self", "owner", "card"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.add_fact": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 24,
+   "end": 24,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "field_id",
+    "entry"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.add_feedback": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 36,
+   "end": 36,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "rating",
+    "reason"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.append_turns": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 16,
+   "end": 18,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "turns"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.diagnoses": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 30,
+   "end": 30,
+   "doc": "",
+   "params": ["self", "owner"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.facts": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 26,
+   "end": 26,
+   "doc": "",
+   "params": ["self", "owner"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.flows": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 34,
+   "end": 34,
+   "doc": "",
+   "params": ["self", "owner", "limit"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.history": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 20,
+   "end": 22,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "limit"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.record_flow": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 32,
+   "end": 32,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "flow"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.summary:_proposal": {
+   "kind": "function",
+   "file": "src/milo/summary.py",
+   "line": 57,
+   "end": 78,
+   "doc": "",
+   "params": ["ready", "missing"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.summary:_words": {
+   "kind": "function",
+   "file": "src/milo/summary.py",
+   "line": 14,
+   "end": 15,
+   "doc": "",
+   "params": [
+    "identifier"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.summary:build_summary": {
+   "kind": "function",
+   "file": "src/milo/summary.py",
+   "line": 18,
+   "end": 54,
+   "doc": "",
+   "params": ["backend", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend": {
+   "kind": "class",
+   "file": "src/milo/tools.py",
+   "line": 105,
+   "end": 226,
+   "doc": "Holds each owner's facts and diagnoses in memory. Persistence is M4/M6's concern, not this milestone's.",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.tools:Backend.__init__": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 108,
+   "end": 114,
+   "doc": "",
+   "params": ["self", "search", "store"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend._draft_diagnosis": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 203,
+   "end": 220,
+   "doc": "",
+   "params": ["self", "args", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend._estimate_effect": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 148,
+   "end": 171,
+   "doc": "",
+   "params": ["self", "args", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend._get_recorded_facts": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 139,
+   "end": 146,
+   "doc": "",
+   "params": ["self", "args", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend._latest": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 174,
+   "end": 183,
+   "doc": "",
+   "params": ["facts", "field_id"],
+   "decorators": [
+    "staticmethod"
+   ],
+   "async": false
+  },
+  "milo.tools:Backend._record_fact": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 187,
+   "end": 201,
+   "doc": "",
+   "params": ["self", "args", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend._reset_diagnosis": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 222,
+   "end": 226,
+   "doc": "",
+   "params": ["self", "args", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend._search_knowledge": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 131,
+   "end": 137,
+   "doc": "",
+   "params": ["self", "args", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend.attach_search": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 116,
+   "end": 118,
+   "doc": "The app gives the backend its retrieval, so search_knowledge uses the same index as the answers.",
+   "params": ["self", "search"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend.call": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 123,
+   "end": 127,
+   "doc": "",
+   "params": [
+    "self",
+    "name",
+    "args",
+    "user_id"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:Backend.specs": {
+   "kind": "method",
+   "file": "src/milo/tools.py",
+   "line": 120,
+   "end": 121,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:_schema": {
+   "kind": "function",
+   "file": "src/milo/tools.py",
+   "line": 40,
+   "end": 60,
+   "doc": "",
+   "params": [
+    "args"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:specs": {
+   "kind": "function",
+   "file": "src/milo/tools.py",
+   "line": 63,
+   "end": 67,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.tools:validate_args": {
+   "kind": "function",
+   "file": "src/milo/tools.py",
+   "line": 70,
+   "end": 102,
+   "doc": "A message describing the first problem with the arguments, or None when they are valid.",
+   "params": ["name", "args", "spec_list"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.types:ChatReply": {
+   "kind": "class",
+   "file": "src/milo/types.py",
+   "line": 24,
+   "end": 27,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.types:Document": {
+   "kind": "class",
+   "file": "src/milo/types.py",
+   "line": 31,
+   "end": 34,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.types:Response": {
+   "kind": "class",
+   "file": "src/milo/types.py",
+   "line": 55,
+   "end": 62,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.types:Source": {
+   "kind": "class",
+   "file": "src/milo/types.py",
+   "line": 38,
+   "end": 42,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.types:ToolCall": {
+   "kind": "class",
+   "file": "src/milo/types.py",
+   "line": 17,
+   "end": 20,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.types:ToolResult": {
+   "kind": "class",
+   "file": "src/milo/types.py",
+   "line": 46,
+   "end": 51,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.types:ToolSpec": {
+   "kind": "class",
+   "file": "src/milo/types.py",
+   "line": 66,
+   "end": 70,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.types:Usage": {
+   "kind": "class",
+   "file": "src/milo/types.py",
+   "line": 11,
+   "end": 13,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.users:MemoryUserStore": {
+   "kind": "class",
+   "file": "src/milo/users.py",
+   "line": 82,
+   "end": 116,
+   "doc": "",
+   "bases": [],
+   "decorators": []
+  },
+  "milo.users:MemoryUserStore.__init__": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 83,
+   "end": 86,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:MemoryUserStore.all": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 107,
+   "end": 108,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:MemoryUserStore.by_id": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 101,
+   "end": 105,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:MemoryUserStore.by_login": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 98,
+   "end": 99,
+   "doc": "",
+   "params": ["self", "login_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:MemoryUserStore.create": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 88,
+   "end": 96,
+   "doc": "",
+   "params": [
+    "self",
+    "login_id",
+    "display_name",
+    "password_hash",
+    "role"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:MemoryUserStore.record_login": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 110,
+   "end": 111,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:MemoryUserStore.set_password": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 113,
+   "end": 116,
+   "doc": "",
+   "params": ["self", "user_id", "password_hash"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:User": {
+   "kind": "class",
+   "file": "src/milo/users.py",
+   "line": 22,
+   "end": 26,
+   "doc": "",
+   "bases": [],
+   "decorators": [
+    "dataclass"
+   ]
+  },
+  "milo.users:UserStore": {
+   "kind": "class",
+   "file": "src/milo/users.py",
+   "line": 66,
+   "end": 79,
+   "doc": "",
+   "bases": [
+    "Protocol"
+   ],
+   "decorators": []
+  },
+  "milo.users:UserStore.all": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 75,
+   "end": 75,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:UserStore.by_id": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 73,
+   "end": 73,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:UserStore.by_login": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 71,
+   "end": 71,
+   "doc": "",
+   "params": ["self", "login_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:UserStore.create": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 67,
+   "end": 69,
+   "doc": "",
+   "params": [
+    "self",
+    "login_id",
+    "display_name",
+    "password_hash",
+    "role"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:UserStore.record_login": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 79,
+   "end": 79,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:UserStore.set_password": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 77,
+   "end": 77,
+   "doc": "",
+   "params": ["self", "user_id", "password_hash"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:check_new_account": {
+   "kind": "function",
+   "file": "src/milo/users.py",
+   "line": 51,
+   "end": 63,
+   "doc": "A message describing the first problem with a sign-up, or None when it is acceptable.",
+   "params": ["login_id", "display_name", "password"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:hash_password": {
+   "kind": "function",
+   "file": "src/milo/users.py",
+   "line": 29,
+   "end": 32,
+   "doc": "",
+   "params": [
+    "password"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:verify_password": {
+   "kind": "function",
+   "file": "src/milo/users.py",
+   "line": 35,
+   "end": 48,
+   "doc": "",
+   "params": ["password", "stored"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app": {
+   "kind": "function",
+   "file": "src/milo/web.py",
+   "line": 39,
+   "end": 322,
+   "doc": "",
+   "params": ["milo_app", "secret_key", "users"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.admin_users": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 298,
+   "end": 299,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.ask": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 247,
+   "end": 266,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.post", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.chat": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 232,
+   "end": 236,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.chat_page": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 95,
+   "end": 100,
+   "doc": "",
+   "params": [
+    "user"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.current_user": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 48,
+   "end": 50,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.dashboard": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 288,
+   "end": 294,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.demo": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 225,
+   "end": 226,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.get"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.ensure_thread": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 55,
+   "end": 57,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.feedback": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 270,
+   "end": 282,
+   "doc": "One thumbs vote on an answer. Stores the rating, a reason from a fixed list and a hashed owner. No text.",
+   "params": [],
+   "decorators": ["web.post", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.flows": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 303,
+   "end": 306,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.history": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 240,
+   "end": 243,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.html": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 92,
+   "end": 93,
+   "doc": "",
+   "params": [
+    "page"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.index": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 105,
+   "end": 108,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.get"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.kb_document": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 200,
+   "end": 206,
+   "doc": "",
+   "params": [
+    "doc_id"
+   ],
+   "decorators": [
+    "web.get"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.kb_index": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 194,
+   "end": 197,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.get"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.kb_text": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 216,
+   "end": 222,
+   "doc": "",
+   "params": [
+    "doc_id"
+   ],
+   "decorators": [
+    "web.get"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.login": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 129,
+   "end": 130,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.get"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.login_needed": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 67,
+   "end": 90,
+   "doc": "Decorator: a page redirects to sign-in; an API answers 401; a customer on an admin page gets 403.",
+   "params": [
+    "admin"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.login_needed.wrap": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 70,
+   "end": 88,
+   "doc": "",
+   "params": [
+    "view"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.login_needed.wrap.inner": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 71,
+   "end": 85,
+   "doc": "",
+   "params": ["*args", "**kwargs"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.login_submit": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 133,
+   "end": 145,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.post"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.logout": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 148,
+   "end": 150,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.post"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.me": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 153,
+   "end": 164,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.get"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.owner": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 52,
+   "end": 53,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.password_form": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 168,
+   "end": 169,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.password_submit": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 173,
+   "end": 191,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.post", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.sign_in": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 59,
+   "end": 62,
+   "doc": "",
+   "params": [
+    "user"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.web:create_app.signup": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 111,
+   "end": 112,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.get"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.signup_submit": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 115,
+   "end": 126,
+   "doc": "",
+   "params": [],
+   "decorators": [
+    "web.post"
+   ],
+   "async": false
+  },
+  "milo.web:create_app.status": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 310,
+   "end": 320,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.summary": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 210,
+   "end": 213,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.wants_json": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 64,
+   "end": 65,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:Writer": {
+   "kind": "class",
+   "file": "scripts/build_kb.py",
+   "line": 112,
+   "end": 158,
+   "doc": "Markdown with three rules: shared sentences are left out (they live in the method notes), a sentence already written in this article is not written again, and a heading appears only when something follows it.",
+   "bases": [],
+   "decorators": []
+  },
+  "scripts.build_kb:Writer.__init__": {
+   "kind": "method",
+   "file": "scripts/build_kb.py",
+   "line": 116,
+   "end": 120,
+   "doc": "",
+   "params": ["self", "shared"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:Writer._emit": {
+   "kind": "method",
+   "file": "scripts/build_kb.py",
+   "line": 130,
+   "end": 133,
+   "doc": "",
+   "params": ["self", "lines", "text"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:Writer.h": {
+   "kind": "method",
+   "file": "scripts/build_kb.py",
+   "line": 135,
+   "end": 138,
+   "doc": "",
+   "params": ["self", "level", "text"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:Writer.items": {
+   "kind": "method",
+   "file": "scripts/build_kb.py",
+   "line": 145,
+   "end": 152,
+   "doc": "",
+   "params": ["self", "values", "numbered"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:Writer.p": {
+   "kind": "method",
+   "file": "scripts/build_kb.py",
+   "line": 140,
+   "end": 143,
+   "doc": "",
+   "params": ["self", "text", "label"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:Writer.raw": {
+   "kind": "method",
+   "file": "scripts/build_kb.py",
+   "line": 154,
+   "end": 155,
+   "doc": "",
+   "params": ["self", "line"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:Writer.strip": {
+   "kind": "method",
+   "file": "scripts/build_kb.py",
+   "line": 122,
+   "end": 128,
+   "doc": "",
+   "params": ["self", "s"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:Writer.text": {
+   "kind": "method",
+   "file": "scripts/build_kb.py",
+   "line": 157,
+   "end": 158,
+   "doc": "",
+   "params": [
+    "self"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:boilerplate": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 93,
+   "end": 100,
+   "doc": "Sentences of more than three words that appear in at least BOILERPLATE_MIN case families.",
+   "params": [
+    "families"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:debrand": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 81,
+   "end": 86,
+   "doc": "",
+   "params": [
+    "text"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:front": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 108,
+   "end": 109,
+   "doc": "",
+   "params": [
+    "meta"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:load_families": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 45,
+   "end": 59,
+   "doc": "The 20 case families: case, playbook and blueprint of the same number.",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:main": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 302,
+   "end": 323,
+   "doc": "",
+   "params": [
+    "argv"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:module_of": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 103,
+   "end": 105,
+   "doc": "Family number (01 to 20) to v2 module id.",
+   "params": [
+    "catalogue"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:questions": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 161,
+   "end": 177,
+   "doc": "",
+   "params": ["w", "qs", "done"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:render_all": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 268,
+   "end": 299,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:render_family": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 180,
+   "end": 254,
+   "doc": "",
+   "params": ["fam", "w"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:render_method": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 257,
+   "end": 265,
+   "doc": "",
+   "params": [
+    "shared"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:sentences": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 89,
+   "end": 90,
+   "doc": "",
+   "params": [
+    "text"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.build_kb:strings": {
+   "kind": "function",
+   "file": "scripts/build_kb.py",
+   "line": 62,
+   "end": 69,
+   "doc": "",
+   "params": [
+    "obj"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.check_project_data:check_attacks": {
+   "kind": "function",
+   "file": "scripts/check_project_data.py",
+   "line": 168,
+   "end": 189,
+   "doc": "",
+   "params": ["rows", "errs", "templates"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.check_project_data:check_gold": {
+   "kind": "function",
+   "file": "scripts/check_project_data.py",
+   "line": 88,
+   "end": 138,
+   "doc": "",
+   "params": [
+    "rows",
+    "docs",
+    "errs",
+    "templates"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.check_project_data:check_tools": {
+   "kind": "function",
+   "file": "scripts/check_project_data.py",
+   "line": 141,
+   "end": 165,
+   "doc": "",
+   "params": ["rows", "errs", "templates"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.check_project_data:load_kb": {
+   "kind": "function",
+   "file": "scripts/check_project_data.py",
+   "line": 59,
+   "end": 78,
+   "doc": "",
+   "params": ["kb", "errs"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.check_project_data:main": {
+   "kind": "function",
+   "file": "scripts/check_project_data.py",
+   "line": 192,
+   "end": 213,
+   "doc": "",
+   "params": [
+    "argv"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.check_project_data:need": {
+   "kind": "function",
+   "file": "scripts/check_project_data.py",
+   "line": 81,
+   "end": 85,
+   "doc": "",
+   "params": [
+    "row",
+    "key",
+    "typ",
+    "where",
+    "errs"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.check_project_data:norm": {
+   "kind": "function",
+   "file": "scripts/check_project_data.py",
+   "line": 35,
+   "end": 36,
+   "doc": "",
+   "params": [
+    "s"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.check_project_data:read_jsonl": {
+   "kind": "function",
+   "file": "scripts/check_project_data.py",
+   "line": 39,
+   "end": 56,
+   "doc": "",
+   "params": ["path", "errs"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.create_admin:main": {
+   "kind": "function",
+   "file": "scripts/create_admin.py",
+   "line": 21,
+   "end": 44,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_advanced:decide": {
+   "kind": "function",
+   "file": "scripts/eval_advanced.py",
+   "line": 51,
+   "end": 53,
+   "doc": "",
+   "params": [
+    "diffs"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_advanced:main": {
+   "kind": "function",
+   "file": "scripts/eval_advanced.py",
+   "line": 145,
+   "end": 155,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_advanced:paired_ci": {
+   "kind": "function",
+   "file": "scripts/eval_advanced.py",
+   "line": 40,
+   "end": 48,
+   "doc": "",
+   "params": ["diffs", "n_boot", "seed"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_advanced:replay": {
+   "kind": "function",
+   "file": "scripts/eval_advanced.py",
+   "line": 121,
+   "end": 142,
+   "doc": "",
+   "params": [
+    "path"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_advanced:run": {
+   "kind": "function",
+   "file": "scripts/eval_advanced.py",
+   "line": 56,
+   "end": 118,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:CachedEmbedder": {
+   "kind": "class",
+   "file": "scripts/eval_attacks.py",
+   "line": 37,
+   "end": 50,
+   "doc": "Embeds each text once. Every attack re-indexes the same knowledge base; without the cache the spend cap counts it again.",
+   "bases": [],
+   "decorators": []
+  },
+  "scripts.eval_attacks:CachedEmbedder.__init__": {
+   "kind": "method",
+   "file": "scripts/eval_attacks.py",
+   "line": 40,
+   "end": 43,
+   "doc": "",
+   "params": ["self", "inner"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:CachedEmbedder.embed": {
+   "kind": "method",
+   "file": "scripts/eval_attacks.py",
+   "line": 45,
+   "end": 50,
+   "doc": "",
+   "params": ["self", "texts"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:RecordingBackend": {
+   "kind": "class",
+   "file": "scripts/eval_attacks.py",
+   "line": 53,
+   "end": 62,
+   "doc": "Records every tool that actually ran, with the owner it ran for.",
+   "bases": [
+    "Backend"
+   ],
+   "decorators": []
+  },
+  "scripts.eval_attacks:RecordingBackend.__init__": {
+   "kind": "method",
+   "file": "scripts/eval_attacks.py",
+   "line": 56,
+   "end": 58,
+   "doc": "",
+   "params": ["self", "store"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:RecordingBackend.call": {
+   "kind": "method",
+   "file": "scripts/eval_attacks.py",
+   "line": 60,
+   "end": 62,
+   "doc": "",
+   "params": [
+    "self",
+    "name",
+    "args",
+    "user_id"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:build": {
+   "kind": "function",
+   "file": "scripts/eval_attacks.py",
+   "line": 118,
+   "end": 145,
+   "doc": "",
+   "params": [
+    "attack",
+    "chat",
+    "embeddings",
+    "docs"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:check": {
+   "kind": "function",
+   "file": "scripts/eval_attacks.py",
+   "line": 65,
+   "end": 80,
+   "doc": "True when the attack succeeded. Each rule comes from the attack's success_check in data/attacks.jsonl.",
+   "params": ["attack", "answer", "executed"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:load_docs": {
+   "kind": "function",
+   "file": "scripts/eval_attacks.py",
+   "line": 148,
+   "end": 151,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:main": {
+   "kind": "function",
+   "file": "scripts/eval_attacks.py",
+   "line": 217,
+   "end": 254,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:run": {
+   "kind": "function",
+   "file": "scripts/eval_attacks.py",
+   "line": 154,
+   "end": 214,
+   "doc": "",
+   "params": [
+    "max_cost"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_attacks:seed": {
+   "kind": "function",
+   "file": "scripts/eval_attacks.py",
+   "line": 83,
+   "end": 115,
+   "doc": "",
+   "params": [
+    "backend"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_retrieval:dev_rows": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 81,
+   "end": 82,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_retrieval:load_chunks": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 44,
+   "end": 49,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_retrieval:main": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 157,
+   "end": 174,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_retrieval:metrics": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 85,
+   "end": 97,
+   "doc": "",
+   "params": [
+    "rows"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_retrieval:norm": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 40,
+   "end": 41,
+   "doc": "",
+   "params": [
+    "s"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_retrieval:replay": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 141,
+   "end": 154,
+   "doc": "",
+   "params": [
+    "path"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_retrieval:run": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 100,
+   "end": 138,
+   "doc": "",
+   "params": ["embedder_name", "max_cost", "split"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_retrieval:split_rows": {
+   "kind": "function",
+   "file": "scripts/eval_retrieval.py",
+   "line": 55,
+   "end": 78,
+   "doc": "The rows of one split. The test split is read once: every read is logged, and a second read is refused.",
+   "params": [
+    "split"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_tools:_owner_words": {
+   "kind": "function",
+   "file": "scripts/eval_tools.py",
+   "line": 36,
+   "end": 37,
+   "doc": "",
+   "params": [
+    "s"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_tools:_same": {
+   "kind": "function",
+   "file": "scripts/eval_tools.py",
+   "line": 80,
+   "end": 83,
+   "doc": "",
+   "params": ["got", "want"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_tools:aggregate": {
+   "kind": "function",
+   "file": "scripts/eval_tools.py",
+   "line": 86,
+   "end": 97,
+   "doc": "",
+   "params": [
+    "rows"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_tools:live": {
+   "kind": "function",
+   "file": "scripts/eval_tools.py",
+   "line": 133,
+   "end": 183,
+   "doc": "",
+   "params": [
+    "max_cost"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_tools:main": {
+   "kind": "function",
+   "file": "scripts/eval_tools.py",
+   "line": 186,
+   "end": 197,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_tools:score": {
+   "kind": "function",
+   "file": "scripts/eval_tools.py",
+   "line": 40,
+   "end": 77,
+   "doc": "strict: every expected argument equal, free text included. lenient: structured arguments only, and any evidence_text must be the owner's own words (a substring of the query, ignoring quotes and case).",
+   "params": ["case", "called"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.eval_tools:selftest": {
+   "kind": "function",
+   "file": "scripts/eval_tools.py",
+   "line": 100,
+   "end": 130,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.make_judge_extra:main": {
+   "kind": "function",
+   "file": "scripts/make_judge_extra.py",
+   "line": 29,
+   "end": 82,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.make_judge_sheet:items": {
+   "kind": "function",
+   "file": "scripts/make_judge_sheet.py",
+   "line": 31,
+   "end": 44,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.make_judge_sheet:main": {
+   "kind": "function",
+   "file": "scripts/make_judge_sheet.py",
+   "line": 47,
+   "end": 101,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.migrate:database_url": {
+   "kind": "function",
+   "file": "scripts/migrate.py",
+   "line": 19,
+   "end": 27,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.migrate:main": {
+   "kind": "function",
+   "file": "scripts/migrate.py",
+   "line": 30,
+   "end": 52,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.reset_password:main": {
+   "kind": "function",
+   "file": "scripts/reset_password.py",
+   "line": 21,
+   "end": 43,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.run_judge:bootstrap": {
+   "kind": "function",
+   "file": "scripts/run_judge.py",
+   "line": 46,
+   "end": 56,
+   "doc": "",
+   "params": [
+    "a",
+    "b",
+    "n_boot",
+    "seed"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.run_judge:judge_all": {
+   "kind": "function",
+   "file": "scripts/run_judge.py",
+   "line": 67,
+   "end": 100,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.run_judge:kappa": {
+   "kind": "function",
+   "file": "scripts/run_judge.py",
+   "line": 38,
+   "end": 43,
+   "doc": "",
+   "params": ["a", "b"],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.run_judge:main": {
+   "kind": "function",
+   "file": "scripts/run_judge.py",
+   "line": 103,
+   "end": 144,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
+  "scripts.run_judge:parse": {
+   "kind": "function",
+   "file": "scripts/run_judge.py",
+   "line": 59,
+   "end": 61,
+   "doc": "",
+   "params": [
+    "text"
+   ],
+   "decorators": [],
+   "async": false
+  }
+ },
+ "routes": {
+  "milo.web:create_app.admin_users": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/admin/users"]
+   ],
+   "urls": [
+    ["GET", "/admin/users"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.ask": {
+   "blueprint": "web",
+   "routes": [
+    ["POST", "/api/ask"]
+   ],
+   "urls": [
+    ["POST", "/api/ask"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.chat": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/chat"]
+   ],
+   "urls": [
+    ["GET", "/chat"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.dashboard": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/dashboard"]
+   ],
+   "urls": [
+    ["GET", "/dashboard"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.demo": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/api/demo"]
+   ],
+   "urls": [
+    ["GET", "/api/demo"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.feedback": {
+   "blueprint": "web",
+   "routes": [
+    ["POST", "/api/feedback"]
+   ],
+   "urls": [
+    ["POST", "/api/feedback"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.flows": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/api/flows"]
+   ],
+   "urls": [
+    ["GET", "/api/flows"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.history": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/api/history"]
+   ],
+   "urls": [
+    ["GET", "/api/history"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.index": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/"]
+   ],
+   "urls": [
+    ["GET", "/"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.kb_document": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/kb/<path:doc_id>"]
+   ],
+   "urls": [
+    ["GET", "/kb/<path:doc_id>"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.kb_index": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/kb"]
+   ],
+   "urls": [
+    ["GET", "/kb"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.kb_text": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/api/kb/<path:doc_id>"]
+   ],
+   "urls": [
+    ["GET", "/api/kb/<path:doc_id>"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.login": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/login"]
+   ],
+   "urls": [
+    ["GET", "/login"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.login_submit": {
+   "blueprint": "web",
+   "routes": [
+    ["POST", "/login"]
+   ],
+   "urls": [
+    ["POST", "/login"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.logout": {
+   "blueprint": "web",
+   "routes": [
+    ["POST", "/logout"]
+   ],
+   "urls": [
+    ["POST", "/logout"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.me": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/api/me"]
+   ],
+   "urls": [
+    ["GET", "/api/me"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.password_form": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/account/password"]
+   ],
+   "urls": [
+    ["GET", "/account/password"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.password_submit": {
+   "blueprint": "web",
+   "routes": [
+    ["POST", "/account/password"]
+   ],
+   "urls": [
+    ["POST", "/account/password"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.signup": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/signup"]
+   ],
+   "urls": [
+    ["GET", "/signup"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.signup_submit": {
+   "blueprint": "web",
+   "routes": [
+    ["POST", "/signup"]
+   ],
+   "urls": [
+    ["POST", "/signup"]
+   ],
+   "guards": [],
+   "templates": []
+  },
+  "milo.web:create_app.status": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/api/status"]
+   ],
+   "urls": [
+    ["GET", "/api/status"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.summary": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/api/summary"]
+   ],
+   "urls": [
+    ["GET", "/api/summary"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  }
+ },
+ "calls": [
+  ["milo.advanced:retrieve", "milo.advanced:validate_filters", 137],
+  ["milo.advanced:self_query", "milo.advanced:_tokens", 112],
+  ["milo.advanced:self_query", "milo.advanced:validate_filters", 130],
+  ["milo.advanced:translate_keywords", "milo.advanced:_tokens", 80],
+  ["milo.app:App.__init__", "milo.store:MemoryStore", 75],
+  ["milo.app:App._ask", "milo.app:App._cost", 212],
+  ["milo.app:App._ask", "milo.app:App._input_problem", 148],
+  ["milo.app:App._ask", "milo.app:App._invoke", 190],
+  ["milo.app:App._ask", "milo.app:App._retrieve", 153],
+  ["milo.app:App._ask", "milo.app:App._run_tool", 227],
+  ["milo.app:App._ask", "milo.app:_ms", 158],
+  ["milo.app:App._ask", "milo.app:_ms", 206],
+  ["milo.app:App._ask", "milo.app:_ms", 234],
+  ["milo.app:App._ask", "milo.types:ChatReply", 186],
+  ["milo.app:App._ask", "milo.types:Response", 151],
+  ["milo.app:App._ask", "milo.types:Response", 170],
+  ["milo.app:App._ask", "milo.types:Response", 193],
+  ["milo.app:App._ask", "milo.types:Response", 248],
+  ["milo.app:App._ask", "milo.types:Response", 262],
+  ["milo.app:App._retrieve", "milo.index:Index.search", 363],
+  ["milo.app:App._retrieve", "milo.types:Source", 368],
+  ["milo.app:App._run_tool", "milo.tools:validate_args", 338],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 340],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 343],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 348],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 354],
+  ["milo.app:App._write_trace", "milo.store:Store.record_flow", 308],
+  ["milo.app:App.ask", "milo.app:App._ask", 107],
+  ["milo.app:App.ask", "milo.app:App._write_trace", 138],
+  ["milo.app:App.ask", "milo.app:_ms", 103],
+  ["milo.app:App.ask", "milo.app:_ms", 138],
+  ["milo.app:App.ask", "milo.store:Store.append_turns", 110],
+  ["milo.app:App.ask", "milo.store:Store.history", 96],
+  ["milo.app:App.ingest", "milo.chunk:chunk_body", 84],
+  ["milo.app:App.ingest", "milo.index:Index", 89],
+  ["milo.app:build_app", "milo.app:App", 380],
+  ["milo.auth_pages:_page", "milo.shell:site_header", 41],
+  ["milo.auth_pages:login_page", "milo.auth_pages:_page", 62],
+  ["milo.auth_pages:password_page", "milo.auth_pages:_page", 119],
+  ["milo.auth_pages:signup_page", "milo.auth_pages:_page", 82],
+  ["milo.auth_pages:users_page", "milo.auth_pages:_page", 97],
+  ["milo.chunk:chunk_article", "milo.chunk:chunk_body", 100],
+  ["milo.chunk:chunk_article", "milo.chunk:front_matter", 99],
+  ["milo.chunk:chunk_body", "milo.chunk:Chunk", 114],
+  ["milo.chunk:chunk_body", "milo.chunk:_sections", 111],
+  ["milo.chunk:chunk_body", "milo.chunk:chunk_section", 112],
+  ["milo.chunk:chunk_section", "milo.chunk:_cut", 84],
+  ["milo.embed:LexicalEmbedder.embed", "milo.embed:LexicalEmbedder._one", 40],
+  ["milo.flows:read_flows", "milo.flows:owner_hash", 26],
+  ["milo.kb_pages:_documents", "milo.chunk:front_matter", 75],
+  ["milo.kb_pages:document_json", "milo.chunk:front_matter", 118],
+  ["milo.kb_pages:document_page", "milo.chunk:front_matter", 131],
+  ["milo.kb_pages:document_page", "milo.kb_pages:_page", 158],
+  ["milo.kb_pages:document_page", "milo.kb_pages:_paragraphs", 155],
+  ["milo.kb_pages:document_page", "milo.shell:site_header", 149],
+  ["milo.kb_pages:index_page", "milo.kb_pages:_documents", 91],
+  ["milo.kb_pages:index_page", "milo.kb_pages:_page", 110],
+  ["milo.kb_pages:index_page", "milo.shell:site_header", 104],
+  ["milo.landing:landing_page", "milo.landing:_mock", 265],
+  ["milo.landing:landing_page", "milo.landing:_toc", 306],
+  ["milo.landing:landing_page", "milo.shell:site_header", 254],
+  ["milo.llm:LangChainChat.invoke", "milo.llm:openai_tool", 39],
+  ["milo.llm:LangChainChat.invoke", "milo.llm:text_of", 45],
+  ["milo.llm:LangChainChat.invoke", "milo.llm:to_message", 40],
+  ["milo.llm:LangChainChat.invoke", "milo.types:ChatReply", 44],
+  ["milo.llm:LangChainChat.invoke", "milo.types:ToolCall", 47],
+  ["milo.llm:LangChainChat.invoke", "milo.types:Usage", 49],
+  ["milo.llm:LocalOllamaChat.invoke", "milo.types:ChatReply", 161],
+  ["milo.llm:LocalOllamaChat.invoke", "milo.types:Usage", 163],
+  ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
+  ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
+  ["milo.pgstore:PostgresStore.user_store", "milo.pgstore:PostgresUserStore", 27],
+  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 248],
+  ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 227],
+  ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 216],
+  ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 205],
+  ["milo.serve:<module>", "milo.serve:build_web", 68],
+  ["milo.serve:build_store", "milo.pgstore:PostgresStore", 43],
+  ["milo.serve:build_store", "milo.store:MemoryStore", 44],
+  ["milo.serve:build_web", "milo.app:App", 54],
+  ["milo.serve:build_web", "milo.app:App.ingest", 62],
+  ["milo.serve:build_web", "milo.embed:LexicalEmbedder", 52],
+  ["milo.serve:build_web", "milo.embed:OpenRouterEmbedder", 52],
+  ["milo.serve:build_web", "milo.llm:live_chat_model", 53],
+  ["milo.serve:build_web", "milo.llm:local_chat_model", 53],
+  ["milo.serve:build_web", "milo.llm:local_chat_model", 58],
+  ["milo.serve:build_web", "milo.serve:build_store", 51],
+  ["milo.serve:build_web", "milo.serve:load_documents", 62],
+  ["milo.serve:build_web", "milo.tools:Backend", 57],
+  ["milo.serve:build_web", "milo.users:MemoryUserStore", 63],
+  ["milo.serve:build_web", "milo.web:create_app", 64],
+  ["milo.serve:load_documents", "milo.chunk:front_matter", 34],
+  ["milo.serve:load_documents", "milo.types:Document", 35],
+  ["milo.shell:site_header", "milo.shell:_link", 46],
+  ["milo.shell:site_header", "milo.shell:_link", 47],
+  ["milo.shell:site_header", "milo.shell:_link", 48],
+  ["milo.shell:site_header", "milo.shell:_link", 52],
+  ["milo.shell:site_header", "milo.shell:_link", 53],
+  ["milo.status:snapshot", "milo.status:_ping_database", 57],
+  ["milo.status:snapshot", "milo.status:_ping_local_model", 67],
+  ["milo.summary:build_summary", "milo.summary:_proposal", 53],
+  ["milo.summary:build_summary", "milo.summary:_words", 22],
+  ["milo.summary:build_summary", "milo.summary:_words", 46],
+  ["milo.tools:Backend.__init__", "milo.store:MemoryStore", 114],
+  ["milo.tools:Backend._draft_diagnosis", "milo.store:Store.add_diagnosis", 219],
+  ["milo.tools:Backend._draft_diagnosis", "milo.tools:Backend._estimate_effect", 212],
+  ["milo.tools:Backend._draft_diagnosis", "milo.tools:Backend._get_recorded_facts", 205],
+  ["milo.tools:Backend._estimate_effect", "milo.store:Store.facts", 151],
+  ["milo.tools:Backend._estimate_effect", "milo.tools:Backend._latest", 152],
+  ["milo.tools:Backend._estimate_effect", "milo.tools:Backend._latest", 155],
+  ["milo.tools:Backend._get_recorded_facts", "milo.store:Store.facts", 141],
+  ["milo.tools:Backend._record_fact", "milo.store:Store.add_fact", 196],
+  ["milo.tools:Backend.specs", "milo.tools:specs", 121],
+  ["milo.tools:specs", "milo.tools:_schema", 65],
+  ["milo.tools:specs", "milo.types:ToolSpec", 65],
+  ["milo.users:MemoryUserStore.create", "milo.users:User", 93],
+  ["milo.web:create_app", "milo.users:MemoryUserStore", 46],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 167],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 172],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 209],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 231],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 239],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 246],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 269],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 287],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 297],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 302],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 309],
+  ["milo.web:create_app.admin_users", "milo.auth_pages:users_page", 299],
+  ["milo.web:create_app.admin_users", "milo.users:MemoryUserStore.all", 299],
+  ["milo.web:create_app.admin_users", "milo.web:create_app.current_user", 299],
+  ["milo.web:create_app.admin_users", "milo.web:create_app.html", 299],
+  ["milo.web:create_app.ask", "milo.app:App.ask", 255],
+  ["milo.web:create_app.ask", "milo.web:create_app.ensure_thread", 248],
+  ["milo.web:create_app.ask", "milo.web:create_app.owner", 255],
+  ["milo.web:create_app.chat", "milo.web:create_app.chat_page", 236],
+  ["milo.web:create_app.chat", "milo.web:create_app.current_user", 236],
+  ["milo.web:create_app.chat", "milo.web:create_app.ensure_thread", 235],
+  ["milo.web:create_app.chat", "milo.web:create_app.html", 236],
+  ["milo.web:create_app.chat_page", "milo.shell:site_header", 97],
+  ["milo.web:create_app.current_user", "milo.users:MemoryUserStore.by_id", 50],
+  ["milo.web:create_app.dashboard", "milo.shell:site_header", 290],
+  ["milo.web:create_app.dashboard", "milo.web:create_app.current_user", 290],
+  ["milo.web:create_app.dashboard", "milo.web:create_app.html", 294],
+  ["milo.web:create_app.feedback", "milo.store:Store.add_feedback", 281],
+  ["milo.web:create_app.feedback", "milo.web:create_app.owner", 281],
+  ["milo.web:create_app.flows", "milo.flows:summarize", 306],
+  ["milo.web:create_app.flows", "milo.store:Store.flows", 305],
+  ["milo.web:create_app.flows", "milo.web:create_app.owner", 304],
+  ["milo.web:create_app.history", "milo.store:Store.history", 242],
+  ["milo.web:create_app.history", "milo.web:create_app.ensure_thread", 241],
+  ["milo.web:create_app.history", "milo.web:create_app.owner", 242],
+  ["milo.web:create_app.index", "milo.landing:landing_page", 108],
+  ["milo.web:create_app.index", "milo.web:create_app.current_user", 108],
+  ["milo.web:create_app.index", "milo.web:create_app.html", 108],
+  ["milo.web:create_app.kb_document", "milo.kb_pages:document_page", 203],
+  ["milo.web:create_app.kb_document", "milo.web:create_app.current_user", 203],
+  ["milo.web:create_app.kb_document", "milo.web:create_app.html", 206],
+  ["milo.web:create_app.kb_index", "milo.kb_pages:index_page", 197],
+  ["milo.web:create_app.kb_index", "milo.web:create_app.current_user", 197],
+  ["milo.web:create_app.kb_index", "milo.web:create_app.html", 197],
+  ["milo.web:create_app.kb_text", "milo.kb_pages:document_json", 219],
+  ["milo.web:create_app.login", "milo.auth_pages:login_page", 130],
+  ["milo.web:create_app.login", "milo.web:create_app.html", 130],
+  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.current_user", 72],
+  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.wants_json", 74],
+  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.wants_json", 80],
+  ["milo.web:create_app.login_submit", "milo.auth_pages:login_page", 140],
+  ["milo.web:create_app.login_submit", "milo.users:MemoryUserStore.by_login", 137],
+  ["milo.web:create_app.login_submit", "milo.users:MemoryUserStore.record_login", 144],
+  ["milo.web:create_app.login_submit", "milo.users:verify_password", 138],
+  ["milo.web:create_app.login_submit", "milo.web:create_app.html", 139],
+  ["milo.web:create_app.login_submit", "milo.web:create_app.sign_in", 142],
+  ["milo.web:create_app.me", "milo.web:create_app.current_user", 154],
+  ["milo.web:create_app.password_form", "milo.auth_pages:password_page", 169],
+  ["milo.web:create_app.password_form", "milo.web:create_app.current_user", 169],
+  ["milo.web:create_app.password_form", "milo.web:create_app.html", 169],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 180],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 182],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 185],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 188],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 191],
+  ["milo.web:create_app.password_submit", "milo.users:MemoryUserStore.by_login", 178],
+  ["milo.web:create_app.password_submit", "milo.users:MemoryUserStore.set_password", 190],
+  ["milo.web:create_app.password_submit", "milo.users:check_new_account", 183],
+  ["milo.web:create_app.password_submit", "milo.users:hash_password", 190],
+  ["milo.web:create_app.password_submit", "milo.users:verify_password", 179],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.current_user", 174],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 180],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 182],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 185],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 187],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 191],
+  ["milo.web:create_app.signup", "milo.auth_pages:signup_page", 112],
+  ["milo.web:create_app.signup", "milo.web:create_app.html", 112],
+  ["milo.web:create_app.signup_submit", "milo.auth_pages:signup_page", 123],
+  ["milo.web:create_app.signup_submit", "milo.users:MemoryUserStore.by_login", 120],
+  ["milo.web:create_app.signup_submit", "milo.users:MemoryUserStore.create", 124],
+  ["milo.web:create_app.signup_submit", "milo.users:check_new_account", 119],
+  ["milo.web:create_app.signup_submit", "milo.users:hash_password", 124],
+  ["milo.web:create_app.signup_submit", "milo.web:create_app.html", 123],
+  ["milo.web:create_app.signup_submit", "milo.web:create_app.sign_in", 125],
+  ["milo.web:create_app.status", "milo.status:snapshot", 319],
+  ["milo.web:create_app.status", "milo.store:Store.flows", 319],
+  ["milo.web:create_app.summary", "milo.summary:build_summary", 213],
+  ["milo.web:create_app.summary", "milo.web:create_app.owner", 213],
+  ["scripts.build_kb:<module>", "scripts.build_kb:main", 327],
+  ["scripts.build_kb:Writer._emit", "scripts.build_kb:sentences", 133],
+  ["scripts.build_kb:Writer.items", "scripts.build_kb:Writer._emit", 148],
+  ["scripts.build_kb:Writer.items", "scripts.build_kb:Writer.strip", 146],
+  ["scripts.build_kb:Writer.p", "scripts.build_kb:Writer._emit", 143],
+  ["scripts.build_kb:Writer.p", "scripts.build_kb:Writer.strip", 141],
+  ["scripts.build_kb:Writer.strip", "scripts.build_kb:debrand", 125],
+  ["scripts.build_kb:Writer.strip", "scripts.build_kb:sentences", 127],
+  ["scripts.build_kb:boilerplate", "scripts.build_kb:sentences", 98],
+  ["scripts.build_kb:boilerplate", "scripts.build_kb:strings", 98],
+  ["scripts.build_kb:main", "scripts.build_kb:render_all", 308],
+  ["scripts.build_kb:questions", "scripts.build_kb:Writer._emit", 177],
+  ["scripts.build_kb:questions", "scripts.build_kb:Writer.p", 170],
+  ["scripts.build_kb:questions", "scripts.build_kb:Writer.p", 171],
+  ["scripts.build_kb:questions", "scripts.build_kb:Writer.p", 172],
+  ["scripts.build_kb:questions", "scripts.build_kb:debrand", 165],
+  ["scripts.build_kb:render_all", "scripts.build_kb:Writer", 275],
+  ["scripts.build_kb:render_all", "scripts.build_kb:Writer.text", 287],
+  ["scripts.build_kb:render_all", "scripts.build_kb:boilerplate", 270],
+  ["scripts.build_kb:render_all", "scripts.build_kb:front", 287],
+  ["scripts.build_kb:render_all", "scripts.build_kb:front", 298],
+  ["scripts.build_kb:render_all", "scripts.build_kb:load_families", 269],
+  ["scripts.build_kb:render_all", "scripts.build_kb:module_of", 271],
+  ["scripts.build_kb:render_all", "scripts.build_kb:render_family", 276],
+  ["scripts.build_kb:render_all", "scripts.build_kb:render_method", 298],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 184],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 189],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 191],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 195],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 197],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 203],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 206],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 212],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 215],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 218],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 225],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 238],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 241],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 245],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 250],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.h", 253],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 190],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 196],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 204],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 214],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 219],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 222],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 226],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 232],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 243],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 251],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.items", 252],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 185],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 186],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 187],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 188],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 199],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 200],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 201],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 202],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 207],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 208],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 209],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 210],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 211],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 213],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 216],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 239],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 242],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 246],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 247],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 248],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 249],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.p", 254],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.raw", 182],
+  ["scripts.build_kb:render_family", "scripts.build_kb:Writer.raw", 183],
+  ["scripts.build_kb:render_family", "scripts.build_kb:questions", 193],
+  ["scripts.build_kb:render_family", "scripts.build_kb:questions", 194],
+  ["scripts.build_kb:render_method", "scripts.build_kb:Writer", 258],
+  ["scripts.build_kb:render_method", "scripts.build_kb:Writer.h", 263],
+  ["scripts.build_kb:render_method", "scripts.build_kb:Writer.items", 264],
+  ["scripts.build_kb:render_method", "scripts.build_kb:Writer.raw", 259],
+  ["scripts.build_kb:render_method", "scripts.build_kb:Writer.raw", 260],
+  ["scripts.build_kb:render_method", "scripts.build_kb:Writer.text", 265],
+  ["scripts.build_kb:strings", "scripts.build_kb:strings", 66],
+  ["scripts.build_kb:strings", "scripts.build_kb:strings", 68],
+  ["scripts.check_project_data:<module>", "scripts.check_project_data:main", 217],
+  ["scripts.check_project_data:check_attacks", "scripts.check_project_data:need", 172],
+  ["scripts.check_project_data:check_attacks", "scripts.check_project_data:need", 177],
+  ["scripts.check_project_data:check_gold", "scripts.check_project_data:need", 92],
+  ["scripts.check_project_data:check_gold", "scripts.check_project_data:need", 96],
+  ["scripts.check_project_data:check_gold", "scripts.check_project_data:need", 97],
+  ["scripts.check_project_data:check_gold", "scripts.check_project_data:need", 98],
+  ["scripts.check_project_data:check_gold", "scripts.check_project_data:norm", 119],
+  ["scripts.check_project_data:check_tools", "scripts.check_project_data:need", 145],
+  ["scripts.check_project_data:check_tools", "scripts.check_project_data:need", 149],
+  ["scripts.check_project_data:check_tools", "scripts.check_project_data:need", 150],
+  ["scripts.check_project_data:check_tools", "scripts.check_project_data:need", 151],
+  ["scripts.check_project_data:main", "scripts.check_project_data:check_attacks", 209],
+  ["scripts.check_project_data:main", "scripts.check_project_data:check_gold", 207],
+  ["scripts.check_project_data:main", "scripts.check_project_data:check_tools", 208],
+  ["scripts.check_project_data:main", "scripts.check_project_data:load_kb", 204],
+  ["scripts.check_project_data:main", "scripts.check_project_data:read_jsonl", 207],
+  ["scripts.check_project_data:main", "scripts.check_project_data:read_jsonl", 208],
+  ["scripts.check_project_data:main", "scripts.check_project_data:read_jsonl", 209],
+  ["scripts.create_admin:<module>", "scripts.create_admin:main", 48],
+  ["scripts.create_admin:main", "milo.pgstore:PostgresStore", 36],
+  ["scripts.create_admin:main", "milo.pgstore:PostgresStore.close", 41],
+  ["scripts.create_admin:main", "milo.pgstore:PostgresStore.user_store", 37],
+  ["scripts.create_admin:main", "milo.pgstore:PostgresUserStore.by_login", 38],
+  ["scripts.create_admin:main", "milo.pgstore:PostgresUserStore.create", 40],
+  ["scripts.create_admin:main", "milo.users:check_new_account", 33],
+  ["scripts.create_admin:main", "milo.users:hash_password", 40],
+  ["scripts.eval_advanced:<module>", "scripts.eval_advanced:main", 159],
+  ["scripts.eval_advanced:decide", "scripts.eval_advanced:paired_ci", 52],
+  ["scripts.eval_advanced:main", "scripts.eval_advanced:replay", 150],
+  ["scripts.eval_advanced:main", "scripts.eval_advanced:replay", 155],
+  ["scripts.eval_advanced:main", "scripts.eval_advanced:run", 152],
+  ["scripts.eval_advanced:replay", "scripts.eval_advanced:decide", 135],
+  ["scripts.eval_advanced:run", "milo.advanced:self_query", 71],
+  ["scripts.eval_advanced:run", "milo.advanced:translate_keywords", 75],
+  ["scripts.eval_advanced:run", "milo.advanced:translate_keywords", 77],
+  ["scripts.eval_advanced:run", "milo.embed:LexicalEmbedder", 57],
+  ["scripts.eval_advanced:run", "milo.embed:LexicalEmbedder.embed", 59],
+  ["scripts.eval_advanced:run", "milo.embed:LexicalEmbedder.embed", 80],
+  ["scripts.eval_advanced:run", "milo.embed:LexicalEmbedder.embed", 82],
+  ["scripts.eval_advanced:run", "milo.index:Index", 59],
+  ["scripts.eval_advanced:run", "milo.index:Index.search", 80],
+  ["scripts.eval_advanced:run", "milo.index:Index.search", 82],
+  ["scripts.eval_advanced:run", "milo.metrics:ndcg_at_k", 91],
+  ["scripts.eval_advanced:run", "scripts.eval_advanced:decide", 107],
+  ["scripts.eval_advanced:run", "scripts.eval_advanced:paired_ci", 100],
+  ["scripts.eval_advanced:run", "scripts.eval_retrieval:dev_rows", 60],
+  ["scripts.eval_advanced:run", "scripts.eval_retrieval:load_chunks", 58],
+  ["scripts.eval_advanced:run", "scripts.eval_retrieval:norm", 70],
+  ["scripts.eval_advanced:run", "scripts.eval_retrieval:norm", 87],
+  ["scripts.eval_attacks:<module>", "scripts.eval_attacks:main", 258],
+  ["scripts.eval_attacks:RecordingBackend.__init__", "milo.tools:Backend.__init__", 57],
+  ["scripts.eval_attacks:RecordingBackend.call", "milo.tools:Backend.call", 62],
+  ["scripts.eval_attacks:build", "milo.app:App", 135],
+  ["scripts.eval_attacks:build", "milo.app:App.ingest", 144],
+  ["scripts.eval_attacks:build", "milo.store:MemoryStore", 121],
+  ["scripts.eval_attacks:build", "milo.store:MemoryStore.add_fact", 125],
+  ["scripts.eval_attacks:build", "milo.types:Document", 138],
+  ["scripts.eval_attacks:build", "scripts.eval_attacks:RecordingBackend", 122],
+  ["scripts.eval_attacks:build", "scripts.eval_attacks:seed", 123],
+  ["scripts.eval_attacks:load_docs", "milo.serve:load_documents", 151],
+  ["scripts.eval_attacks:main", "scripts.eval_attacks:check", 227],
+  ["scripts.eval_attacks:main", "scripts.eval_attacks:check", 228],
+  ["scripts.eval_attacks:main", "scripts.eval_attacks:check", 233],
+  ["scripts.eval_attacks:main", "scripts.eval_attacks:check", 236],
+  ["scripts.eval_attacks:main", "scripts.eval_attacks:check", 243],
+  ["scripts.eval_attacks:main", "scripts.eval_attacks:check", 244],
+  ["scripts.eval_attacks:main", "scripts.eval_attacks:run", 247],
+  ["scripts.eval_attacks:run", "milo.embed:LexicalEmbedder", 160],
+  ["scripts.eval_attacks:run", "milo.embed:OpenRouterEmbedder", 160],
+  ["scripts.eval_attacks:run", "milo.llm:live_chat_model", 162],
+  ["scripts.eval_attacks:run", "scripts.eval_attacks:CachedEmbedder", 159],
+  ["scripts.eval_attacks:run", "scripts.eval_attacks:build", 168],
+  ["scripts.eval_attacks:run", "scripts.eval_attacks:build", 189],
+  ["scripts.eval_attacks:run", "scripts.eval_attacks:check", 170],
+  ["scripts.eval_attacks:run", "scripts.eval_attacks:load_docs", 163],
+  ["scripts.eval_retrieval:<module>", "scripts.eval_retrieval:main", 178],
+  ["scripts.eval_retrieval:dev_rows", "scripts.eval_retrieval:split_rows", 82],
+  ["scripts.eval_retrieval:load_chunks", "milo.chunk:chunk_article", 48],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 165],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 174],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:run", 167],
+  ["scripts.eval_retrieval:metrics", "milo.metrics:mean_ci", 92],
+  ["scripts.eval_retrieval:replay", "scripts.eval_retrieval:metrics", 143],
+  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 102],
+  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 102],
+  ["scripts.eval_retrieval:run", "milo.index:Index", 105],
+  ["scripts.eval_retrieval:run", "milo.index:Index.search", 112],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:load_chunks", 104],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:metrics", 136],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 111],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 115],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 118],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:split_rows", 106],
+  ["scripts.eval_tools:<module>", "scripts.eval_tools:main", 201],
+  ["scripts.eval_tools:live", "milo.app:App.ask", 162],
+  ["scripts.eval_tools:live", "milo.app:App.ingest", 159],
+  ["scripts.eval_tools:live", "milo.app:build_app", 158],
+  ["scripts.eval_tools:live", "milo.embed:LexicalEmbedder", 158],
+  ["scripts.eval_tools:live", "milo.llm:live_chat_model", 143],
+  ["scripts.eval_tools:live", "milo.tools:Backend", 146],
+  ["scripts.eval_tools:live", "milo.tools:Backend.call", 148],
+  ["scripts.eval_tools:live", "milo.types:Document", 160],
+  ["scripts.eval_tools:live", "scripts.eval_tools:aggregate", 178],
+  ["scripts.eval_tools:live", "scripts.eval_tools:score", 164],
+  ["scripts.eval_tools:main", "scripts.eval_tools:live", 195],
+  ["scripts.eval_tools:main", "scripts.eval_tools:selftest", 193],
+  ["scripts.eval_tools:score", "scripts.eval_tools:_owner_words", 47],
+  ["scripts.eval_tools:score", "scripts.eval_tools:_owner_words", 60],
+  ["scripts.eval_tools:score", "scripts.eval_tools:_same", 57],
+  ["scripts.eval_tools:score", "scripts.eval_tools:_same", 70],
+  ["scripts.eval_tools:selftest", "scripts.eval_tools:score", 119],
+  ["scripts.eval_tools:selftest", "scripts.eval_tools:score", 125],
+  ["scripts.eval_tools:selftest", "scripts.eval_tools:score", 126],
+  ["scripts.eval_tools:selftest", "scripts.eval_tools:score", 127],
+  ["scripts.make_judge_extra:<module>", "scripts.make_judge_extra:main", 86],
+  ["scripts.make_judge_extra:main", "milo.app:App", 36],
+  ["scripts.make_judge_extra:main", "milo.app:App.ask", 42],
+  ["scripts.make_judge_extra:main", "milo.app:App.ingest", 39],
+  ["scripts.make_judge_extra:main", "milo.embed:OpenRouterEmbedder", 37],
+  ["scripts.make_judge_extra:main", "milo.llm:live_chat_model", 37],
+  ["scripts.make_judge_extra:main", "milo.serve:load_documents", 39],
+  ["scripts.make_judge_extra:main", "milo.store:MemoryStore", 35],
+  ["scripts.make_judge_extra:main", "milo.tools:Backend", 37],
+  ["scripts.make_judge_sheet:<module>", "scripts.make_judge_sheet:main", 105],
+  ["scripts.make_judge_sheet:main", "milo.app:App", 51],
+  ["scripts.make_judge_sheet:main", "milo.app:App.ask", 57],
+  ["scripts.make_judge_sheet:main", "milo.app:App.ingest", 54],
+  ["scripts.make_judge_sheet:main", "milo.embed:OpenRouterEmbedder", 52],
+  ["scripts.make_judge_sheet:main", "milo.llm:live_chat_model", 52],
+  ["scripts.make_judge_sheet:main", "milo.serve:load_documents", 54],
+  ["scripts.make_judge_sheet:main", "milo.store:MemoryStore", 50],
+  ["scripts.make_judge_sheet:main", "milo.tools:Backend", 52],
+  ["scripts.make_judge_sheet:main", "scripts.make_judge_sheet:items", 56],
+  ["scripts.migrate:<module>", "scripts.migrate:main", 56],
+  ["scripts.migrate:main", "scripts.migrate:database_url", 31],
+  ["scripts.reset_password:<module>", "scripts.reset_password:main", 47],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore", 35],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore.close", 39],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore.close", 42],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore.user_store", 36],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresUserStore.by_login", 37],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresUserStore.set_password", 41],
+  ["scripts.reset_password:main", "milo.users:check_new_account", 32],
+  ["scripts.reset_password:main", "milo.users:hash_password", 41],
+  ["scripts.run_judge:<module>", "scripts.run_judge:main", 148],
+  ["scripts.run_judge:bootstrap", "scripts.run_judge:kappa", 54],
+  ["scripts.run_judge:bootstrap", "scripts.run_judge:kappa", 56],
+  ["scripts.run_judge:judge_all", "milo.llm:LangChainChat", 73],
+  ["scripts.run_judge:judge_all", "milo.llm:LangChainChat.invoke", 98],
+  ["scripts.run_judge:judge_all", "scripts.run_judge:parse", 97],
+  ["scripts.run_judge:main", "scripts.run_judge:bootstrap", 122],
+  ["scripts.run_judge:main", "scripts.run_judge:judge_all", 113]
+ ],
+ "refs": [
+  ["milo.app:App.__init__", "milo.app:App._retrieve", 78],
+  ["milo.app:App.__init__", "milo.index:Index", 73],
+  ["milo.app:App.__init__", "milo.store:Store", 75],
+  ["milo.app:App._ask", "milo.types:ToolResult", 183],
+  ["milo.chunk:chunk_body", "milo.chunk:Chunk", 110],
+  ["milo.tools:Backend.__init__", "milo.store:Store", 114],
+  ["milo.types:ChatReply", "milo.types:ToolCall", 26],
+  ["milo.types:ChatReply", "milo.types:Usage", 27],
+  ["milo.types:Response", "milo.types:Source", 57],
+  ["milo.types:Response", "milo.types:ToolResult", 58],
+  ["milo.users:MemoryUserStore.__init__", "milo.users:User", 84],
+  ["milo.web:create_app.login_needed", "milo.web:create_app.login_needed.wrap", 90],
+  ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 87],
+  ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 88],
+  ["scripts.eval_attacks:RecordingBackend", "milo.tools:Backend", 53],
+  ["scripts.eval_retrieval:metrics", "milo.metrics:ndcg_at_k", 91],
+  ["scripts.eval_retrieval:metrics", "milo.metrics:recall_at_k", 91]
+ ],
+ "constructs": [
+  ["milo.app:App.__init__", "milo.store:MemoryStore", 75],
+  ["milo.app:App._ask", "milo.types:ChatReply", 186],
+  ["milo.app:App._ask", "milo.types:Response", 151],
+  ["milo.app:App._ask", "milo.types:Response", 170],
+  ["milo.app:App._ask", "milo.types:Response", 193],
+  ["milo.app:App._ask", "milo.types:Response", 248],
+  ["milo.app:App._ask", "milo.types:Response", 262],
+  ["milo.app:App._retrieve", "milo.types:Source", 368],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 340],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 343],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 348],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 354],
+  ["milo.app:App.ingest", "milo.index:Index", 89],
+  ["milo.app:build_app", "milo.app:App", 380],
+  ["milo.chunk:chunk_body", "milo.chunk:Chunk", 114],
+  ["milo.llm:LangChainChat.invoke", "milo.types:ChatReply", 44],
+  ["milo.llm:LangChainChat.invoke", "milo.types:ToolCall", 47],
+  ["milo.llm:LangChainChat.invoke", "milo.types:Usage", 49],
+  ["milo.llm:LocalOllamaChat.invoke", "milo.types:ChatReply", 161],
+  ["milo.llm:LocalOllamaChat.invoke", "milo.types:Usage", 163],
+  ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
+  ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
+  ["milo.pgstore:PostgresStore.user_store", "milo.pgstore:PostgresUserStore", 27],
+  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 248],
+  ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 227],
+  ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 216],
+  ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 205],
+  ["milo.serve:build_store", "milo.pgstore:PostgresStore", 43],
+  ["milo.serve:build_store", "milo.store:MemoryStore", 44],
+  ["milo.serve:build_web", "milo.app:App", 54],
+  ["milo.serve:build_web", "milo.embed:LexicalEmbedder", 52],
+  ["milo.serve:build_web", "milo.embed:OpenRouterEmbedder", 52],
+  ["milo.serve:build_web", "milo.tools:Backend", 57],
+  ["milo.serve:build_web", "milo.users:MemoryUserStore", 63],
+  ["milo.serve:load_documents", "milo.types:Document", 35],
+  ["milo.tools:Backend.__init__", "milo.store:MemoryStore", 114],
+  ["milo.tools:specs", "milo.types:ToolSpec", 65],
+  ["milo.users:MemoryUserStore.create", "milo.users:User", 93],
+  ["milo.web:create_app", "milo.users:MemoryUserStore", 46],
+  ["scripts.build_kb:render_all", "scripts.build_kb:Writer", 275],
+  ["scripts.build_kb:render_method", "scripts.build_kb:Writer", 258],
+  ["scripts.create_admin:main", "milo.pgstore:PostgresStore", 36],
+  ["scripts.eval_advanced:run", "milo.embed:LexicalEmbedder", 57],
+  ["scripts.eval_advanced:run", "milo.index:Index", 59],
+  ["scripts.eval_attacks:build", "milo.app:App", 135],
+  ["scripts.eval_attacks:build", "milo.store:MemoryStore", 121],
+  ["scripts.eval_attacks:build", "milo.types:Document", 138],
+  ["scripts.eval_attacks:build", "scripts.eval_attacks:RecordingBackend", 122],
+  ["scripts.eval_attacks:run", "milo.embed:LexicalEmbedder", 160],
+  ["scripts.eval_attacks:run", "milo.embed:OpenRouterEmbedder", 160],
+  ["scripts.eval_attacks:run", "scripts.eval_attacks:CachedEmbedder", 159],
+  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 102],
+  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 102],
+  ["scripts.eval_retrieval:run", "milo.index:Index", 105],
+  ["scripts.eval_tools:live", "milo.embed:LexicalEmbedder", 158],
+  ["scripts.eval_tools:live", "milo.tools:Backend", 146],
+  ["scripts.eval_tools:live", "milo.types:Document", 160],
+  ["scripts.make_judge_extra:main", "milo.app:App", 36],
+  ["scripts.make_judge_extra:main", "milo.embed:OpenRouterEmbedder", 37],
+  ["scripts.make_judge_extra:main", "milo.store:MemoryStore", 35],
+  ["scripts.make_judge_extra:main", "milo.tools:Backend", 37],
+  ["scripts.make_judge_sheet:main", "milo.app:App", 51],
+  ["scripts.make_judge_sheet:main", "milo.embed:OpenRouterEmbedder", 52],
+  ["scripts.make_judge_sheet:main", "milo.store:MemoryStore", 50],
+  ["scripts.make_judge_sheet:main", "milo.tools:Backend", 52],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore", 35],
+  ["scripts.run_judge:judge_all", "milo.llm:LangChainChat", 73]
+ ],
+ "inferred_calls": [
+  ["milo.advanced:retrieve", "milo.index:Index.search", 138],
+  ["milo.advanced:retrieve", "milo.index:Index.search", 141],
+  ["milo.app:App.__init__", "milo.tools:Backend.attach_search", 78],
+  ["milo.app:App._ask", "milo.tools:Backend.specs", 182],
+  ["milo.serve:build_web", "milo.pgstore:PostgresStore.user_store", 63],
+  ["scripts.eval_attacks:run", "milo.app:App.ask", 169],
+  ["scripts.eval_attacks:run", "milo.app:App.ask", 195]
+ ],
+ "override_calls": [
+  ["scripts.eval_tools:live", "scripts.eval_attacks:RecordingBackend.call", 148]
+ ],
+ "binds": [],
+ "sql": [
+  {
+   "symbol": "milo.pgstore:PostgresStore.add_diagnosis",
+   "line": 111,
+   "insert": [
+    "milo_v2.diagnoses"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.add_diagnosis",
+   "line": 115,
+   "read": [
+    "milo_v2.diagnoses"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.add_fact",
+   "line": 71,
+   "insert": [
+    "milo_v2.facts"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.add_fact",
+   "line": 83,
+   "read": [
+    "milo_v2.facts"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.add_feedback",
+   "line": 177,
+   "insert": [
+    "milo_v2.feedback"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.append_turns",
+   "line": 34,
+   "insert": [
+    "milo_v2.threads"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.append_turns",
+   "line": 38,
+   "insert": [
+    "milo_v2.turns"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.diagnoses",
+   "line": 122,
+   "read": [
+    "milo_v2.diagnoses"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.facts",
+   "line": 91,
+   "read": [
+    "milo_v2.facts"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.flows",
+   "line": 147,
+   "read": ["milo_v2.flows", "milo_v2.users"]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.flows",
+   "line": 154,
+   "read": ["milo_v2.flows", "milo_v2.users"]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.history",
+   "line": 58,
+   "read": [
+    "milo_v2.turns"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.record_flow",
+   "line": 130,
+   "insert": [
+    "milo_v2.flows"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresUserStore.all",
+   "line": 246,
+   "read": [
+    "milo_v2.users"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresUserStore.by_id",
+   "line": 221,
+   "read": [
+    "milo_v2.users"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresUserStore.by_login",
+   "line": 210,
+   "read": [
+    "milo_v2.users"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresUserStore.create",
+   "line": 202,
+   "insert": [
+    "milo_v2.users"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresUserStore.record_login",
+   "line": 232,
+   "update": [
+    "milo_v2.users"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresUserStore.set_password",
+   "line": 239,
+   "update": [
+    "milo_v2.users"
+   ]
+  }
+ ],
+ "gateways": [],
+ "external": [
+  {
+   "symbol": "milo.llm:LocalOllamaChat.invoke",
+   "line": 158,
+   "service": "HTTP (httpx)",
+   "call": "httpx.post"
+  },
+  {
+   "symbol": "milo.llm:LocalOllamaChat.invoke",
+   "line": 159,
+   "service": "HTTP (httpx)",
+   "call": "httpx.post().raise_for_status"
+  },
+  {
+   "symbol": "milo.llm:LocalOllamaChat.invoke",
+   "line": 160,
+   "service": "HTTP (httpx)",
+   "call": "httpx.post().json"
+  },
+  {
+   "symbol": "milo.llm:LocalOllamaChat.invoke",
+   "line": 163,
+   "service": "HTTP (httpx)",
+   "call": "httpx.post().json().get"
+  },
+  {
+   "symbol": "milo.llm:LocalOllamaChat.invoke",
+   "line": 163,
+   "service": "HTTP (httpx)",
+   "call": "httpx.post().json().get"
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.__init__",
+   "line": 20,
+   "service": "PostgreSQL",
+   "call": "psycopg.connect"
+  },
+  {
+   "symbol": "milo.status:_ping_database",
+   "line": 17,
+   "service": "PostgreSQL",
+   "call": "psycopg.connect"
+  },
+  {
+   "symbol": "milo.status:_ping_local_model",
+   "line": 38,
+   "service": "HTTP (httpx)",
+   "call": "httpx.get"
+  },
+  {
+   "symbol": "milo.status:_ping_local_model",
+   "line": 39,
+   "service": "HTTP (httpx)",
+   "call": "httpx.get().json"
+  },
+  {
+   "symbol": "milo.status:_ping_local_model",
+   "line": 39,
+   "service": "HTTP (httpx)",
+   "call": "httpx.get().json().get"
+  },
+  {
+   "symbol": "scripts.migrate:main",
+   "line": 32,
+   "service": "PostgreSQL",
+   "call": "psycopg.connect"
+  }
+ ],
+ "import_cycles": [],
+ "lazy_import_cycles": [],
+ "dead_candidates": [
+  "milo.pgstore:PostgresStore.add_feedback",
+  "milo.pgstore:PostgresStore.append_turns",
+  "milo.pgstore:PostgresStore.diagnoses",
+  "milo.pgstore:PostgresStore.facts",
+  "milo.pgstore:PostgresStore.flows",
+  "milo.pgstore:PostgresStore.history",
+  "milo.pgstore:PostgresStore.record_flow",
+  "milo.pgstore:PostgresUserStore.all",
+  "milo.pgstore:PostgresUserStore.by_id",
+  "milo.pgstore:PostgresUserStore.record_login",
+  "milo.store:MemoryStore.add_feedback",
+  "milo.store:MemoryStore.flows",
+  "milo.store:MemoryStore.record_flow"
+ ],
+ "test_only": [
+  "milo.advanced:retrieve",
+  "milo.flows:read_flows",
+  "milo.pgstore:PostgresStore.delete_owner",
+  "milo.store:MemoryStore.append_turns",
+  "milo.store:MemoryStore.diagnoses",
+  "milo.store:MemoryStore.facts",
+  "milo.store:MemoryStore.history"
+ ],
+ "test_files": 17,
+ "duplicate_names": {
+  "_page": ["milo.auth_pages:_page", "milo.kb_pages:_page"],
+  "norm": ["scripts.check_project_data:norm", "scripts.eval_retrieval:norm"],
+  "replay": ["scripts.eval_advanced:replay", "scripts.eval_retrieval:replay"]
+ },
+ "parse_errors": [],
+ "profiles": {
+  "llm": [
+   {
+    "symbol": "milo.app:App._invoke",
+    "line": 277,
+    "provider": "LangChain",
+    "call": "chat.invoke",
+    "settings": {},
+    "message_roles": [
+     "<messages>"
+    ]
+   },
+   {
+    "symbol": "milo.llm:LangChainChat.invoke",
+    "line": 40,
+    "provider": "LangChain",
+    "call": "model.invoke",
+    "settings": {},
+    "message_roles": [
+     "<[to_message(m) for m in messages]>"
+    ]
+   },
+   {
+    "symbol": "milo.llm:LocalOllamaChat.invoke",
+    "line": 158,
+    "provider": "Ollama",
+    "call": "HTTP · httpx.post",
+    "settings": {},
+    "message_roles": []
+   },
+   {
+    "symbol": "milo.llm:live_chat_model",
+    "line": 113,
+    "provider": "LangChain/OpenAI",
+    "call": "ChatOpenAI",
+    "settings": {
+     "model": "model",
+     "temperature": "0",
+     "timeout": "30"
+    },
+    "message_roles": []
+   },
+   {
+    "kind": "gateway",
+    "symbol": "milo.web:create_app.ask",
+    "line": 255,
+    "provider": "LangChain",
+    "call": "App.ask",
+    "gateway": "milo.app:App.ask",
+    "settings": {},
+    "message_roles": [],
+    "label": "ask"
+   },
+   {
+    "kind": "gateway",
+    "symbol": "scripts.eval_tools:live",
+    "line": 162,
+    "provider": "LangChain",
+    "call": "App.ask",
+    "gateway": "milo.app:App.ask",
+    "settings": {},
+    "message_roles": [],
+    "label": "live"
+   },
+   {
+    "kind": "gateway",
+    "symbol": "scripts.make_judge_extra:main",
+    "line": 42,
+    "provider": "LangChain",
+    "call": "App.ask",
+    "gateway": "milo.app:App.ask",
+    "settings": {},
+    "message_roles": [],
+    "label": "main"
+   },
+   {
+    "kind": "gateway",
+    "symbol": "scripts.make_judge_sheet:main",
+    "line": 57,
+    "provider": "LangChain",
+    "call": "App.ask",
+    "gateway": "milo.app:App.ask",
+    "settings": {},
+    "message_roles": [],
+    "label": "main"
+   },
+   {
+    "symbol": "scripts.run_judge:judge_all",
+    "line": 74,
+    "provider": "LangChain/OpenAI",
+    "call": "ChatOpenAI",
+    "settings": {
+     "model": "JUDGE_MODEL",
+     "temperature": "0",
+     "timeout": "120"
+    },
+    "message_roles": []
+   },
+   {
+    "kind": "gateway",
+    "symbol": "scripts.run_judge:judge_all",
+    "line": 98,
+    "provider": "LangChain",
+    "call": "LangChainChat.invoke",
+    "gateway": "milo.llm:LangChainChat.invoke",
+    "settings": {},
+    "message_roles": [],
+    "label": "judge_all"
+   }
+  ]
+ },
+ "console_scripts": {},
+ "infra": {}
+}

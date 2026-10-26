@@ -1,0 +1,161 @@
+<!doctype html>
+<html
+  lang="en"
+  data-resolution="landscape"
+  data-composition-variables='[
+    {"id":"color-ground","type":"color","label":"Background","default":"#F5F4EF"},
+    {"id":"color-ink","type":"color","label":"Text","default":"#1F1E1B"},
+    {"id":"color-accent","type":"color","label":"Accent","default":"#2C6B5C"},
+    {"id":"color-accent-soft","type":"color","label":"Soft accent","default":"#E6F0EC"},
+    {"id":"color-warn","type":"color","label":"Warning","default":"#8A5418"},
+    {"id":"font-display","type":"string","label":"Display font","default":"EB Garamond"},
+    {"id":"font-body","type":"string","label":"Body font","default":"Inter"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>MILO</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --color-ground: #f5f4ef;
+        --color-card: #ffffff;
+        --color-ink: #1f1e1b;
+        --color-muted: #67645b;
+        --color-line: #e2dfd6;
+        --color-accent: #2c6b5c;
+        --color-accent-soft: #e6f0ec;
+        --color-warn: #8a5418;
+        --color-warn-soft: #fbf1df;
+        --font-display: "EB Garamond";
+        --font-body: "Inter";
+        /* One grid for every scene: 160 px side margins (8.3%), 112 px top and bottom (10.4%). */
+        --m-x: 160px;
+        --m-y: 112px;
+        /* Type roles. */
+        --t-hero: 168px;
+        --t-title: 76px;
+        --t-card-title: 36px;
+        --t-body: 32px;
+        --t-caption: 28px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--color-ground);
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+        background: var(--color-ground);
+        font-family: var(--font-body), sans-serif;
+        color: var(--color-ink);
+      }
+      /* Shared roles used by every scene. */
+      .g-stage {
+        position: absolute;
+        inset: 0;
+        background: var(--color-ground);
+        padding: var(--m-y) var(--m-x);
+        display: flex;
+        flex-direction: column;
+      }
+      .g-eyebrow {
+        font-family: var(--font-body), sans-serif;
+        font-size: var(--t-caption);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-accent);
+        line-height: 1.2;
+      }
+      .g-title {
+        font-family: var(--font-display), serif;
+        font-size: var(--t-title);
+        font-weight: 500;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        margin-top: 18px;
+      }
+      .g-body {
+        font-size: var(--t-body);
+        line-height: 1.45;
+      }
+      .g-muted {
+        color: var(--color-muted);
+      }
+      .g-card {
+        background: var(--color-card);
+        border: 2px solid var(--color-line);
+        border-radius: 28px;
+      }
+      .g-content {
+        margin-top: 56px;
+        flex: 1;
+        min-height: 0;
+      }
+      .g-cite {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 2px solid var(--color-line);
+        background: var(--color-card);
+        color: var(--color-accent);
+        font-size: var(--t-caption);
+        font-weight: 600;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="36.6"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Scenes overlap by 0.6 s: each incoming scene fades in over the outgoing one (crossfade). -->
+      <div id="title" data-composition-id="title" data-composition-src="compositions/title.html"
+        data-start="0" data-duration="6.6" data-track-index="1" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index: 1"></div>
+      <div id="how" data-composition-id="how" data-composition-src="compositions/how.html"
+        data-start="6" data-duration="5.2" data-track-index="2" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index: 2"></div>
+      <div id="ask" data-composition-id="ask" data-composition-src="compositions/ask.html"
+        data-start="10.6" data-duration="7.1" data-track-index="1" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index: 3"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html"
+        data-start="17.1" data-duration="8.6" data-track-index="2" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index: 4"></div>
+      <div id="steps" data-composition-id="steps" data-composition-src="compositions/steps.html"
+        data-start="25.1" data-duration="6.1" data-track-index="1" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index: 5"></div>
+      <div id="endcard" data-composition-id="endcard" data-composition-src="compositions/endcard.html"
+        data-start="30.6" data-duration="6" data-track-index="2" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index: 6"></div>
+
+      <!-- Soundtrack: calm pad bed, one keystroke per typed character (ask scene), and the two hits. -->
+      <audio id="soundtrack" class="clip" data-start="0" data-duration="36.6" data-track-index="3" data-volume="1" src="assets/soundtrack.wav"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

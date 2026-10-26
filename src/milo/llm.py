@@ -10,7 +10,7 @@ import os
 from typing import Any
 
 from langchain_core.language_models import BaseChatModel
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 
 from milo.types import ChatReply, ToolCall, Usage
 
@@ -34,9 +34,10 @@ class LangChainChat:
     def invoke(
         self, messages: list[dict[str, Any]], tools: list[Any] | None = None
     ) -> ChatReply:
+        model = self.model
         if tools:
-            raise NotImplementedError("tool binding arrives in M3")
-        msg = self.model.invoke(messages)
+            model = self.model.bind_tools([openai_tool(t) for t in tools])
+        msg = model.invoke([to_message(m) for m in messages])
         if not isinstance(msg, AIMessage):
             raise TypeError(f"expected an AIMessage, got {type(msg).__name__}")
         usage = msg.usage_metadata or {}
@@ -47,6 +48,41 @@ class LangChainChat:
             ],
             usage=Usage(usage.get("input_tokens", 0), usage.get("output_tokens", 0)),
         )
+
+
+def openai_tool(spec: Any) -> dict[str, Any]:
+    """A tool spec in the function-calling shape the OpenRouter endpoint expects."""
+    return {
+        "type": "function",
+        "function": {
+            "name": spec.name,
+            "description": spec.description,
+            "parameters": spec.parameters,
+        },
+    }
+
+
+def to_message(m: dict[str, Any]) -> Any:
+    """Our role/content dicts as LangChain messages. Assistant tool calls and tool results keep their ids."""
+    role = m["role"]
+    if role == "system":
+        return SystemMessage(content=m["content"])
+    if role == "user":
+        return HumanMessage(content=m["content"])
+    if role == "assistant":
+        calls = [
+            {
+                "name": c["name"],
+                "args": c["arguments"],
+                "id": c["id"],
+                "type": "tool_call",
+            }
+            for c in m.get("tool_calls", [])
+        ]
+        return AIMessage(content=m.get("content", ""), tool_calls=calls)
+    if role == "tool":
+        return ToolMessage(content=m["content"], tool_call_id=m["tool_call_id"])
+    raise ValueError(f"unknown role {role}")
 
 
 def text_of(content: str | list[Any]) -> str:
@@ -83,3 +119,51 @@ def live_chat_model() -> LangChainChat:
         max_retries=0,  # retries are the app's job (M5), so they stay visible and bounded
     )
     return LangChainChat(chat, price)
+
+
+LOCAL_BASE_URL = "http://localhost:11434"  # Ollama's native API; thinking is switched off per request
+DEFAULT_LOCAL_MODEL = "qwen3:8b"
+
+
+class LocalOllamaChat:
+    """The fallback model. It answers from the passages only: tools are not offered, so a fallback can never act.
+
+    Ollama's native /api/chat is used because its `think: false` switch works; the OpenAI-compatible endpoint writes the
+    model's reasoning into the answer.
+    """
+
+    price_usd_per_mtok = (0.0, 0.0)
+
+    def __init__(self, model: str | None = None, timeout_s: float = 120.0) -> None:
+        self.model = model or os.environ.get("MILO_LOCAL_MODEL", DEFAULT_LOCAL_MODEL)
+        self.timeout_s = timeout_s
+
+    def invoke(
+        self, messages: list[dict[str, Any]], tools: list[Any] | None = None
+    ) -> ChatReply:
+        import httpx
+
+        plain = [
+            {"role": m["role"], "content": m.get("content", "")}
+            for m in messages
+            if m["role"] in ("system", "user", "assistant")
+        ]
+        body = {
+            "model": self.model,
+            "messages": plain,
+            "stream": False,
+            "think": False,
+            "options": {"temperature": 0},
+        }
+        r = httpx.post(f"{LOCAL_BASE_URL}/api/chat", json=body, timeout=self.timeout_s)
+        r.raise_for_status()
+        data = r.json()
+        return ChatReply(
+            content=data["message"]["content"],
+            usage=Usage(data.get("prompt_eval_count", 0), data.get("eval_count", 0)),
+        )
+
+
+def local_chat_model() -> LocalOllamaChat:
+    """The fallback: a local Ollama model. No key, no spend."""
+    return LocalOllamaChat()

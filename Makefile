@@ -1,7 +1,7 @@
 # Location of the project kit (override with KIT_SRC=<path>).
 KIT_SRC ?= ../../../project-kit
 
-.PHONY: check lint test kit-sync contract
+.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay eval-advanced eval-advanced-replay eval-tools-selftest eval-tools-live eval-test-replay
 
 check: lint test
 
@@ -22,3 +22,28 @@ kit-sync:
 contract:
 	test -d contract || { echo "run make kit-sync first"; exit 1; }
 	PROJECT_APP=milo.app:build_app uv run pytest contract -p no:cacheprovider
+
+# M1: offline lexical baseline on the dev gold set, and the replay of its stored result (no model call).
+eval-retrieval:
+	uv run python scripts/eval_retrieval.py --embedder lexical
+
+eval-retrieval-replay:
+	uv run python scripts/eval_retrieval.py --replay evals/results/retrieval/dev_lexical.json
+
+# M2: the A/B against the baseline on dev (offline lexical arms) and its replay.
+eval-advanced:
+	uv run python scripts/eval_advanced.py
+
+eval-advanced-replay:
+	uv run python scripts/eval_advanced.py --replay evals/results/advanced/dev_ab.json
+
+# M3: the tool evaluation. The self-test checks the scorer offline; the live run needs MILO_LIVE=1 and a key.
+eval-tools-selftest:
+	uv run python scripts/eval_tools.py --selftest
+
+eval-tools-live:
+	MILO_LIVE=1 uv run python scripts/eval_tools.py --live --max-cost 0.02
+
+# M7: replay of the single logged test read (no model call). The test split is not run again.
+eval-test-replay:
+	uv run python scripts/eval_retrieval.py --replay evals/results/retrieval/test_gemini.json

@@ -24,7 +24,7 @@ These notes apply to all the synthetic cases. They are kept here once instead of
 - If discriminating evidence is absent or conflicting, return an unresolved hypothesis plus a targeted question, not a confident solution.
 - Include administrative overhead and rework.
 - No fixed performance threshold is claimed without customer agreement.
-- No price assigned; current rate card must not be extended by analogy.
+- No figure assigned; none may be extended by analogy.
 - Pause automated writes and notifications, retain the event log, export outstanding work and return to a named manual coordinator.
 - Process owner reviews coverage of acceptance cases, unresolved critical failures, metric direction and staff workload.
 - Qualitative case-world support only; requires fresh customer evidence before reuse.

@@ -1,0 +1,58 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+    }
+    #end-stage {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    #end-mascot {
+      width: 180px;
+      height: 198px;
+    }
+    #end-title {
+      font-family: var(--font-display), serif;
+      font-size: 96px;
+      font-weight: 500;
+      line-height: 1.1;
+      margin-top: 28px;
+    }
+    #end-lede {
+      margin-top: 22px;
+      max-width: 1200px;
+    }
+    #end-cta {
+      margin-top: 44px;
+      background: var(--color-accent);
+      color: #ffffff;
+      font-size: 40px;
+      font-weight: 600;
+      padding: 24px 52px;
+      border-radius: 20px;
+    }
+  </style>
+  <div id="root" data-composition-id="endcard" data-width="1920" data-height="1080">
+    <div id="end-stage" class="g-stage" data-hold>
+      <img id="end-mascot" src="assets/milo-mascot.svg" alt="" />
+      <div id="end-title">See how one answer is made</div>
+      <div id="end-lede" class="g-body g-muted">Ask a question about your work, then open the steps and the sources behind the answer.</div>
+      <div id="end-cta">Open the chat</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      const IN = { duration: 0.7, ease: "power3.out" };
+      tl.fromTo("#end-stage", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 0);
+      tl.fromTo("#end-mascot", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 0.4);
+      tl.fromTo("#end-title", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 0.8);
+      tl.fromTo("#end-lede", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 1.3);
+      // The call to action lands at 2.2 s (soft hit in the root at 36.2 s).
+      tl.fromTo("#end-cta", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 2.0);
+      window.__timelines["endcard"] = tl;
+    })();
+  </script>
+</template>

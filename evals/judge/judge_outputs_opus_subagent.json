@@ -1,0 +1,152 @@
+{
+  "q001": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q003": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q005": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q007": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q009": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q011": {
+    "faithful": 0,
+    "relevant": 1,
+    "unsupported_claim": "The dispatcher still reviews each flag and makes the final decision"
+  },
+  "q013": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q015": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q017": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q019": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q021": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q023": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q025": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q027": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q029": {
+    "faithful": 0,
+    "relevant": 1,
+    "unsupported_claim": "Passage 5 only poses this question"
+  },
+  "q031": {
+    "faithful": 0,
+    "relevant": 1,
+    "unsupported_claim": "Scheduled maintenance can also be missed after an emergency call"
+  },
+  "q033": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q035": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q037": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "q039": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "S01": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "S02": {
+    "faithful": 0,
+    "relevant": 1,
+    "unsupported_claim": "technicians wait or work out of sequence"
+  },
+  "S03": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "S04": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "S05": {
+    "faithful": 0,
+    "relevant": 1,
+    "unsupported_claim": "That is the likely source of a meter-photo search"
+  },
+  "S06": {
+    "faithful": 0,
+    "relevant": 1,
+    "unsupported_claim": "I recorded your statement as the incident story"
+  },
+  "S07": {
+    "faithful": 0,
+    "relevant": 1,
+    "unsupported_claim": "A short diagnosis became a two-week repair because nobody owned the parts follow-up"
+  },
+  "S08": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  },
+  "S09": {
+    "faithful": 0,
+    "relevant": 1,
+    "unsupported_claim": "the knowledge base requires real evidence from your business"
+  },
+  "S10": {
+    "faithful": 1,
+    "relevant": 1,
+    "unsupported_claim": ""
+  }
+}

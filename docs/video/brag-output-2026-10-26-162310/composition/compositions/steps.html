@@ -1,0 +1,113 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+    }
+    .steps-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+    .steps-box {
+      padding: 30px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .steps-box b {
+      font-size: var(--t-caption);
+      font-weight: 700;
+    }
+    .steps-box .n {
+      font-size: 72px;
+      font-weight: 700;
+      color: var(--color-accent);
+      line-height: 1.1;
+    }
+    .steps-box small {
+      font-size: var(--t-caption);
+    }
+    #steps-did {
+      padding: 30px 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .steps-did-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .steps-check {
+      flex: 0 0 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--t-caption);
+      font-weight: 700;
+    }
+    .steps-pill {
+      font-size: var(--t-caption);
+      padding: 4px 16px;
+      border-radius: 999px;
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+    }
+    #steps-src {
+      padding: 30px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .steps-src-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+  </style>
+  <div id="root" data-composition-id="steps" data-width="1920" data-height="1080">
+    <div id="steps-stage" class="g-stage">
+      <div id="steps-eyebrow" class="g-eyebrow">Transparency</div>
+      <div id="steps-title" class="g-title">Every step is shown.</div>
+      <div class="g-content steps-wrap">
+        <div class="steps-row">
+          <div class="g-card steps-box" id="steps-b1"><b>Read the conversation</b><span class="n">New</span><small class="g-muted">first message</small></div>
+          <div class="g-card steps-box" id="steps-b2"><b>Found passages</b><span class="n">3</span><small class="g-muted">from 2 documents</small></div>
+          <div class="g-card steps-box" id="steps-b3"><b>Used tools</b><span class="n">2</span><small class="g-muted">steps taken</small></div>
+          <div class="g-card steps-box" id="steps-b4"><b>Wrote the answer</b><span class="n">1</span><small class="g-muted">from the passages</small></div>
+        </div>
+        <div class="g-card" id="steps-src">
+          <div class="g-eyebrow">Sources for this answer</div>
+          <div class="steps-src-row g-body"><span class="g-cite">1</span><b>Service area: Request and dispatch management</b></div>
+          <div class="steps-src-row g-body"><span class="g-cite">2</span><b>Past case C01:</b><span class="g-muted">Duplicate dispatch across contact channels</span></div>
+        </div>
+        <div class="g-card" id="steps-did">
+          <div class="steps-did-row g-body"><span class="steps-check">✓</span><span>Saved something you told me</span><span class="steps-pill">Done</span></div>
+          <div class="steps-did-row g-body"><span class="steps-check">✓</span><span>Calculated the time saving</span><span class="steps-pill">Done</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      const IN = { duration: 0.7, ease: "power3.out" };
+      tl.fromTo("#steps-stage", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 0);
+      tl.fromTo(["#steps-eyebrow", "#steps-title"], { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN, stagger: 0.12 }, 0.4);
+      tl.fromTo(["#steps-b1", "#steps-b2", "#steps-b3", "#steps-b4"], { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN, stagger: 0.3 }, 1.0);
+      tl.fromTo("#steps-src", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 2.2);
+      tl.fromTo("#steps-did", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 2.7);
+      window.__timelines["steps"] = tl;
+    })();
+  </script>
+</template>

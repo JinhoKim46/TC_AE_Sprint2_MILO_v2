@@ -1,0 +1,135 @@
+# Intake harness (M0b, fictional). The data the bot must hold before it gives a diagnosis for an area.
+# Rule: a missing must-have slot is asked for again (at most two asks per slot). If it is still missing, the bot
+# gives a conditional diagnosis that names the missing slot. It never refuses with "I don't know" alone.
+# Each slot: id, question (English, asked in plain words), unit, must (true = needed to diagnose), effect (true = feeds the estimate).
+
+common:  # every diagnosis
+  - id: business_type
+    question: "What kind of service business is this, and what do you service (computers, printers, copiers, network)?"
+    unit: text
+    must: true
+    effect: false
+  - id: staff_in_operations
+    question: "How many people handle requests, dispatch, stock or billing day to day?"
+    unit: count
+    must: true
+    effect: false
+  - id: customer_accounts
+    question: "How many customer accounts (contracted clients) do you have?"
+    unit: count
+    must: true
+    effect: false
+  - id: service_sites
+    question: "How many physical sites do you visit or keep equipment at (a client can have several branches)?"
+    unit: count
+    must: true
+    effect: false
+  - id: current_tools
+    question: "How do you record and follow up work today: paper, spreadsheet, chat, or a service app? Which ones?"
+    unit: list
+    must: true
+    effect: false
+  - id: incident_story
+    question: "Can you tell me about one recent job that went wrong or took too long: what triggered it, who did what, and when it finished?"
+    unit: text
+    must: true
+    effect: false
+
+areas:
+  request-dispatch:
+    - id: requests_per_week
+      question: "About how many service requests do you get in a normal week?"
+      unit: requests/week
+      must: true
+      effect: true
+    - id: request_channels
+      question: "Where do requests come in (phone, email, chat, walk-in, customer app)?"
+      unit: list
+      must: true
+      effect: false
+    - id: minutes_to_assign
+      question: "About how many minutes of staff time does it take to take in one request and assign it to a technician?"
+      unit: minutes/request
+      must: true
+      effect: true
+    - id: duplicate_rate
+      question: "How often does the same job get sent twice, or does a job get lost entirely?"
+      unit: per 100 requests (estimate ok)
+      must: false
+      effect: false
+
+  consumables-stock:
+    - id: stock_items
+      question: "Roughly how many consumable and spare-part types do you keep (toner, cables, drives)?"
+      unit: count
+      must: true
+      effect: false
+    - id: stock_locations
+      question: "Where is stock kept (store, van, customer site)?"
+      unit: count
+      must: true
+      effect: false
+    - id: searches_per_week
+      question: "How often does someone search for an item or ask where it is, per week?"
+      unit: searches/week
+      must: true
+      effect: true
+    - id: minutes_per_search
+      question: "How long does one search usually take?"
+      unit: minutes/search
+      must: true
+      effect: true
+    - id: stockouts_per_month
+      question: "How often do you run out of an item that a job needed?"
+      unit: count/month
+      must: false
+      effect: false
+
+  usage-billing-prep:
+    - id: readings_per_month
+      question: "How many meter or usage readings do you collect each month?"
+      unit: readings/month
+      must: true
+      effect: true
+    - id: reading_method
+      question: "How are readings collected (photo, remote, technician note, phone)?"
+      unit: list
+      must: true
+      effect: false
+    - id: minutes_per_reading
+      question: "How long does it take to check and enter one reading, including corrections?"
+      unit: minutes/reading
+      must: true
+      effect: true
+    - id: billing_errors_per_month
+      question: "How many readings or invoices need correction after they are prepared?"
+      unit: count/month
+      must: false
+      effect: false
+
+  operations-overview:
+    - id: status_questions_per_week
+      question: "How many times a week does someone ask you or the office for the status of a job?"
+      unit: questions/week
+      must: true
+      effect: true
+    - id: minutes_per_status_question
+      question: "How long does answering one status question take, including finding the answer?"
+      unit: minutes/question
+      must: true
+      effect: true
+    - id: open_items
+      question: "About how many jobs are open at one time?"
+      unit: count
+      must: true
+      effect: false
+    - id: blocker_tracking
+      question: "Do you record why a job is waiting (parts, approval, customer, supplier)?"
+      unit: yes/no/partly
+      must: false
+      effect: false
+
+effect_ranges:
+  # Each effect input gets a low / central / high value. The reported range is computed in code.
+  # Owner value wins when given; otherwise the assumed value below is used and labelled "assumed".
+  rule: "owner-reported value used as central; low and high = central x 0.8 and central x 1.2 unless the owner gives a range"

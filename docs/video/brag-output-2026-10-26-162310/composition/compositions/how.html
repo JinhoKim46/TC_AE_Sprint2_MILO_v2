@@ -1,0 +1,82 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      align-items: stretch;
+      flex: 0 0 auto;
+    }
+    .how-card {
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: 420px;
+    }
+    .how-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--t-caption);
+      font-weight: 700;
+    }
+    .how-card h3 {
+      font-size: var(--t-card-title);
+      line-height: 1.2;
+      font-weight: 700;
+    }
+    .how-card p {
+      font-size: var(--t-body);
+      line-height: 1.45;
+    }
+  </style>
+  <div id="root" data-composition-id="how" data-width="1920" data-height="1080">
+    <div id="how-stage" class="g-stage" data-hold>
+      <div id="how-eyebrow" class="g-eyebrow">How it works</div>
+      <div id="how-title" class="g-title">Four steps from a conversation to a plan</div>
+      <div class="g-content how-grid">
+        <div class="g-card how-card" id="how-c1">
+          <span class="how-num">1</span>
+          <h3>Describe your work</h3>
+          <p class="g-muted">Tell MILO about one kind of work, in your own words.</p>
+        </div>
+        <div class="g-card how-card" id="how-c2">
+          <span class="how-num">2</span>
+          <h3>It finds the passages</h3>
+          <p class="g-muted">Matching passages from service areas and past cases, each with a numbered source.</p>
+        </div>
+        <div class="g-card how-card" id="how-c3">
+          <span class="how-num">3</span>
+          <h3>It checks and records</h3>
+          <p class="g-muted">Facts you state are saved. Savings are calculated in code and shown as a range.</p>
+        </div>
+        <div class="g-card how-card" id="how-c4">
+          <span class="how-num">4</span>
+          <h3>It answers, with every step shown</h3>
+          <p class="g-muted">An estimate range, its sources, and the steps it took. It says when it does not know.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      const IN = { duration: 0.7, ease: "power3.out" };
+      // Crossfade in over the previous scene.
+      tl.fromTo("#how-stage", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 0);
+      tl.fromTo(["#how-eyebrow", "#how-title"], { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN, stagger: 0.12 }, 0.4);
+      tl.fromTo(["#how-c1", "#how-c2", "#how-c3", "#how-c4"], { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN, stagger: 0.45 }, 1.1);
+      window.__timelines["how"] = tl;
+    })();
+  </script>
+</template>

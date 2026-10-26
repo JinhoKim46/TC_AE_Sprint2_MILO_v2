@@ -1,0 +1,256 @@
+{
+  "embedder": "google/gemini-embedding-2",
+  "chunk_size": 800,
+  "overlap": 100,
+  "top_k": 5,
+  "split": "test",
+  "chunk_count": 416,
+  "quotes_not_whole_in_a_chunk": 0,
+  "metrics": {
+    "identifier": {
+      "n": 5,
+      "recall5": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.8262,
+        "ci": [
+          0.6262,
+          1.0
+        ]
+      }
+    },
+    "paraphrase": {
+      "n": 11,
+      "recall5": {
+        "mean": 0.7273,
+        "ci": [
+          0.4545,
+          0.9091
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.6755,
+        "ci": [
+          0.4028,
+          0.9091
+        ]
+      }
+    },
+    "all": {
+      "n": 16,
+      "recall5": {
+        "mean": 0.8125,
+        "ci": [
+          0.5625,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.7226,
+        "ci": [
+          0.5183,
+          0.9019
+        ]
+      }
+    }
+  },
+  "rows": [
+    {
+      "qid": "q002",
+      "type": "identifier",
+      "rank": 1,
+      "top5": [
+        "cases/C02#013",
+        "cases/C02#006",
+        "cases/C03#007",
+        "cases/C02#014",
+        "cases/C02#007"
+      ]
+    },
+    {
+      "qid": "q004",
+      "type": "identifier",
+      "rank": 3,
+      "top5": [
+        "cases/C05#007",
+        "cases/C05#005",
+        "cases/C05#013",
+        "cases/C05#004",
+        "cases/C05#000"
+      ]
+    },
+    {
+      "qid": "q006",
+      "type": "identifier",
+      "rank": 1,
+      "top5": [
+        "cases/C07#013",
+        "cases/C07#000",
+        "cases/C07#004",
+        "cases/C07#002",
+        "cases/C07#005"
+      ]
+    },
+    {
+      "qid": "q008",
+      "type": "identifier",
+      "rank": 2,
+      "top5": [
+        "cases/C13#007",
+        "cases/C13#013",
+        "cases/C13#014",
+        "cases/C13#000",
+        "cases/C15#013"
+      ]
+    },
+    {
+      "qid": "q010",
+      "type": "identifier",
+      "rank": 1,
+      "top5": [
+        "cases/C18#013",
+        "cases/C18#005",
+        "cases/C04#005",
+        "cases/C18#014",
+        "cases/C18#008"
+      ]
+    },
+    {
+      "qid": "q012",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "solutions/request-dispatch#001",
+        "cases/C02#006",
+        "solutions/request-dispatch#002",
+        "cases/C02#011",
+        "cases/C02#001"
+      ]
+    },
+    {
+      "qid": "q014",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C04#002",
+        "cases/C04#001",
+        "cases/C04#004",
+        "cases/C04#016",
+        "cases/C04#000"
+      ]
+    },
+    {
+      "qid": "q016",
+      "type": "paraphrase",
+      "rank": 4,
+      "top5": [
+        "cases/C05#005",
+        "cases/C05#004",
+        "cases/C05#000",
+        "solutions/usage-billing-prep#002",
+        "cases/C05#011"
+      ]
+    },
+    {
+      "qid": "q018",
+      "type": "paraphrase",
+      "rank": null,
+      "top5": [
+        "cases/C19#004",
+        "solutions/operations-overview#001",
+        "cases/C07#004",
+        "cases/C13#000",
+        "cases/C07#000"
+      ]
+    },
+    {
+      "qid": "q020",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "consultation/effect-estimate#005",
+        "consultation/effect-estimate#004",
+        "cases/C02#004",
+        "consultation/effect-estimate#001",
+        "consultation/method-notes#002"
+      ]
+    },
+    {
+      "qid": "q022",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "consultation/effect-estimate#002",
+        "consultation/effect-estimate#003",
+        "consultation/interview-approach#005",
+        "solutions/usage-billing-prep#004",
+        "cases/C06#006"
+      ]
+    },
+    {
+      "qid": "q024",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "consultation/interview-approach#001",
+        "policies/security-and-approvals#002",
+        "consultation/interview-approach#003",
+        "consultation/interview-approach#002",
+        "consultation/interview-approach#004"
+      ]
+    },
+    {
+      "qid": "q026",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "consultation/method-notes#005",
+        "consultation/method-notes#002",
+        "cases/C08#011",
+        "cases/C12#017",
+        "cases/C08#017"
+      ]
+    },
+    {
+      "qid": "q028",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "policies/security-and-approvals#001",
+        "policies/security-and-approvals#005",
+        "policies/security-and-approvals#000",
+        "cases/C01#015",
+        "cases/C08#005"
+      ]
+    },
+    {
+      "qid": "q030",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "policies/evidence-and-synthetic-cases#004",
+        "policies/evidence-and-synthetic-cases#003",
+        "cases/C17#005",
+        "cases/C06#006",
+        "cases/C04#007"
+      ]
+    },
+    {
+      "qid": "q032",
+      "type": "paraphrase",
+      "rank": 1,
+      "top5": [
+        "cases/C20#016",
+        "cases/C03#016",
+        "cases/C10#016",
+        "cases/C11#016",
+        "cases/C19#016"
+      ]
+    }
+  ]
+}
