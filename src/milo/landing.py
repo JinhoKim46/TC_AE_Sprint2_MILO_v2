@@ -29,7 +29,7 @@ h3{font-size:18px;margin:0 0 6px}
 p{margin:0 0 12px;max-width:66ch}
 .lede{font-size:19px;color:var(--mut)}
 .muted{color:var(--mut)}
-.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:64px}
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:64px;max-width:1080px;margin:0 auto}
 .hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
 .hero-art{display:flex;flex-direction:column;gap:14px;align-items:center}
 .hero-art img{width:min(240px,60vw);height:auto}
