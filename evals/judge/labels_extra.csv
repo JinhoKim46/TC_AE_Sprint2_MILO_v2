@@ -1,11 +1,11 @@
 id,faithful,relevant,notes
-S11,,,
-S12,,,
-S13,,,
-S14,,,
-S15,,,
-S16,,,
-S17,,,
-S18,,,
-S19,,,
-S20,,,
+S11,1,1,Missing service costs and misleading ticket counts match C11#001 and C11-Q01; strategic-account caveat is supported and actual profitability remains unknown.
+S12,1,1,Senior-knowledge dependency matches C12#001 and owner-absence consequences match C20#001; neither quantifies the user's slowdown.
+S13,1,1,Post-repair paperwork sequence matches C13#002; rekeyed technician updates and spreadsheet requests match C19#002.
+S14,0,1,Addresses renewal ownership but falsely attributes the user's renewal complaint to C07-Q03; that passage only discusses overdue-item ownership and contains no renewal example.
+S15,0,1,Separate cost and access permissions are supported but the answer presents the fictional C15#002 step sequence as Your workflow without evidence about the user's process.
+S16,0,1,Support-window guidance matches C16 but the claim that a single intake record could reduce repeated symptoms is an added intervention and effect unsupported by the supplied passages.
+S17,1,1,Supplier handoff and repeated-test problems match C17#001; reproducible context and accountable escalation ownership follow C17#009; C10 reporting example is accurate.
+S18,0,1,Addresses stock discrepancies but invents the blanket explanation that all locations keep separate records and nothing links movements; C18/C04/C07 describe symptoms without establishing that cause.
+S19,0,1,Case summaries address chat-based work accurately but calling this a common pattern generalizes prevalence from fictional examples that provide no frequency evidence.
+S20,0,1,Owner-memory and delegation discussion is relevant but the opening claim that the passages contain no question contradicts the explicit commitments question in C20-Q01.

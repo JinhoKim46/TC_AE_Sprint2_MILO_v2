@@ -1,0 +1,14 @@
+{
+  "n": 40,
+  "faithful": {
+    "agreement": 0.825,
+    "kappa": 0.595,
+    "ci": [
+      0.286,
+      0.839
+    ],
+    "usable": false
+  },
+  "labeller": "Codex Astra (model, not human)",
+  "judge": "Opus sub-agent"
+}

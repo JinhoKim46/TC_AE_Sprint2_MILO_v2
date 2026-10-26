@@ -1,0 +1,12 @@
+{
+  "S11": {"faithful": 1, "relevant": 1, "unsupported_claim": ""},
+  "S12": {"faithful": 1, "relevant": 1, "unsupported_claim": ""},
+  "S13": {"faithful": 1, "relevant": 1, "unsupported_claim": ""},
+  "S14": {"faithful": 0, "relevant": 1, "unsupported_claim": "The case notes that renewals are remembered only when a customer asks why nobody has contacted them [5]."},
+  "S15": {"faithful": 0, "relevant": 1, "unsupported_claim": "Your workflow has the conflict built in. Head-office approval is sought at step 4, and the branch appointment is arranged at step 5 [5]."},
+  "S16": {"faithful": 1, "relevant": 1, "unsupported_claim": ""},
+  "S17": {"faithful": 1, "relevant": 1, "unsupported_claim": ""},
+  "S18": {"faithful": 0, "relevant": 1, "unsupported_claim": "the warehouse, vans, and customer sites each keep their own record, and nothing links a part's movement from one to another. That is why the counts never reconcile."},
+  "S19": {"faithful": 1, "relevant": 1, "unsupported_claim": ""},
+  "S20": {"faithful": 1, "relevant": 1, "unsupported_claim": ""}
+}
