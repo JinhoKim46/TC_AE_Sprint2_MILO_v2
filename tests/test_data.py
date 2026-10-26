@@ -315,3 +315,24 @@ def test_kit_data_checker_passes() -> None:
         check=False,
     )
     assert r.returncode == 0, r.stdout + r.stderr
+
+
+def test_extra_dev_items_follow_the_same_quote_and_unanswerable_rules() -> None:
+    corpus = " ".join(body.lower() for _, body in articles().values())
+    extra = [
+        json.loads(x)
+        for x in (ROOT / "data" / "gold_dev_extra.jsonl").read_text().splitlines()
+        if x.strip()
+    ]
+    docs = {doc_id: body for doc_id, (_, body) in articles().items()}
+    norm = lambda s: re.sub(r"\s+", " ", s).strip().casefold()
+    for r in extra:
+        assert r["split"] == "dev", r["qid"]
+        if r["type"] == "unanswerable":
+            assert (
+                r["gold_evidence"] == []
+                and r["reference_answer"] == "INSUFFICIENT_CONTEXT"
+            ), r["qid"]
+            assert r["question"].lower() not in corpus, r["qid"]
+        for e in r["gold_evidence"]:
+            assert norm(e["quote"]) in norm(docs[e["doc_id"]]), r["qid"]

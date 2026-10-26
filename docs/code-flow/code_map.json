@@ -3,7 +3,7 @@
  "scope": ["scripts", "src"],
  "summary": {
   "files": 34,
-  "lines": 5703,
+  "lines": 5711,
   "functions": 140,
   "methods": 96,
   "classes": 27,
@@ -557,7 +557,7 @@
   },
   "scripts.eval_retrieval": {
    "file": "scripts/eval_retrieval.py",
-   "lines": 170,
+   "lines": 178,
    "doc": "M1 retrieval baseline on the dev gold set.",
    "cli": true,
    "exports": [],
@@ -3408,8 +3408,8 @@
   "scripts.eval_retrieval:dev_rows": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 73,
-   "end": 74,
+   "line": 81,
+   "end": 82,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -3418,8 +3418,8 @@
   "scripts.eval_retrieval:load_chunks": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 41,
-   "end": 46,
+   "line": 44,
+   "end": 49,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -3428,8 +3428,8 @@
   "scripts.eval_retrieval:main": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 149,
-   "end": 166,
+   "line": 157,
+   "end": 174,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -3438,8 +3438,8 @@
   "scripts.eval_retrieval:metrics": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 77,
-   "end": 89,
+   "line": 85,
+   "end": 97,
    "doc": "",
    "params": [
     "rows"
@@ -3450,8 +3450,8 @@
   "scripts.eval_retrieval:norm": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 37,
-   "end": 38,
+   "line": 40,
+   "end": 41,
    "doc": "",
    "params": [
     "s"
@@ -3462,8 +3462,8 @@
   "scripts.eval_retrieval:replay": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 133,
-   "end": 146,
+   "line": 141,
+   "end": 154,
    "doc": "",
    "params": [
     "path"
@@ -3474,8 +3474,8 @@
   "scripts.eval_retrieval:run": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 92,
-   "end": 130,
+   "line": 100,
+   "end": 138,
    "doc": "",
    "params": ["embedder_name", "max_cost", "split"],
    "decorators": [],
@@ -3484,8 +3484,8 @@
   "scripts.eval_retrieval:split_rows": {
    "kind": "function",
    "file": "scripts/eval_retrieval.py",
-   "line": 52,
-   "end": 70,
+   "line": 55,
+   "end": 78,
    "doc": "The rows of one split. The test split is read once: every read is logged, and a second read is refused.",
    "params": [
     "split"
@@ -4290,24 +4290,24 @@
   ["scripts.eval_attacks:run", "scripts.eval_attacks:build", 189],
   ["scripts.eval_attacks:run", "scripts.eval_attacks:check", 170],
   ["scripts.eval_attacks:run", "scripts.eval_attacks:load_docs", 163],
-  ["scripts.eval_retrieval:<module>", "scripts.eval_retrieval:main", 170],
-  ["scripts.eval_retrieval:dev_rows", "scripts.eval_retrieval:split_rows", 74],
-  ["scripts.eval_retrieval:load_chunks", "milo.chunk:chunk_article", 45],
-  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 157],
-  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 166],
-  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:run", 159],
-  ["scripts.eval_retrieval:metrics", "milo.metrics:mean_ci", 84],
-  ["scripts.eval_retrieval:replay", "scripts.eval_retrieval:metrics", 135],
-  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 94],
-  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 94],
-  ["scripts.eval_retrieval:run", "milo.index:Index", 97],
-  ["scripts.eval_retrieval:run", "milo.index:Index.search", 104],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:load_chunks", 96],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:metrics", 128],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 103],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 107],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 110],
-  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:split_rows", 98],
+  ["scripts.eval_retrieval:<module>", "scripts.eval_retrieval:main", 178],
+  ["scripts.eval_retrieval:dev_rows", "scripts.eval_retrieval:split_rows", 82],
+  ["scripts.eval_retrieval:load_chunks", "milo.chunk:chunk_article", 48],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 165],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:replay", 174],
+  ["scripts.eval_retrieval:main", "scripts.eval_retrieval:run", 167],
+  ["scripts.eval_retrieval:metrics", "milo.metrics:mean_ci", 92],
+  ["scripts.eval_retrieval:replay", "scripts.eval_retrieval:metrics", 143],
+  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 102],
+  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 102],
+  ["scripts.eval_retrieval:run", "milo.index:Index", 105],
+  ["scripts.eval_retrieval:run", "milo.index:Index.search", 112],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:load_chunks", 104],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:metrics", 136],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 111],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 115],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:norm", 118],
+  ["scripts.eval_retrieval:run", "scripts.eval_retrieval:split_rows", 106],
   ["scripts.eval_tools:<module>", "scripts.eval_tools:main", 201],
   ["scripts.eval_tools:live", "milo.app:App.ask", 162],
   ["scripts.eval_tools:live", "milo.app:App.ingest", 159],
@@ -4384,8 +4384,8 @@
   ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 87],
   ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 88],
   ["scripts.eval_attacks:RecordingBackend", "milo.tools:Backend", 53],
-  ["scripts.eval_retrieval:metrics", "milo.metrics:ndcg_at_k", 83],
-  ["scripts.eval_retrieval:metrics", "milo.metrics:recall_at_k", 83]
+  ["scripts.eval_retrieval:metrics", "milo.metrics:ndcg_at_k", 91],
+  ["scripts.eval_retrieval:metrics", "milo.metrics:recall_at_k", 91]
  ],
  "constructs": [
   ["milo.app:App.__init__", "milo.store:MemoryStore", 75],
@@ -4439,9 +4439,9 @@
   ["scripts.eval_attacks:run", "milo.embed:LexicalEmbedder", 160],
   ["scripts.eval_attacks:run", "milo.embed:OpenRouterEmbedder", 160],
   ["scripts.eval_attacks:run", "scripts.eval_attacks:CachedEmbedder", 159],
-  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 94],
-  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 94],
-  ["scripts.eval_retrieval:run", "milo.index:Index", 97],
+  ["scripts.eval_retrieval:run", "milo.embed:LexicalEmbedder", 102],
+  ["scripts.eval_retrieval:run", "milo.embed:OpenRouterEmbedder", 102],
+  ["scripts.eval_retrieval:run", "milo.index:Index", 105],
   ["scripts.eval_tools:live", "milo.embed:LexicalEmbedder", 158],
   ["scripts.eval_tools:live", "milo.tools:Backend", 146],
   ["scripts.eval_tools:live", "milo.types:Document", 160],

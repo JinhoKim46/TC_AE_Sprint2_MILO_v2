@@ -31,6 +31,9 @@ from milo.metrics import mean_ci, ndcg_at_k, recall_at_k
 K = 5
 KB = ROOT / "data" / "kb"
 GOLD = ROOT / "data" / "gold.jsonl"
+GOLD_EXTRA = (
+    ROOT / "data" / "gold_dev_extra.jsonl"
+)  # 40 more dev items, kept apart so the dev/test counts stay balanced
 RESULTS = ROOT / "evals" / "results" / "retrieval"
 
 
@@ -66,7 +69,12 @@ def split_rows(split: str) -> list[dict]:
             f.write(
                 f"read test split by eval_retrieval at {datetime.now().isoformat(timespec='seconds')}\n"
             )
-    rows = [json.loads(x) for x in GOLD.read_text().splitlines() if x.strip()]
+    rows = [
+        json.loads(x)
+        for f in (GOLD, GOLD_EXTRA)
+        for x in f.read_text().splitlines()
+        if x.strip()
+    ]
     return [r for r in rows if r["split"] == split and r["gold_evidence"]]
 
 
