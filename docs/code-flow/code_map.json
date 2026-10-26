@@ -3,7 +3,7 @@
  "scope": ["scripts", "src"],
  "summary": {
   "files": 34,
-  "lines": 5607,
+  "lines": 5650,
   "functions": 139,
   "methods": 96,
   "classes": 27,
@@ -270,7 +270,7 @@
   },
   "milo.page": {
    "file": "src/milo/page.py",
-   "lines": 926,
+   "lines": 969,
    "doc": "The MILO pages: the chat and the overview. One HTML document each, with its CSS and script.",
    "cli": false,
    "exports": [],

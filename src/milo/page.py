@@ -43,18 +43,29 @@ PAGE = (
 """
     + _BASE_CSS
     + """
-.layout{display:grid;grid-template-columns:240px minmax(0,1fr);height:calc(100vh - 56px)}
-.side{background:var(--card);border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;gap:18px}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);height:calc(100vh - 57px);min-height:0;overflow:hidden}
+.panel{background:var(--card);border-left:1px solid var(--line);position:fixed;top:57px;right:0;bottom:0;width:min(380px,100vw);z-index:12;display:flex;flex-direction:column;min-height:0;transform:translateX(105%);transition:transform .2s ease;box-shadow:-8px 0 24px rgba(31,30,27,.08)}
+.panel.open{transform:none}
+.panel-head{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.panel-head h2{font-size:16px;flex:1}
+.panel-body{flex:1;min-height:0;overflow-y:auto;padding:16px 20px 24px;display:flex;flex-direction:column;gap:16px}
+.panel .stages{grid-template-columns:repeat(2,minmax(0,1fr))}
+#sources-toggle{display:none}
+@media (max-width:1179px){#sources-toggle{display:inline-block}}
+@media (min-width:1180px){
+  .layout{grid-template-columns:240px minmax(0,1fr) 380px}
+  .panel{position:static;transform:none;width:auto;box-shadow:none;transition:none}
+  #panel-close{display:none}
+}
+.side{background:var(--card);border-right:1px solid var(--line);padding:18px 16px;display:flex;flex-direction:column;gap:20px;min-height:0;overflow-y:auto}
 .brand{font-size:18px;font-weight:700}
 .brand span{display:block;font-size:13px;font-weight:400;color:var(--mut)}
 .how h3{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
-.how ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.how ol{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .how li{display:flex;gap:10px;font-size:14px}
 .how b{display:block}
-.how small{color:var(--mut)}
 .num{flex:0 0 26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
-.side .spacer{flex:1}
-.demo h3{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.demo h3{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
 .demo-list{display:flex;flex-direction:column;gap:8px}
 .demo-list button{text-align:left;font-size:14px;padding:10px 12px;line-height:1.35}
 .demo-list button small{display:block;color:var(--mut);font-size:12px;margin-top:2px}
@@ -64,10 +75,10 @@ PAGE = (
 .topbar .spacer{flex:1}
 .thread{flex:1;overflow-y:auto;padding:28px 24px 12px}
 .inner{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
-.hello{text-align:center;margin:56px auto 8px;max-width:560px;display:flex;flex-direction:column;gap:14px}
+.hello{text-align:center;margin:40px auto 0;max-width:600px;display:flex;flex-direction:column;gap:12px}
 .hello h2{font-size:24px}
-.starters{display:grid;gap:10px;margin-top:8px}
-.starters button{text-align:left;padding:14px 16px;line-height:1.45}
+.starters{display:grid;gap:8px;margin-top:12px;text-align:left}
+.starters button{text-align:left;padding:12px 16px;line-height:1.45;border-radius:12px}
 .you{align-self:flex-end;max-width:78%;background:var(--accent);color:#fff;padding:11px 16px;border-radius:18px 18px 4px 18px;white-space:pre-wrap;word-break:break-word}
 .answer{background:var(--card);border:1px solid var(--line);border-radius:18px 18px 18px 4px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
 .answer .text{white-space:pre-wrap;word-break:break-word;font-size:16px}
@@ -102,7 +113,7 @@ PAGE = (
 .stage .n{font-size:18px;font-weight:700;color:var(--accent)}
 .notice{border-radius:12px;padding:12px 14px;background:var(--low-bg);color:var(--low);font-size:15px}
 .approval{border-radius:12px;padding:12px 14px;background:var(--mid-bg);color:var(--mid);font-size:15px}
-.composer-wrap{border-top:1px solid var(--line);background:var(--card);padding:14px 24px 18px}
+.composer-wrap{border-top:1px solid var(--line);background:var(--card);padding:12px 24px 16px;flex:0 0 auto}
 .composer{max-width:780px;margin:0 auto;display:flex;gap:10px;align-items:flex-end}
 .composer textarea{flex:1;resize:none;font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;outline:none;min-height:50px;max-height:180px;background:var(--bg);color:var(--ink)}
 .composer textarea:focus{border-color:var(--accent)}
@@ -130,30 +141,19 @@ PAGE = (
 <div class="layout">
   <aside class="side">
 
-    <a class="button" href="/chat?new=1" id="new">New conversation</a>
-    <div class="how">
-      <h3>How MILO works</h3>
-      <ol>
-        <li><span class="num">1</span><div><b>You describe your work</b><small>In your own words.</small></div></li>
-        <li><span class="num">2</span><div><b>MILO finds the right passages</b><small>From its knowledge base of service areas and past cases.</small></div></li>
-        <li><span class="num">3</span><div><b>It checks and records</b><small>Saves what you tell it and works out savings with a calculation, not a guess.</small></div></li>
-        <li><span class="num">4</span><div><b>It answers from the passages</b><small>Each answer shows where it came from and how sure it is.</small></div></li>
-      </ol>
-    </div>
     <div class="demo">
       <h3>Demo storylines</h3>
-      <p class="muted">Run a scripted conversation, one question after another.</p>
       <div id="demos" class="demo-list"></div>
     </div>
-    <div class="spacer"></div>
-    <p class="muted">Your conversation is kept for this browser. Clearing cookies starts a new one.</p>
   </aside>
 
   <main class="main">
     <header class="topbar">
       <h1>Diagnosis chat</h1>
       <span class="spacer"></span>
-      <span class="muted" id="cost">Session cost: $0.0000</span>
+      <button class="button" id="sources-toggle" type="button" aria-controls="panel">Sources</button>
+      <a class="button" href="/chat?new=1" id="new">New conversation</a>
+      <span class="muted" id="cost" hidden></span>
     </header>
 
     <section class="thread" id="thread" aria-live="polite" aria-label="Conversation"></section>
@@ -162,11 +162,19 @@ PAGE = (
       <div class="working" id="working" role="status"></div>
       <form class="composer" id="composer">
         <label class="sr" for="question">Your message</label>
-        <textarea id="question" rows="1" maxlength="4000" placeholder="Describe one kind of work in your business, or ask a question"></textarea>
+        <textarea id="question" rows="1" maxlength="4000" placeholder="Describe your work or ask"></textarea>
         <button class="primary" id="send" type="submit">Send</button>
       </form>
     </div>
   </main>
+
+  <aside class="panel" id="panel" aria-label="Sources and steps">
+    <div class="panel-head">
+      <h2>Sources and steps</h2>
+      <button class="button" id="panel-close" type="button">Close</button>
+    </div>
+    <div class="panel-body" id="panel-body"></div>
+  </aside>
 </div>
 
 <script>
@@ -177,6 +185,10 @@ PAGE = (
   const send = document.getElementById("send");
   const working = document.getElementById("working");
   const costEl = document.getElementById("cost");
+  const sourcesPanel = document.getElementById("panel");
+  const panelBody = document.getElementById("panel-body");
+  const sourcesToggle = document.getElementById("sources-toggle");
+  let activeKey = null;
 
   const TOOL = {
     search_knowledge: "Searched the knowledge base",
@@ -334,7 +346,61 @@ PAGE = (
     return wrap;
   }
 
+  function openPanel(on) {
+    sourcesPanel.classList.toggle("open", on);
+  }
+
+  function activeMessage() {
+    const answers = messages.filter((m) => m.role === "assistant" && !m.error);
+    return answers.find((m) => m.key === activeKey) || answers[answers.length - 1] || null;
+  }
+
+  function setActive(key) {
+    activeKey = key;
+    renderPanel();
+  }
+
+  function renderPanel() {
+    const m = activeMessage();
+    const count = m ? (m.sources || []).length : 0;
+    sourcesToggle.textContent = count ? "Sources (" + count + ")" : "Sources";
+    panelBody.replaceChildren();
+    if (!m) {
+      panelBody.appendChild(el("p", "muted", "The sources and steps behind each answer appear here."));
+      return;
+    }
+    if (m.question) panelBody.appendChild(el("p", "muted", "For: " + m.question.slice(0, 140)));
+    const c = confidence(m.sources || []);
+    const trust = el("div", "trust");
+    trust.append(el("span", "label", "How sure:"), el("span", "pill " + c.level, c.text));
+    panelBody.appendChild(trust);
+
+    const stages = el("div", "stages");
+    stageSummary(m).forEach((st, idx) => {
+      const box = el("button", "stage");
+      box.type = "button";
+      box.setAttribute("aria-expanded", m.openStage === idx ? "true" : "false");
+      box.append(el("b", "", st.title), el("span", "n", st.n), el("span", "muted", st.note));
+      box.addEventListener("click", () => { m.openStage = m.openStage === idx ? null : idx; renderPanel(); });
+      stages.appendChild(box);
+    });
+    panelBody.appendChild(stages);
+    if (m.openStage !== undefined && m.openStage !== null) panelBody.appendChild(stageDetail(m, m.openStage));
+
+    if (count) panelBody.appendChild(sourceList(m));
+    else panelBody.appendChild(el("p", "muted", "No passage was used for this answer."));
+
+    if ((m.tool_results || []).length) {
+      const steps = el("div", "found");
+      steps.appendChild(el("h3", "", "What MILO did"));
+      m.tool_results.forEach((t) => steps.appendChild(toolLine(t)));
+      panelBody.appendChild(steps);
+    }
+  }
+
   function highlightSource(m, n) {
+    setActive(m.key);
+    openPanel(true);
     const target = document.getElementById("src-" + m.key + "-" + n);
     if (!target) return;
     target.scrollIntoView({behavior: "smooth", block: "center"});
@@ -425,41 +491,13 @@ PAGE = (
 
     if (m.stopped) card.appendChild(el("div", "approval", "MILO needs your approval before it changes anything. Nothing was changed."));
 
-    const stages = el("div", "stages");
-    stageSummary(m).forEach((st, idx) => {
-      const box = el("button", "stage");
-      box.type = "button";
-      box.setAttribute("aria-expanded", m.openStage === idx ? "true" : "false");
-      box.append(el("b", "", st.title), el("span", "n", st.n), el("span", "muted", st.note));
-      box.addEventListener("click", () => { m.openStage = m.openStage === idx ? null : idx; render(); });
-      stages.appendChild(box);
-    });
-    card.appendChild(stages);
-    if (m.openStage !== undefined && m.openStage !== null) {
-      card.appendChild(stageDetail(m, m.openStage));
-    }
-
-    if ((m.sources || []).length) {
-      card.appendChild(sourceList(m));
-    }
-
-    if ((m.tool_results || []).length) {
-      const steps = el("div", "found");
-      steps.appendChild(el("h3", "", "What MILO did"));
-      m.tool_results.forEach((t) => steps.appendChild(toolLine(t)));
-      card.appendChild(steps);
-    }
-
     const follow = el("div", "chips");
     const shorter = el("button", "chip", "Shorter answer");
     shorter.type = "button";
     shorter.addEventListener("click", () => { if (!busy && m.question) ask("In two sentences: " + m.question); });
     const sources = el("button", "chip", "Show the sources");
     sources.type = "button";
-    sources.addEventListener("click", () => {
-      const d = card.querySelector("details");
-      if (d) { d.open = true; d.scrollIntoView({behavior: "smooth", block: "nearest"}); }
-    });
+    sources.addEventListener("click", () => { setActive(m.key); openPanel(true); });
     follow.append(shorter, sources);
     card.appendChild(follow);
     card.appendChild(feedbackRow());
@@ -501,9 +539,9 @@ PAGE = (
     const inner = el("div", "inner");
     if (!messages.length) {
       const hello = el("div", "hello");
-      hello.appendChild(el("h2", "", "What would you like to look at first?"));
-      hello.appendChild(el("p", "muted", "MILO can find the passages that match your work, save facts you tell it, estimate the time an automation would save as a range, and show every step it took."));
-      hello.appendChild(el("p", "muted", "It cannot diagnose your systems from a chat alone, and it does not give prices. Describe one kind of work to start."));
+      hello.appendChild(el("h2", "", "Describe one kind of work to start"));
+      hello.appendChild(el("p", "muted", "MILO finds the matching passages, saves what you tell it, and gives the saving as a range with every step shown."));
+      hello.appendChild(el("p", "muted", "It cannot diagnose your systems from a chat alone, and it does not give prices."));
       const list = el("div", "starters");
       STARTERS.forEach((s) => {
         const b = el("button", "", s);
@@ -520,7 +558,11 @@ PAGE = (
     });
     thread.appendChild(inner);
     thread.scrollTop = thread.scrollHeight;
+    renderPanel();
   }
+
+  sourcesToggle.addEventListener("click", () => openPanel(!sourcesPanel.classList.contains("open")));
+  document.getElementById("panel-close").addEventListener("click", () => openPanel(false));
 
   const messages = [];
   let sessionCost = 0;
@@ -562,6 +604,7 @@ PAGE = (
         error: data.error ? "Something went wrong on our side. Please try again in a moment." : null,
       };
       reply.key = messages.length;
+      activeKey = reply.key;
       messages.push(reply);
       sessionCost += reply.cost_usd;
       costEl.textContent = "Session cost: " + money(sessionCost);

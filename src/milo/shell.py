@@ -32,7 +32,7 @@ SHELL_CSS = """
 .sitehead .menu a,.sitehead .menu button{font:inherit;font-size:14px;text-align:left;background:none;border:0;padding:9px 12px;border-radius:8px;color:var(--ink,#1f1e1b);text-decoration:none;cursor:pointer;width:100%}
 .sitehead .menu a:hover,.sitehead .menu button:hover{background:var(--bg,#f5f4ef)}
 .sitehead .menu form{margin:0}
-@media (max-width:760px){.sitehead{gap:10px;padding:0 12px}.sitehead .links a{padding:6px 7px;font-size:13px}.sitehead .brandbar small{display:none}}
+@media (max-width:760px){.sitehead{gap:10px;padding:0 12px}.sitehead .links{overflow-x:auto;white-space:nowrap;min-width:0}.sitehead .links a{padding:6px 7px;font-size:13px}.sitehead .brandbar small{display:none}}
 """
 
 

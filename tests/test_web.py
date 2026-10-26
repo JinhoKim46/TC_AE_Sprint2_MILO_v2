@@ -49,7 +49,7 @@ def test_page_has_the_chat_composer_and_plain_language_panels() -> None:
     page = client(ToolThenAnswer()).get("/chat").get_data(as_text=True)
     for needle in (
         "New conversation",
-        "How MILO works",
+        "Sources and steps",
         "Session cost",
         'aria-live="polite"',
         "/api/ask",
