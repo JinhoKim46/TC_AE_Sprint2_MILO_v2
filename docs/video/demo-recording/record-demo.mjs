@@ -22,7 +22,8 @@ const fs = await import("node:fs");
 tStart = Date.now();
 const grab = spawn(ffmpegPath, ["-y", "-loglevel", "error", "-f", "x11grab", "-framerate", "25", "-video_size", "1440x900", "-i", display + ".0+0,0", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", out]);
 await sleep(1500);
-const caption = (text) => (timeline.push({ text, at: (Date.now() - tStart) / 1000 }), page.evaluate((t) => {
+const captionsOn = process.env.RECORD_CAPTIONS !== "0"; // subtitles are added after recording, from the narration
+const caption = (text) => (timeline.push({ text, at: (Date.now() - tStart) / 1000 }), captionsOn ? page.evaluate((t) => {
   let el = document.getElementById("demo-caption");
   if (!el) {
     el = document.createElement("div");
@@ -31,7 +32,7 @@ const caption = (text) => (timeline.push({ text, at: (Date.now() - tStart) / 100
     document.body.appendChild(el);
   }
   el.textContent = t;
-}, text));
+}, text) : null);
 
 
 await page.goto(base + "/", { waitUntil: "networkidle0" });

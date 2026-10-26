@@ -1,42 +1,42 @@
 [
   {
     "text": "MILO: a diagnosis chat that shows its work",
-    "at": 2.514
+    "at": 2.511
   },
   {
     "text": "Sign in, then ask one question about the business",
-    "at": 8.364
+    "at": 8.362
   },
   {
     "text": "Question: requests and the time to assign them",
-    "at": 9.428
+    "at": 9.427
   },
   {
     "text": "The answer cites its sources; the steps are in the side panel",
-    "at": 20.879
+    "at": 20.755
   },
   {
     "text": "Tool calls: name, arguments, result and the policy decision",
-    "at": 21.685
+    "at": 21.561
   },
   {
     "text": "The full source opens with the passage highlighted in its context",
-    "at": 25.209
+    "at": 25.084
   },
   {
     "text": "A fact from the owner is recorded by a tool call (allowed)",
-    "at": 29.733
+    "at": 29.607
   },
   {
     "text": "A destructive action is blocked until the owner approves it",
-    "at": 38.787
+    "at": 38.44
   },
   {
     "text": "At the end: the summary and the proposed first spec",
-    "at": 45.228
+    "at": 45.72
   },
   {
     "text": "Every number comes from the recorded facts and the computed estimate",
-    "at": 49.27
+    "at": 49.758
   }
 ]

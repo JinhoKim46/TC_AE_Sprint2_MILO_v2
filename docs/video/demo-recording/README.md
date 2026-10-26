@@ -38,3 +38,10 @@ longer than its scene. The video is copied, not re-encoded.
 
 Two earlier methods gave a video whose length did not match the session (a timed screencast and a screenshot loop).
 They are replaced by the real-time grab above.
+
+## Subtitles
+
+The recording has no on-screen captions (`RECORD_CAPTIONS=0`). The subtitles are made from the narration itself: each
+subtitle is the spoken sentence, shown from the start of its speech to its end. They sit at the top centre, white text on
+a dark box at 60% opacity, and they are burnt into the picture by `scripts/narrate_demo.py`. The style follows common
+subtitle guidance: a semi-opaque dark background behind white text.
