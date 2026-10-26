@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import random
 import re
 import sys
@@ -60,10 +61,26 @@ def parse(text: str) -> dict[str, int]:
     return {"faithful": int(data["faithful"]), "relevant": int(data["relevant"])}
 
 
-def judge_all() -> dict[str, dict[str, int]]:
-    from milo.llm import live_chat_model
+JUDGE_MODEL = os.environ.get("JUDGE_MODEL", "anthropic/claude-haiku-5.5")
 
-    chat = live_chat_model()
+
+def judge_all() -> dict[str, dict[str, int]]:
+    from langchain_openai import ChatOpenAI
+
+    from milo.llm import LangChainChat
+
+    # The judge is set by JUDGE_MODEL; the answering model is not changed.
+    chat = LangChainChat(
+        ChatOpenAI(
+            model=JUDGE_MODEL,
+            api_key=os.environ["OPENROUTER_API_KEY"].strip(),
+            base_url="https://openrouter.ai/api/v1",
+            temperature=0,
+            timeout=120,
+            max_retries=0,
+        ),
+        (0.0, 0.0),
+    )
     out = {}
     for item in json.loads((OUT / "answers.json").read_text()):
         passages = (
@@ -89,10 +106,14 @@ def main() -> None:
     args = ap.parse_args()
     labels = {r["id"]: r for r in csv.DictReader((OUT / "labels.csv").open())}
     if args.replay:
-        judged = json.loads((OUT / "judge_outputs.json").read_text())
+        judged = json.loads(
+            (OUT / f"judge_outputs_{JUDGE_MODEL.replace('/', '_')}.json").read_text()
+        )
     else:
         judged = judge_all()
-        (OUT / "judge_outputs.json").write_text(json.dumps(judged, indent=2) + "\n")
+        (OUT / f"judge_outputs_{JUDGE_MODEL.replace('/', '_')}.json").write_text(
+            json.dumps(judged, indent=2) + "\n"
+        )
     ids = [i for i in labels if i in judged]
     hf = [int(labels[i]["faithful"]) for i in ids]
     jf = [judged[i]["faithful"] for i in ids]
@@ -115,9 +136,11 @@ def main() -> None:
             "note": "all human labels are 1, so kappa is undefined",
         },
         "rule": "usable for faithfulness only if kappa >= 0.60 and the CI lower bound >= 0.30",
-        "judge_model": "anthropic/claude-haiku-5.5 (same family as the answering model)",
+        "judge_model": JUDGE_MODEL,
     }
-    (OUT / "judge_result.json").write_text(json.dumps(result, indent=2) + "\n")
+    (OUT / f"judge_result_{JUDGE_MODEL.replace('/', '_')}.json").write_text(
+        json.dumps(result, indent=2) + "\n"
+    )
     print(json.dumps(result, indent=2))
 
 
