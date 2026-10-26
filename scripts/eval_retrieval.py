@@ -14,8 +14,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,9 +46,32 @@ def load_chunks():
     return chunks
 
 
-def dev_rows() -> list[dict]:
+ACCESS_LOG = ROOT / "evals" / "results" / "test_access.log"
+
+
+def split_rows(split: str) -> list[dict]:
+    """The rows of one split. The test split is read once: every read is logged, and a second read is refused."""
+    if split == "test":
+        reads = (
+            ACCESS_LOG.read_text().count("read test split")
+            if ACCESS_LOG.exists()
+            else 0
+        )
+        if reads >= 1 and os.environ.get("MILO_TEST_REREAD") != "1":
+            raise SystemExit(
+                "the test split was already read once; see evals/results/test_access.log"
+            )
+        ACCESS_LOG.parent.mkdir(parents=True, exist_ok=True)
+        with ACCESS_LOG.open("a") as f:
+            f.write(
+                f"read test split by eval_retrieval at {datetime.now().isoformat(timespec='seconds')}\n"
+            )
     rows = [json.loads(x) for x in GOLD.read_text().splitlines() if x.strip()]
-    return [r for r in rows if r["split"] == "dev" and r["gold_evidence"]]
+    return [r for r in rows if r["split"] == split and r["gold_evidence"]]
+
+
+def dev_rows() -> list[dict]:
+    return split_rows("dev")
 
 
 def metrics(rows: list[dict]) -> dict:
@@ -64,13 +89,13 @@ def metrics(rows: list[dict]) -> dict:
     return out
 
 
-def run(embedder_name: str, max_cost: float) -> dict:
+def run(embedder_name: str, max_cost: float, split: str = "dev") -> dict:
     embedder = (
         OpenRouterEmbedder(max_cost) if embedder_name == "gemini" else LexicalEmbedder()
     )
     chunks = load_chunks()
     index = Index(chunks, embedder.embed([c.text for c in chunks]))
-    rows = dev_rows()
+    rows = split_rows(split)
     vectors = embedder.embed([r["question"] for r in rows])
     stored = []
     unlanded = 0
@@ -97,7 +122,7 @@ def run(embedder_name: str, max_cost: float) -> dict:
         "chunk_size": 800,
         "overlap": 100,
         "top_k": K,
-        "split": "dev",
+        "split": split,
         "chunk_count": len(chunks),
         "quotes_not_whole_in_a_chunk": unlanded,
         "metrics": metrics(stored),
@@ -126,13 +151,14 @@ def main() -> None:
     ap.add_argument("--embedder", choices=["lexical", "gemini"], default="lexical")
     ap.add_argument("--max-cost", type=float, default=0.02)
     ap.add_argument("--replay", type=Path)
+    ap.add_argument("--split", choices=["dev", "test"], default="dev")
     args = ap.parse_args()
     if args.replay:
         replay(args.replay)
         return
-    result = run(args.embedder, args.max_cost)
+    result = run(args.embedder, args.max_cost, args.split)
     RESULTS.mkdir(parents=True, exist_ok=True)
-    name = f"dev_{args.embedder}.json"
+    name = f"{args.split}_{args.embedder}.json"
     (RESULTS / name).write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
     print(
         f"wrote {RESULTS / name}: {result['chunk_count']} chunks, {result['quotes_not_whole_in_a_chunk']} quotes split"

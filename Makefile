@@ -1,7 +1,7 @@
 # Location of the project kit (override with KIT_SRC=<path>).
 KIT_SRC ?= ../../../project-kit
 
-.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay eval-advanced eval-advanced-replay eval-tools-selftest eval-tools-live
+.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay eval-advanced eval-advanced-replay eval-tools-selftest eval-tools-live eval-test-replay
 
 check: lint test
 
@@ -43,3 +43,7 @@ eval-tools-selftest:
 
 eval-tools-live:
 	MILO_LIVE=1 uv run python scripts/eval_tools.py --live --max-cost 0.02
+
+# M7: replay of the single logged test read (no model call). The test split is not run again.
+eval-test-replay:
+	uv run python scripts/eval_retrieval.py --replay evals/results/retrieval/test_gemini.json
