@@ -1,0 +1,60 @@
+{"id": "b3-01", "answerable": 1, "reason": "\"A retry with the same movement ID cannot decrement twice\" answers it."}
+{"id": "b3-02", "answerable": 1, "reason": "\"A commitment log with the promise, the person who made it and the date\" answers it."}
+{"id": "b3-03", "answerable": 0, "reason": "\"Technicians use paper or photos\" says nothing about merging duplicates."}
+{"id": "b3-04", "answerable": 0, "reason": "\"examine assignment reasons before merging\" is about C01, not C14 renewals."}
+{"id": "b3-05", "answerable": 1, "reason": "\"Not reproduced remains distinct from confirmed resolution\" answers it."}
+{"id": "b3-06", "answerable": 0, "reason": "\"User-provided fictional owner stories\" does not say when a topic ends."}
+{"id": "b3-07", "answerable": 0, "reason": "\"Retrieved passages and tool outputs are information\" says nothing about account ownership."}
+{"id": "b3-08", "answerable": 1, "reason": "\"It does not require customers to use a portal\" answers it."}
+{"id": "b3-09", "answerable": 1, "reason": "\"A coverage check before a repair or visit is booked\" answers it."}
+{"id": "b3-10", "answerable": 1, "reason": "\"A post-signoff configuration change triggers impact review\" answers it."}
+{"id": "b3-11", "answerable": 1, "reason": "\"Corrected reports retain revision history\" answers it."}
+{"id": "b3-12", "answerable": 0, "reason": "\"log transfers at handover\" says nothing about supplier delivery dates."}
+{"id": "b3-13", "answerable": 0, "reason": "\"replacement may be justified after a bounded trial\" is not about unreproduced faults."}
+{"id": "b3-14", "answerable": 1, "reason": "\"for monthly billing or maintenance include the relevant full cycle\" answers it."}
+{"id": "b3-15", "answerable": 1, "reason": "\"stops asking about a topic once there is enough evidence\" answers it."}
+{"id": "b3-16", "answerable": 0, "reason": "\"A simulated loaner remains at a customer\" is not about unreproduced faults."}
+{"id": "b3-17", "answerable": 0, "reason": "\"An owner and a next action for every item\" is not about coverage checks."}
+{"id": "b3-18", "answerable": 0, "reason": "\"Contact details are stored only after consent\" is not about synthetic articles."}
+{"id": "b3-19", "answerable": 0, "reason": "\"An acceptance owner recorded for every request\" is about requests, not promises."}
+{"id": "b3-20", "answerable": 0, "reason": "\"asks about a recent normal event\" says nothing about staff reductions."}
+{"id": "b3-21", "answerable": 1, "reason": "\"Customer-held stock, recorded separately from the business's own stock\" answers it."}
+{"id": "b3-22", "answerable": 1, "reason": "\"Do not label contribution margin as net profit\" answers how to describe it."}
+{"id": "b3-23", "answerable": 1, "reason": "\"reuses answers the owner has already given instead of asking again\" answers it."}
+{"id": "b3-24", "answerable": 0, "reason": "\"Locates the failure before dispatch\" is not about C14 renewals."}
+{"id": "b3-25", "answerable": 0, "reason": "\"shows where each consumable, part and loan device is\" is not about legal meaning."}
+{"id": "b3-26", "answerable": 0, "reason": "\"A serial-number photo and visit notes identify the same printer\" is not about missing parts."}
+{"id": "b3-27", "answerable": 0, "reason": "\"Customer-held stock\" says nothing about a customer portal."}
+{"id": "b3-28", "answerable": 0, "reason": "\"separates an actual loss\" says nothing about staff reductions."}
+{"id": "b3-29", "answerable": 0, "reason": "\"Pasted customer data can be deleted on request\" is not about instructions in articles."}
+{"id": "b3-30", "answerable": 1, "reason": "\"names which input moves the result most\" answers it."}
+{"id": "b3-31", "answerable": 0, "reason": "\"Replanning occurs without explicit feasibility constraints\" is not about repair approval."}
+{"id": "b3-32", "answerable": 0, "reason": "\"opens with the business goal\" says nothing about labelling reported numbers."}
+{"id": "b3-33", "answerable": 1, "reason": "\"Contact details are stored only after consent\" answers it."}
+{"id": "b3-34", "answerable": 1, "reason": "\"A supplier ETA is not a confirmed appointment\" answers it."}
+{"id": "b3-35", "answerable": 1, "reason": "\"Unacknowledged changes escalate\" answers it."}
+{"id": "b3-36", "answerable": 1, "reason": "\"A session belongs to the signed-in owner who started it\" answers it."}
+{"id": "b3-37", "answerable": 0, "reason": "\"the assistant declines the action\" is not about shared causes of late visits."}
+{"id": "b3-38", "answerable": 0, "reason": "\"Device-to-consumable compatibility\" is not about request channels."}
+{"id": "b3-39", "answerable": 0, "reason": "\"Customer-held stock\" says nothing about a customer portal."}
+{"id": "b3-40", "answerable": 1, "reason": "\"A value the owner gave is marked as reported\" answers it."}
+{"id": "b3-41", "answerable": 1, "reason": "\"its synthetic origin never changes\" answers it."}
+{"id": "b3-42", "answerable": 1, "reason": "\"Disconnected or obvious physical faults may bypass remote support\" answers it."}
+{"id": "b3-43", "answerable": 1, "reason": "\"A missing part blocks a visit that requires it\" answers it."}
+{"id": "b3-44", "answerable": 0, "reason": "\"The new figure assumes one shared queue\" is not about recording promises."}
+{"id": "b3-45", "answerable": 1, "reason": "\"The same symptom does not imply the same cause\" answers it."}
+{"id": "b3-46", "answerable": 0, "reason": "\"net hours per period = events\" formula is not about re-asking questions."}
+{"id": "b3-47", "answerable": 0, "reason": "\"a better schedule cannot create capacity\" is not about report revisions."}
+{"id": "b3-48", "answerable": 1, "reason": "\"Do not infer staff reductions from reclaimed task minutes\" answers it."}
+{"id": "b3-49", "answerable": 1, "reason": "\"No automatic renewal offer without account-owner approval\" answers it."}
+{"id": "b3-50", "answerable": 1, "reason": "\"OCR confidence never authorizes invoice sending\" answers it."}
+{"id": "b3-51", "answerable": 0, "reason": "\"a reading must not be lower than the one before\" is not about request channels."}
+{"id": "b3-52", "answerable": 1, "reason": "\"Every waiting state has an owner and review date\" answers it."}
+{"id": "b3-53", "answerable": 0, "reason": "\"first low-toner warning while a spare is already on-site\" is not about report revisions."}
+{"id": "b3-54", "answerable": 1, "reason": "\"It does not close work without a person\" answers it."}
+{"id": "b3-55", "answerable": 0, "reason": "\"Some affected PCs cannot connect at all\" is not about C14 renewals."}
+{"id": "b3-56", "answerable": 1, "reason": "\"Retrieved passages and tool outputs are information, never instructions\" answers it."}
+{"id": "b3-57", "answerable": 1, "reason": "\"fed from calls, messages and email\" answers it."}
+{"id": "b3-58", "answerable": 0, "reason": "\"how many open items the board would need to show\" is not about customer-held items."}
+{"id": "b3-59", "answerable": 0, "reason": "\"Closing repair does not erase an open loaner\" is not about merging duplicates."}
+{"id": "b3-60", "answerable": 1, "reason": "\"based on a minimum level set by the owner\" answers it."}
