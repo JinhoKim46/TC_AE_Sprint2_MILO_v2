@@ -10,7 +10,7 @@ from html import escape
 from pathlib import Path
 
 from milo.chunk import front_matter
-from milo.shell import FAVICON, SHELL_CSS, brand_html, nav_html
+from milo.shell import FAVICON, SHELL_CSS, site_header
 
 KB = Path(__file__).resolve().parents[2] / "data" / "kb"
 SECTION_LABEL = {
@@ -25,7 +25,7 @@ PAGE_CSS = (
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line);background:var(--card);margin:0 -16px;padding-left:16px;padding-right:16px}
+.pagehead-unused{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line);background:var(--card);margin:0 -16px;padding-left:16px;padding-right:16px}
 header .sp{flex:1}
 main{max-width:860px;margin:0 auto;padding:24px 0 56px;display:flex;flex-direction:column;gap:18px}
 h1{font-size:28px;margin:0;line-height:1.2}
@@ -101,7 +101,7 @@ def index_page(user=None) -> str:
             f'<section class="card"><h2>{escape(label)} ({len(items)})</h2><div class="list">{rows}</div></section>'
         )
     body = (
-        f'<header>{brand_html("/")}<span class="sp"></span>{nav_html("kb", user)}</header>'
+        f"{site_header('kb', user)}"
         "<main><h1>Knowledge base</h1>"
         '<p class="muted">The passages MILO can use. All documents are fictional. Open one to read the text that an answer may cite.</p>'
         + "".join(sections)
@@ -132,7 +132,7 @@ def document_page(doc_id: str, user=None) -> str | None:
         else ""
     )
     body_html = (
-        f'<header>{brand_html("/")}<span class="sp"></span>{nav_html("kb", user)}</header>'
+        f"{site_header('kb', user)}"
         "<main>"
         '<p><a href="/kb">Knowledge base</a> / ' + escape(doc_id) + "</p>"
         f"<h1>{escape(title)}</h1>"

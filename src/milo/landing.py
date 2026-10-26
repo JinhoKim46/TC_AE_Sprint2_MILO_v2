@@ -5,7 +5,7 @@ Honest by design: no invented customers, logos or testimonials. The data is fict
 
 from __future__ import annotations
 
-from milo.shell import FAVICON, SHELL_CSS, brand_html, nav_html
+from milo.shell import FAVICON, SHELL_CSS, site_header
 
 CSS = """
 :root{--bg:#F5F4EF;--card:#FFFFFF;--line:#E2DFD6;--ink:#1F1E1B;--mut:#67645B;--accent:#2C6B5C;--accent-soft:#E6F0EC;--warn:#8A5418;--warn-soft:#FBF1DF}
@@ -13,7 +13,7 @@ CSS = """
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 a{color:inherit}
-header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+.pagehead-unused{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
   padding:12px 0;background:var(--card);border-bottom:1px solid var(--line);margin:0 -16px;padding-left:16px;padding-right:16px}
 header.top .sp{flex:1}
 .btn{display:inline-block;font:inherit;padding:11px 18px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;cursor:pointer}
@@ -199,11 +199,7 @@ def landing_page(user=None) -> str:
         ),
     ]
     body = (
-        f'<header class="top">{brand_html("/")}<span class="sp"></span>'
-        f'<nav class="pagelinks" aria-label="Page sections"><a href="#how">How it works</a><a href="#features">Features</a>'
-        '<a href="#video">Video</a><a href="#stories">Demo</a><a href="#faq">FAQ</a></nav>'
-        f'{nav_html("home", user)}<a class="btn primary" href="/chat?new=1">Open the chat</a></header>'
-        "<main>"
+        site_header("home", user) + "<main>"
         '<section class="hero" style="border-top:0">'
         '<div><p class="eyebrow">Diagnosis assistant for service businesses</p>'
         "<h1>Find where your work loses time, and what to automate first.</h1>"

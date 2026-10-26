@@ -24,7 +24,7 @@ from milo.app import App
 from milo.auth_pages import login_page, password_page, signup_page, users_page
 from milo.flows import summarize
 from milo.page import DASHBOARD, PAGE
-from milo.shell import FAVICON, SHELL_CSS, brand_html, nav_html
+from milo.shell import FAVICON, SHELL_CSS, site_header
 from milo.users import (
     MemoryUserStore,
     check_new_account,
@@ -94,8 +94,7 @@ def create_app(
 
     def chat_page(user) -> str:
         return (
-            PAGE.replace("<!--BRAND-->", brand_html("/"))
-            .replace("<!--NAV-->", nav_html("chat", user))
+            PAGE.replace("<!--HEADER-->", site_header("chat", user))
             .replace("<!--FAVICON-->", FAVICON)
             .replace("<style>", "<style>" + SHELL_CSS, 1)
         )
@@ -272,8 +271,7 @@ def create_app(
     @login_needed(admin=True)
     def dashboard() -> Response:
         page = (
-            DASHBOARD.replace("<!--BRAND-->", brand_html("/"))
-            .replace("<!--NAV-->", nav_html("overview", current_user()))
+            DASHBOARD.replace("<!--HEADER-->", site_header("overview", current_user()))
             .replace("<!--FAVICON-->", FAVICON)
             .replace("<style>", "<style>" + SHELL_CSS, 1)
         )

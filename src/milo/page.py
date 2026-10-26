@@ -43,7 +43,7 @@ PAGE = (
 """
     + _BASE_CSS
     + """
-.layout{display:grid;grid-template-columns:240px minmax(0,1fr);height:100vh}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);height:calc(100vh - 56px)}
 .side{background:var(--card);border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;gap:18px}
 .brand{font-size:18px;font-weight:700}
 .brand span{display:block;font-size:13px;font-weight:400;color:var(--mut)}
@@ -126,10 +126,10 @@ PAGE = (
 </style>
 </head>
 <body>
+<!--HEADER-->
 <div class="layout">
   <aside class="side">
-    <!--BRAND-->
-    <!--NAV-->
+
     <a class="button" href="/chat?new=1" id="new">New conversation</a>
     <div class="how">
       <h3>How MILO works</h3>
@@ -655,9 +655,10 @@ DASHBOARD = (
 """
     + _BASE_CSS
     + """
-header{padding:18px 28px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-header h1{font-size:19px}
-header .spacer{flex:1}
+.pagehead-unused{padding:18px 28px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.pagetitle h1{font-size:22px;margin:0}
+.pagetitle{margin-bottom:6px}
+
 main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-direction:column;gap:22px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
 .card h2{font-size:17px;margin-bottom:6px}
@@ -702,16 +703,9 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
 </style>
 </head>
 <body>
-<header>
-  <!--BRAND-->
-  <span class="spacer"></span>
-  <!--NAV-->
-  <h1>Overview: every account, every question</h1>
-  <span class="spacer"></span>
-  <a class="button" href="/chat">Back to the chat</a>
-  <button id="refresh" type="button">Refresh</button>
-</header>
+<!--HEADER-->
 <main>
+  <div class="pagetitle"><h1>Overview: every account, every question</h1><p class="sub">Only the owner sees this page. Figures come from the database.</p></div>
   <section class="card" id="status-card">
     <h2>System status</h2>
     <p class="sub">Live checks of the parts MILO depends on, and spend against the course cap.</p>
@@ -721,7 +715,7 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
 
   <section class="card">
     <h2>The path every question takes</h2>
-    <p class="sub">Counts are for your conversation in this browser. Each step is a real part of the system.</p>
+    <p class="sub">Counts cover every account. Each step is a real part of the system.</p>
     <div class="flow" id="flow"></div>
   </section>
 

@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from html import escape
 
-from milo.shell import FAVICON, SHELL_CSS, brand_html, nav_html
+from milo.shell import FAVICON, SHELL_CSS, site_header
 
 CSS = """
 :root{--bg:#F5F4EF;--card:#FFFFFF;--line:#E2DFD6;--ink:#1F1E1B;--mut:#67645B;--accent:#2C6B5C;--accent-soft:#E6F0EC;--bad:#8A2F2F;--bad-soft:#F7E5E5}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0;margin:0 -16px;padding-left:16px;padding-right:16px;background:var(--card);border-bottom:1px solid var(--line)}
+.pagehead-unused{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0;margin:0 -16px;padding-left:16px;padding-right:16px;background:var(--card);border-bottom:1px solid var(--line)}
 header .sp{flex:1}
 main{max-width:460px;margin:40px auto;display:flex;flex-direction:column;gap:14px}
 main.wide{max-width:900px}
@@ -38,7 +38,7 @@ def _page(title: str, active: str, user, body: str) -> str:
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         f"<title>{escape(title)} · MILO</title>{FAVICON}"
         f"<style>{SHELL_CSS}{CSS}{SITE}</style></head><body>"
-        f'<header>{brand_html("/")}<span class="sp"></span>{nav_html(active, user)}</header>'
+        f"{site_header(active, user)}"
         f"{body}</body></html>"
     )
 
