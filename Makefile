@@ -1,7 +1,7 @@
 # Location of the project kit (override with KIT_SRC=<path>).
 KIT_SRC ?= ../../../project-kit
 
-.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay
+.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay eval-advanced eval-advanced-replay
 
 check: lint test
 
@@ -29,3 +29,10 @@ eval-retrieval:
 
 eval-retrieval-replay:
 	uv run python scripts/eval_retrieval.py --replay evals/results/retrieval/dev_lexical.json
+
+# M2: the A/B against the baseline on dev (offline lexical arms) and its replay.
+eval-advanced:
+	uv run python scripts/eval_advanced.py
+
+eval-advanced-replay:
+	uv run python scripts/eval_advanced.py --replay evals/results/advanced/dev_ab.json

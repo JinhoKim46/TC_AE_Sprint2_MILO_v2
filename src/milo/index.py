@@ -27,8 +27,17 @@ class Index:
             ],
         )
 
-    def search(self, vector: list[float], k: int) -> list[tuple[str, str, float]]:
-        """Top-k as (chunk_id, text, score), best first. Score = 1 - cosine distance."""
-        res = self._col.query(query_embeddings=[vector], n_results=k)
+    def search(
+        self, vector: list[float], k: int, where: dict | None = None
+    ) -> list[tuple[str, str, float]]:
+        """Top-k as (chunk_id, text, score), best first. Score = 1 - cosine distance. `where` filters on metadata."""
+        kwargs: dict = {"query_embeddings": [vector], "n_results": k}
+        if where:
+            kwargs["where"] = (
+                where
+                if len(where) == 1
+                else {"$and": [{a: b} for a, b in where.items()]}
+            )
+        res = self._col.query(**kwargs)
         ids, docs, dists = res["ids"][0], res["documents"][0], res["distances"][0]
         return [(i, d, 1.0 - dist) for i, d, dist in zip(ids, docs, dists)]
