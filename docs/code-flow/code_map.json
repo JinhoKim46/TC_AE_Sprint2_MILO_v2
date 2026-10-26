@@ -3382,7 +3382,7 @@
   "milo.store:MemoryStore.facts",
   "milo.store:MemoryStore.history"
  ],
- "test_files": 12,
+ "test_files": 13,
  "duplicate_names": {
   "norm": ["scripts.check_project_data:norm", "scripts.eval_retrieval:norm"],
   "replay": ["scripts.eval_advanced:replay", "scripts.eval_retrieval:replay"]

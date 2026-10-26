@@ -29,7 +29,9 @@ STORIES = ROOT / "data" / "stories" / "owner_stories.md"
 def main() -> None:
     if os.environ.get("MILO_LIVE") != "1":
         raise SystemExit("this script makes paid calls: set MILO_LIVE=1")
-    heads = re.findall(r'^## (S\d{2})\. "(.+?)"', STORIES.read_text(), re.MULTILINE)[10:20]
+    heads = re.findall(r'^## (S\d{2})\. "(.+?)"', STORIES.read_text(), re.MULTILINE)[
+        10:20
+    ]
     store = MemoryStore()
     app = App(
         live_chat_model(), OpenRouterEmbedder(0.05), Backend(store=store), store=store

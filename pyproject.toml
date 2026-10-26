@@ -30,7 +30,7 @@ dev = [
 ]
 
 [tool.ruff]
-extend-exclude = ["contract", "scripts/check_project_data.py", "data/source"]
+extend-exclude = ["contract", "scripts/check_project_data.py", "data/source", "docs/code-flow/tools"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
