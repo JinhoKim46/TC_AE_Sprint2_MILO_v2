@@ -1,0 +1,122 @@
+{
+  "q001": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q003": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "q005": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q007": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q009": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q011": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q013": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "q015": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q017": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q019": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "q021": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q023": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q025": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q027": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q029": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q031": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "q033": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q035": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "q037": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "q039": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "S01": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "S02": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "S03": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "S04": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "S05": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "S06": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "S07": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "S08": {
+    "faithful": 0,
+    "relevant": 1
+  },
+  "S09": {
+    "faithful": 1,
+    "relevant": 1
+  },
+  "S10": {
+    "faithful": 1,
+    "relevant": 1
+  }
+}
