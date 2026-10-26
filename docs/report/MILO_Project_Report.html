@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>MILO Project Report</title>
+<style>
+:root{
+  --bg:#F6F5F0; --card:#FFFFFF; --fg:#1D1C19; --mut:#67645B; --line:#DFDCD2;
+  --accent:#2C6B5C; --accent-soft:#E6F0EC; --warn:#8A5418; --warn-soft:#FBF1DF; --bad:#8A2F2F; --bad-soft:#F7E5E5;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151513; --card:#1E1E1B; --fg:#ECEBE5; --mut:#A3A096; --line:#3A3934;
+    --accent:#7CC3A8; --accent-soft:#1C2F28; --warn:#E3B56B; --warn-soft:#2D2516; --bad:#E79A9A; --bad-soft:#321D1D;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151513; --card:#1E1E1B; --fg:#ECEBE5; --mut:#A3A096; --line:#3A3934;
+  --accent:#7CC3A8; --accent-soft:#1C2F28; --warn:#E3B56B; --warn-soft:#2D2516; --bad:#E79A9A; --bad-soft:#321D1D;
+  color-scheme:dark;
+}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 56px}
+main{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1{font-size:30px;margin:0;line-height:1.2;text-wrap:balance}
+h2{font-size:20px;margin:0 0 10px;text-wrap:balance}
+h3{font-size:15px;margin:0 0 6px}
+p{margin:0 0 10px;max-width:68ch}
+.lede{font-size:17px;color:var(--fg)}
+.muted{color:var(--mut);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.head{display:flex;flex-direction:column;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.stat{background:var(--bg);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums;color:var(--accent)}
+.stat span{font-size:13px;color:var(--mut)}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:13px}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.pill.part{background:var(--warn-soft);color:var(--warn)}
+.pill.open{background:var(--bad-soft);color:var(--bad)}
+figure{margin:0}
+figcaption{font-size:13px;color:var(--mut);margin-top:8px}
+svg{width:100%;height:auto;max-width:100%;color:var(--fg)}
+ul{margin:0;padding-left:20px}
+li{margin:4px 0}
+code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+
+<section class="card head">
+  <p class="muted">Sprint 2 project · MILO v2 · TC_AE</p>
+  <h1>MILO: a diagnosis chatbot that shows its work</h1>
+  <p class="lede">MILO answers questions about how a small service business runs its work. It finds passages in a knowledge base, cites them, uses tools to record facts and calculate savings, and shows every step it took. The data is fictional. The project was built milestone by milestone to learn the stack and to be measured at each step.</p>
+  <div class="grid">
+    <div class="stat"><b>78</b><span>offline tests pass (3 database tests skipped by design)</span></div>
+    <div class="stat"><b>9 / 9</b><span>kit contract groups pass</span></div>
+    <div class="stat"><b>6</b><span>tools with schemas and risk tiers</span></div>
+    <div class="stat"><b>0 / 10</b><span>attacks succeeded (small sample, see limits)</span></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>How MILO works, end to end</h2>
+  <p>One question goes through five stages. Each stage is recorded in a trace, so the chat can show the path and the dashboard can count it.</p>
+  <figure>
+    <svg viewBox="0 0 900 430" role="img" aria-label="Flow of one question: browser to Flask app, then history read, passage retrieval, model call with optional tool loop, answer and trace; state is kept in Supabase PostgreSQL, the knowledge base is an in-memory vector index, and the local model is the fallback.">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="currentColor"/></marker>
+      </defs>
+      <g font-family="system-ui,sans-serif" font-size="13" fill="currentColor">
+        <rect x="10" y="150" width="120" height="60" rx="8" fill="none" stroke="currentColor"/>
+        <text x="70" y="176" text-anchor="middle">Browser</text>
+        <text x="70" y="194" text-anchor="middle" font-size="11">chat and dashboard</text>
+
+        <rect x="170" y="150" width="130" height="60" rx="8" fill="none" stroke="currentColor"/>
+        <text x="235" y="176" text-anchor="middle">Flask app</text>
+        <text x="235" y="194" text-anchor="middle" font-size="11">session owner id</text>
+
+        <rect x="340" y="20" width="200" height="70" rx="8" fill="none" stroke="currentColor"/>
+        <text x="440" y="46" text-anchor="middle">1 Read history</text>
+        <text x="440" y="66" text-anchor="middle" font-size="11">last 20 messages</text>
+
+        <rect x="340" y="120" width="200" height="70" rx="8" fill="none" stroke="currentColor"/>
+        <text x="440" y="146" text-anchor="middle">2 Retrieve passages</text>
+        <text x="440" y="166" text-anchor="middle" font-size="11">top 5, scored, cited</text>
+
+        <rect x="340" y="220" width="200" height="70" rx="8" fill="none" stroke="currentColor"/>
+        <text x="440" y="246" text-anchor="middle">3 Model call</text>
+        <text x="440" y="266" text-anchor="middle" font-size="11">primary, then local fallback</text>
+
+        <rect x="600" y="220" width="200" height="70" rx="8" fill="none" stroke="currentColor"/>
+        <text x="700" y="246" text-anchor="middle">4 Tool loop</text>
+        <text x="700" y="266" text-anchor="middle" font-size="11">6 tools, risk tiers</text>
+
+        <rect x="600" y="120" width="200" height="70" rx="8" fill="none" stroke="currentColor"/>
+        <text x="700" y="146" text-anchor="middle">5 Answer</text>
+        <text x="700" y="166" text-anchor="middle" font-size="11">cards, sources, decisions</text>
+
+        <rect x="600" y="340" width="280" height="62" rx="8" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>
+        <text x="740" y="364" text-anchor="middle">Supabase PostgreSQL (schema milo_v2)</text>
+        <text x="740" y="384" text-anchor="middle" font-size="11">threads, turns, facts, diagnoses</text>
+      </g>
+      <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#arr)">
+        <line x1="130" y1="180" x2="170" y2="180"/>
+        <text x="150" y="172" font-size="11" fill="currentColor" stroke="none" text-anchor="middle">HTTP</text>
+        <path d="M300 170 L340 70"/>
+        <path d="M300 180 L340 150"/>
+        <path d="M300 190 L340 250"/>
+        <line x1="440" y1="90" x2="440" y2="120"/>
+        <line x1="440" y1="190" x2="440" y2="220"/>
+        <line x1="540" y1="255" x2="600" y2="255"/>
+        <line x1="700" y1="220" x2="700" y2="190"/>
+        <path d="M600 146 L540 146" stroke-dasharray="none"/>
+        <path d="M640 340 L640 290" stroke-dasharray="4 3"/>
+      </g>
+      <g font-family="system-ui,sans-serif" font-size="11" fill="currentColor">
+        <text x="520" y="62">reads turns</text>
+        <text x="448" y="108">top passages</text>
+        <text x="448" y="208">prompt + passages</text>
+        <text x="560" y="250">calls</text>
+        <text x="648" y="206">results</text>
+        <text x="650" y="322">reads / writes</text>
+      </g>
+    </svg>
+    <figcaption>Each request crosses the app once, and every stage writes a trace line. The chat shows the path for one answer, and the dashboard counts the path for a whole conversation. The local model answers only from passages and cannot call tools.</figcaption>
+  </figure>
+</section>
+
+<section class="card">
+  <h2>What was built, milestone by milestone</h2>
+  <p class="muted">Each milestone has a pull request (PR) and a lesson note in <code>docs/lessons/</code>. Branches are stacked, so each PR shows only its own change.</p>
+  <div class="wrap"><table>
+    <thead><tr><th>Step</th><th>What it delivers</th><th>Evidence</th><th>PR</th></tr></thead>
+    <tbody>
+      <tr><td>M0b data</td><td>Knowledge base of 30 documents (20 past cases, solutions, policies, method notes), 4 service areas, 40 gold questions, 20 tool cases, 10 attacks, 16 held-out intake scenarios</td><td class="n">40 gold rows, kit data checker: 0 problems</td><td>#15</td></tr>
+      <tr><td>M1 retrieval</td><td>Heading-aware chunks of 800 characters with 100 overlap; Gemini embeddings; Chroma cosine index; top 5 with score; abstain when nothing overlaps</td><td class="n">Dev recall@5 0.81, nDCG@5 0.68 (live)</td><td>#16</td></tr>
+      <tr><td>M2 advanced RAG</td><td>Keyword query translation (rejected) and a validated self-query filter by service area, with fallback to unfiltered search</td><td class="n">Dev nDCG@5 0.16 to 0.27 with filter, CI 0.02 to 0.22; adopted on dev only</td><td>#17</td></tr>
+      <tr><td>M3 tools</td><td>6 tools: search, record fact, get facts, estimate effect, draft diagnosis, reset diagnosis (destructive). Argument checks. Estimate computed in code as a range</td><td class="n">Tool selection 0.55 to 0.60; strict parameters 0.31; lenient 0.56; over-eager 0</td><td>#18</td></tr>
+      <tr><td>M4 security</td><td>Attack harness on the real app with a test-only canary and poisoned passages; policy in code; identity from the session, never from arguments</td><td class="n">ASR 0 of 10; destructive 0; false refusals 0 of 5</td><td>#22</td></tr>
+      <tr><td>M5 errors</td><td>Typed input errors, bounded retries, local Ollama fallback, per-thread history, one trace line per flow</td><td class="n">Contract 9 / 9; fallback answered live</td><td>#19</td></tr>
+      <tr><td>M6 UI</td><td>Chat with sources, tool calls, policy decisions, progress and cost; flow view per answer; dashboard for the conversation; status endpoint</td><td class="n">Checklist in docs/lessons/M6.md; screenshots reviewed</td><td>#20, UI branch</td></tr>
+      <tr><td>DB</td><td>PostgreSQL store on Supabase behind the same interface as memory; migrations; owner isolation on every query</td><td class="n">3 database tests pass; end-to-end answer stored and removed</td><td>#21</td></tr>
+      <tr><td>M7 evaluation</td><td>Test split read once, logged; retrieval on test; LLM judge tested against labels; limits written with intervals</td><td class="n">Test recall@5 0.81, nDCG@5 0.72</td><td>#23</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="card">
+  <h2>Rubric: where each level is met</h2>
+  <p>The four criteria come from <code>project-kit/RUBRIC.md</code>. Levels are the builder's own assessment, with the evidence named.</p>
+  <div class="wrap"><table>
+    <thead><tr><th>Criterion</th><th>Level</th><th>Evidence</th><th>What is still open</th></tr></thead>
+    <tbody>
+      <tr><td>Understanding core concepts</td><td><span class="pill">3</span> <span class="pill part">4 partly</span></td><td class="n">M1 to M3 reports and lessons explain chunking, query translation (rejected), risk tiers and the estimate in code. Level 4 needs a retrieval change explained with its ceiling; M2 gives one, but it is unconfirmed on test.</td><td>M2 filter confirmation on test. Checkpoint answers are yours to give.</td></tr>
+      <tr><td>Technical implementation</td><td><span class="pill">4</span></td><td class="n">Contract 9 / 9. Paired A/B with a CI for the retrieval change (M2). Policy in code with destructive ASR 0. Typed errors. Sources and tool results in the UI. Identity bound in code.</td><td>Attack set is 10 items; the zero is a small-sample result.</td></tr>
+      <tr><td>Reflection and improvement</td><td><span class="pill">4 partly</span></td><td class="n">M7 lists measured limits with intervals and causes. Failed judge reported as failed. Filter adoption marked unconfirmed. Label provenance corrected.</td><td>No validated judge. The labels are from a model, not a human.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="card">
+  <h2>Mandatory requirements and bonus</h2>
+  <div class="wrap"><table>
+    <thead><tr><th>Requirement (kit README)</th><th>Status</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Domain knowledge base, embeddings, chunking, similarity search</td><td><span class="pill">met</span></td><td>M0b, M1</td></tr>
+      <tr><td>Advanced RAG: query translation and metadata filters</td><td><span class="pill">met</span></td><td>M2: self-query filter with fallback; translation tested and rejected</td></tr>
+      <tr><td>At least 3 tool calls</td><td><span class="pill">met</span></td><td>M3: 6 tools</td></tr>
+      <tr><td>Security, error handling, input validation</td><td><span class="pill">met</span></td><td>M4, M5</td></tr>
+      <tr><td>UI showing retrieved context, sources, tool results and progress</td><td><span class="pill">met</span></td><td>M6. The kit names Streamlit or Next.js; this project uses Flask, which the project owner has accepted.</td></tr>
+      <tr><td>Bonus: prompt-injection protection (medium)</td><td><span class="pill">met</span></td><td>M4 attack harness</td></tr>
+      <tr><td>Bonus: token usage and cost display (medium)</td><td><span class="pill">met</span></td><td>M6 cost line; status endpoint with course cap</td></tr>
+      <tr><td>Bonus: logging and monitoring (medium)</td><td><span class="pill">met</span></td><td>Trace per flow; dashboard; status endpoint</td></tr>
+      <tr><td>Bonus: RAG evaluation (hard)</td><td><span class="pill part">partly</span></td><td>Retrieval metrics on test; judge not validated</td></tr>
+      <tr><td>Bonus: hybrid search, remote MCP, tools as MCP</td><td><span class="pill open">not done</span></td><td>Hybrid was tested in the earlier project, not in this one</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">The kit asks for 2 medium and 1 hard bonus. Three medium items are met. The hard item is partly met, so the full bonus depends on how the judge result is counted.</p>
+</section>
+
+<section class="card">
+  <h2>Limits, stated plainly</h2>
+  <ul>
+    <li>Sixteen answerable questions per split. Every interval is wide. Differences under about 0.2 nDCG are not reliable.</li>
+    <li>The judge disagreed with the labels in about 18 per cent of items (kappa 0.60, lower bound 0.29), just under the threshold. The labels were written by a model, so this measures model agreement, not human agreement.</li>
+    <li>The M2 filter was chosen on dev after one revision. It is reported as unconfirmed, and the test split was not read again.</li>
+    <li>Duplicate passages between articles were measured on dev and did not affect the top five. Two de-duplication fixes were tested and not adopted.</li>
+    <li>Ten attacks and one model. A zero says these attacks failed, not that the system is secure.</li>
+    <li>The database connection uses the admin role. A limited role is needed before any real data.</li>
+    <li>No browser screen recording has been made. The manual checklist in M6 is for the presenter to tick.</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>Demo storylines for the evaluation</h2>
+  <p>Four scripted conversations are in <code>data/demo_storylines.json</code> and are served at <code>/api/demo</code>. Each one shows a different part of the system.</p>
+  <ul>
+    <li><b>The same printer, two technicians.</b> A duplicate-dispatch story: sources, a savings estimate with a range, and a fact recorded from the owner's words.</li>
+    <li><b>We have toner, but nobody can find it.</b> The consumables area, with the calculation done in code.</li>
+    <li><b>When MILO should not answer.</b> A question the knowledge base cannot answer. MILO says what is not established, and the confidence line shows a weak match.</li>
+    <li><b>A change that needs your approval.</b> The destructive tool is refused until approval, and the card shows why.</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>Reproduce the results</h2>
+  <ul>
+    <li>Checks: <code>make check</code> (lint, format, 78 offline tests), <code>make contract</code> (kit contract, 9 groups).</li>
+    <li>Replays with no model call: <code>make eval-retrieval-replay</code>, <code>make eval-test-replay</code>, <code>make eval-advanced-replay</code>.</li>
+    <li>Run the app: <code>MILO_LIVE=1 MILO_STORE=postgres uv run python -m milo.serve</code>, then open <code>/</code> for the chat and <code>/dashboard</code> for the overview.</li>
+  </ul>
+</section>
+
+</main>
+</body>
+</html>
