@@ -706,7 +706,7 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
   <!--BRAND-->
   <span class="spacer"></span>
   <!--NAV-->
-  <h1>How MILO works, using your conversation</h1>
+  <h1>Overview: every account, every question</h1>
   <span class="spacer"></span>
   <a class="button" href="/chat">Back to the chat</a>
   <button id="refresh" type="button">Refresh</button>
@@ -741,7 +741,7 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
   </section>
 
   <section class="card">
-    <h2>Your questions</h2>
+    <h2>Questions from all accounts</h2>
     <p class="sub">Choose one to see, step by step, what MILO did with it.</p>
     <div class="list" id="list"></div>
     <div class="empty" id="empty" hidden>No questions yet. Ask one in the chat, then come back here.</div>
@@ -873,7 +873,7 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
     document.getElementById("empty").hidden = data.flows.length > 0;
     data.flows.forEach((f) => {
       const b = el("button", "item");
-      const when = el("span", "when", "Question at " + f.ts);
+      const when = el("span", "when", (f.account || "account") + " · " + f.ts);
       const meta = el("span", "meta", (f.error ? "Could not answer" : "Answered") + " · " + Math.round(f.total_ms / 100) / 10 + " s");
       b.append(when, meta);
       b.addEventListener("click", () => timeline(f));

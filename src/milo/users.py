@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import secrets
+import time
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -75,11 +76,14 @@ class UserStore(Protocol):
 
     def set_password(self, user_id: int, password_hash: str) -> None: ...
 
+    def record_login(self, user_id: int) -> None: ...
+
 
 class MemoryUserStore:
     def __init__(self) -> None:
         self._rows: dict[str, tuple[User, str]] = {}
         self._next = 1
+        self.last_login: dict[int, float] = {}
 
     def create(
         self, login_id: str, display_name: str, password_hash: str, role: str
@@ -102,6 +106,9 @@ class MemoryUserStore:
 
     def all(self) -> list[User]:
         return [u for u, _ in self._rows.values()]
+
+    def record_login(self, user_id: int) -> None:
+        self.last_login[user_id] = time.time()
 
     def set_password(self, user_id: int, password_hash: str) -> None:
         for login_id, (user, _) in list(self._rows.items()):

@@ -91,7 +91,7 @@ note = "Without live mode the page still starts but the offline chat model gives
 [module_notes."milo.status"]
 purpose = "Answers 'is the system healthy and what has it cost' for the monitor view, without anyone looking at logs."
 does = "Pings the database and counts rows in threads, turns, facts and diagnoses. Checks whether the local Ollama model is reachable and which models it has. Reports whether a key is set and live mode is on, as booleans only. Adds up the cost of web answers from the trace file."
-flow = "milo.web serves /api/status by calling snapshot with the store kind, MILO_DATABASE_URL, the trace path and the chat model name. snapshot goes through _ping_database (psycopg, milo_v2 tables), _ping_local_model (HTTP to localhost:11434) and _spend (logs/trace.jsonl). It only reads."
+flow = "milo.web serves /api/status by calling snapshot with the store kind, MILO_DATABASE_URL, the stored flows and the chat model name. snapshot goes through _ping_database (psycopg, milo_v2 tables), _ping_local_model (HTTP to localhost:11434) and sums the cost of the stored flows (milo_v2.flows). It only reads."
 note = "Never returns the key or the database URL. Reports failure as data instead of raising, so the status page works when parts are down. Spend counts web answers only; evaluation runs log in their own files. The 3.00 USD course cap is a constant here."
 
 [module_notes."milo.store"]
@@ -361,11 +361,11 @@ summary = "The status route gathers one snapshot: the store kind and row counts,
 
 '''
   [[journeys.steps]]
-  symbol = "milo.status:_spend"
-  action = "Reads logs/trace.jsonl and sums cost_usd over every web answer; evaluation runs are not counted here."
-  receives = "trace path"
-  returns = "{web_answers, web_cost_usd}"
-  stores = "nothing (reads logs/trace.jsonl)"
+  symbol = "milo.status:snapshot"
+  action = "Sums cost_usd over the flows held in the store (all accounts, every web answer); evaluation runs are not counted here."
+  receives = "the stored flows, the store kind and the database URL"
+  returns = "{web_answers, web_cost_usd, course_cap_usd}"
+  stores = "nothing (reads milo_v2.flows)"
 
 [[journeys]]
 id = "start-up"

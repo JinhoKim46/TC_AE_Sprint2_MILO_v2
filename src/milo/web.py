@@ -15,7 +15,6 @@ import os
 import secrets
 import uuid
 from dataclasses import asdict
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -23,7 +22,7 @@ from flask import Flask, Response, jsonify, redirect, request, session, url_for
 
 from milo.app import App
 from milo.auth_pages import login_page, password_page, signup_page, users_page
-from milo.flows import owner_hash, read_flows, summarize
+from milo.flows import summarize
 from milo.page import DASHBOARD, PAGE
 from milo.shell import FAVICON, SHELL_CSS, brand_html, nav_html
 from milo.users import (
@@ -142,6 +141,8 @@ def create_app(
                 login_page("The ID or password is not correct.", login_id, next_url)
             )
         sign_in(found[0])
+        if hasattr(user_store, "record_login"):
+            user_store.record_login(found[0].id)
         return redirect(next_url if next_url.startswith("/") else "/chat")
 
     @web.post("/logout")
@@ -262,20 +263,7 @@ def create_app(
             ), 400
         if reason and reason not in REASONS:
             return jsonify({"ok": False, "error": "invalid_input: unknown reason"}), 400
-        if milo_app.trace_path is None:
-            return jsonify(
-                {"ok": False, "error": "feedback is not stored in this run"}
-            ), 503
-        record = {
-            "ts": datetime.now().isoformat(timespec="seconds"),
-            "owner": owner_hash(owner()),
-            "rating": rating,
-            "reason": reason,
-        }
-        path = milo_app.trace_path.parent / "feedback.jsonl"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("a") as f:
-            f.write(json.dumps(record) + "\n")
+        milo_app.store.add_feedback(owner(), rating, reason)
         return jsonify({"ok": True})
 
     # ---- the owner only -------------------------------------------------------------------------------------
@@ -299,7 +287,8 @@ def create_app(
     @web.get("/api/flows")
     @login_needed(admin=True)
     def flows() -> Any:
-        rows = read_flows(milo_app.trace_path, owner())
+        scope = None if request.args.get("scope") != "mine" else owner()
+        rows = milo_app.store.flows(scope, limit=200)
         return jsonify({"flows": rows, "summary": summarize(rows)})
 
     @web.get("/api/status")
@@ -312,6 +301,8 @@ def create_app(
         )
         url = os.environ.get("MILO_DATABASE_URL")
         model = os.environ.get("MILO_CHAT_MODEL", "anthropic/claude-haiku-5.5")
-        return jsonify(snapshot(kind, url, milo_app.trace_path, model))
+        return jsonify(
+            snapshot(kind, url, milo_app.store.flows(None, limit=100000), model)
+        )
 
     return web

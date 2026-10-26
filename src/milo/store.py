@@ -29,6 +29,12 @@ class Store(Protocol):
 
     def diagnoses(self, owner: str) -> list[dict[str, Any]]: ...
 
+    def record_flow(self, owner: str, thread: str, flow: dict[str, Any]) -> None: ...
+
+    def flows(self, owner: str | None, limit: int = 50) -> list[dict[str, Any]]: ...
+
+    def add_feedback(self, owner: str, rating: str, reason: str) -> None: ...
+
 
 class MemoryStore:
     """Dictionaries in memory. Every read is keyed by the owner, so one owner never sees another's data."""
@@ -39,6 +45,8 @@ class MemoryStore:
             lambda: defaultdict(list)
         )
         self._diagnoses: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        self._flows: list[tuple[str, str, dict[str, Any]]] = []
+        self._feedback: list[tuple[str, str, str]] = []
 
     def append_turns(
         self, owner: str, thread: str, turns: list[dict[str, str]]
@@ -63,3 +71,13 @@ class MemoryStore:
 
     def diagnoses(self, owner: str) -> list[dict[str, Any]]:
         return list(self._diagnoses[owner])
+
+    def record_flow(self, owner: str, thread: str, flow: dict[str, Any]) -> None:
+        self._flows.append((owner, thread, flow))
+
+    def flows(self, owner: str | None, limit: int = 50) -> list[dict[str, Any]]:
+        rows = [f for o, _, f in self._flows if owner is None or o == owner]
+        return rows[-limit:][::-1]
+
+    def add_feedback(self, owner: str, rating: str, reason: str) -> None:
+        self._feedback.append((owner, rating, reason))

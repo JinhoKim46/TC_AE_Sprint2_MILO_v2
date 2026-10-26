@@ -3,29 +3,29 @@
  "scope": ["scripts", "src"],
  "summary": {
   "files": 34,
-  "lines": 5526,
-  "functions": 140,
-  "methods": 84,
+  "lines": 5608,
+  "functions": 139,
+  "methods": 96,
   "classes": 27,
   "routes": 20,
   "route_functions": 20,
-  "call_sites": 1707,
-  "resolved_internal": 436,
-  "resolved_external": 447,
-  "resolved_builtin": 567,
+  "call_sites": 1718,
+  "resolved_internal": 438,
+  "resolved_external": 446,
+  "resolved_builtin": 580,
   "resolved_by_convention": 0,
-  "unresolved": 257,
-  "resolved_ratio": 0.8494,
-  "graph_coverage": 0.8691,
+  "unresolved": 254,
+  "resolved_ratio": 0.8522,
+  "graph_coverage": 0.8718,
   "inferred_edges": 7,
   "override_edges": 1,
   "unresolved_value_like": 124,
-  "internal_edges": 435,
+  "internal_edges": 437,
   "reference_edges": 17,
-  "sql_sites": 18,
+  "sql_sites": 19,
   "gateway_sites": 0,
   "external_sites": 11,
-  "tables": 5,
+  "tables": 7,
   "orm_models": 0,
   "import_cycles": 0,
   "lazy_import_cycles": 0,
@@ -39,11 +39,11 @@
   "top_unresolved_names": [
    ["get", 82],
    ["read_text", 24],
-   ["strip", 22],
+   ["strip", 21],
    ["write_text", 13],
    ["items", 8],
-   ["mkdir", 8],
    ["append", 7],
+   ["mkdir", 7],
    ["relative_to", 6],
    ["splitlines", 6],
    ["embed", 5],
@@ -57,6 +57,8 @@
  "tables": [
   "milo_v2.diagnoses",
   "milo_v2.facts",
+  "milo_v2.feedback",
+  "milo_v2.flows",
   "milo_v2.threads",
   "milo_v2.turns",
   "milo_v2.users"
@@ -90,7 +92,7 @@
   },
   "milo.app": {
    "file": "src/milo/app.py",
-   "lines": 367,
+   "lines": 380,
    "doc": "The app the kit's contract suite builds: `build_app(chat_model, embeddings, tools_backend) -> App`.",
    "cli": false,
    "exports": [],
@@ -112,7 +114,7 @@
     "milo.types"
    ],
    "lazy_imports": [],
-   "call_sites": 98,
+   "call_sites": 101,
    "unresolved": 8
   },
   "milo.auth_pages": {
@@ -280,7 +282,7 @@
   },
   "milo.pgstore": {
    "file": "src/milo/pgstore.py",
-   "lines": 187,
+   "lines": 248,
    "doc": "PostgreSQL implementation of the `Store` interface (schema `milo_v2`, see db/migrations/).",
    "cli": false,
    "exports": [],
@@ -293,8 +295,8 @@
    ],
    "imports": ["milo.store", "milo.users"],
    "lazy_imports": [],
-   "call_sites": 55,
-   "unresolved": 2
+   "call_sites": 75,
+   "unresolved": 3
   },
   "milo.serve": {
    "file": "src/milo/serve.py",
@@ -334,35 +336,33 @@
   },
   "milo.status": {
    "file": "src/milo/status.py",
-   "lines": 83,
-   "doc": "System status for the monitor: database, model configuration, stored data and spend. Reads only; never prints a secret.",
+   "lines": 75,
+   "doc": "System status for the owner's monitor: database, models and spend. Reads only; never prints a secret.",
    "cli": false,
    "exports": [],
    "packages": [
     "__future__",
     "httpx",
-    "json",
     "os",
-    "pathlib",
     "psycopg",
     "time",
     "typing"
    ],
    "imports": [],
    "lazy_imports": [],
-   "call_sites": 36,
-   "unresolved": 2
+   "call_sites": 24,
+   "unresolved": 1
   },
   "milo.store": {
    "file": "src/milo/store.py",
-   "lines": 65,
+   "lines": 83,
    "doc": "The storage interface. The app and the tools keep their state here, never in their own attributes.",
    "cli": false,
    "exports": [],
    "packages": ["__future__", "collections", "typing"],
    "imports": [],
    "lazy_imports": [],
-   "call_sites": 13,
+   "call_sites": 15,
    "unresolved": 4
   },
   "milo.tools": {
@@ -397,7 +397,7 @@
   },
   "milo.users": {
    "file": "src/milo/users.py",
-   "lines": 109,
+   "lines": 116,
    "doc": "Accounts: password hashing and the user store (memory for tests and demos; PostgreSQL in the database store).",
    "cli": false,
    "exports": [],
@@ -407,23 +407,23 @@
     "hashlib",
     "hmac",
     "secrets",
+    "time",
     "typing"
    ],
    "imports": [],
    "lazy_imports": [],
-   "call_sites": 29,
+   "call_sites": 30,
    "unresolved": 0
   },
   "milo.web": {
    "file": "src/milo/web.py",
-   "lines": 317,
+   "lines": 308,
    "doc": "The MILO web app: landing page, accounts, the chat, the knowledge base, and the owner's overview.",
    "cli": false,
    "exports": [],
    "packages": [
     "__future__",
     "dataclasses",
-    "datetime",
     "flask",
     "json",
     "os",
@@ -441,8 +441,8 @@
     "milo.users"
    ],
    "lazy_imports": ["milo.kb_pages", "milo.landing", "milo.status"],
-   "call_sites": 185,
-   "unresolved": 12
+   "call_sites": 182,
+   "unresolved": 9
   },
   "scripts.build_kb": {
    "file": "scripts/build_kb.py",
@@ -790,7 +790,7 @@
    "kind": "class",
    "file": "src/milo/app.py",
    "line": 57,
-   "end": 363,
+   "end": 376,
    "doc": "",
    "bases": [],
    "decorators": []
@@ -833,8 +833,8 @@
   "milo.app:App._cost": {
    "kind": "method",
    "file": "src/milo/app.py",
-   "line": 359,
-   "end": 363,
+   "line": 372,
+   "end": 376,
    "doc": "",
    "params": ["self", "reply"],
    "decorators": [],
@@ -867,8 +867,8 @@
   "milo.app:App._retrieve": {
    "kind": "method",
    "file": "src/milo/app.py",
-   "line": 345,
-   "end": 357,
+   "line": 358,
+   "end": 370,
    "doc": "",
    "params": ["self", "question"],
    "decorators": [],
@@ -877,8 +877,8 @@
   "milo.app:App._run_tool": {
    "kind": "method",
    "file": "src/milo/app.py",
-   "line": 322,
-   "end": 343,
+   "line": 335,
+   "end": 356,
    "doc": "",
    "params": [
     "self",
@@ -894,7 +894,7 @@
    "kind": "method",
    "file": "src/milo/app.py",
    "line": 297,
-   "end": 320,
+   "end": 333,
    "doc": "",
    "params": [
     "self",
@@ -948,8 +948,8 @@
   "milo.app:build_app": {
    "kind": "function",
    "file": "src/milo/app.py",
-   "line": 366,
-   "end": 367,
+   "line": 379,
+   "end": 380,
    "doc": "",
    "params": ["chat_model", "embeddings", "tools_backend"],
    "decorators": [],
@@ -1467,7 +1467,7 @@
    "kind": "class",
    "file": "src/milo/pgstore.py",
    "line": 18,
-   "end": 133,
+   "end": 187,
    "doc": "",
    "bases": [],
    "decorators": []
@@ -1507,6 +1507,21 @@
    "decorators": [],
    "async": false
   },
+  "milo.pgstore:PostgresStore.add_feedback": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 174,
+   "end": 179,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "rating",
+    "reason"
+   ],
+   "decorators": [],
+   "async": false
+  },
   "milo.pgstore:PostgresStore.append_turns": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
@@ -1537,8 +1552,8 @@
   "milo.pgstore:PostgresStore.delete_owner": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
-   "line": 127,
-   "end": 133,
+   "line": 181,
+   "end": 187,
    "doc": "Remove everything one owner has stored. Used by tests and by the owner-deletion request (not yet exposed).",
    "params": ["self", "owner"],
    "decorators": [],
@@ -1564,6 +1579,16 @@
    "decorators": [],
    "async": false
   },
+  "milo.pgstore:PostgresStore.flows": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 143,
+   "end": 172,
+   "doc": "",
+   "params": ["self", "owner", "limit"],
+   "decorators": [],
+   "async": false
+  },
   "milo.pgstore:PostgresStore.history": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
@@ -1575,6 +1600,21 @@
     "owner",
     "thread",
     "limit"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.pgstore:PostgresStore.record_flow": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 127,
+   "end": 141,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "flow"
    ],
    "decorators": [],
    "async": false
@@ -1594,8 +1634,8 @@
   "milo.pgstore:PostgresUserStore": {
    "kind": "class",
    "file": "src/milo/pgstore.py",
-   "line": 136,
-   "end": 187,
+   "line": 190,
+   "end": 248,
    "doc": "Accounts in milo_v2.users. The same four methods as MemoryUserStore.",
    "bases": [],
    "decorators": []
@@ -1603,8 +1643,8 @@
   "milo.pgstore:PostgresUserStore.__init__": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
-   "line": 139,
-   "end": 141,
+   "line": 193,
+   "end": 195,
    "doc": "",
    "params": ["self", "conn"],
    "decorators": [],
@@ -1613,8 +1653,8 @@
   "milo.pgstore:PostgresUserStore.all": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
-   "line": 182,
-   "end": 187,
+   "line": 243,
+   "end": 248,
    "doc": "",
    "params": [
     "self"
@@ -1625,8 +1665,8 @@
   "milo.pgstore:PostgresUserStore.by_id": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
-   "line": 164,
-   "end": 173,
+   "line": 218,
+   "end": 227,
    "doc": "",
    "params": ["self", "user_id"],
    "decorators": [],
@@ -1635,8 +1675,8 @@
   "milo.pgstore:PostgresUserStore.by_login": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
-   "line": 153,
-   "end": 162,
+   "line": 207,
+   "end": 216,
    "doc": "",
    "params": ["self", "login_id"],
    "decorators": [],
@@ -1645,8 +1685,8 @@
   "milo.pgstore:PostgresUserStore.create": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
-   "line": 143,
-   "end": 151,
+   "line": 197,
+   "end": 205,
    "doc": "",
    "params": [
     "self",
@@ -1658,11 +1698,21 @@
    "decorators": [],
    "async": false
   },
+  "milo.pgstore:PostgresUserStore.record_login": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 229,
+   "end": 234,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
   "milo.pgstore:PostgresUserStore.set_password": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
-   "line": 175,
-   "end": 180,
+   "line": 236,
+   "end": 241,
    "doc": "",
    "params": ["self", "user_id", "password_hash"],
    "decorators": [],
@@ -1726,7 +1776,7 @@
    "kind": "function",
    "file": "src/milo/status.py",
    "line": 12,
-   "end": 35,
+   "end": 33,
    "doc": "",
    "params": [
     "url"
@@ -1737,35 +1787,23 @@
   "milo.status:_ping_local_model": {
    "kind": "function",
    "file": "src/milo/status.py",
-   "line": 38,
-   "end": 46,
+   "line": 36,
+   "end": 42,
    "doc": "",
    "params": [],
-   "decorators": [],
-   "async": false
-  },
-  "milo.status:_spend": {
-   "kind": "function",
-   "file": "src/milo/status.py",
-   "line": 49,
-   "end": 56,
-   "doc": "",
-   "params": [
-    "trace_path"
-   ],
    "decorators": [],
    "async": false
   },
   "milo.status:snapshot": {
    "kind": "function",
    "file": "src/milo/status.py",
-   "line": 59,
-   "end": 83,
+   "line": 45,
+   "end": 75,
    "doc": "",
    "params": [
     "store_kind",
     "database_url",
-    "trace_path",
+    "flows",
     "chat_model"
    ],
    "decorators": [],
@@ -1774,8 +1812,8 @@
   "milo.store:MemoryStore": {
    "kind": "class",
    "file": "src/milo/store.py",
-   "line": 33,
-   "end": 65,
+   "line": 39,
+   "end": 83,
    "doc": "Dictionaries in memory. Every read is keyed by the owner, so one owner never sees another's data.",
    "bases": [],
    "decorators": []
@@ -1783,8 +1821,8 @@
   "milo.store:MemoryStore.__init__": {
    "kind": "method",
    "file": "src/milo/store.py",
-   "line": 36,
-   "end": 41,
+   "line": 42,
+   "end": 49,
    "doc": "",
    "params": [
     "self"
@@ -1795,8 +1833,8 @@
   "milo.store:MemoryStore.add_diagnosis": {
    "kind": "method",
    "file": "src/milo/store.py",
-   "line": 60,
-   "end": 62,
+   "line": 68,
+   "end": 70,
    "doc": "",
    "params": ["self", "owner", "card"],
    "decorators": [],
@@ -1805,8 +1843,8 @@
   "milo.store:MemoryStore.add_fact": {
    "kind": "method",
    "file": "src/milo/store.py",
-   "line": 53,
-   "end": 55,
+   "line": 61,
+   "end": 63,
    "doc": "",
    "params": [
     "self",
@@ -1817,11 +1855,26 @@
    "decorators": [],
    "async": false
   },
+  "milo.store:MemoryStore.add_feedback": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 82,
+   "end": 83,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "rating",
+    "reason"
+   ],
+   "decorators": [],
+   "async": false
+  },
   "milo.store:MemoryStore.append_turns": {
    "kind": "method",
    "file": "src/milo/store.py",
-   "line": 43,
-   "end": 46,
+   "line": 51,
+   "end": 54,
    "doc": "",
    "params": [
     "self",
@@ -1835,8 +1888,8 @@
   "milo.store:MemoryStore.diagnoses": {
    "kind": "method",
    "file": "src/milo/store.py",
-   "line": 64,
-   "end": 65,
+   "line": 72,
+   "end": 73,
    "doc": "",
    "params": ["self", "owner"],
    "decorators": [],
@@ -1845,18 +1898,28 @@
   "milo.store:MemoryStore.facts": {
    "kind": "method",
    "file": "src/milo/store.py",
-   "line": 57,
-   "end": 58,
+   "line": 65,
+   "end": 66,
    "doc": "",
    "params": ["self", "owner"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:MemoryStore.flows": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 78,
+   "end": 80,
+   "doc": "",
+   "params": ["self", "owner", "limit"],
    "decorators": [],
    "async": false
   },
   "milo.store:MemoryStore.history": {
    "kind": "method",
    "file": "src/milo/store.py",
-   "line": 48,
-   "end": 51,
+   "line": 56,
+   "end": 59,
    "doc": "",
    "params": [
     "self",
@@ -1867,11 +1930,26 @@
    "decorators": [],
    "async": false
   },
+  "milo.store:MemoryStore.record_flow": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 75,
+   "end": 76,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "flow"
+   ],
+   "decorators": [],
+   "async": false
+  },
   "milo.store:Store": {
    "kind": "class",
    "file": "src/milo/store.py",
    "line": 15,
-   "end": 30,
+   "end": 36,
    "doc": "",
    "bases": [
     "Protocol"
@@ -1899,6 +1977,21 @@
     "owner",
     "field_id",
     "entry"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.add_feedback": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 36,
+   "end": 36,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "rating",
+    "reason"
    ],
    "decorators": [],
    "async": false
@@ -1938,6 +2031,16 @@
    "decorators": [],
    "async": false
   },
+  "milo.store:Store.flows": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 34,
+   "end": 34,
+   "doc": "",
+   "params": ["self", "owner", "limit"],
+   "decorators": [],
+   "async": false
+  },
   "milo.store:Store.history": {
    "kind": "method",
    "file": "src/milo/store.py",
@@ -1949,6 +2052,21 @@
     "owner",
     "thread",
     "limit"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.store:Store.record_flow": {
+   "kind": "method",
+   "file": "src/milo/store.py",
+   "line": 32,
+   "end": 32,
+   "doc": "",
+   "params": [
+    "self",
+    "owner",
+    "thread",
+    "flow"
    ],
    "decorators": [],
    "async": false
@@ -2204,8 +2322,8 @@
   "milo.users:MemoryUserStore": {
    "kind": "class",
    "file": "src/milo/users.py",
-   "line": 79,
-   "end": 109,
+   "line": 82,
+   "end": 116,
    "doc": "",
    "bases": [],
    "decorators": []
@@ -2213,8 +2331,8 @@
   "milo.users:MemoryUserStore.__init__": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 80,
-   "end": 82,
+   "line": 83,
+   "end": 86,
    "doc": "",
    "params": [
     "self"
@@ -2225,8 +2343,8 @@
   "milo.users:MemoryUserStore.all": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 103,
-   "end": 104,
+   "line": 107,
+   "end": 108,
    "doc": "",
    "params": [
     "self"
@@ -2237,8 +2355,8 @@
   "milo.users:MemoryUserStore.by_id": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 97,
-   "end": 101,
+   "line": 101,
+   "end": 105,
    "doc": "",
    "params": ["self", "user_id"],
    "decorators": [],
@@ -2247,8 +2365,8 @@
   "milo.users:MemoryUserStore.by_login": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 94,
-   "end": 95,
+   "line": 98,
+   "end": 99,
    "doc": "",
    "params": ["self", "login_id"],
    "decorators": [],
@@ -2257,8 +2375,8 @@
   "milo.users:MemoryUserStore.create": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 84,
-   "end": 92,
+   "line": 88,
+   "end": 96,
    "doc": "",
    "params": [
     "self",
@@ -2270,11 +2388,21 @@
    "decorators": [],
    "async": false
   },
+  "milo.users:MemoryUserStore.record_login": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 110,
+   "end": 111,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
   "milo.users:MemoryUserStore.set_password": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 106,
-   "end": 109,
+   "line": 113,
+   "end": 116,
    "doc": "",
    "params": ["self", "user_id", "password_hash"],
    "decorators": [],
@@ -2283,8 +2411,8 @@
   "milo.users:User": {
    "kind": "class",
    "file": "src/milo/users.py",
-   "line": 21,
-   "end": 25,
+   "line": 22,
+   "end": 26,
    "doc": "",
    "bases": [],
    "decorators": [
@@ -2294,8 +2422,8 @@
   "milo.users:UserStore": {
    "kind": "class",
    "file": "src/milo/users.py",
-   "line": 65,
-   "end": 76,
+   "line": 66,
+   "end": 79,
    "doc": "",
    "bases": [
     "Protocol"
@@ -2305,8 +2433,8 @@
   "milo.users:UserStore.all": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 74,
-   "end": 74,
+   "line": 75,
+   "end": 75,
    "doc": "",
    "params": [
     "self"
@@ -2317,8 +2445,8 @@
   "milo.users:UserStore.by_id": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 72,
-   "end": 72,
+   "line": 73,
+   "end": 73,
    "doc": "",
    "params": ["self", "user_id"],
    "decorators": [],
@@ -2327,8 +2455,8 @@
   "milo.users:UserStore.by_login": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 70,
-   "end": 70,
+   "line": 71,
+   "end": 71,
    "doc": "",
    "params": ["self", "login_id"],
    "decorators": [],
@@ -2337,8 +2465,8 @@
   "milo.users:UserStore.create": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 66,
-   "end": 68,
+   "line": 67,
+   "end": 69,
    "doc": "",
    "params": [
     "self",
@@ -2350,11 +2478,21 @@
    "decorators": [],
    "async": false
   },
+  "milo.users:UserStore.record_login": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 79,
+   "end": 79,
+   "doc": "",
+   "params": ["self", "user_id"],
+   "decorators": [],
+   "async": false
+  },
   "milo.users:UserStore.set_password": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 76,
-   "end": 76,
+   "line": 77,
+   "end": 77,
    "doc": "",
    "params": ["self", "user_id", "password_hash"],
    "decorators": [],
@@ -2363,8 +2501,8 @@
   "milo.users:check_new_account": {
    "kind": "function",
    "file": "src/milo/users.py",
-   "line": 50,
-   "end": 62,
+   "line": 51,
+   "end": 63,
    "doc": "A message describing the first problem with a sign-up, or None when it is acceptable.",
    "params": ["login_id", "display_name", "password"],
    "decorators": [],
@@ -2373,8 +2511,8 @@
   "milo.users:hash_password": {
    "kind": "function",
    "file": "src/milo/users.py",
-   "line": 28,
-   "end": 31,
+   "line": 29,
+   "end": 32,
    "doc": "",
    "params": [
     "password"
@@ -2385,8 +2523,8 @@
   "milo.users:verify_password": {
    "kind": "function",
    "file": "src/milo/users.py",
-   "line": 34,
-   "end": 47,
+   "line": 35,
+   "end": 48,
    "doc": "",
    "params": ["password", "stored"],
    "decorators": [],
@@ -2395,8 +2533,8 @@
   "milo.web:create_app": {
    "kind": "function",
    "file": "src/milo/web.py",
-   "line": 40,
-   "end": 317,
+   "line": 39,
+   "end": 308,
    "doc": "",
    "params": ["milo_app", "secret_key", "users"],
    "decorators": [],
@@ -2405,8 +2543,8 @@
   "milo.web:create_app.admin_users": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 296,
-   "end": 297,
+   "line": 284,
+   "end": 285,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2415,8 +2553,8 @@
   "milo.web:create_app.ask": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 231,
-   "end": 250,
+   "line": 232,
+   "end": 251,
    "doc": "",
    "params": [],
    "decorators": ["web.post", "login_needed"],
@@ -2425,8 +2563,8 @@
   "milo.web:create_app.chat": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 216,
-   "end": 220,
+   "line": 217,
+   "end": 221,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2435,8 +2573,8 @@
   "milo.web:create_app.chat_page": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 96,
-   "end": 102,
+   "line": 95,
+   "end": 101,
    "doc": "",
    "params": [
     "user"
@@ -2447,8 +2585,8 @@
   "milo.web:create_app.current_user": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 49,
-   "end": 51,
+   "line": 48,
+   "end": 50,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -2457,8 +2595,8 @@
   "milo.web:create_app.dashboard": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 285,
-   "end": 292,
+   "line": 273,
+   "end": 280,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2467,8 +2605,8 @@
   "milo.web:create_app.demo": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 209,
-   "end": 210,
+   "line": 210,
+   "end": 211,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2479,8 +2617,8 @@
   "milo.web:create_app.ensure_thread": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 56,
-   "end": 58,
+   "line": 55,
+   "end": 57,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -2489,8 +2627,8 @@
   "milo.web:create_app.feedback": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 254,
-   "end": 279,
+   "line": 255,
+   "end": 267,
    "doc": "One thumbs vote on an answer. Stores the rating, a reason from a fixed list and a hashed owner. No text.",
    "params": [],
    "decorators": ["web.post", "login_needed"],
@@ -2499,8 +2637,8 @@
   "milo.web:create_app.flows": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 301,
-   "end": 303,
+   "line": 289,
+   "end": 292,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2509,8 +2647,8 @@
   "milo.web:create_app.history": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 224,
-   "end": 227,
+   "line": 225,
+   "end": 228,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2519,8 +2657,8 @@
   "milo.web:create_app.html": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 93,
-   "end": 94,
+   "line": 92,
+   "end": 93,
    "doc": "",
    "params": [
     "page"
@@ -2531,8 +2669,8 @@
   "milo.web:create_app.index": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 107,
-   "end": 110,
+   "line": 106,
+   "end": 109,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2543,8 +2681,8 @@
   "milo.web:create_app.kb_document": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 200,
-   "end": 206,
+   "line": 201,
+   "end": 207,
    "doc": "",
    "params": [
     "doc_id"
@@ -2557,8 +2695,8 @@
   "milo.web:create_app.kb_index": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 194,
-   "end": 197,
+   "line": 195,
+   "end": 198,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2569,8 +2707,8 @@
   "milo.web:create_app.login": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 131,
-   "end": 132,
+   "line": 130,
+   "end": 131,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2581,8 +2719,8 @@
   "milo.web:create_app.login_needed": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 68,
-   "end": 91,
+   "line": 67,
+   "end": 90,
    "doc": "Decorator: a page redirects to sign-in; an API answers 401; a customer on an admin page gets 403.",
    "params": [
     "admin"
@@ -2593,8 +2731,8 @@
   "milo.web:create_app.login_needed.wrap": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 71,
-   "end": 89,
+   "line": 70,
+   "end": 88,
    "doc": "",
    "params": [
     "view"
@@ -2605,8 +2743,8 @@
   "milo.web:create_app.login_needed.wrap.inner": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 72,
-   "end": 86,
+   "line": 71,
+   "end": 85,
    "doc": "",
    "params": ["*args", "**kwargs"],
    "decorators": [],
@@ -2615,8 +2753,8 @@
   "milo.web:create_app.login_submit": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 135,
-   "end": 145,
+   "line": 134,
+   "end": 146,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2627,8 +2765,8 @@
   "milo.web:create_app.logout": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 148,
-   "end": 150,
+   "line": 149,
+   "end": 151,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2639,8 +2777,8 @@
   "milo.web:create_app.me": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 153,
-   "end": 164,
+   "line": 154,
+   "end": 165,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2651,8 +2789,8 @@
   "milo.web:create_app.owner": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 53,
-   "end": 54,
+   "line": 52,
+   "end": 53,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -2661,8 +2799,8 @@
   "milo.web:create_app.password_form": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 168,
-   "end": 169,
+   "line": 169,
+   "end": 170,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2671,8 +2809,8 @@
   "milo.web:create_app.password_submit": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 173,
-   "end": 191,
+   "line": 174,
+   "end": 192,
    "doc": "",
    "params": [],
    "decorators": ["web.post", "login_needed"],
@@ -2681,8 +2819,8 @@
   "milo.web:create_app.sign_in": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 60,
-   "end": 63,
+   "line": 59,
+   "end": 62,
    "doc": "",
    "params": [
     "user"
@@ -2693,8 +2831,8 @@
   "milo.web:create_app.signup": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 113,
-   "end": 114,
+   "line": 112,
+   "end": 113,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2705,8 +2843,8 @@
   "milo.web:create_app.signup_submit": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 117,
-   "end": 128,
+   "line": 116,
+   "end": 127,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2717,8 +2855,8 @@
   "milo.web:create_app.status": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 307,
-   "end": 315,
+   "line": 296,
+   "end": 306,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2727,8 +2865,8 @@
   "milo.web:create_app.wants_json": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 65,
-   "end": 66,
+   "line": 64,
+   "end": 65,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -3798,13 +3936,14 @@
   ["milo.app:App._ask", "milo.types:Response", 193],
   ["milo.app:App._ask", "milo.types:Response", 248],
   ["milo.app:App._ask", "milo.types:Response", 262],
-  ["milo.app:App._retrieve", "milo.index:Index.search", 350],
-  ["milo.app:App._retrieve", "milo.types:Source", 355],
-  ["milo.app:App._run_tool", "milo.tools:validate_args", 325],
-  ["milo.app:App._run_tool", "milo.types:ToolResult", 327],
-  ["milo.app:App._run_tool", "milo.types:ToolResult", 330],
-  ["milo.app:App._run_tool", "milo.types:ToolResult", 335],
-  ["milo.app:App._run_tool", "milo.types:ToolResult", 341],
+  ["milo.app:App._retrieve", "milo.index:Index.search", 363],
+  ["milo.app:App._retrieve", "milo.types:Source", 368],
+  ["milo.app:App._run_tool", "milo.tools:validate_args", 338],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 340],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 343],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 348],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 354],
+  ["milo.app:App._write_trace", "milo.store:Store.record_flow", 308],
   ["milo.app:App.ask", "milo.app:App._ask", 107],
   ["milo.app:App.ask", "milo.app:App._write_trace", 138],
   ["milo.app:App.ask", "milo.app:_ms", 103],
@@ -3813,7 +3952,7 @@
   ["milo.app:App.ask", "milo.store:Store.history", 96],
   ["milo.app:App.ingest", "milo.chunk:chunk_body", 84],
   ["milo.app:App.ingest", "milo.index:Index", 89],
-  ["milo.app:build_app", "milo.app:App", 367],
+  ["milo.app:build_app", "milo.app:App", 380],
   ["milo.auth_pages:_page", "milo.shell:brand_html", 41],
   ["milo.auth_pages:_page", "milo.shell:nav_html", 41],
   ["milo.auth_pages:login_page", "milo.auth_pages:_page", 62],
@@ -3852,10 +3991,10 @@
   ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
   ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
   ["milo.pgstore:PostgresStore.user_store", "milo.pgstore:PostgresUserStore", 27],
-  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 187],
-  ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 173],
-  ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 162],
-  ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 151],
+  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 248],
+  ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 227],
+  ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 216],
+  ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 205],
   ["milo.serve:<module>", "milo.serve:build_web", 68],
   ["milo.serve:build_store", "milo.pgstore:PostgresStore", 43],
   ["milo.serve:build_store", "milo.store:MemoryStore", 44],
@@ -3873,9 +4012,8 @@
   ["milo.serve:build_web", "milo.web:create_app", 64],
   ["milo.serve:load_documents", "milo.chunk:front_matter", 34],
   ["milo.serve:load_documents", "milo.types:Document", 35],
-  ["milo.status:snapshot", "milo.status:_ping_database", 66],
-  ["milo.status:snapshot", "milo.status:_ping_local_model", 76],
-  ["milo.status:snapshot", "milo.status:_spend", 79],
+  ["milo.status:snapshot", "milo.status:_ping_database", 57],
+  ["milo.status:snapshot", "milo.status:_ping_local_model", 67],
   ["milo.tools:Backend.__init__", "milo.store:MemoryStore", 114],
   ["milo.tools:Backend._draft_diagnosis", "milo.store:Store.add_diagnosis", 219],
   ["milo.tools:Backend._draft_diagnosis", "milo.tools:Backend._estimate_effect", 212],
@@ -3888,93 +4026,95 @@
   ["milo.tools:Backend.specs", "milo.tools:specs", 121],
   ["milo.tools:specs", "milo.tools:_schema", 65],
   ["milo.tools:specs", "milo.types:ToolSpec", 65],
-  ["milo.users:MemoryUserStore.create", "milo.users:User", 89],
-  ["milo.web:create_app", "milo.users:MemoryUserStore", 47],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 167],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 172],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 215],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 223],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 230],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 253],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 284],
+  ["milo.users:MemoryUserStore.create", "milo.users:User", 93],
+  ["milo.web:create_app", "milo.users:MemoryUserStore", 46],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 168],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 173],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 216],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 224],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 231],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 254],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 272],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 283],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 288],
   ["milo.web:create_app", "milo.web:create_app.login_needed", 295],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 300],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 306],
-  ["milo.web:create_app.admin_users", "milo.auth_pages:users_page", 297],
-  ["milo.web:create_app.admin_users", "milo.users:MemoryUserStore.all", 297],
-  ["milo.web:create_app.admin_users", "milo.web:create_app.current_user", 297],
-  ["milo.web:create_app.admin_users", "milo.web:create_app.html", 297],
-  ["milo.web:create_app.ask", "milo.app:App.ask", 239],
-  ["milo.web:create_app.ask", "milo.web:create_app.ensure_thread", 232],
-  ["milo.web:create_app.ask", "milo.web:create_app.owner", 239],
-  ["milo.web:create_app.chat", "milo.web:create_app.chat_page", 220],
-  ["milo.web:create_app.chat", "milo.web:create_app.current_user", 220],
-  ["milo.web:create_app.chat", "milo.web:create_app.ensure_thread", 219],
-  ["milo.web:create_app.chat", "milo.web:create_app.html", 220],
-  ["milo.web:create_app.chat_page", "milo.shell:brand_html", 98],
-  ["milo.web:create_app.chat_page", "milo.shell:nav_html", 99],
-  ["milo.web:create_app.current_user", "milo.users:MemoryUserStore.by_id", 51],
-  ["milo.web:create_app.dashboard", "milo.shell:brand_html", 287],
-  ["milo.web:create_app.dashboard", "milo.shell:nav_html", 288],
-  ["milo.web:create_app.dashboard", "milo.web:create_app.current_user", 288],
-  ["milo.web:create_app.dashboard", "milo.web:create_app.html", 292],
-  ["milo.web:create_app.feedback", "milo.flows:owner_hash", 271],
-  ["milo.web:create_app.feedback", "milo.web:create_app.owner", 271],
-  ["milo.web:create_app.flows", "milo.flows:read_flows", 302],
-  ["milo.web:create_app.flows", "milo.flows:summarize", 303],
-  ["milo.web:create_app.flows", "milo.web:create_app.owner", 302],
-  ["milo.web:create_app.history", "milo.store:Store.history", 226],
-  ["milo.web:create_app.history", "milo.web:create_app.ensure_thread", 225],
-  ["milo.web:create_app.history", "milo.web:create_app.owner", 226],
-  ["milo.web:create_app.index", "milo.landing:landing_page", 110],
-  ["milo.web:create_app.index", "milo.web:create_app.current_user", 110],
-  ["milo.web:create_app.index", "milo.web:create_app.html", 110],
-  ["milo.web:create_app.kb_document", "milo.kb_pages:document_page", 203],
-  ["milo.web:create_app.kb_document", "milo.web:create_app.current_user", 203],
-  ["milo.web:create_app.kb_document", "milo.web:create_app.html", 206],
-  ["milo.web:create_app.kb_index", "milo.kb_pages:index_page", 197],
-  ["milo.web:create_app.kb_index", "milo.web:create_app.current_user", 197],
-  ["milo.web:create_app.kb_index", "milo.web:create_app.html", 197],
-  ["milo.web:create_app.login", "milo.auth_pages:login_page", 132],
-  ["milo.web:create_app.login", "milo.web:create_app.html", 132],
-  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.current_user", 73],
-  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.wants_json", 75],
-  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.wants_json", 81],
-  ["milo.web:create_app.login_submit", "milo.auth_pages:login_page", 142],
-  ["milo.web:create_app.login_submit", "milo.users:MemoryUserStore.by_login", 139],
-  ["milo.web:create_app.login_submit", "milo.users:verify_password", 140],
-  ["milo.web:create_app.login_submit", "milo.web:create_app.html", 141],
-  ["milo.web:create_app.login_submit", "milo.web:create_app.sign_in", 144],
-  ["milo.web:create_app.me", "milo.web:create_app.current_user", 154],
-  ["milo.web:create_app.password_form", "milo.auth_pages:password_page", 169],
-  ["milo.web:create_app.password_form", "milo.web:create_app.current_user", 169],
-  ["milo.web:create_app.password_form", "milo.web:create_app.html", 169],
-  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 180],
-  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 182],
-  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 185],
-  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 188],
-  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 191],
-  ["milo.web:create_app.password_submit", "milo.users:MemoryUserStore.by_login", 178],
-  ["milo.web:create_app.password_submit", "milo.users:MemoryUserStore.set_password", 190],
-  ["milo.web:create_app.password_submit", "milo.users:check_new_account", 183],
-  ["milo.web:create_app.password_submit", "milo.users:hash_password", 190],
-  ["milo.web:create_app.password_submit", "milo.users:verify_password", 179],
-  ["milo.web:create_app.password_submit", "milo.web:create_app.current_user", 174],
-  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 180],
-  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 182],
-  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 185],
-  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 187],
-  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 191],
-  ["milo.web:create_app.signup", "milo.auth_pages:signup_page", 114],
-  ["milo.web:create_app.signup", "milo.web:create_app.html", 114],
-  ["milo.web:create_app.signup_submit", "milo.auth_pages:signup_page", 125],
-  ["milo.web:create_app.signup_submit", "milo.users:MemoryUserStore.by_login", 122],
-  ["milo.web:create_app.signup_submit", "milo.users:MemoryUserStore.create", 126],
-  ["milo.web:create_app.signup_submit", "milo.users:check_new_account", 121],
-  ["milo.web:create_app.signup_submit", "milo.users:hash_password", 126],
-  ["milo.web:create_app.signup_submit", "milo.web:create_app.html", 125],
-  ["milo.web:create_app.signup_submit", "milo.web:create_app.sign_in", 127],
-  ["milo.web:create_app.status", "milo.status:snapshot", 315],
+  ["milo.web:create_app.admin_users", "milo.auth_pages:users_page", 285],
+  ["milo.web:create_app.admin_users", "milo.users:MemoryUserStore.all", 285],
+  ["milo.web:create_app.admin_users", "milo.web:create_app.current_user", 285],
+  ["milo.web:create_app.admin_users", "milo.web:create_app.html", 285],
+  ["milo.web:create_app.ask", "milo.app:App.ask", 240],
+  ["milo.web:create_app.ask", "milo.web:create_app.ensure_thread", 233],
+  ["milo.web:create_app.ask", "milo.web:create_app.owner", 240],
+  ["milo.web:create_app.chat", "milo.web:create_app.chat_page", 221],
+  ["milo.web:create_app.chat", "milo.web:create_app.current_user", 221],
+  ["milo.web:create_app.chat", "milo.web:create_app.ensure_thread", 220],
+  ["milo.web:create_app.chat", "milo.web:create_app.html", 221],
+  ["milo.web:create_app.chat_page", "milo.shell:brand_html", 97],
+  ["milo.web:create_app.chat_page", "milo.shell:nav_html", 98],
+  ["milo.web:create_app.current_user", "milo.users:MemoryUserStore.by_id", 50],
+  ["milo.web:create_app.dashboard", "milo.shell:brand_html", 275],
+  ["milo.web:create_app.dashboard", "milo.shell:nav_html", 276],
+  ["milo.web:create_app.dashboard", "milo.web:create_app.current_user", 276],
+  ["milo.web:create_app.dashboard", "milo.web:create_app.html", 280],
+  ["milo.web:create_app.feedback", "milo.store:Store.add_feedback", 266],
+  ["milo.web:create_app.feedback", "milo.web:create_app.owner", 266],
+  ["milo.web:create_app.flows", "milo.flows:summarize", 292],
+  ["milo.web:create_app.flows", "milo.store:Store.flows", 291],
+  ["milo.web:create_app.flows", "milo.web:create_app.owner", 290],
+  ["milo.web:create_app.history", "milo.store:Store.history", 227],
+  ["milo.web:create_app.history", "milo.web:create_app.ensure_thread", 226],
+  ["milo.web:create_app.history", "milo.web:create_app.owner", 227],
+  ["milo.web:create_app.index", "milo.landing:landing_page", 109],
+  ["milo.web:create_app.index", "milo.web:create_app.current_user", 109],
+  ["milo.web:create_app.index", "milo.web:create_app.html", 109],
+  ["milo.web:create_app.kb_document", "milo.kb_pages:document_page", 204],
+  ["milo.web:create_app.kb_document", "milo.web:create_app.current_user", 204],
+  ["milo.web:create_app.kb_document", "milo.web:create_app.html", 207],
+  ["milo.web:create_app.kb_index", "milo.kb_pages:index_page", 198],
+  ["milo.web:create_app.kb_index", "milo.web:create_app.current_user", 198],
+  ["milo.web:create_app.kb_index", "milo.web:create_app.html", 198],
+  ["milo.web:create_app.login", "milo.auth_pages:login_page", 131],
+  ["milo.web:create_app.login", "milo.web:create_app.html", 131],
+  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.current_user", 72],
+  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.wants_json", 74],
+  ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.wants_json", 80],
+  ["milo.web:create_app.login_submit", "milo.auth_pages:login_page", 141],
+  ["milo.web:create_app.login_submit", "milo.users:MemoryUserStore.by_login", 138],
+  ["milo.web:create_app.login_submit", "milo.users:MemoryUserStore.record_login", 145],
+  ["milo.web:create_app.login_submit", "milo.users:verify_password", 139],
+  ["milo.web:create_app.login_submit", "milo.web:create_app.html", 140],
+  ["milo.web:create_app.login_submit", "milo.web:create_app.sign_in", 143],
+  ["milo.web:create_app.me", "milo.web:create_app.current_user", 155],
+  ["milo.web:create_app.password_form", "milo.auth_pages:password_page", 170],
+  ["milo.web:create_app.password_form", "milo.web:create_app.current_user", 170],
+  ["milo.web:create_app.password_form", "milo.web:create_app.html", 170],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 181],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 183],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 186],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 189],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 192],
+  ["milo.web:create_app.password_submit", "milo.users:MemoryUserStore.by_login", 179],
+  ["milo.web:create_app.password_submit", "milo.users:MemoryUserStore.set_password", 191],
+  ["milo.web:create_app.password_submit", "milo.users:check_new_account", 184],
+  ["milo.web:create_app.password_submit", "milo.users:hash_password", 191],
+  ["milo.web:create_app.password_submit", "milo.users:verify_password", 180],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.current_user", 175],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 181],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 183],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 186],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 188],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 192],
+  ["milo.web:create_app.signup", "milo.auth_pages:signup_page", 113],
+  ["milo.web:create_app.signup", "milo.web:create_app.html", 113],
+  ["milo.web:create_app.signup_submit", "milo.auth_pages:signup_page", 124],
+  ["milo.web:create_app.signup_submit", "milo.users:MemoryUserStore.by_login", 121],
+  ["milo.web:create_app.signup_submit", "milo.users:MemoryUserStore.create", 125],
+  ["milo.web:create_app.signup_submit", "milo.users:check_new_account", 120],
+  ["milo.web:create_app.signup_submit", "milo.users:hash_password", 125],
+  ["milo.web:create_app.signup_submit", "milo.web:create_app.html", 124],
+  ["milo.web:create_app.signup_submit", "milo.web:create_app.sign_in", 126],
+  ["milo.web:create_app.status", "milo.status:snapshot", 305],
+  ["milo.web:create_app.status", "milo.store:Store.flows", 305],
   ["scripts.build_kb:<module>", "scripts.build_kb:main", 327],
   ["scripts.build_kb:Writer._emit", "scripts.build_kb:sentences", 133],
   ["scripts.build_kb:Writer.items", "scripts.build_kb:Writer._emit", 148],
@@ -4226,10 +4366,10 @@
   ["milo.types:ChatReply", "milo.types:Usage", 27],
   ["milo.types:Response", "milo.types:Source", 57],
   ["milo.types:Response", "milo.types:ToolResult", 58],
-  ["milo.users:MemoryUserStore.__init__", "milo.users:User", 81],
-  ["milo.web:create_app.login_needed", "milo.web:create_app.login_needed.wrap", 91],
+  ["milo.users:MemoryUserStore.__init__", "milo.users:User", 84],
+  ["milo.web:create_app.login_needed", "milo.web:create_app.login_needed.wrap", 90],
+  ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 87],
   ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 88],
-  ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 89],
   ["scripts.eval_attacks:RecordingBackend", "milo.tools:Backend", 53],
   ["scripts.eval_retrieval:metrics", "milo.metrics:ndcg_at_k", 83],
   ["scripts.eval_retrieval:metrics", "milo.metrics:recall_at_k", 83]
@@ -4242,13 +4382,13 @@
   ["milo.app:App._ask", "milo.types:Response", 193],
   ["milo.app:App._ask", "milo.types:Response", 248],
   ["milo.app:App._ask", "milo.types:Response", 262],
-  ["milo.app:App._retrieve", "milo.types:Source", 355],
-  ["milo.app:App._run_tool", "milo.types:ToolResult", 327],
-  ["milo.app:App._run_tool", "milo.types:ToolResult", 330],
-  ["milo.app:App._run_tool", "milo.types:ToolResult", 335],
-  ["milo.app:App._run_tool", "milo.types:ToolResult", 341],
+  ["milo.app:App._retrieve", "milo.types:Source", 368],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 340],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 343],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 348],
+  ["milo.app:App._run_tool", "milo.types:ToolResult", 354],
   ["milo.app:App.ingest", "milo.index:Index", 89],
-  ["milo.app:build_app", "milo.app:App", 367],
+  ["milo.app:build_app", "milo.app:App", 380],
   ["milo.chunk:chunk_body", "milo.chunk:Chunk", 114],
   ["milo.llm:LangChainChat.invoke", "milo.types:ChatReply", 44],
   ["milo.llm:LangChainChat.invoke", "milo.types:ToolCall", 47],
@@ -4258,10 +4398,10 @@
   ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
   ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
   ["milo.pgstore:PostgresStore.user_store", "milo.pgstore:PostgresUserStore", 27],
-  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 187],
-  ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 173],
-  ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 162],
-  ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 151],
+  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 248],
+  ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 227],
+  ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 216],
+  ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 205],
   ["milo.serve:build_store", "milo.pgstore:PostgresStore", 43],
   ["milo.serve:build_store", "milo.store:MemoryStore", 44],
   ["milo.serve:build_web", "milo.app:App", 54],
@@ -4272,8 +4412,8 @@
   ["milo.serve:load_documents", "milo.types:Document", 35],
   ["milo.tools:Backend.__init__", "milo.store:MemoryStore", 114],
   ["milo.tools:specs", "milo.types:ToolSpec", 65],
-  ["milo.users:MemoryUserStore.create", "milo.users:User", 89],
-  ["milo.web:create_app", "milo.users:MemoryUserStore", 47],
+  ["milo.users:MemoryUserStore.create", "milo.users:User", 93],
+  ["milo.web:create_app", "milo.users:MemoryUserStore", 46],
   ["scripts.build_kb:render_all", "scripts.build_kb:Writer", 275],
   ["scripts.build_kb:render_method", "scripts.build_kb:Writer", 258],
   ["scripts.create_admin:main", "milo.pgstore:PostgresStore", 36],
@@ -4346,6 +4486,13 @@
    ]
   },
   {
+   "symbol": "milo.pgstore:PostgresStore.add_feedback",
+   "line": 177,
+   "insert": [
+    "milo_v2.feedback"
+   ]
+  },
+  {
    "symbol": "milo.pgstore:PostgresStore.append_turns",
    "line": 34,
    "insert": [
@@ -4374,6 +4521,16 @@
    ]
   },
   {
+   "symbol": "milo.pgstore:PostgresStore.flows",
+   "line": 147,
+   "read": ["milo_v2.flows", "milo_v2.users"]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresStore.flows",
+   "line": 154,
+   "read": ["milo_v2.flows", "milo_v2.users"]
+  },
+  {
    "symbol": "milo.pgstore:PostgresStore.history",
    "line": 58,
    "read": [
@@ -4381,66 +4538,52 @@
    ]
   },
   {
+   "symbol": "milo.pgstore:PostgresStore.record_flow",
+   "line": 130,
+   "insert": [
+    "milo_v2.flows"
+   ]
+  },
+  {
    "symbol": "milo.pgstore:PostgresUserStore.all",
-   "line": 185,
+   "line": 246,
    "read": [
     "milo_v2.users"
    ]
   },
   {
    "symbol": "milo.pgstore:PostgresUserStore.by_id",
-   "line": 167,
+   "line": 221,
    "read": [
     "milo_v2.users"
    ]
   },
   {
    "symbol": "milo.pgstore:PostgresUserStore.by_login",
-   "line": 156,
+   "line": 210,
    "read": [
     "milo_v2.users"
    ]
   },
   {
    "symbol": "milo.pgstore:PostgresUserStore.create",
-   "line": 148,
+   "line": 202,
    "insert": [
     "milo_v2.users"
    ]
   },
   {
-   "symbol": "milo.pgstore:PostgresUserStore.set_password",
-   "line": 178,
+   "symbol": "milo.pgstore:PostgresUserStore.record_login",
+   "line": 232,
    "update": [
     "milo_v2.users"
    ]
   },
   {
-   "symbol": "milo.status:_ping_database",
-   "line": 18,
-   "read": [
-    "milo_v2.threads"
-   ]
-  },
-  {
-   "symbol": "milo.status:_ping_database",
-   "line": 20,
-   "read": [
-    "milo_v2.turns"
-   ]
-  },
-  {
-   "symbol": "milo.status:_ping_database",
-   "line": 22,
-   "read": [
-    "milo_v2.facts"
-   ]
-  },
-  {
-   "symbol": "milo.status:_ping_database",
-   "line": 24,
-   "read": [
-    "milo_v2.diagnoses"
+   "symbol": "milo.pgstore:PostgresUserStore.set_password",
+   "line": 239,
+   "update": [
+    "milo_v2.users"
    ]
   }
  ],
@@ -4490,19 +4633,19 @@
   },
   {
    "symbol": "milo.status:_ping_local_model",
-   "line": 42,
+   "line": 38,
    "service": "HTTP (httpx)",
    "call": "httpx.get"
   },
   {
    "symbol": "milo.status:_ping_local_model",
-   "line": 43,
+   "line": 39,
    "service": "HTTP (httpx)",
    "call": "httpx.get().json"
   },
   {
    "symbol": "milo.status:_ping_local_model",
-   "line": 43,
+   "line": 39,
    "service": "HTTP (httpx)",
    "call": "httpx.get().json().get"
   },
@@ -4516,15 +4659,23 @@
  "import_cycles": [],
  "lazy_import_cycles": [],
  "dead_candidates": [
+  "milo.pgstore:PostgresStore.add_feedback",
   "milo.pgstore:PostgresStore.append_turns",
   "milo.pgstore:PostgresStore.diagnoses",
   "milo.pgstore:PostgresStore.facts",
+  "milo.pgstore:PostgresStore.flows",
   "milo.pgstore:PostgresStore.history",
+  "milo.pgstore:PostgresStore.record_flow",
   "milo.pgstore:PostgresUserStore.all",
-  "milo.pgstore:PostgresUserStore.by_id"
+  "milo.pgstore:PostgresUserStore.by_id",
+  "milo.pgstore:PostgresUserStore.record_login",
+  "milo.store:MemoryStore.add_feedback",
+  "milo.store:MemoryStore.flows",
+  "milo.store:MemoryStore.record_flow"
  ],
  "test_only": [
   "milo.advanced:retrieve",
+  "milo.flows:read_flows",
   "milo.pgstore:PostgresStore.delete_owner",
   "milo.store:MemoryStore.append_turns",
   "milo.store:MemoryStore.diagnoses",
@@ -4583,7 +4734,7 @@
    {
     "kind": "gateway",
     "symbol": "milo.web:create_app.ask",
-    "line": 239,
+    "line": 240,
     "provider": "LangChain",
     "call": "App.ask",
     "gateway": "milo.app:App.ask",

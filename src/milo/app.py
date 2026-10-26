@@ -303,6 +303,19 @@ class App:
         response: Response,
         total_ms: float,
     ) -> None:
+        if hasattr(self.store, "record_flow"):
+            # The flow is kept with the account, in the store (the database in production).
+            self.store.record_flow(
+                user_id,
+                thread_id,
+                {
+                    "total_ms": total_ms,
+                    "cost_usd": response.cost_usd,
+                    "error": response.error,
+                    "steps": steps,
+                    "question_chars": len(question),
+                },
+            )
         if self.trace_path is None:
             return
         self.trace_path.parent.mkdir(parents=True, exist_ok=True)

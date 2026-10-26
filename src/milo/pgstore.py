@@ -124,6 +124,60 @@ class PostgresStore:
             )
             return [row[0] for row in cur.fetchall()]
 
+    def record_flow(self, owner: str, thread: str, flow: dict[str, Any]) -> None:
+        with self._lock, self._conn.cursor() as cur:
+            cur.execute(
+                "insert into milo_v2.flows (owner_id, thread_id, total_ms, cost_usd, error, steps, question_chars) "
+                "values (%s, %s, %s, %s, %s, %s, %s)",
+                (
+                    owner,
+                    thread,
+                    float(flow.get("total_ms", 0)),
+                    float(flow.get("cost_usd", 0) or 0),
+                    flow.get("error"),
+                    json.dumps(flow.get("steps", [])),
+                    int(flow.get("question_chars", 0)),
+                ),
+            )
+
+    def flows(self, owner: str | None, limit: int = 50) -> list[dict[str, Any]]:
+        with self._lock, self._conn.cursor() as cur:
+            if owner is None:
+                cur.execute(
+                    "select f.owner_id, f.created_at, f.total_ms, f.cost_usd, f.error, f.steps, f.question_chars, "
+                    "u.display_name from milo_v2.flows f left join milo_v2.users u on u.id::text = f.owner_id "
+                    "order by f.id desc limit %s",
+                    (limit,),
+                )
+            else:
+                cur.execute(
+                    "select f.owner_id, f.created_at, f.total_ms, f.cost_usd, f.error, f.steps, f.question_chars, "
+                    "u.display_name from milo_v2.flows f left join milo_v2.users u on u.id::text = f.owner_id "
+                    "where f.owner_id = %s order by f.id desc limit %s",
+                    (owner, limit),
+                )
+            rows = cur.fetchall()
+        return [
+            {
+                "owner": r[0],
+                "account": r[7] or "removed account",
+                "ts": r[1].strftime("%Y-%m-%d %H:%M:%S"),
+                "total_ms": r[2],
+                "cost_usd": r[3],
+                "error": r[4],
+                "steps": r[5],
+                "question_chars": r[6],
+            }
+            for r in rows
+        ]
+
+    def add_feedback(self, owner: str, rating: str, reason: str) -> None:
+        with self._lock, self._conn.cursor() as cur:
+            cur.execute(
+                "insert into milo_v2.feedback (owner_id, rating, reason) values (%s, %s, %s)",
+                (owner, rating, reason),
+            )
+
     def delete_owner(self, owner: str) -> None:
         """Remove everything one owner has stored. Used by tests and by the owner-deletion request (not yet exposed)."""
         with self._lock, self._conn.cursor() as cur:
@@ -171,6 +225,13 @@ class PostgresUserStore:
         if row is None:
             return None
         return User(user_id, row[0], row[1], row[2])
+
+    def record_login(self, user_id: int) -> None:
+        with self._lock, self._conn.cursor() as cur:
+            cur.execute(
+                "update milo_v2.users set last_login_at = now() where id = %s",
+                (user_id,),
+            )
 
     def set_password(self, user_id: int, password_hash: str) -> None:
         with self._lock, self._conn.cursor() as cur:

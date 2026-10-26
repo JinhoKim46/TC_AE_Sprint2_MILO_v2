@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
 from _auth import signed_in_app
 
 from milo.app import build_app
@@ -143,22 +141,18 @@ def test_owner_comes_from_the_signed_in_account_not_the_request() -> None:
     assert seen[0] != seen[1] and "someone-else" not in seen
 
 
-def test_feedback_stores_rating_and_reason_with_a_hashed_owner(tmp_path) -> None:
-
+def test_feedback_is_stored_with_rating_and_reason_and_no_text() -> None:
     store = MemoryStore()
     milo = build_app(ToolThenAnswer(), LexicalEmbedder(), Backend(store=store))
     milo.store = store
-    milo.trace_path = tmp_path / "trace.jsonl"
     _, c, _ = signed_in_app(milo)
     ok = c.post("/api/feedback", json={"rating": "down", "reason": "missing_source"})
     assert ok.get_json()["ok"] is True
-    bad_rating = c.post("/api/feedback", json={"rating": "maybe"})
-    assert bad_rating.status_code == 400
-    bad_reason = c.post("/api/feedback", json={"rating": "down", "reason": "free text"})
-    assert bad_reason.status_code == 400
-    lines = (tmp_path / "feedback.jsonl").read_text().splitlines()
-    assert len(lines) == 1
-    record = json.loads(lines[0])
-    assert record["rating"] == "down" and record["reason"] == "missing_source"
-    assert "free text" not in lines[0]
-    assert record["owner"] != "" and len(record["owner"]) == 12
+    assert c.post("/api/feedback", json={"rating": "maybe"}).status_code == 400
+    assert (
+        c.post(
+            "/api/feedback", json={"rating": "down", "reason": "free text"}
+        ).status_code
+        == 400
+    )
+    assert store._feedback == [("1", "down", "missing_source")]
