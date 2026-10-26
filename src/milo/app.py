@@ -48,6 +48,7 @@ class App:
         fallback_chat: Any = None,
         trace_path: Path | None = None,
         store: Store | None = None,
+        system_prompt: str = SYSTEM,
     ) -> None:
         self.chat = chat_model
         self.fallback = fallback_chat
@@ -57,6 +58,7 @@ class App:
         self.index: Index | None = None
         self.chunks: dict[str, Any] = {}
         self.store: Store = store if store is not None else MemoryStore()
+        self.system_prompt = system_prompt
         if tools_backend is not None and hasattr(tools_backend, "attach_search"):
             tools_backend.attach_search(self._retrieve)
 
@@ -109,7 +111,7 @@ class App:
             f"[{i + 1}] ({h.doc_id}) {h.text}" for i, h in enumerate(hits)
         )
         messages: list[dict[str, Any]] = [
-            {"role": "system", "content": SYSTEM},
+            {"role": "system", "content": self.system_prompt},
             *prior,
             {
                 "role": "user",
