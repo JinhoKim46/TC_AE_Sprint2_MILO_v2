@@ -1,67 +1,69 @@
-# MILO v2 module catalogue (fictional). Source of truth for module ids, scope and integrations; the knowledge-base
-# solution articles and the rate card must agree with it (tests/test_data.py). Each module groups the package
-# blueprints it was derived from (B01 to B20, by number).
-version: catalogue-v2-2026-10
+# MILO v2 service-area catalogue (fictional). Source of truth for area ids, scope, effect inputs and the blueprints each
+# area was derived from (B01 to B20, by number). The solution articles and the intake harness must agree with it
+# (tests/test_data.py). No prices: the onboarding bot states scope and effect ranges, never money.
+version: catalogue-v3-2026-10
 modules:
-  - id: request-intake
-    name: Request intake
-    blueprints: ["01", "19", "20"]
-    summary: Captures every service request from phone notes, email and chat into one shared queue, shows related open incidents, and records who accepted each request.
-    includes: [one shared request queue, capture from email and chat, related-incident hints, acceptance owner per request, commitment log]
-    excludes: [merging requests without a coordinator decision, replacing the customer's phone system, a mandatory customer portal]
-    integrations: [spreadsheet-import, email-capture, service-software-api]
-  - id: dispatch-planning
-    name: Dispatch planning
-    blueprints: ["02", "08", "16"]
-    summary: Suggests same-day schedule changes from skills, van stock, site access windows and remote-suitability notes, with the dispatcher deciding.
-    includes: [schedule revision suggestions, site access windows, remote-suitability check, skill and stock constraints, dispatcher override]
-    excludes: [automatic reassignment without the dispatcher, route navigation, remote-control software]
+  - id: request-dispatch
+    name: Request and dispatch management
+    blueprints: ["01", "02", "08", "16", "19"]
+    summary: Collects requests from several channels into one queue, shows who accepted each request, flags likely duplicates, and suggests dispatch changes with the dispatcher deciding.
+    includes: [one shared request queue, capture from calls and messages, duplicate hints, acceptance owner per request, dispatch suggestions with access windows and skills]
+    excludes: [merging requests without a coordinator decision, automatic reassignment without the dispatcher, a mandatory customer portal]
     integrations: [spreadsheet-import, service-software-api]
-  - id: contract-management
-    name: Contract management
-    blueprints: ["03", "06", "11", "14", "15"]
-    summary: Keeps contract terms, covered devices, preventive-visit obligations, approval contacts and renewal dates in one dated record, and flags work that may fall outside coverage.
-    includes: [coverage check before dispatch, preventive-visit checklists, approval routing by site, renewal reminders with account history, workload per contract]
-    excludes: [automatic renewal offers, legal contract review, profit figures presented as exact]
-    integrations: [spreadsheet-import, accounting-export]
-  - id: stock-control
-    name: Stock control
+    effect_inputs:
+      events: requests_per_week
+      baseline_minutes: minutes_to_assign
+      new_minutes: {assumed: 4, note: minutes of staff time per request with one shared queue}
+  - id: consumables-stock
+    name: Consumables and stock management
     blueprints: ["04", "18"]
-    summary: Tracks where consumables, parts and loan devices are (warehouse, van or customer site) and which items need serial and warranty tracking.
-    includes: [stock by location, device-to-consumable compatibility, customer-held stock, serialized and warranty items, simple replenishment rules for cheap items]
-    excludes: [automatic purchase orders, supplier price negotiation]
+    summary: Shows where consumables, parts and loan devices are (store, vehicle or customer site), which items are compatible with which devices, and which items need serial and warranty tracking.
+    includes: [stock by location, device-to-consumable compatibility, customer-held stock, serialized and warranty items, reorder reminders for cheap items]
+    excludes: [automatic purchase orders, supplier negotiation]
     integrations: [spreadsheet-import, service-software-api]
-  - id: meter-billing
-    name: Meter billing
-    blueprints: ["05"]
-    summary: Collects printer and copier meter readings, checks them against device history and contract terms, and prepares usage charges with an exception queue for questionable readings.
-    includes: [meter reading capture with photo reference, chronology and counter checks, usage calculation per contract, exception queue for review]
-    excludes: [sending invoices without review, setting customer tariffs]
+    effect_inputs:
+      events: searches_per_week
+      baseline_minutes: minutes_per_search
+      new_minutes: {assumed: 3, note: minutes per search with a location list}
+  - id: usage-billing-prep
+    name: Usage and billing preparation
+    blueprints: ["05", "06", "11", "13", "14"]
+    summary: Turns meter and usage readings into checked figures, checks them against device history and agreement terms, and holds questionable readings in an exception queue before billing is prepared.
+    includes: [reading capture with a reference, counter-order checks, usage calculation per agreement, exception queue, coverage check before work]
+    excludes: [sending invoices without review, setting customer terms, legal contract review]
     integrations: [spreadsheet-import, accounting-export]
-  - id: service-reports
-    name: Service reports
-    blueprints: ["10", "13"]
-    summary: Captures completion evidence on site (device, fault, work, parts, confirmation) from staff and subcontractors, and prepares customer reports from it.
-    includes: [on-site completion capture, report templates per customer, pending-confirmation status, subcontractor job instructions and spending limits]
-    excludes: [recording a confirmation that was not given, submission to customer portals without their access]
-    integrations: [email-capture, service-software-api]
-  - id: work-tracking
-    name: Work tracking
-    blueprints: ["07", "09", "12", "17"]
-    summary: Gives every open repair, installation project and supplier escalation a next action and an owner, and turns solved jobs into reviewed fix notes.
-    includes: [next action and owner per job, parts and approval waiting states, installation readiness checklist, supplier escalation history, reviewed fix notes]
-    excludes: [ordering parts, diagnosing faults, closing a job without a person]
+    effect_inputs:
+      events: readings_per_month
+      baseline_minutes: minutes_per_reading
+      new_minutes: {assumed: 1.5, note: minutes per reading with the checks}
+  - id: operations-overview
+    name: Operations overview
+    blueprints: ["03", "07", "09", "10", "12", "15", "17", "20"]
+    summary: One board of open work with an owner and a next action for each item, the blockers that stop it, and a record of commitments that does not depend on one person's memory.
+    includes: [open work board, owner and next action per item, blocker states, commitment log, reviewed fix notes]
+    excludes: [closing work without a person, reporting figures not entered by staff, diagnosing faults]
     integrations: [spreadsheet-import, email-capture, service-software-api]
+    effect_inputs:
+      events: status_questions_per_week
+      baseline_minutes: minutes_per_status_question
+      new_minutes: {assumed: 2, note: minutes per status question with the board}
+later_areas:
+  - id: process-linking
+    name: Linking processes across tools
+    note: Named for the owner; not diagnosed in this project.
+  - id: structured-intake
+    name: Turning unstructured inputs into one structured record
+    note: Named for the owner; not diagnosed in this project.
 integrations:
   - id: spreadsheet-import
     name: Spreadsheet import
-    notes: The business keeps the data in spreadsheets; MILO imports and exports CSV files. No live connection.
+    notes: The business keeps the data in spreadsheets; files are imported and exported as CSV. No live connection.
   - id: email-capture
     name: Email capture
-    notes: A shared mailbox is read with the business's permission. Setup takes one working day.
+    notes: A shared mailbox is read with the business's permission.
   - id: service-software-api
     name: Service software API
-    notes: The business's service management application offers an API with an access key. Setup takes two working days.
+    notes: The business's service management application offers an API with an access key.
   - id: accounting-export
     name: Accounting export
-    notes: Prepared charges are exported to the accounting software as a file for the accounts team to import.
+    notes: Prepared figures are exported as a file for the accounts team to import.

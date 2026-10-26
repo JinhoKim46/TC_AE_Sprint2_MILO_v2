@@ -71,11 +71,18 @@ def strings(obj: Any) -> list[str]:
 
 # Product names in the package text, replaced so the knowledge base stays brand-free.
 BRAND_WORDS = {"Excel": "spreadsheet"}
+# The knowledge base states no prices (the onboarding bot gives scope and effect ranges only), so package phrases
+# that point to a rate card are reworded.
+PRICE_PHRASES = {
+    "No price assigned; current rate card must not be extended by analogy": "No figure assigned; none may be extended by analogy",
+}
 
 
 def debrand(text: str) -> str:
     for brand, generic in BRAND_WORDS.items():
         text = re.sub(rf"\b{brand}\b", generic, text)
+    for phrase, generic in PRICE_PHRASES.items():
+        text = text.replace(phrase, generic)
     return text
 
 

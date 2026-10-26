@@ -1,4 +1,4 @@
-# DRAFT intake harness. The data the bot must hold before it gives a diagnosis for an area.
+# Intake harness (M0b, fictional). The data the bot must hold before it gives a diagnosis for an area.
 # Rule: a missing must-have slot is asked for again (at most two asks per slot). If it is still missing, the bot
 # gives a conditional diagnosis that names the missing slot. It never refuses with "I don't know" alone.
 # Each slot: id, question (English, asked in plain words), unit, must (true = needed to diagnose), effect (true = feeds the estimate).
@@ -30,7 +30,7 @@ common:  # every diagnosis
     must: true
     effect: false
   - id: incident_story
-    question: "Tell me about one recent job that went wrong or took too long: what triggered it, who did what, and when it finished."
+    question: "Can you tell me about one recent job that went wrong or took too long: what triggered it, who did what, and when it finished?"
     unit: text
     must: true
     effect: false
