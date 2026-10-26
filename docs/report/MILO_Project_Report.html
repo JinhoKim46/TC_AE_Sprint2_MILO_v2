@@ -58,22 +58,21 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--acce
 </head>
 <body>
 <main>
-
-<section class="card head">
-  <p class="muted">Sprint 2 project · MILO v2 · TC_AE</p>
+<header class="head">
+  <p class="muted">Sprint 2 project · MILO v2 · TC_AE · last updated 2026-10-26</p>
   <h1>MILO: a diagnosis chatbot that shows its work</h1>
-  <p class="lede">MILO answers questions about how a small service business runs its work. It finds passages in a knowledge base, cites them, uses tools to record facts and calculate savings, and shows every step it took. The data is fictional. The project was built milestone by milestone to learn the stack and to be measured at each step.</p>
+  <p class="lede">MILO answers questions about how a small service business runs its work. It finds passages in a knowledge base, cites them, uses tools to record facts and to estimate savings as a range, and ends a conversation with a summary and a proposed first spec. Every step is shown. The data is fictional.</p>
   <div class="grid">
-    <div class="stat"><b>78</b><span>offline tests pass (3 database tests skipped by design)</span></div>
+    <div class="stat"><b>93</b><span>offline tests pass (3 database tests skipped by design)</span></div>
     <div class="stat"><b>9 / 9</b><span>kit contract groups pass</span></div>
-    <div class="stat"><b>6</b><span>tools with schemas and risk tiers</span></div>
     <div class="stat"><b>0 / 10</b><span>attacks succeeded (small sample, see limits)</span></div>
+    <div class="stat"><b>0.81</b><span>test recall@5 on the Gemini embeddings (read once)</span></div>
   </div>
-</section>
+</header>
 
 <section class="card">
   <h2>How MILO works, end to end</h2>
-  <p>One question goes through five stages. Each stage is recorded in a trace, so the chat can show the path and the dashboard can count it.</p>
+  <p>One question goes through five stages. Each stage is recorded in a trace, so the chat can show the path, and the overview can count it.</p>
   <figure>
     <svg viewBox="0 0 900 430" role="img" aria-label="Flow of one question: browser to Flask app, then history read, passage retrieval, model call with optional tool loop, answer and trace; state is kept in Supabase PostgreSQL, the knowledge base is an in-memory vector index, and the local model is the fallback.">
       <defs>
@@ -139,73 +138,100 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--acce
 </section>
 
 <section class="card">
+  <h2>What the owner sees</h2>
+  <ul>
+    <li><b>Landing page</b> with a section index on the right that magnifies under the pointer, and a demo video (36.6 s, with a soundtrack and one keystroke per typed character).</li>
+    <li><b>Chat</b>: the answer with numbered citations, a confidence line, the steps MILO took (name, arguments, result, policy decision), and a side panel with the sources. Clicking a source opens the full document with the passage highlighted in its context.</li>
+    <li><b>Summary and proposed spec</b> at the end of a conversation: what was recorded, the estimate per area as a range with its assumptions, what is still missing, and the first area to start with. It is computed in code and calls no model.</li>
+    <li><b>Accounts</b>: sign-up, sign-in (back to the landing page), password change, and an owner account that sees the overview: every account and every question, the tool use, the system status and the spend against the course cap.</li>
+    <li><b>History</b> is stored with each turn, including the tool calls, so a reloaded conversation shows the same steps as the live one (migration 0004).</li>
+  </ul>
+</section>
+
+<section class="card">
   <h2>What was built, milestone by milestone</h2>
-  <p class="muted">Each milestone has a pull request (PR) and a lesson note in <code>docs/lessons/</code>. Branches are stacked, so each PR shows only its own change.</p>
+  <p class="muted">Each milestone has a lesson note in <code>docs/lessons/</code>. The stacked pull requests #15 to #23 were closed as superseded by #24, which merged the whole build into <code>main</code>. The linked issues are closed by #24.</p>
   <div class="wrap"><table>
-    <thead><tr><th>Step</th><th>What it delivers</th><th>Evidence</th><th>PR</th></tr></thead>
-    <tbody>
-      <tr><td>M0b data</td><td>Knowledge base of 30 documents (20 past cases, solutions, policies, method notes), 4 service areas, 40 gold questions, 20 tool cases, 10 attacks, 16 held-out intake scenarios</td><td class="n">40 gold rows, kit data checker: 0 problems</td><td>#15</td></tr>
-      <tr><td>M1 retrieval</td><td>Heading-aware chunks of 800 characters with 100 overlap; Gemini embeddings; Chroma cosine index; top 5 with score; abstain when nothing overlaps</td><td class="n">Dev recall@5 0.81, nDCG@5 0.68 (live)</td><td>#16</td></tr>
-      <tr><td>M2 advanced RAG</td><td>Keyword query translation (rejected) and a validated self-query filter by service area, with fallback to unfiltered search</td><td class="n">Dev nDCG@5 0.16 to 0.27 with filter, CI 0.02 to 0.22; adopted on dev only</td><td>#17</td></tr>
-      <tr><td>M3 tools</td><td>6 tools: search, record fact, get facts, estimate effect, draft diagnosis, reset diagnosis (destructive). Argument checks. Estimate computed in code as a range</td><td class="n">Tool selection 0.55 to 0.60; strict parameters 0.31; lenient 0.56; over-eager 0</td><td>#18</td></tr>
-      <tr><td>M4 security</td><td>Attack harness on the real app with a test-only canary and poisoned passages; policy in code; identity from the session, never from arguments</td><td class="n">ASR 0 of 10; destructive 0; false refusals 0 of 5</td><td>#22</td></tr>
-      <tr><td>M5 errors</td><td>Typed input errors, bounded retries, local Ollama fallback, per-thread history, one trace line per flow</td><td class="n">Contract 9 / 9; fallback answered live</td><td>#19</td></tr>
-      <tr><td>M6 UI</td><td>Chat with sources, tool calls, policy decisions, progress and cost; flow view per answer; dashboard for the conversation; status endpoint</td><td class="n">Checklist in docs/lessons/M6.md; screenshots reviewed</td><td>#20, UI branch</td></tr>
-      <tr><td>DB</td><td>PostgreSQL store on Supabase behind the same interface as memory; migrations; owner isolation on every query</td><td class="n">3 database tests pass; end-to-end answer stored and removed</td><td>#21</td></tr>
-      <tr><td>M7 evaluation</td><td>Test split read once, logged; retrieval on test; LLM judge tested against labels; limits written with intervals</td><td class="n">Test recall@5 0.81, nDCG@5 0.72</td><td>#23</td></tr>
-    </tbody>
+    <tr><th>Step</th><th>What it delivers</th><th>Evidence</th></tr>
+    <tr><td>M0b data</td><td>Knowledge base of 30 documents (20 past cases, service areas, policies, method notes), 4 service areas, 40 gold questions, 20 tool cases, 10 attacks, 16 intake scenarios</td><td>40 gold rows; kit data checker: 0 problems</td></tr>
+    <tr><td>M1 retrieval</td><td>Heading-aware chunks of 800 characters with 100 overlap; Gemini embeddings; cosine index; top 5 with score; abstain when nothing overlaps</td><td>Test recall@5 0.81, nDCG@5 0.72</td></tr>
+    <tr><td>M2 advanced RAG</td><td>Keyword query translation (rejected) and a validated self-query filter by service area, with fallback to unfiltered search</td><td>Dev nDCG@5 0.16 to 0.27 with the filter (CI 0.02 to 0.22). Adopted on dev only; the test split was not read again</td></tr>
+    <tr><td>M3 tools</td><td>6 tools: search, record fact, get facts, estimate effect, draft diagnosis, reset diagnosis (destructive). Argument checks. The estimate is computed in code as a range</td><td>Tool selection 0.60 to 0.70 after the description change; lenient parameters 0.56 to 0.63; strict 0.31. Over-eager calls 0. The 20 cases were also used for tuning</td></tr>
+    <tr><td>M4 security</td><td>Attack harness on the real app with a test-only canary and poisoned passages; policy in code; identity from the session, never from arguments</td><td>ASR 0 of 10; destructive 0; false refusals 0 of 5</td></tr>
+    <tr><td>M5 errors</td><td>Typed input errors, bounded retries, local Ollama fallback, per-thread history, one trace line per flow</td><td>Contract 9 / 9; fallback answered live</td></tr>
+    <tr><td>M6 UI</td><td>Chat with sources, tool steps, policy decisions, progress and cost; the side panel; the full-document viewer; overview; status endpoint</td><td>Manual checklist run against the live model (progress, sources, a tool call with <code>allowed</code>, an approval notice, empty input)</td></tr>
+    <tr><td>DB</td><td>PostgreSQL store on Supabase behind the same interface as memory; migrations 0001 to 0004; owner isolation on every query</td><td>Database tests pass; a tool call round-trips through Postgres</td></tr>
+    <tr><td>M7 evaluation</td><td>Test split read once and logged; dev extended to 51 answerable items; labeling guidelines and a two-labeler batch</td><td>See the evaluation section</td></tr>
   </table></div>
 </section>
 
 <section class="card">
-  <h2>Rubric: where each level is met</h2>
-  <p>The four criteria come from <code>project-kit/RUBRIC.md</code>. Levels are the builder's own assessment, with the evidence named.</p>
+  <h2>Evaluation</h2>
+  <p>Retrieval is measured on answerable items with paired intervals. Only the test split is read once, and every read is logged in <code>evals/results/retrieval/test_access.log</code>.</p>
   <div class="wrap"><table>
-    <thead><tr><th>Criterion</th><th>Level</th><th>Evidence</th><th>What is still open</th></tr></thead>
-    <tbody>
-      <tr><td>Understanding core concepts</td><td><span class="pill">3</span> <span class="pill part">4 partly</span></td><td class="n">M1 to M3 reports and lessons explain chunking, query translation (rejected), risk tiers and the estimate in code. Level 4 needs a retrieval change explained with its ceiling; M2 gives one, but it is unconfirmed on test.</td><td>M2 filter confirmation on test. Checkpoint answers are yours to give.</td></tr>
-      <tr><td>Technical implementation</td><td><span class="pill">4</span></td><td class="n">Contract 9 / 9. Paired A/B with a CI for the retrieval change (M2). Policy in code with destructive ASR 0. Typed errors. Sources and tool results in the UI. Identity bound in code.</td><td>Attack set is 10 items; the zero is a small-sample result.</td></tr>
-      <tr><td>Reflection and improvement</td><td><span class="pill">4 partly</span></td><td class="n">M7 lists measured limits with intervals and causes. Failed judge reported as failed. Filter adoption marked unconfirmed. Label provenance corrected.</td><td>No validated judge. The labels are from a model, not a human.</td></tr>
-    </tbody>
+    <tr><th>Run</th><th>Items</th><th>recall@5</th><th>nDCG@5 (95% CI)</th><th>Status</th></tr>
+    <tr><td>Dev, offline embeddings</td><td class="n">51</td><td class="n">0.24</td><td class="n">0.19 (0.10 to 0.29)</td><td>baseline for the offline path</td></tr>
+    <tr><td>Dev, Gemini embeddings</td><td class="n">51</td><td class="n">0.75</td><td class="n">0.57 (0.45 to 0.68)</td><td>dev; the 40 extra items were written by a model, quotes checked verbatim</td></tr>
+    <tr><td>Test, Gemini embeddings</td><td class="n">16</td><td class="n">0.81</td><td class="n">0.72 (0.52 to 0.90)</td><td>read once, logged</td></tr>
+  </table></div>
+  <p class="muted">The embedding model made the largest difference: recall on the 41 paraphrased dev questions rose from 0.22 to 0.73. The self-query filter is adopted on dev only (its test confirmation is open, see limits).</p>
+</section>
+
+<section class="card">
+  <h2>Labels and the judge</h2>
+  <ul>
+    <li><b>LLM judge</b>: not usable. Agreement with the labels was 0.83 with kappa 0.60 and a lower bound of 0.29, below the rule (kappa at least 0.60 and lower bound at least 0.30). The labels came from a model, not from a human.</li>
+    <li><b>Question labels, batch 1</b> (35 answerable questions): all 35 were labeled 1 by both labelers. Agreement 100%, but kappa is undefined because there were no negatives.</li>
+    <li><b>Question labels, batch 2</b> (20 items: 15 negatives, 5 positives): both labelers agreed on all 20, kappa 1.0. The negatives are unrelated sentences from the same folder, so they are easy. This does not show reliability on hard negatives.</li>
+    <li><b>Guidelines</b> are in <code>evals/labeling/GUIDELINES.md</code>. The rule for accepting a label set is fixed in advance: kappa at least 0.60 and a lower bound at least 0.30. If it fails, the guidelines change, not the numbers.</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>Rubric: where each level is met</h2>
+  <p class="muted">The four criteria come from <code>project-kit/RUBRIC.md</code>. Levels are the builder's own assessment, with the evidence named.</p>
+  <div class="wrap"><table>
+    <tr><th>Criterion</th><th>Level</th><th>Evidence</th><th>Still open</th></tr>
+    <tr><td>Understanding core concepts</td><td class="n">3 to 4</td><td>M1 to M3 reports explain chunking, query translation (rejected), risk tiers and the estimate in code</td><td>The M2 filter is unconfirmed on test</td></tr>
+    <tr><td>Technical implementation</td><td class="n">4</td><td>Contract 9 / 9; paired comparison with a CI; policy in code; typed errors; sources and tool steps in the UI; identity bound in code</td><td>Attack set is 10 items; the zero is a small-sample result</td></tr>
+    <tr><td>Reflection and improvement</td><td class="n">4</td><td>Limits with intervals; the failed judge reported as failed; label provenance stated; tool tuning on a tuning set stated</td><td>No validated judge; no fresh tool set yet</td></tr>
   </table></div>
 </section>
 
 <section class="card">
   <h2>Mandatory requirements and bonus</h2>
   <div class="wrap"><table>
-    <thead><tr><th>Requirement (kit README)</th><th>Status</th><th>Where</th></tr></thead>
-    <tbody>
-      <tr><td>Domain knowledge base, embeddings, chunking, similarity search</td><td><span class="pill">met</span></td><td>M0b, M1</td></tr>
-      <tr><td>Advanced RAG: query translation and metadata filters</td><td><span class="pill">met</span></td><td>M2: self-query filter with fallback; translation tested and rejected</td></tr>
-      <tr><td>At least 3 tool calls</td><td><span class="pill">met</span></td><td>M3: 6 tools</td></tr>
-      <tr><td>Security, error handling, input validation</td><td><span class="pill">met</span></td><td>M4, M5</td></tr>
-      <tr><td>UI showing retrieved context, sources, tool results and progress</td><td><span class="pill">met</span></td><td>M6. The kit names Streamlit or Next.js; this project uses Flask, which the project owner has accepted.</td></tr>
-      <tr><td>Bonus: prompt-injection protection (medium)</td><td><span class="pill">met</span></td><td>M4 attack harness</td></tr>
-      <tr><td>Bonus: token usage and cost display (medium)</td><td><span class="pill">met</span></td><td>M6 cost line; status endpoint with course cap</td></tr>
-      <tr><td>Bonus: logging and monitoring (medium)</td><td><span class="pill">met</span></td><td>Trace per flow; dashboard; status endpoint</td></tr>
-      <tr><td>Bonus: RAG evaluation (hard)</td><td><span class="pill part">partly</span></td><td>Retrieval metrics on test; judge not validated</td></tr>
-      <tr><td>Bonus: hybrid search, remote MCP, tools as MCP</td><td><span class="pill open">not done</span></td><td>Hybrid was tested in the earlier project, not in this one</td></tr>
-    </tbody>
+    <tr><th>Requirement (kit README)</th><th>Status</th><th>Where</th></tr>
+    <tr><td>Domain knowledge base, embeddings, chunking, similarity search</td><td><span class="pill">met</span></td><td>M0b, M1</td></tr>
+    <tr><td>Advanced RAG: query translation and metadata filters</td><td><span class="pill">met</span></td><td>M2: self-query filter with fallback; translation tested and rejected</td></tr>
+    <tr><td>At least 3 tool calls</td><td><span class="pill">met</span></td><td>M3: 6 tools</td></tr>
+    <tr><td>Security, error handling, input validation</td><td><span class="pill">met</span></td><td>M4, M5</td></tr>
+    <tr><td>UI showing retrieved context, sources, tool results and progress</td><td><span class="pill">met</span></td><td>M6. The kit names Streamlit or Next.js; this project uses Flask, which the project owner accepted</td></tr>
+    <tr><td>Bonus: prompt-injection protection (medium)</td><td><span class="pill">met</span></td><td>M4 attack harness</td></tr>
+    <tr><td>Bonus: token usage and cost display (medium)</td><td><span class="pill">met</span></td><td>Cost line in the chat; status endpoint with the course cap</td></tr>
+    <tr><td>Bonus: logging and monitoring (medium)</td><td><span class="pill">met</span></td><td>Trace per flow; overview; status endpoint</td></tr>
+    <tr><td>Bonus: RAG evaluation (hard)</td><td><span class="pill part">partly</span></td><td>Retrieval metrics on test; the judge is not validated; the label batches are model labels</td></tr>
+    <tr><td>Bonus: hybrid search, remote MCP, tools as MCP</td><td><span class="pill open">not done</span></td><td>Hybrid was tested in the earlier project, not in this one</td></tr>
   </table></div>
-  <p class="muted">The kit asks for 2 medium and 1 hard bonus. Three medium items are met. The hard item is partly met, so the full bonus depends on how the judge result is counted.</p>
 </section>
 
 <section class="card">
   <h2>Limits, stated plainly</h2>
   <ul>
-    <li>Sixteen answerable questions per split. Every interval is wide. Differences under about 0.2 nDCG are not reliable.</li>
-    <li>The judge disagreed with the labels in about 18 per cent of items (kappa 0.60, lower bound 0.29), just under the threshold. The labels were written by a model, so this measures model agreement, not human agreement.</li>
-    <li>The M2 filter was chosen on dev after one revision. It is reported as unconfirmed, and the test split was not read again.</li>
-    <li>Duplicate passages between articles were measured on dev and did not affect the top five. Two de-duplication fixes were tested and not adopted.</li>
+    <li>Answerable questions per split are few (16 on test). Every interval is wide. Differences under about 0.2 nDCG are not reliable.</li>
+    <li>The M2 self-query filter was chosen on dev after one revision. The test split was read once already (the Gemini baseline), so the filter cannot be confirmed on test without a second read. This needs an owner decision.</li>
+    <li>The tool-description change was measured on the same 20 cases it was tuned on. It is not yet shown on fresh cases. Strict parameter accuracy did not change (0.31).</li>
+    <li>Labels are written or checked by models, not humans. Two labelers agreed, but the batch 2 negatives are easy, and the batch 1 set has no negatives.</li>
+    <li>The 40 extra dev questions were written by a model from the knowledge base. Their quotes were checked verbatim. The question wording and the unanswerable items were not checked for overlap with the knowledge base beyond that.</li>
     <li>Ten attacks and one model. A zero says these attacks failed, not that the system is secure.</li>
     <li>The database connection uses the admin role. A limited role is needed before any real data.</li>
-    <li>No browser screen recording has been made. The manual checklist in M6 is for the presenter to tick.</li>
+    <li>The overview, the summary and the tool steps were checked in a browser with screenshots, not with a recorded screen. The M6 checklist was run against the live model for the items listed above.</li>
   </ul>
 </section>
 
 <section class="card">
   <h2>Demo storylines for the evaluation</h2>
-  <p>Four scripted conversations are in <code>data/demo_storylines.json</code> and are served at <code>/api/demo</code>. Each one shows a different part of the system.</p>
+  <p>Four scripted conversations are in <code>data/demo_storylines.json</code> and are served at <code>/api/demo</code>. Each shows a different part of the system.</p>
   <ul>
     <li><b>The same printer, two technicians.</b> A duplicate-dispatch story: sources, a savings estimate with a range, and a fact recorded from the owner's words.</li>
     <li><b>We have toner, but nobody can find it.</b> The consumables area, with the calculation done in code.</li>
@@ -217,12 +243,11 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--acce
 <section class="card">
   <h2>Reproduce the results</h2>
   <ul>
-    <li>Checks: <code>make check</code> (lint, format, 78 offline tests), <code>make contract</code> (kit contract, 9 groups).</li>
+    <li>Checks: <code>make check</code> (lint, format, 93 offline tests); <code>make contract</code> (kit contract, 9 groups).</li>
     <li>Replays with no model call: <code>make eval-retrieval-replay</code>, <code>make eval-test-replay</code>, <code>make eval-advanced-replay</code>.</li>
-    <li>Run the app: <code>MILO_LIVE=1 MILO_STORE=postgres uv run python -m milo.serve</code>, then open <code>/</code> for the chat and <code>/dashboard</code> for the overview.</li>
+    <li>Run the app: <code>MILO_LIVE=1 MILO_STORE=postgres uv run python -m milo.serve</code>, then open <code>/</code> for the landing page and the chat, and <code>/dashboard</code> for the overview (owner account only).</li>
   </ul>
 </section>
-
 </main>
 </body>
 </html>

@@ -84,3 +84,20 @@ def test_tool_facts_land_in_the_store_per_owner() -> None:
     app.ask("We get about 40 requests a week.", "u1", "t1")
     assert "requests_per_week" in store.facts("u1")
     assert store.facts("u2") == {}
+
+
+def test_turns_keep_their_tool_calls_for_a_reloaded_conversation() -> None:
+    store = MemoryStore()
+    tool = {
+        "name": "estimate_effect",
+        "arguments": {"area_id": "request-dispatch"},
+        "output": {"status": "ok"},
+        "ok": True,
+        "policy_decision": "allowed",
+    }
+    store.append_turns(
+        "o1",
+        "t1",
+        [{"role": "assistant", "content": "x", "sources": [], "tools": [tool]}],
+    )
+    assert store.history("o1", "t1")[0]["tools"] == [tool]

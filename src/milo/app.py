@@ -124,6 +124,16 @@ class App:
                             }
                             for src in response.sources
                         ],
+                        "tools": [
+                            {
+                                "name": t.name,
+                                "arguments": t.arguments,
+                                "output": t.output,
+                                "ok": t.ok,
+                                "policy_decision": t.policy_decision,
+                            }
+                            for t in response.tool_results
+                        ],
                     },
                 ],
             )

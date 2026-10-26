@@ -787,7 +787,7 @@ PAGE = (
     try {
       const res = await fetch("/api/history");
       const data = await res.json();
-      (data.turns || []).forEach((t, i) => messages.push({role: t.role === "user" ? "user" : "assistant", text: t.content, sources: t.sources || [], tool_results: [], cost_usd: 0, trace: [], key: i}));
+      (data.turns || []).forEach((t, i) => messages.push({role: t.role === "user" ? "user" : "assistant", text: t.content, sources: t.sources || [], tool_results: t.tools || [], cost_usd: 0, trace: [], key: i}));
     } catch (err) {
       /* history is optional */
     }
