@@ -64,6 +64,13 @@ p{margin:0 0 12px;max-width:66ch}
 .final{background:var(--accent);color:#fff;border-radius:22px;padding:40px 28px;text-align:center}
 .final p{margin:0 auto 18px;color:#E6F0EC}
 .final .btn{background:#fff;border-color:#fff;color:var(--accent)}
+.toc{display:none}
+@media (min-width:1360px){.toc{display:block;position:fixed;top:120px;right:12px;width:150px;font-size:14px;z-index:5}}
+.toc ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);display:flex;flex-direction:column}
+.toc a{display:block;padding:6px 0 6px 14px;margin-left:-2px;border-left:2px solid transparent;color:var(--mut);text-decoration:none}
+.toc a:hover{color:var(--ink)}
+.toc a.on{color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.toc .top{display:inline-block;margin-top:14px;color:var(--accent);text-decoration:none;font-weight:600}
 footer{padding:28px 0 40px;color:var(--mut);font-size:14px;border-top:1px solid var(--line)}
 footer a{margin-right:14px}
 .note{background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:12px 14px;font-size:14px}
@@ -85,6 +92,35 @@ def _mock() -> str:
         '<span class="chip">Partial match</span></div>'
         '<p class="muted" style="font-size:12px;margin:10px 0 0">Source 1: Request and dispatch management · Source 2: Past case C01</p>'
         "</div>"
+    )
+
+
+SECTIONS = [
+    ("how", "How it works"),
+    ("features", "Features"),
+    ("video", "Video"),
+    ("who", "Who it is for"),
+    ("stories", "Demo"),
+    ("faq", "FAQ"),
+    ("final", "Start"),
+]
+
+
+def _toc() -> str:
+    """The section index at the right edge (wide screens only). It marks the section in view and links back to the top."""
+    items = "".join(f'<li><a href="#{sid}">{label}</a></li>' for sid, label in SECTIONS)
+    return (
+        '<nav class="toc" aria-label="On this page"><ol>' + items + "</ol>"
+        '<a class="top" href="#top">Back to top</a></nav>'
+        "<script>"
+        "(() => {const links = [...document.querySelectorAll('.toc a[href^=\"#\"]')];"
+        "const map = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));"
+        "const io = new IntersectionObserver((entries) => {"
+        "entries.forEach((e) => { if (e.isIntersecting && map.has(e.target.id)) {"
+        "links.forEach((a) => a.classList.remove('on')); map.get(e.target.id).classList.add('on'); } });"
+        "}, {rootMargin: '-40% 0px -55% 0px'});"
+        "document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));})();"
+        "</script>"
     )
 
 
@@ -200,7 +236,7 @@ def landing_page(user=None) -> str:
     ]
     body = (
         site_header("home", user) + "<main>"
-        '<section class="hero" style="border-top:0">'
+        '<section class="hero" id="top" style="border-top:0">'
         '<div><p class="eyebrow">Diagnosis assistant for service businesses</p>'
         "<h1>Find where your work loses time, and what to automate first.</h1>"
         '<p class="lede">MILO listens to how your team works, finds the matching passages from past cases and service areas, '
@@ -226,7 +262,7 @@ def landing_page(user=None) -> str:
         '<div class="video"><video controls preload="metadata" poster="/static/milo-brag-poster.jpg" aria-label="MILO product video">'
         '<source src="/static/milo-brag.mp4" type="video/mp4">'
         '<div class="fallback">The video could not be played in this browser. Download it from the project folder.</div></video></div></div></section>'
-        '<section><div class="wrap"><p class="eyebrow">Who it is for</p><h2>Three people, one shared picture</h2>'
+        '<section id="who"><div class="wrap"><p class="eyebrow">Who it is for</p><h2>Three people, one shared picture</h2>'
         '<div class="roles">'
         + "".join(
             f'<article class="role"><h3>{t}</h3><p class="muted">{d}</p></article>'
@@ -246,12 +282,13 @@ def landing_page(user=None) -> str:
             f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in faq
         )
         + "</div></div></section>"
-        '<section><div class="wrap"><div class="final"><h2>See how one answer is made</h2>'
+        '<section id="final"><div class="wrap"><div class="final"><h2>See how one answer is made</h2>'
         "<p>Ask a question about your work, then open the steps and the sources behind the answer.</p>"
         '<a class="btn" href="/chat?new=1">Open the chat</a> <a class="btn" href="/dashboard" style="margin-left:8px">Open the overview</a>'
         "</div></div></section>"
         "</main>"
-        '<footer class="wrap"><div class="note">A course project. All businesses, figures and documents are fictional.</div>'
+        + _toc()
+        + '<footer class="wrap"><div class="note">A course project. All businesses, figures and documents are fictional.</div>'
         '<p style="margin-top:14px"><a href="/chat?new=1">Chat</a><a href="/dashboard">Overview</a><a href="/kb">Knowledge base</a></p></footer>'
     )
     return (

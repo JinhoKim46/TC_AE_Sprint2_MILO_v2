@@ -123,17 +123,17 @@ def create_app(
             return html(signup_page(problem, name, login_id))
         user = user_store.create(login_id, name, hash_password(password), "customer")
         sign_in(user)
-        return redirect("/chat")
+        return redirect("/")
 
     @web.get("/login")
     def login() -> Response:
-        return html(login_page(next_url=request.args.get("next", "/chat")))
+        return html(login_page(next_url=request.args.get("next", "/")))
 
     @web.post("/login")
     def login_submit() -> Any:
         login_id = (request.form.get("login_id") or "").strip()
         password = request.form.get("password") or ""
-        next_url = request.form.get("next") or "/chat"
+        next_url = request.form.get("next") or "/"
         found = user_store.by_login(login_id)
         if found is None or not verify_password(password, found[1]):
             return html(
@@ -142,7 +142,7 @@ def create_app(
         sign_in(found[0])
         if hasattr(user_store, "record_login"):
             user_store.record_login(found[0].id)
-        return redirect(next_url if next_url.startswith("/") else "/chat")
+        return redirect(next_url if next_url.startswith("/") else "/")
 
     @web.post("/logout")
     def logout() -> Any:

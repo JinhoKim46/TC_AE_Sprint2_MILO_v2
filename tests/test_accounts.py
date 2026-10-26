@@ -77,3 +77,19 @@ def test_visitors_are_sent_to_sign_in_and_customers_cannot_open_the_owner_pages(
     assert c.get("/dashboard").status_code == 403
     assert c.get("/admin/users").status_code == 403
     assert c.get("/api/status").status_code == 403
+
+
+def test_signing_in_lands_on_the_landing_page_not_the_chat() -> None:
+    from milo.users import MemoryUserStore, hash_password
+    from milo.web import create_app
+
+    users = MemoryUserStore()
+    users.create("u2", "Second Person", hash_password(PASSWORD), "customer")
+    c = create_app(fresh_app(), secret_key="test", users=users).test_client()
+    resp = c.post("/login", data={"login_id": "u2", "password": PASSWORD})
+    assert resp.status_code == 302 and resp.headers["Location"] == "/"
+    # A page that asked for sign-in still returns to that page.
+    back = c.post(
+        "/login", data={"login_id": "u2", "password": PASSWORD, "next": "/chat"}
+    )
+    assert back.headers["Location"] == "/chat"

@@ -43,7 +43,7 @@ def _page(title: str, active: str, user, body: str) -> str:
     )
 
 
-def login_page(error: str = "", login_id: str = "", next_url: str = "/chat") -> str:
+def login_page(error: str = "", login_id: str = "", next_url: str = "/") -> str:
     err = f'<p class="error" role="alert">{escape(error)}</p>' if error else ""
     body = (
         '<main><div class="card"><h1>Log in</h1>'
