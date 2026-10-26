@@ -66,13 +66,14 @@ p{margin:0 0 12px;max-width:66ch}
 .final .btn{background:#fff;border-color:#fff;color:var(--accent)}
 .toc{display:none}
 @media (min-width:1360px){.toc{display:flex;flex-direction:column;align-items:flex-end;gap:14px;position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:5}}
-.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .toc a{position:relative;display:flex;align-items:center;justify-content:flex-end;height:14px;text-decoration:none;color:var(--mut)}
-.toc a::after{content:"";display:block;width:18px;height:3px;border-radius:2px;background:var(--line);transition:width .15s ease,background .15s ease}
-.toc a:hover::after,.toc a:focus-visible::after{width:30px;background:var(--mut)}
-.toc a.on::after{width:30px;background:var(--accent)}
+.toc a::after{content:"";display:block;width:calc(16px + 16px * var(--k,0));height:calc(3px + 2px * var(--k,0));border-radius:3px;background:var(--line);transition:width .12s ease-out,height .12s ease-out}
+.toc a.on::after{background:var(--accent)}
+.toc a.on::after,.toc a.mag::after{background:var(--accent)}
+.toc a.mag::after{background:var(--mut)}
 .toc .label{position:absolute;right:40px;top:50%;transform:translateY(-50%) translateX(6px);opacity:0;pointer-events:none;white-space:nowrap;font-size:13px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 10px;box-shadow:0 4px 14px rgba(31,30,27,.08);transition:opacity .15s ease,transform .15s ease}
-.toc a:hover .label,.toc a:focus-visible .label{opacity:1;transform:translateY(-50%)}
+.toc a.mag .label,.toc a:focus-visible .label{opacity:1;transform:translateY(-50%)}
 .toc .top{height:auto;color:var(--accent);font-size:18px;line-height:1}
 .toc .top::after{display:none}
 footer{padding:28px 0 40px;color:var(--mut);font-size:14px;border-top:1px solid var(--line)}
@@ -126,7 +127,15 @@ def _toc() -> str:
         "entries.forEach((e) => { if (e.isIntersecting && map.has(e.target.id)) {"
         "links.forEach((a) => a.classList.remove('on')); map.get(e.target.id).classList.add('on'); } });"
         "}, {rootMargin: '-40% 0px -55% 0px'});"
-        "document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));})();"
+        "document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));"
+        "const nav = document.querySelector('.toc');"
+        "const items = [...nav.querySelectorAll('li a')];"
+        "nav.addEventListener('mousemove', (e) => {"
+        "const ks = items.map((a) => { const r = a.getBoundingClientRect(); return Math.max(0, 1 - Math.abs(e.clientY - (r.top + r.height / 2)) / 90); });"
+        "const best = ks.indexOf(Math.max(...ks));"
+        "items.forEach((a, i) => { a.style.setProperty('--k', ks[i].toFixed(3)); a.classList.toggle('mag', i === best && ks[i] > 0.3); }); });"
+        "nav.addEventListener('mouseleave', () => items.forEach((a) => { a.style.setProperty('--k', '0'); a.classList.remove('mag'); }));"
+        "})();"
         "</script>"
     )
 
