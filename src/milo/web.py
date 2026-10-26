@@ -20,6 +20,8 @@ from flask import Flask, Response, jsonify, request, session
 from milo.app import App
 from milo.page import DASHBOARD, PAGE
 
+REASONS = ("wrong", "outdated", "missing_source", "hard_to_follow")
+
 
 def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
     web = Flask(__name__)
@@ -53,6 +55,38 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
     @web.get("/dashboard")
     def dashboard() -> Response:
         return Response(DASHBOARD, mimetype="text/html")
+
+    @web.post("/api/feedback")
+    def feedback() -> Any:
+        """One thumbs vote on an answer. Stores the rating, a reason from a fixed list and a hashed owner. No text."""
+        from milo.flows import owner_hash
+
+        body = request.get_json(silent=True) or {}
+        rating = body.get("rating")
+        reason = body.get("reason", "")
+        if rating not in ("up", "down"):
+            return jsonify(
+                {"ok": False, "error": "invalid_input: rating must be up or down"}
+            ), 400
+        if reason and reason not in REASONS:
+            return jsonify({"ok": False, "error": "invalid_input: unknown reason"}), 400
+        if milo_app.trace_path is None:
+            return jsonify(
+                {"ok": False, "error": "feedback is not stored in this run"}
+            ), 503
+        from datetime import datetime
+
+        record = {
+            "ts": datetime.now().isoformat(timespec="seconds"),
+            "owner": owner_hash(owner()),
+            "rating": rating,
+            "reason": reason,
+        }
+        path = milo_app.trace_path.parent / "feedback.jsonl"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a") as f:
+            f.write(json.dumps(record) + "\n")
+        return jsonify({"ok": True})
 
     @web.get("/api/status")
     def status() -> Any:

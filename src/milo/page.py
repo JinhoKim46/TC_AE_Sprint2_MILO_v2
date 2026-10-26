@@ -73,6 +73,7 @@ PAGE = (
 .trust{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .trust .label{font-size:14px;color:var(--mut)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
+.feedback{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}
 .chip{font:inherit;font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
 .chip:hover{border-color:var(--accent)}
 .found{background:var(--bg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
@@ -237,6 +238,37 @@ PAGE = (
     return row;
   }
 
+  function feedbackRow() {
+    const row = el("div", "feedback");
+    row.appendChild(el("span", "muted", "Was this answer useful?"));
+    const up = el("button", "chip", "Yes");
+    const down = el("button", "chip", "No");
+    up.type = "button";
+    down.type = "button";
+    const reasons = el("div", "chips");
+    reasons.hidden = true;
+    const thanks = el("span", "muted", "");
+    thanks.setAttribute("role", "status");
+    const send = (rating, reason) => {
+      fetch("/api/feedback", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({rating, reason})})
+        .then((r) => { thanks.textContent = r.ok ? "Thank you. This goes to the evaluation log, without your question text." : "Feedback could not be saved."; })
+        .catch(() => { thanks.textContent = "Feedback could not be saved."; });
+      up.disabled = true;
+      down.disabled = true;
+      reasons.hidden = true;
+    };
+    up.addEventListener("click", () => send("up", ""));
+    down.addEventListener("click", () => { reasons.hidden = false; });
+    [["wrong", "Wrong"], ["outdated", "Outdated"], ["missing_source", "Missing source"], ["hard_to_follow", "Hard to follow"]].forEach(([key, label]) => {
+      const b = el("button", "chip", label);
+      b.type = "button";
+      b.addEventListener("click", () => send("down", key));
+      reasons.appendChild(b);
+    });
+    row.append(up, down, thanks, reasons);
+    return row;
+  }
+
   function answerCard(m) {
     const card = el("article", "answer");
     if (m.error) {
@@ -300,6 +332,7 @@ PAGE = (
     });
     follow.append(shorter, sources);
     card.appendChild(follow);
+    card.appendChild(feedbackRow());
 
     const more = el("details");
     more.appendChild(el("summary", "", "Show technical details"));
