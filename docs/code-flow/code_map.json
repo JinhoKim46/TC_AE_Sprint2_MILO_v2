@@ -3,7 +3,7 @@
  "scope": ["scripts", "src"],
  "summary": {
   "files": 34,
-  "lines": 5687,
+  "lines": 5694,
   "functions": 140,
   "methods": 96,
   "classes": 27,
@@ -221,7 +221,7 @@
   },
   "milo.landing": {
    "file": "src/milo/landing.py",
-   "lines": 300,
+   "lines": 307,
    "doc": "The MILO product page at the root address: what MILO is, how it works, the demo, and how to start.",
    "cli": false,
    "exports": [],
@@ -1300,8 +1300,8 @@
   "milo.landing:_mock": {
    "kind": "function",
    "file": "src/milo/landing.py",
-   "line": 85,
-   "end": 95,
+   "line": 89,
+   "end": 99,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -1310,8 +1310,8 @@
   "milo.landing:_toc": {
    "kind": "function",
    "file": "src/milo/landing.py",
-   "line": 109,
-   "end": 124,
+   "line": 113,
+   "end": 131,
    "doc": "The section index at the right edge (wide screens only). It marks the section in view and links back to the top.",
    "params": [],
    "decorators": [],
@@ -1320,8 +1320,8 @@
   "milo.landing:landing_page": {
    "kind": "function",
    "file": "src/milo/landing.py",
-   "line": 127,
-   "end": 300,
+   "line": 134,
+   "end": 307,
    "doc": "",
    "params": [
     "user"
@@ -3987,9 +3987,9 @@
   ["milo.kb_pages:index_page", "milo.kb_pages:_documents", 91],
   ["milo.kb_pages:index_page", "milo.kb_pages:_page", 110],
   ["milo.kb_pages:index_page", "milo.shell:site_header", 104],
-  ["milo.landing:landing_page", "milo.landing:_mock", 249],
-  ["milo.landing:landing_page", "milo.landing:_toc", 290],
-  ["milo.landing:landing_page", "milo.shell:site_header", 238],
+  ["milo.landing:landing_page", "milo.landing:_mock", 256],
+  ["milo.landing:landing_page", "milo.landing:_toc", 297],
+  ["milo.landing:landing_page", "milo.shell:site_header", 245],
   ["milo.llm:LangChainChat.invoke", "milo.llm:openai_tool", 39],
   ["milo.llm:LangChainChat.invoke", "milo.llm:text_of", 45],
   ["milo.llm:LangChainChat.invoke", "milo.llm:to_message", 40],

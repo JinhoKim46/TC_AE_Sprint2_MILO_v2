@@ -65,12 +65,16 @@ p{margin:0 0 12px;max-width:66ch}
 .final p{margin:0 auto 18px;color:#E6F0EC}
 .final .btn{background:#fff;border-color:#fff;color:var(--accent)}
 .toc{display:none}
-@media (min-width:1360px){.toc{display:block;position:fixed;top:120px;right:12px;width:150px;font-size:14px;z-index:5}}
-.toc ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);display:flex;flex-direction:column}
-.toc a{display:block;padding:6px 0 6px 14px;margin-left:-2px;border-left:2px solid transparent;color:var(--mut);text-decoration:none}
-.toc a:hover{color:var(--ink)}
-.toc a.on{color:var(--accent);border-left-color:var(--accent);font-weight:600}
-.toc .top{display:inline-block;margin-top:14px;color:var(--accent);text-decoration:none;font-weight:600}
+@media (min-width:1360px){.toc{display:flex;flex-direction:column;align-items:flex-end;gap:14px;position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:5}}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.toc a{position:relative;display:flex;align-items:center;justify-content:flex-end;height:14px;text-decoration:none;color:var(--mut)}
+.toc a::after{content:"";display:block;width:18px;height:3px;border-radius:2px;background:var(--line);transition:width .15s ease,background .15s ease}
+.toc a:hover::after,.toc a:focus-visible::after{width:30px;background:var(--mut)}
+.toc a.on::after{width:30px;background:var(--accent)}
+.toc .label{position:absolute;right:40px;top:50%;transform:translateY(-50%) translateX(6px);opacity:0;pointer-events:none;white-space:nowrap;font-size:13px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 10px;box-shadow:0 4px 14px rgba(31,30,27,.08);transition:opacity .15s ease,transform .15s ease}
+.toc a:hover .label,.toc a:focus-visible .label{opacity:1;transform:translateY(-50%)}
+.toc .top{height:auto;color:var(--accent);font-size:18px;line-height:1}
+.toc .top::after{display:none}
 footer{padding:28px 0 40px;color:var(--mut);font-size:14px;border-top:1px solid var(--line)}
 footer a{margin-right:14px}
 .note{background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:12px 14px;font-size:14px}
@@ -108,10 +112,13 @@ SECTIONS = [
 
 def _toc() -> str:
     """The section index at the right edge (wide screens only). It marks the section in view and links back to the top."""
-    items = "".join(f'<li><a href="#{sid}">{label}</a></li>' for sid, label in SECTIONS)
+    items = "".join(
+        f'<li><a href="#{sid}"><span class="label">{label}</span></a></li>'
+        for sid, label in SECTIONS
+    )
     return (
         '<nav class="toc" aria-label="On this page"><ol>' + items + "</ol>"
-        '<a class="top" href="#top">Back to top</a></nav>'
+        '<a class="top" href="#top" aria-label="Back to top"><span class="label">Back to top</span>&uarr;</a></nav>'
         "<script>"
         "(() => {const links = [...document.querySelectorAll('.toc a[href^=\"#\"]')];"
         "const map = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));"
@@ -242,7 +249,7 @@ def landing_page(user=None) -> str:
         '<p class="lede">MILO listens to how your team works, finds the matching passages from past cases and service areas, '
         "and shows you the savings as a range, with every source and step visible.</p>"
         '<div class="ctas"><a class="btn primary" href="/chat?new=1">Start a conversation</a>'
-        '<a class="btn" href="#stories">Watch a demo storyline</a></div>'
+        '<a class="btn" href="#stories">Try a demo storyline</a></div>'
         '<div class="stats"><div class="stat"><b>Cited answers</b>Every claim names its passage</div>'
         '<div class="stat"><b>Ranges, not guesses</b>Estimates are computed in code</div></div></div>'
         '<div class="hero-art"><img src="/static/milo-mascot.svg" alt="Milo, the MILO mascot, waving" width="240" height="264">'
