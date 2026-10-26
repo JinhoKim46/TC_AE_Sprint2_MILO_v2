@@ -11,3 +11,4 @@ data/index/
 
 # traces written by the web app (question lengths and steps only)
 logs/
+data/voices/

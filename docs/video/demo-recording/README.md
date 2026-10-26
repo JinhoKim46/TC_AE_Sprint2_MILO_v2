@@ -22,6 +22,18 @@ the proposed spec. The run lasts about 51 seconds, real time.
 The browser shows the notice "Chrome is being controlled by automated test software". It is left in on purpose: it is
 the honest sign that the recording was automated.
 
+## Narration
+
+`record-demo.mjs` also writes `caption-timeline.json`: the time each caption appeared. `narration.json` gives one spoken line
+per caption (an empty line means the caption is covered by the one before). Then:
+
+    uv run python scripts/narrate_demo.py --video milo-chat-demo.mp4 --timeline caption-timeline.json \
+        --ffmpeg <ffmpeg> --out milo-chat-demo-narrated.mp4
+
+The voice is Piper with the public-domain LJSpeech model (`data/voices/en_US-ljspeech-medium.onnx`, not in git; download
+it from the rhasspy/piper-voices repository). Each line starts at its caption's time, and is spoken faster only if it is
+longer than its scene. The video is copied, not re-encoded.
+
 ## Earlier versions
 
 Two earlier methods gave a video whose length did not match the session (a timed screencast and a screenshot loop).

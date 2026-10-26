@@ -1,0 +1,12 @@
+{
+  "MILO: a diagnosis chat that shows its work": "This is MILO, a diagnosis chat that shows its work.",
+  "Sign in, then ask one question about the business": "",
+  "Question: requests and the time to assign them": "The owner asks: forty service requests a week, twelve minutes each to assign. The answer cites its sources.",
+  "The answer cites its sources; the steps are in the side panel": "",
+  "Tool calls: name, arguments, result and the policy decision": "Each tool call shows its arguments and result.",
+  "The full source opens with the passage highlighted in its context": "Any source opens in full, with the passage highlighted.",
+  "A fact from the owner is recorded by a tool call (allowed)": "A fact from the owner is recorded by a tool call, and the policy allows it.",
+  "A destructive action is blocked until the owner approves it": "A destructive action is blocked until the owner approves it.",
+  "At the end: the summary and the proposed first spec": "MILO proposes a first spec.",
+  "Every number comes from the recorded facts and the computed estimate": "Every number is computed from facts."
+}
