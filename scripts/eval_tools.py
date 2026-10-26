@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -29,9 +30,34 @@ CASES = ROOT / "data" / "tool_cases.jsonl"
 RESULTS = ROOT / "evals" / "results" / "tools" / "tool_eval.json"
 
 
+FREE_TEXT = {"evidence_text", "unit", "query"}
+
+
+def _owner_words(s: str) -> str:
+    return re.sub(r"[\"'\s]+", " ", s).strip().casefold()
+
+
 def score(case: dict[str, Any], called: list[dict[str, Any]]) -> dict[str, bool]:
+    """strict: every expected argument equal, free text included. lenient: structured arguments only, and any
+    evidence_text must be the owner's own words (a substring of the query, ignoring quotes and case)."""
     expected = case["expected_calls"]
     selection = {c["name"] for c in expected} == {c["name"] for c in called}
+    params = True
+    lenient = True
+    query = _owner_words(case.get("query", ""))
+    for exp in expected:
+        match = [c for c in called if c["name"] == exp["name"]]
+        if not match:
+            lenient = False
+            break
+        got = match[0]["args"]
+        for key, value in exp["args"].items():
+            if key in FREE_TEXT:
+                continue
+            lenient = lenient and _same(got.get(key), value)
+        ev = got.get("evidence_text")
+        if exp["name"] == "record_fact" and ev is not None:
+            lenient = lenient and _owner_words(str(ev)) in query
     params = True
     for exp in expected:
         match = [c for c in called if c["name"] == exp["name"]]
@@ -41,13 +67,20 @@ def score(case: dict[str, Any], called: list[dict[str, Any]]) -> dict[str, bool]
         got = match[0]["args"]
         for key, value in exp["args"].items():
             g = got.get(key)
-            if isinstance(value, (int, float)) and isinstance(g, (int, float)):
-                ok = float(g) == float(value)
-            else:
-                ok = g == value
-            params = params and ok
+            params = params and _same(g, value)
     over_eager = (not expected) and bool(called)
-    return {"selection": selection, "parameters": params, "over_eager": over_eager}
+    return {
+        "selection": selection,
+        "parameters": params,
+        "parameters_lenient": lenient,
+        "over_eager": over_eager,
+    }
+
+
+def _same(got: Any, want: Any) -> bool:
+    if isinstance(want, (int, float)) and isinstance(got, (int, float)):
+        return float(got) == float(want)
+    return got == want
 
 
 def aggregate(rows: list[dict[str, Any]]) -> dict[str, float]:
@@ -56,6 +89,8 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, float]:
     return {
         "selection_rate": sum(r["selection"] for r in rows) / len(rows),
         "parameter_rate": sum(r["parameters"] for r in with_calls)
+        / max(len(with_calls), 1),
+        "parameter_rate_lenient": sum(r["parameters_lenient"] for r in with_calls)
         / max(len(with_calls), 1),
         "false_call_rate": sum(r["over_eager"] for r in no_calls)
         / max(len(no_calls), 1),
@@ -84,6 +119,7 @@ def selftest() -> None:
     assert score(case, good) == {
         "selection": True,
         "parameters": True,
+        "parameters_lenient": True,
         "over_eager": False,
     }
     assert score(case, wrong_value)["parameters"] is False
