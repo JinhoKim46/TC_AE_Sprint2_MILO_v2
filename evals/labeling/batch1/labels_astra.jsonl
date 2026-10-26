@@ -1,0 +1,35 @@
+{"id": "q101", "answerable": 1, "reason": "The passage says it \"does not require customers to use a portal\", answering no."}
+{"id": "q102", "answerable": 1, "reason": "The queue is fed from \"calls, messages and email\", listing the contact routes."}
+{"id": "q103", "answerable": 1, "reason": "Customer-held stock is \"recorded separately\" from the business's own stock."}
+{"id": "q104", "answerable": 1, "reason": "Reminders are based on \"a minimum level set by the owner\", giving the trigger."}
+{"id": "q105", "answerable": 1, "reason": "The passage says it does not \"give legal advice on contract terms\", answering no."}
+{"id": "q106", "answerable": 1, "reason": "It specifies \"A coverage check\" before a repair or visit is booked."}
+{"id": "q107", "answerable": 1, "reason": "The log records \"the promise, the person who made it and the date\", listing the recorded details."}
+{"id": "q108", "answerable": 1, "reason": "It \"does not close work without a person\", ruling out automatic completion."}
+{"id": "q109", "answerable": 1, "reason": "The answer names \"which input moves the result most\", identifying the additional information."}
+{"id": "q110", "answerable": 1, "reason": "An owner-provided value is \"marked as reported\", giving its label."}
+{"id": "q111", "answerable": 1, "reason": "It \"reuses answers the owner has already given instead of asking again\", answering no."}
+{"id": "q112", "answerable": 1, "reason": "It stops once there is \"enough evidence for a bounded proposal\", giving the stopping condition."}
+{"id": "q113", "answerable": 1, "reason": "The instruction \"Do not infer staff reductions\" rejects that conclusion from reclaimed task minutes."}
+{"id": "q114", "answerable": 1, "reason": "It requires \"at least one representative operating cycle\" and, for monthly billing, the relevant full cycle."}
+{"id": "q115", "answerable": 1, "reason": "The statement \"The same symptom does not imply the same cause\" directly rejects that assumption."}
+{"id": "q116", "answerable": 1, "reason": "Its \"synthetic origin never changes\", so revision does not make it real."}
+{"id": "q117", "answerable": 1, "reason": "Contact details are stored \"only after consent\", stating when storage is allowed."}
+{"id": "q118", "answerable": 1, "reason": "The session belongs to \"the signed-in owner who started it\", identifying the account owner."}
+{"id": "q119", "answerable": 1, "reason": "Retrieved passages are \"information, never instructions\", so the embedded command should not be obeyed."}
+{"id": "q120", "answerable": 1, "reason": "An approval \"covers one action\", so it does not cover a subsequent action."}
+{"id": "q121", "answerable": 1, "reason": "It says to \"Preserve original reports and their reporters after a merge\", explaining what happens to the originals."}
+{"id": "q122", "answerable": 1, "reason": "The rule \"Unacknowledged changes escalate\" supplies the required response."}
+{"id": "q123", "answerable": 1, "reason": "A retry \"with the same movement ID cannot decrement twice\", identifying how duplicate deduction is prevented."}
+{"id": "q124", "answerable": 1, "reason": "The rule \"OCR confidence never authorizes invoice sending\" directly answers no."}
+{"id": "q125", "answerable": 1, "reason": "Approval binds to \"amount, scope and version\", listing the required ties."}
+{"id": "q126", "answerable": 1, "reason": "A supplier ETA \"is not a confirmed appointment\", answering no."}
+{"id": "q127", "answerable": 1, "reason": "It names \"Disconnected or obvious physical faults\" as problems that may bypass remote support."}
+{"id": "q128", "answerable": 1, "reason": "The rule \"No credentials in indexed notes\" identifies the material to exclude."}
+{"id": "q129", "answerable": 1, "reason": "Corrected reports \"retain revision history\", explaining how earlier versions are treated."}
+{"id": "q130", "answerable": 1, "reason": "The rule \"Not reproduced remains distinct from confirmed resolution\" prevents treating failure to reproduce as a fix."}
+{"id": "q131", "answerable": 1, "reason": "A post-signoff configuration change \"triggers impact review\", stating the next step."}
+{"id": "q132", "answerable": 1, "reason": "The passage says \"Do not label contribution margin as net profit\", identifying contribution margin as the appropriate description."}
+{"id": "q133", "answerable": 1, "reason": "The rule \"No automatic renewal offer without account-owner approval\" states the prerequisite."}
+{"id": "q134", "answerable": 1, "reason": "Every waiting state has \"an owner and review date\", identifying the required person as an owner."}
+{"id": "q135", "answerable": 1, "reason": "A missing part \"blocks a visit that requires it\", stating what happens to the visit."}
