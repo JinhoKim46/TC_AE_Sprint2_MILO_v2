@@ -53,6 +53,10 @@ PAGE = (
 .how small{color:var(--mut)}
 .num{flex:0 0 26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
 .side .spacer{flex:1}
+.demo h3{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.demo-list{display:flex;flex-direction:column;gap:8px}
+.demo-list button{text-align:left;font-size:14px;padding:10px 12px;line-height:1.35}
+.demo-list button small{display:block;color:var(--mut);font-size:12px;margin-top:2px}
 .main{display:flex;flex-direction:column;min-width:0;min-height:0}
 .topbar{padding:14px 24px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
 .topbar h1{font-size:17px}
@@ -68,6 +72,9 @@ PAGE = (
 .answer .text{white-space:pre-wrap;word-break:break-word;font-size:16px}
 .trust{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .trust .label{font-size:14px;color:var(--mut)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
 .found{background:var(--bg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
 .found h3{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
 .found ul{margin:0;padding-left:18px;font-size:15px}
@@ -114,6 +121,11 @@ PAGE = (
         <li><span class="num">3</span><div><b>It checks and records</b><small>Saves what you tell it and works out savings with a calculation, not a guess.</small></div></li>
         <li><span class="num">4</span><div><b>It answers from the passages</b><small>Each answer shows where it came from and how sure it is.</small></div></li>
       </ol>
+    </div>
+    <div class="demo">
+      <h3>Demo storylines</h3>
+      <p class="muted">Run a scripted conversation, one question after another.</p>
+      <div id="demos" class="demo-list"></div>
     </div>
     <div class="spacer"></div>
     <p class="muted">Your conversation is kept for this browser. Clearing cookies starts a new one.</p>
@@ -228,7 +240,16 @@ PAGE = (
   function answerCard(m) {
     const card = el("article", "answer");
     if (m.error) {
-      card.appendChild(el("div", "notice", m.text));
+      const n = el("div", "notice", m.text);
+      n.setAttribute("role", "alert");
+      card.appendChild(n);
+      return card;
+    }
+    if (m.unanswered) {
+      const box = el("div", "notice");
+      box.appendChild(el("b", "", "Not enough information in the knowledge base."));
+      box.appendChild(el("div", "", "Nothing in MILO's passages answers this. Next steps: describe the kind of work and the service area it belongs to, or ask about one of the four service areas."));
+      card.appendChild(box);
       return card;
     }
     card.appendChild(el("div", "text", m.text));
@@ -266,6 +287,19 @@ PAGE = (
       m.tool_results.forEach((t) => steps.appendChild(toolLine(t)));
       card.appendChild(steps);
     }
+
+    const follow = el("div", "chips");
+    const shorter = el("button", "chip", "Shorter answer");
+    shorter.type = "button";
+    shorter.addEventListener("click", () => { if (!busy && m.question) ask("In two sentences: " + m.question); });
+    const sources = el("button", "chip", "Show the sources");
+    sources.type = "button";
+    sources.addEventListener("click", () => {
+      const d = card.querySelector("details");
+      if (d) { d.open = true; d.scrollIntoView({behavior: "smooth", block: "nearest"}); }
+    });
+    follow.append(shorter, sources);
+    card.appendChild(follow);
 
     const more = el("details");
     more.appendChild(el("summary", "", "Show technical details"));
@@ -305,7 +339,8 @@ PAGE = (
     if (!messages.length) {
       const hello = el("div", "hello");
       hello.appendChild(el("h2", "", "What would you like to look at first?"));
-      hello.appendChild(el("p", "muted", "Describe one kind of work in your business. MILO will ask follow-up questions when it needs more facts."));
+      hello.appendChild(el("p", "muted", "MILO can find the passages that match your work, save facts you tell it, estimate the time an automation would save as a range, and show every step it took."));
+      hello.appendChild(el("p", "muted", "It cannot diagnose your systems from a chat alone, and it does not give prices. Describe one kind of work to start."));
       const list = el("div", "starters");
       STARTERS.forEach((s) => {
         const b = el("button", "", s);
@@ -352,6 +387,8 @@ PAGE = (
       const data = await res.json();
       const reply = {
         role: "assistant",
+        question,
+        unanswered: !data.error && (data.sources || []).length === 0 && String(data.answer || "").startsWith("I do not know"),
         text: data.answer || "",
         sources: data.sources || [],
         tool_results: data.tool_results || [],
@@ -398,7 +435,36 @@ PAGE = (
     }
     render();
   }
+  async function loadDemos() {
+    try {
+      const res = await fetch("/api/demo");
+      const data = await res.json();
+      const list = document.getElementById("demos");
+      list.replaceChildren();
+      (data.storylines || []).forEach((st) => {
+        const b = el("button", "");
+        b.type = "button";
+        b.append(el("span", "", st.title), el("small", "", st.steps.length + (st.steps.length === 1 ? " question" : " questions")));
+        b.addEventListener("click", () => runStory(st, b));
+        list.appendChild(b);
+      });
+    } catch (err) {
+      /* demos are optional */
+    }
+  }
+
+  async function runStory(st, button) {
+    if (busy) return;
+    button.disabled = true;
+    for (const q of st.steps) {
+      await ask(q);
+    }
+    button.disabled = false;
+    input.focus();
+  }
+
   loadHistory();
+  loadDemos();
 })();
 </script>
 </body>
@@ -424,12 +490,12 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
 .card h2{font-size:17px;margin-bottom:6px}
 .card .sub{color:var(--mut);font-size:14px;margin-bottom:14px}
-.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:stretch}
-.flow .box{background:var(--bg);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;border:1px solid var(--line)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.flow .box{background:var(--bg);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);flex:1 1 150px;min-width:0}
 .flow .box b{font-size:14px}
 .flow .box .n{font-size:26px;font-weight:700;color:var(--accent)}
 .flow .box small{color:var(--mut);font-size:13px}
-.flow .arrow{align-self:center;color:var(--mut);font-size:20px;text-align:center}
+.flow .arrow{align-self:center;color:var(--mut);font-size:22px;padding:0 2px}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .kpi{background:var(--bg);border-radius:14px;padding:14px}
 .kpi .v{font-size:24px;font-weight:700}
@@ -450,6 +516,16 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
 .tl b{font-size:15px}
 .tl p{margin:3px 0 0;color:var(--mut);font-size:14px}
 .empty{color:var(--mut);padding:18px 0;font-size:15px}
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.svc{background:var(--bg);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px}
+.svc b{font-size:15px}
+.svc small{color:var(--mut);font-size:13px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--mut);vertical-align:middle}
+.dot.ok{background:var(--accent)}
+.dot.bad{background:var(--low)}
+.spend{margin-top:14px;font-size:14px}
+.spend .track{background:var(--bg);border-radius:8px;height:14px;overflow:hidden;margin:6px 0}
+.spend .fill{background:var(--accent);height:100%;border-radius:8px}
 @media (max-width:860px){.flow{grid-template-columns:1fr}.flow .arrow{display:none}.kpis{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}.bars .bar{grid-template-columns:120px 1fr 30px}}
 </style>
 </head>
@@ -461,6 +537,13 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
   <button id="refresh" type="button">Refresh</button>
 </header>
 <main>
+  <section class="card" id="status-card">
+    <h2>System status</h2>
+    <p class="sub">Live checks of the parts MILO depends on, and spend against the course cap.</p>
+    <div class="status-grid" id="status-grid"></div>
+    <div class="spend" id="spend"></div>
+  </section>
+
   <section class="card">
     <h2>The path every question takes</h2>
     <p class="sub">Counts are for your conversation in this browser. Each step is a real part of the system.</p>
@@ -623,6 +706,48 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
     });
   }
   document.getElementById("refresh").addEventListener("click", load);
+  async function loadStatus() {
+    try {
+      const res = await fetch("/api/status");
+      const d = await res.json();
+      const grid = document.getElementById("status-grid");
+      grid.replaceChildren();
+      const db = d.store.database;
+      const card = (title, ok, detail) => {
+        const c = el("div", "svc");
+        const head = el("b", "");
+        head.append(el("span", "dot " + (ok ? "ok" : "bad")), title);
+        c.append(head, el("small", "", detail));
+        grid.appendChild(c);
+      };
+      if (db) {
+        card("Database", db.reachable, db.reachable
+          ? "Supabase PostgreSQL, " + db.latency_ms + " ms. " + db.threads + " conversations, " + db.turns + " messages, " + db.facts + " facts, " + db.diagnoses + " diagnoses."
+          : "Not reachable (" + (db.error || "error") + ").");
+      } else {
+        card("Storage", true, "In memory. Lost on restart. Set MILO_STORE=postgres for the database.");
+      }
+      const m = d.models.primary;
+      card("Primary model", m.key_set && m.live_enabled, m.model + (m.key_set && m.live_enabled ? ". Live calls on." : ". Live calls off or key missing."));
+      const f = d.models.fallback;
+      card("Local fallback", f.reachable, f.reachable ? "Ollama is running. Models: " + (f.models || []).join(", ") + "." : "Ollama is not reachable.");
+      const sp = d.spend;
+      const pct = Math.min(100, (sp.web_cost_usd / sp.course_cap_usd) * 100);
+      const spend = document.getElementById("spend");
+      spend.replaceChildren();
+      spend.append(el("div", "", "Spend on web answers: " + money(sp.web_cost_usd) + " over " + sp.web_answers + " answers, against a course cap of $" + sp.course_cap_usd.toFixed(2) + "."));
+      const track = el("div", "track");
+      const fill = el("div", "fill");
+      fill.style.width = Math.max(1, pct).toFixed(2) + "%";
+      track.appendChild(fill);
+      spend.appendChild(track);
+      spend.appendChild(el("small", "muted", sp.note));
+    } catch (err) {
+      document.getElementById("status-grid").replaceChildren(el("div", "empty", "Status could not be read. Is the server running?"));
+    }
+  }
+  document.getElementById("refresh").addEventListener("click", () => { load(); loadStatus(); });
+  loadStatus();
   load();
 })();
 </script>
