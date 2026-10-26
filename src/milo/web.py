@@ -7,10 +7,12 @@ Routes:
 
 from __future__ import annotations
 
+import json
 import os
 import secrets
 import uuid
 from dataclasses import asdict
+from pathlib import Path
 from typing import Any
 
 from flask import Flask, Response, jsonify, request, session
@@ -51,6 +53,29 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
     @web.get("/dashboard")
     def dashboard() -> Response:
         return Response(DASHBOARD, mimetype="text/html")
+
+    @web.get("/api/status")
+    def status() -> Any:
+        from milo.status import snapshot
+
+        kind = (
+            "postgres" if type(milo_app.store).__name__ == "PostgresStore" else "memory"
+        )
+        url = os.environ.get("MILO_DATABASE_URL")
+        model = os.environ.get("MILO_CHAT_MODEL", "anthropic/claude-haiku-5.5")
+        return jsonify(snapshot(kind, url, milo_app.trace_path, model))
+
+    @web.get("/api/demo")
+    def demo() -> Any:
+        return jsonify(
+            json.loads(
+                (
+                    Path(__file__).resolve().parents[2]
+                    / "data"
+                    / "demo_storylines.json"
+                ).read_text()
+            )
+        )
 
     @web.get("/api/history")
     def history() -> Any:
