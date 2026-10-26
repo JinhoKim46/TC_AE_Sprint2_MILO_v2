@@ -119,3 +119,23 @@ def live_chat_model() -> LangChainChat:
         max_retries=0,  # retries are the app's job (M5), so they stay visible and bounded
     )
     return LangChainChat(chat, price)
+
+
+LOCAL_BASE_URL = "http://localhost:11434/v1"  # Ollama's OpenAI-compatible endpoint
+DEFAULT_LOCAL_MODEL = "qwen3:8b"
+
+
+def local_chat_model() -> LangChainChat:
+    """The fallback: a local Ollama model through the same OpenAI-compatible client. No key, no spend."""
+    from langchain_openai import ChatOpenAI
+
+    model = os.environ.get("MILO_LOCAL_MODEL", DEFAULT_LOCAL_MODEL)
+    chat = ChatOpenAI(
+        model=model,
+        api_key="ollama",
+        base_url=LOCAL_BASE_URL,
+        temperature=0,
+        timeout=60,
+        max_retries=0,
+    )
+    return LangChainChat(chat, (0.0, 0.0))
