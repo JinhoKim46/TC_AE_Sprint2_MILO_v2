@@ -2,9 +2,9 @@
   "model": "anthropic/claude-haiku-5.5",
   "cases": 20,
   "metrics": {
-    "selection_rate": 0.6,
+    "selection_rate": 0.7,
     "parameter_rate": 0.3125,
-    "parameter_rate_lenient": 0.5625,
+    "parameter_rate_lenient": 0.625,
     "false_call_rate": 0.0
   },
   "rows": [
@@ -64,9 +64,9 @@
           "args": {
             "field_id": "requests_per_week",
             "value": 60,
+            "unit": "requests per week",
             "status": "reported",
-            "evidence_text": "We get about 60 requests in a normal week.",
-            "unit": "requests per week"
+            "evidence_text": "We get about 60 requests in a normal week."
           }
         }
       ],
@@ -95,6 +95,7 @@
           "args": {
             "field_id": "staff_in_operations",
             "value": 5,
+            "unit": "people",
             "status": "reported",
             "evidence_text": "There are 5 of us in the office handling calls, dispatch and stock."
           }
@@ -183,7 +184,7 @@
           "args": {
             "field_id": "minutes_per_search",
             "value": 10,
-            "unit": "minutes",
+            "unit": "minutes per search",
             "status": "reported",
             "evidence_text": "Looking for toner takes me maybe 10 minutes each time."
           }
@@ -235,7 +236,7 @@
           "name": "record_fact",
           "args": {
             "field_id": "reading_method",
-            "value": "photos (mostly)",
+            "value": "photos",
             "status": "reported",
             "evidence_text": "We take about 400 meter readings a month, mostly from photos."
           }
@@ -290,13 +291,9 @@
             "status": "reported",
             "evidence_text": "each answer takes 5 minutes"
           }
-        },
-        {
-          "name": "get_recorded_facts",
-          "args": {}
         }
       ],
-      "selection": false,
+      "selection": true,
       "parameters": false,
       "parameters_lenient": false,
       "over_eager": false
@@ -312,10 +309,24 @@
           }
         }
       ],
-      "called": [],
-      "selection": false,
+      "called": [
+        {
+          "name": "search_knowledge",
+          "args": {
+            "query": "shop lost jobs because requests were taken by phone only",
+            "section": "cases"
+          }
+        },
+        {
+          "name": "search_knowledge",
+          "args": {
+            "query": "missed or lost requests phone calls only, no shared queue"
+          }
+        }
+      ],
+      "selection": true,
       "parameters": false,
-      "parameters_lenient": false,
+      "parameters_lenient": true,
       "over_eager": false
     },
     {
@@ -329,8 +340,15 @@
           }
         }
       ],
-      "called": [],
-      "selection": false,
+      "called": [
+        {
+          "name": "search_knowledge",
+          "args": {
+            "query": "how service businesses track toner and spare parts consumables stock"
+          }
+        }
+      ],
+      "selection": true,
       "parameters": false,
       "parameters_lenient": false,
       "over_eager": false
@@ -366,17 +384,13 @@
       ],
       "called": [
         {
-          "name": "get_recorded_facts",
-          "args": {}
-        },
-        {
           "name": "estimate_effect",
           "args": {
             "area_id": "request-dispatch"
           }
         }
       ],
-      "selection": false,
+      "selection": true,
       "parameters": true,
       "parameters_lenient": true,
       "over_eager": false
@@ -393,13 +407,17 @@
       ],
       "called": [
         {
+          "name": "get_recorded_facts",
+          "args": {}
+        },
+        {
           "name": "estimate_effect",
           "args": {
             "area_id": "consumables-stock"
           }
         }
       ],
-      "selection": true,
+      "selection": false,
       "parameters": true,
       "parameters_lenient": true,
       "over_eager": false
@@ -443,13 +461,17 @@
       ],
       "called": [
         {
+          "name": "get_recorded_facts",
+          "args": {}
+        },
+        {
           "name": "draft_diagnosis",
           "args": {
             "area_id": "operations-overview"
           }
         }
       ],
-      "selection": true,
+      "selection": false,
       "parameters": true,
       "parameters_lenient": true,
       "over_eager": false
