@@ -27,7 +27,7 @@ const caption = (text) => (timeline.push({ text, at: (Date.now() - tStart) / 100
   if (!el) {
     el = document.createElement("div");
     el.id = "demo-caption";
-    el.style.cssText = "position:fixed;left:24px;bottom:24px;z-index:99;background:#1F1E1B;color:#fff;padding:12px 18px;border-radius:12px;font:600 18px system-ui,sans-serif;max-width:60%;box-shadow:0 6px 18px rgba(0,0,0,.25)";
+    el.style.cssText = "position:fixed;left:50%;bottom:36px;transform:translateX(-50%);z-index:99;max-width:70%;text-align:center;color:#fff;font:600 22px/1.35 system-ui,sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 12px rgba(0,0,0,.6);pointer-events:none";
     document.body.appendChild(el);
   }
   el.textContent = t;

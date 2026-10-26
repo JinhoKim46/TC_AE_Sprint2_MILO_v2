@@ -30,7 +30,7 @@ per caption (an empty line means the caption is covered by the one before). Then
     uv run python scripts/narrate_demo.py --video milo-chat-demo.mp4 --timeline caption-timeline.json \
         --ffmpeg <ffmpeg> --out milo-chat-demo-narrated.mp4
 
-The voice is Piper with the public-domain LJSpeech model (`data/voices/en_US-ljspeech-medium.onnx`, not in git; download
+The narration is calm: a slower pace and less variation than the defaults. A quiet, bright background (a major-key figure) runs under it, about 18 dB below the voice. The voice is Piper with the public-domain LJSpeech model (`data/voices/en_US-ljspeech-medium.onnx`, not in git; download
 it from the rhasspy/piper-voices repository). Each line starts at its caption's time, and is spoken faster only if it is
 longer than its scene. The video is copied, not re-encoded.
 
