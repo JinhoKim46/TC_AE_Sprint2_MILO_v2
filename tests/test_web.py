@@ -149,7 +149,7 @@ def test_feedback_stores_rating_and_reason_with_a_hashed_owner(tmp_path) -> None
     milo = build_app(ToolThenAnswer(), LexicalEmbedder(), Backend(store=store))
     milo.store = store
     milo.trace_path = tmp_path / "trace.jsonl"
-    web, c, _ = signed_in_app(milo)
+    _, c, _ = signed_in_app(milo)
     ok = c.post("/api/feedback", json={"rating": "down", "reason": "missing_source"})
     assert ok.get_json()["ok"] is True
     bad_rating = c.post("/api/feedback", json={"rating": "maybe"})
