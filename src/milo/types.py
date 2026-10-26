@@ -59,6 +59,7 @@ class Response:
     cost_usd: float = 0.0
     stopped: bool = False
     error: str | None = None
+    trace: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass

@@ -13,72 +13,10 @@ import uuid
 from dataclasses import asdict
 from typing import Any
 
-from flask import Flask, jsonify, render_template_string, request, session
+from flask import Flask, Response, jsonify, request, session
 
 from milo.app import App
-
-PAGE = """<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MILO diagnosis chat</title>
-<style>
-:root{--bg:#fafaf8;--fg:#1d1d1b;--mut:#6b6b66;--line:#dcdcd6;--ok:#2c6b3f;--warn:#8a5a00;--bad:#9b2c2c}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#161615;--fg:#ecece8;--mut:#9a9a94;--line:#3a3a36;--ok:#7bc08f;--warn:#e0b060;--bad:#e08080}}
-:root[data-theme="dark"]{--bg:#161615;--fg:#ecece8;--mut:#9a9a94;--line:#3a3a36;--ok:#7bc08f;--warn:#e0b060;--bad:#e08080}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
-main{max-width:960px;margin:0 auto;padding:16px}
-h1{font-size:20px;margin:8px 0 12px}
-#log{border:1px solid var(--line);border-radius:8px;padding:12px;min-height:160px;white-space:pre-wrap}
-form{display:flex;gap:8px;margin:12px 0}
-textarea{flex:1;min-height:56px;font:inherit;color:inherit;background:transparent;border:1px solid var(--line);border-radius:8px;padding:8px}
-button{font:inherit;padding:8px 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:inherit;cursor:pointer}
-.grid{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-@media (max-width:720px){.grid{grid-template-columns:1fr}}
-.panel{border:1px solid var(--line);border-radius:8px;padding:10px;font-size:14px}
-.panel h2{font-size:14px;margin:0 0 6px;color:var(--mut)}
-.src{margin-bottom:8px}.src code{color:var(--mut)}
-.tool{margin-bottom:8px}.allowed{color:var(--ok)}.needs_approval{color:var(--warn)}.denied{color:var(--bad)}
-#status{color:var(--mut);min-height:1.5em;font-size:14px}
-#cost{color:var(--mut);font-size:13px}
-</style></head>
-<body><main>
-<h1>MILO: diagnosis chat</h1>
-<div id="log" aria-live="polite">Describe how your business handles one kind of work. MILO answers from its knowledge base.</div>
-<form id="ask"><textarea id="q" placeholder="Ask a question" aria-label="Question"></textarea><button type="submit">Send</button></form>
-<div id="status" role="status"></div>
-<div id="cost"></div>
-<div class="grid">
-  <section class="panel"><h2>Sources</h2><div id="sources">None yet.</div></section>
-  <section class="panel"><h2>Tool calls</h2><div id="tools">None yet.</div></section>
-</div>
-</main>
-<script>
-const form = document.getElementById("ask");
-const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-form.addEventListener("submit", async e => {
-  e.preventDefault();
-  const q = document.getElementById("q").value.trim();
-  if (!q) return;
-  const status = document.getElementById("status");
-  status.textContent = "Thinking...";
-  const res = await fetch("/api/ask", {method: "POST", headers: {"Content-Type": "application/json"},
-                                       body: JSON.stringify({question: q})});
-  const data = await res.json();
-  status.textContent = "";
-  document.getElementById("log").textContent += "\\n\\nYou: " + q + "\\nMILO: " + (data.answer || "");
-  document.getElementById("cost").textContent = "Cost of this answer: " + (data.cost_usd || 0).toFixed(6) + " USD";
-  document.getElementById("sources").innerHTML = (data.sources || []).map(s =>
-    `<div class="src"><code>${esc(s.chunk_id)}</code><br>${esc(s.doc_id)} (score ${s.score.toFixed(3)})<br>${esc(s.text.slice(0, 160))}</div>`
-  ).join("") || "None.";
-  document.getElementById("tools").innerHTML = (data.tool_results || []).map(t =>
-    `<div class="tool"><b>${esc(t.name)}</b> <span class="${esc(t.policy_decision)}">${esc(t.policy_decision)}</span><br>` +
-    `arguments: <code>${esc(JSON.stringify(t.arguments))}</code><br>result: <code>${esc(JSON.stringify(t.output))}</code></div>`
-  ).join("") || "None.";
-  if (data.error) status.textContent = "Something went wrong. Please try again.";
-  document.getElementById("q").value = "";
-});
-</script>
-</body></html>
-"""
+from milo.page import DASHBOARD, PAGE
 
 
 def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
@@ -95,9 +33,30 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
         return session["owner"]
 
     @web.get("/")
-    def index() -> str:
+    def index() -> Response:
+        if request.args.get("new"):
+            session["thread"] = (
+                uuid.uuid4().hex
+            )  # a fresh conversation for the same owner
         owner()
-        return render_template_string(PAGE)
+        return Response(PAGE, mimetype="text/html")
+
+    @web.get("/api/flows")
+    def flows() -> Any:
+        from milo.flows import read_flows, summarize
+
+        rows = read_flows(milo_app.trace_path, owner())
+        return jsonify({"flows": rows, "summary": summarize(rows)})
+
+    @web.get("/dashboard")
+    def dashboard() -> Response:
+        return Response(DASHBOARD, mimetype="text/html")
+
+    @web.get("/api/history")
+    def history() -> Any:
+        owner_id = owner()
+        turns = milo_app.store.history(owner_id, session["thread"], limit=40)
+        return jsonify({"turns": turns})
 
     @web.post("/api/ask")
     def ask() -> Any:
@@ -117,6 +76,7 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
                 "stopped": response.stopped,
                 "sources": [asdict(s) for s in response.sources],
                 "tool_results": [asdict(t) for t in response.tool_results],
+                "trace": response.trace,
             }
         )
 

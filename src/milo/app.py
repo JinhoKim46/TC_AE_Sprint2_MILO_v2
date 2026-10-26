@@ -8,9 +8,11 @@ back to the model and recorded in `tool_results`. M4 adds the policy layer, M5 e
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import time
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +39,19 @@ SYSTEM = (
     "it is needed to record a fact or to estimate an effect; never invent a number."
 )
 DESTRUCTIVE = "needs_approval"
+# Which store table each tool reads or writes. Shown in the flow view; kept here so it matches the code above.
+TOOL_TABLES = {
+    "search_knowledge": "chunks (in-memory index)",
+    "record_fact": "facts (write)",
+    "get_recorded_facts": "facts (read)",
+    "estimate_effect": "facts (read)",
+    "draft_diagnosis": "facts (read), diagnoses (write)",
+    "reset_diagnosis": "diagnoses (delete, never run without approval)",
+}
+
+
+def _ms(t0: float) -> float:
+    return round((time.perf_counter() - t0) * 1000, 1)
 
 
 class App:
@@ -76,10 +91,21 @@ class App:
 
     def ask(self, question: str, user_id: str, thread_id: str) -> Response:
         trace: list[dict[str, Any]] = []
+        started = time.perf_counter()
+        t0 = time.perf_counter()
         prior = self.store.history(
             user_id, thread_id
         )  # a thread is private to its owner
+        trace.append(
+            {
+                "step": "history_read",
+                "turns": len(prior),
+                "ms": _ms(t0),
+                "table": "turns",
+            }
+        )
         response = self._ask(question, user_id, trace, prior)
+        response.trace = trace
         if response.error is None:
             self.store.append_turns(
                 user_id,
@@ -89,7 +115,15 @@ class App:
                     {"role": "assistant", "content": response.answer},
                 ],
             )
-        self._write_trace(thread_id, user_id, question, trace, response)
+        trace.append(
+            {
+                "step": "answer",
+                "chars": len(response.answer),
+                "stopped": response.stopped,
+                "error": response.error,
+            }
+        )
+        self._write_trace(thread_id, user_id, question, trace, response, _ms(started))
         return response
 
     def _ask(
@@ -103,8 +137,23 @@ class App:
         if problem:
             trace.append({"step": "input", "ok": False, "problem": problem})
             return Response(answer=INVALID_MSG, error=f"invalid_input: {problem}")
+        t0 = time.perf_counter()
         hits = self._retrieve(question)
-        trace.append({"step": "retrieve", "hits": [h.chunk_id for h in hits]})
+        trace.append(
+            {
+                "step": "retrieve",
+                "table": "chunks (in-memory index)",
+                "ms": _ms(t0),
+                "hits": [
+                    {
+                        "chunk_id": h.chunk_id,
+                        "doc_id": h.doc_id,
+                        "score": round(h.score, 4),
+                    }
+                    for h in hits
+                ],
+            }
+        )
         if not hits:
             return Response(answer=ABSTAIN)
         passages = "\n\n".join(
@@ -124,6 +173,7 @@ class App:
         stopped = False
         reply = ChatReply()
         for _ in range(MAX_STEPS):
+            t0 = time.perf_counter()
             try:
                 reply, used = self._invoke(messages, specs or None)
             except Exception as e:  # noqa: BLE001 - every provider failure ends here, as a user message
@@ -141,6 +191,9 @@ class App:
                     "step": "model",
                     "ok": True,
                     "model": used,
+                    "ms": _ms(t0),
+                    "input_tokens": reply.usage.input_tokens,
+                    "output_tokens": reply.usage.output_tokens,
                     "tool_calls": [c.name for c in reply.tool_calls],
                 }
             )
@@ -158,7 +211,18 @@ class App:
                 }
             )
             for call in reply.tool_calls:
+                t1 = time.perf_counter()
                 result, decision = self._run_tool(call.name, call.args, specs, user_id)
+                trace.append(
+                    {
+                        "step": "tool",
+                        "name": call.name,
+                        "decision": decision,
+                        "ok": result.ok,
+                        "ms": _ms(t1),
+                        "table": TOOL_TABLES.get(call.name, "none"),
+                    }
+                )
                 tool_results.append(result)
                 if decision == DESTRUCTIVE:
                     stopped = True
@@ -225,14 +289,17 @@ class App:
         question: str,
         steps: list[dict[str, Any]],
         response: Response,
+        total_ms: float,
     ) -> None:
         if self.trace_path is None:
             return
         self.trace_path.parent.mkdir(parents=True, exist_ok=True)
         record = {
-            "thread_id": thread_id,
-            "user_id": user_id,
+            "ts": datetime.now().isoformat(timespec="seconds"),
+            "owner": hashlib.sha256(user_id.encode()).hexdigest()[:12],
+            "thread": hashlib.sha256(thread_id.encode()).hexdigest()[:12],
             "question_chars": len(question),
+            "total_ms": total_ms,
             "steps": steps,
             "error": response.error,
             "cost_usd": response.cost_usd,

@@ -42,16 +42,34 @@ def client(chat):
     return create_app(milo, secret_key="test").test_client()
 
 
-def test_page_has_the_panels_and_the_progress_line() -> None:
+def test_page_has_the_chat_composer_inspector_and_progress() -> None:
     page = client(ToolThenAnswer()).get("/").get_data(as_text=True)
     for needle in (
-        "Sources",
-        "Tool calls",
-        "Thinking...",
-        "Cost of this answer",
-        'role="status"',
+        "New conversation",
+        "MILO is working",
+        "Details",
+        "Session cost",
+        'aria-live="polite"',
+        "/api/ask",
+        "/api/history",
     ):
         assert needle in page, needle
+
+
+def test_history_returns_the_stored_turns_for_this_browser() -> None:
+    c = client(ToolThenAnswer())
+    c.get("/")
+    c.post("/api/ask", json={"question": "When are invoices issued each month?"})
+    turns = c.get("/api/history").get_json()["turns"]
+    assert [t["role"] for t in turns] == ["user", "assistant"]
+
+
+def test_new_conversation_starts_an_empty_thread() -> None:
+    c = client(ToolThenAnswer())
+    c.get("/")
+    c.post("/api/ask", json={"question": "When are invoices issued each month?"})
+    c.get("/?new=1")
+    assert c.get("/api/history").get_json()["turns"] == []
 
 
 def test_answer_comes_back_with_sources_and_cost() -> None:

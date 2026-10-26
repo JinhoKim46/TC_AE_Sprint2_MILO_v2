@@ -90,5 +90,13 @@ def test_one_trace_line_per_flow_records_the_steps(tmp_path) -> None:
     app.ask("", "u1", "t1")
     lines = [json.loads(x) for x in path.read_text().splitlines()]
     assert len(lines) == 2
-    assert [s["step"] for s in lines[0]["steps"]] == ["retrieve", "model"]
+    assert [s["step"] for s in lines[0]["steps"]] == [
+        "history_read",
+        "retrieve",
+        "model",
+        "answer",
+    ]
+    assert "u1" not in path.read_text(), (
+        "the trace must hold a hashed owner, not the owner id"
+    )
     assert lines[1]["error"].startswith("invalid_input")
