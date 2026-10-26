@@ -73,6 +73,8 @@ class UserStore(Protocol):
 
     def all(self) -> list[User]: ...
 
+    def set_password(self, user_id: int, password_hash: str) -> None: ...
+
 
 class MemoryUserStore:
     def __init__(self) -> None:
@@ -100,3 +102,8 @@ class MemoryUserStore:
 
     def all(self) -> list[User]:
         return [u for u, _ in self._rows.values()]
+
+    def set_password(self, user_id: int, password_hash: str) -> None:
+        for login_id, (user, _) in list(self._rows.items()):
+            if user.id == user_id:
+                self._rows[login_id] = (user, password_hash)

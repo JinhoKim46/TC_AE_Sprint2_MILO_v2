@@ -26,7 +26,11 @@ def nav_html(active: str, user: Any = None) -> str:
     if user is None:
         links += [("login", "/login", "Log in")]
     else:
-        links += [("chat", "/chat", "Chat"), ("kb", "/kb", "Knowledge base")]
+        links += [
+            ("chat", "/chat", "Chat"),
+            ("kb", "/kb", "Knowledge base"),
+            ("password", "/account/password", "Password"),
+        ]
         if user.role == "admin":
             links += [
                 ("overview", "/dashboard", "Overview"),

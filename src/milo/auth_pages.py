@@ -27,6 +27,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
 th{color:var(--mut);font-weight:600}
 .pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.notice{background:var(--accent-soft);color:var(--accent);border-radius:10px;padding:10px 12px;font-size:14px;margin:0 0 6px}
 """
 SITE = """.sitenav a,.sitenav button{color:var(--mut)}"""
 
@@ -94,3 +95,25 @@ def users_page(user, users) -> str:
         f"<tbody>{rows}</tbody></table></div></main>"
     )
     return _page("Users", "users", user, body)
+
+
+def password_page(user, error: str = "", saved: bool = False) -> str:
+    if saved:
+        notice = '<p class="notice" role="status">Your password was changed. Use the new one next time you log in.</p>'
+    else:
+        notice = f'<p class="error" role="alert">{escape(error)}</p>' if error else ""
+    body = (
+        '<main><div class="card"><h1>Change password</h1>'
+        '<p class="muted">Enter your current password, then the new one twice. The new password must be at least 8 characters.</p>'
+        f"{notice}"
+        '<form method="post" action="/account/password">'
+        '<label for="current">Current password</label>'
+        '<input id="current" name="current" type="password" autocomplete="current-password" required>'
+        '<label for="new">New password</label>'
+        '<input id="new" name="new" type="password" autocomplete="new-password" required minlength="8">'
+        '<label for="again">Repeat the new password</label>'
+        '<input id="again" name="again" type="password" autocomplete="new-password" required minlength="8">'
+        '<button class="btn" type="submit">Change password</button></form>'
+        "</div></main>"
+    )
+    return _page("Change password", "password", user, body)

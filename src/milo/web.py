@@ -22,7 +22,7 @@ from typing import Any
 from flask import Flask, Response, jsonify, redirect, request, session, url_for
 
 from milo.app import App
-from milo.auth_pages import login_page, signup_page, users_page
+from milo.auth_pages import login_page, password_page, signup_page, users_page
 from milo.flows import owner_hash, read_flows, summarize
 from milo.page import DASHBOARD, PAGE
 from milo.shell import FAVICON, SHELL_CSS, brand_html, nav_html
@@ -162,6 +162,33 @@ def create_app(
                 "login_id": user.login_id,
             }
         )
+
+    @web.get("/account/password")
+    @login_needed()
+    def password_form() -> Response:
+        return html(password_page(current_user()))
+
+    @web.post("/account/password")
+    @login_needed()
+    def password_submit() -> Any:
+        user = current_user()
+        current = request.form.get("current") or ""
+        new = request.form.get("new") or ""
+        again = request.form.get("again") or ""
+        found = user_store.by_login(user.login_id)
+        if found is None or not verify_password(current, found[1]):
+            return html(password_page(user, "The current password is not correct."))
+        if new != again:
+            return html(password_page(user, "The two new passwords do not match."))
+        problem = check_new_account(user.login_id, user.display_name, new)
+        if problem:
+            return html(password_page(user, problem))
+        if new == current:
+            return html(
+                password_page(user, "Choose a password different from the current one.")
+            )
+        user_store.set_password(user.id, hash_password(new))
+        return html(password_page(user, saved=True))
 
     @web.get("/kb")
     def kb_index() -> Response:

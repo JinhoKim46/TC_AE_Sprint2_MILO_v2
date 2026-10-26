@@ -172,6 +172,13 @@ class PostgresUserStore:
             return None
         return User(user_id, row[0], row[1], row[2])
 
+    def set_password(self, user_id: int, password_hash: str) -> None:
+        with self._lock, self._conn.cursor() as cur:
+            cur.execute(
+                "update milo_v2.users set password_hash = %s where id = %s",
+                (password_hash, user_id),
+            )
+
     def all(self) -> list[User]:
         with self._lock, self._conn.cursor() as cur:
             cur.execute(

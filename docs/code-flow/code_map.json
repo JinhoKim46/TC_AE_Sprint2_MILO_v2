@@ -2,27 +2,27 @@
  "schema": 2,
  "scope": ["scripts", "src"],
  "summary": {
-  "files": 33,
-  "lines": 5411,
-  "functions": 136,
-  "methods": 81,
+  "files": 34,
+  "lines": 5526,
+  "functions": 140,
+  "methods": 84,
   "classes": 27,
-  "routes": 18,
-  "route_functions": 18,
-  "call_sites": 1650,
-  "resolved_internal": 405,
-  "resolved_external": 429,
-  "resolved_builtin": 559,
+  "routes": 20,
+  "route_functions": 20,
+  "call_sites": 1707,
+  "resolved_internal": 436,
+  "resolved_external": 447,
+  "resolved_builtin": 567,
   "resolved_by_convention": 0,
   "unresolved": 257,
-  "resolved_ratio": 0.8442,
-  "graph_coverage": 0.8625,
+  "resolved_ratio": 0.8494,
+  "graph_coverage": 0.8691,
   "inferred_edges": 7,
   "override_edges": 1,
   "unresolved_value_like": 124,
-  "internal_edges": 404,
+  "internal_edges": 435,
   "reference_edges": 17,
-  "sql_sites": 17,
+  "sql_sites": 18,
   "gateway_sites": 0,
   "external_sites": 11,
   "tables": 5,
@@ -117,7 +117,7 @@
   },
   "milo.auth_pages": {
    "file": "src/milo/auth_pages.py",
-   "lines": 96,
+   "lines": 119,
    "doc": "The sign-up, sign-in and user-list pages. Plain forms; the server checks everything.",
    "cli": false,
    "exports": [],
@@ -126,7 +126,7 @@
     "milo.shell"
    ],
    "lazy_imports": [],
-   "call_sites": 17,
+   "call_sites": 19,
    "unresolved": 0
   },
   "milo.chunk": {
@@ -280,7 +280,7 @@
   },
   "milo.pgstore": {
    "file": "src/milo/pgstore.py",
-   "lines": 180,
+   "lines": 187,
    "doc": "PostgreSQL implementation of the `Store` interface (schema `milo_v2`, see db/migrations/).",
    "cli": false,
    "exports": [],
@@ -293,7 +293,7 @@
    ],
    "imports": ["milo.store", "milo.users"],
    "lazy_imports": [],
-   "call_sites": 53,
+   "call_sites": 55,
    "unresolved": 2
   },
   "milo.serve": {
@@ -322,7 +322,7 @@
   },
   "milo.shell": {
    "file": "src/milo/shell.py",
-   "lines": 57,
+   "lines": 61,
    "doc": "Shared pieces for every MILO page: the brand mark, the navigation that depends on who is signed in, and styles.",
    "cli": false,
    "exports": [],
@@ -397,7 +397,7 @@
   },
   "milo.users": {
    "file": "src/milo/users.py",
-   "lines": 102,
+   "lines": 109,
    "doc": "Accounts: password hashing and the user store (memory for tests and demos; PostgreSQL in the database store).",
    "cli": false,
    "exports": [],
@@ -411,12 +411,12 @@
    ],
    "imports": [],
    "lazy_imports": [],
-   "call_sites": 27,
+   "call_sites": 29,
    "unresolved": 0
   },
   "milo.web": {
    "file": "src/milo/web.py",
-   "lines": 290,
+   "lines": 317,
    "doc": "The MILO web app: landing page, accounts, the chat, the knowledge base, and the owner's overview.",
    "cli": false,
    "exports": [],
@@ -441,7 +441,7 @@
     "milo.users"
    ],
    "lazy_imports": ["milo.kb_pages", "milo.landing", "milo.status"],
-   "call_sites": 159,
+   "call_sites": 185,
    "unresolved": 12
   },
   "scripts.build_kb": {
@@ -678,6 +678,25 @@
    "lazy_imports": [],
    "call_sites": 28,
    "unresolved": 7
+  },
+  "scripts.reset_password": {
+   "file": "scripts/reset_password.py",
+   "lines": 47,
+   "doc": "Set a new password for an account from the terminal. For the owner, when the password is forgotten.",
+   "cli": true,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "argparse",
+    "getpass",
+    "os",
+    "pathlib",
+    "sys"
+   ],
+   "imports": ["milo.pgstore", "milo.users"],
+   "lazy_imports": [],
+   "call_sites": 25,
+   "unresolved": 0
   },
   "scripts.run_judge": {
    "file": "scripts/run_judge.py",
@@ -939,8 +958,8 @@
   "milo.auth_pages:_page": {
    "kind": "function",
    "file": "src/milo/auth_pages.py",
-   "line": 34,
-   "end": 42,
+   "line": 35,
+   "end": 43,
    "doc": "",
    "params": [
     "title",
@@ -954,18 +973,28 @@
   "milo.auth_pages:login_page": {
    "kind": "function",
    "file": "src/milo/auth_pages.py",
-   "line": 45,
-   "end": 61,
+   "line": 46,
+   "end": 62,
    "doc": "",
    "params": ["error", "login_id", "next_url"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.auth_pages:password_page": {
+   "kind": "function",
+   "file": "src/milo/auth_pages.py",
+   "line": 100,
+   "end": 119,
+   "doc": "",
+   "params": ["user", "error", "saved"],
    "decorators": [],
    "async": false
   },
   "milo.auth_pages:signup_page": {
    "kind": "function",
    "file": "src/milo/auth_pages.py",
-   "line": 64,
-   "end": 81,
+   "line": 65,
+   "end": 82,
    "doc": "",
    "params": ["error", "name", "login_id"],
    "decorators": [],
@@ -974,8 +1003,8 @@
   "milo.auth_pages:users_page": {
    "kind": "function",
    "file": "src/milo/auth_pages.py",
-   "line": 84,
-   "end": 96,
+   "line": 85,
+   "end": 97,
    "doc": "",
    "params": ["user", "users"],
    "decorators": [],
@@ -1566,7 +1595,7 @@
    "kind": "class",
    "file": "src/milo/pgstore.py",
    "line": 136,
-   "end": 180,
+   "end": 187,
    "doc": "Accounts in milo_v2.users. The same four methods as MemoryUserStore.",
    "bases": [],
    "decorators": []
@@ -1584,8 +1613,8 @@
   "milo.pgstore:PostgresUserStore.all": {
    "kind": "method",
    "file": "src/milo/pgstore.py",
-   "line": 175,
-   "end": 180,
+   "line": 182,
+   "end": 187,
    "doc": "",
    "params": [
     "self"
@@ -1629,6 +1658,16 @@
    "decorators": [],
    "async": false
   },
+  "milo.pgstore:PostgresUserStore.set_password": {
+   "kind": "method",
+   "file": "src/milo/pgstore.py",
+   "line": 175,
+   "end": 180,
+   "doc": "",
+   "params": ["self", "user_id", "password_hash"],
+   "decorators": [],
+   "async": false
+  },
   "milo.serve:build_store": {
    "kind": "function",
    "file": "src/milo/serve.py",
@@ -1664,8 +1703,8 @@
   "milo.shell:brand_html": {
    "kind": "function",
    "file": "src/milo/shell.py",
-   "line": 50,
-   "end": 54,
+   "line": 54,
+   "end": 58,
    "doc": "",
    "params": [
     "href"
@@ -1677,7 +1716,7 @@
    "kind": "function",
    "file": "src/milo/shell.py",
    "line": 24,
-   "end": 47,
+   "end": 51,
    "doc": "",
    "params": ["active", "user"],
    "decorators": [],
@@ -2165,8 +2204,8 @@
   "milo.users:MemoryUserStore": {
    "kind": "class",
    "file": "src/milo/users.py",
-   "line": 77,
-   "end": 102,
+   "line": 79,
+   "end": 109,
    "doc": "",
    "bases": [],
    "decorators": []
@@ -2174,8 +2213,8 @@
   "milo.users:MemoryUserStore.__init__": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 78,
-   "end": 80,
+   "line": 80,
+   "end": 82,
    "doc": "",
    "params": [
     "self"
@@ -2186,8 +2225,8 @@
   "milo.users:MemoryUserStore.all": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 101,
-   "end": 102,
+   "line": 103,
+   "end": 104,
    "doc": "",
    "params": [
     "self"
@@ -2198,8 +2237,8 @@
   "milo.users:MemoryUserStore.by_id": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 95,
-   "end": 99,
+   "line": 97,
+   "end": 101,
    "doc": "",
    "params": ["self", "user_id"],
    "decorators": [],
@@ -2208,8 +2247,8 @@
   "milo.users:MemoryUserStore.by_login": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 92,
-   "end": 93,
+   "line": 94,
+   "end": 95,
    "doc": "",
    "params": ["self", "login_id"],
    "decorators": [],
@@ -2218,8 +2257,8 @@
   "milo.users:MemoryUserStore.create": {
    "kind": "method",
    "file": "src/milo/users.py",
-   "line": 82,
-   "end": 90,
+   "line": 84,
+   "end": 92,
    "doc": "",
    "params": [
     "self",
@@ -2228,6 +2267,16 @@
     "password_hash",
     "role"
    ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.users:MemoryUserStore.set_password": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 106,
+   "end": 109,
+   "doc": "",
+   "params": ["self", "user_id", "password_hash"],
    "decorators": [],
    "async": false
   },
@@ -2246,7 +2295,7 @@
    "kind": "class",
    "file": "src/milo/users.py",
    "line": 65,
-   "end": 74,
+   "end": 76,
    "doc": "",
    "bases": [
     "Protocol"
@@ -2301,6 +2350,16 @@
    "decorators": [],
    "async": false
   },
+  "milo.users:UserStore.set_password": {
+   "kind": "method",
+   "file": "src/milo/users.py",
+   "line": 76,
+   "end": 76,
+   "doc": "",
+   "params": ["self", "user_id", "password_hash"],
+   "decorators": [],
+   "async": false
+  },
   "milo.users:check_new_account": {
    "kind": "function",
    "file": "src/milo/users.py",
@@ -2337,7 +2396,7 @@
    "kind": "function",
    "file": "src/milo/web.py",
    "line": 40,
-   "end": 290,
+   "end": 317,
    "doc": "",
    "params": ["milo_app", "secret_key", "users"],
    "decorators": [],
@@ -2346,8 +2405,8 @@
   "milo.web:create_app.admin_users": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 269,
-   "end": 270,
+   "line": 296,
+   "end": 297,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2356,8 +2415,8 @@
   "milo.web:create_app.ask": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 204,
-   "end": 223,
+   "line": 231,
+   "end": 250,
    "doc": "",
    "params": [],
    "decorators": ["web.post", "login_needed"],
@@ -2366,8 +2425,8 @@
   "milo.web:create_app.chat": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 189,
-   "end": 193,
+   "line": 216,
+   "end": 220,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2398,8 +2457,8 @@
   "milo.web:create_app.dashboard": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 258,
-   "end": 265,
+   "line": 285,
+   "end": 292,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2408,8 +2467,8 @@
   "milo.web:create_app.demo": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 182,
-   "end": 183,
+   "line": 209,
+   "end": 210,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2430,8 +2489,8 @@
   "milo.web:create_app.feedback": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 227,
-   "end": 252,
+   "line": 254,
+   "end": 279,
    "doc": "One thumbs vote on an answer. Stores the rating, a reason from a fixed list and a hashed owner. No text.",
    "params": [],
    "decorators": ["web.post", "login_needed"],
@@ -2440,8 +2499,8 @@
   "milo.web:create_app.flows": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 274,
-   "end": 276,
+   "line": 301,
+   "end": 303,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2450,8 +2509,8 @@
   "milo.web:create_app.history": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 197,
-   "end": 200,
+   "line": 224,
+   "end": 227,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -2484,8 +2543,8 @@
   "milo.web:create_app.kb_document": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 173,
-   "end": 179,
+   "line": 200,
+   "end": 206,
    "doc": "",
    "params": [
     "doc_id"
@@ -2498,8 +2557,8 @@
   "milo.web:create_app.kb_index": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 167,
-   "end": 170,
+   "line": 194,
+   "end": 197,
    "doc": "",
    "params": [],
    "decorators": [
@@ -2599,6 +2658,26 @@
    "decorators": [],
    "async": false
   },
+  "milo.web:create_app.password_form": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 168,
+   "end": 169,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.get", "login_needed"],
+   "async": false
+  },
+  "milo.web:create_app.password_submit": {
+   "kind": "nested",
+   "file": "src/milo/web.py",
+   "line": 173,
+   "end": 191,
+   "doc": "",
+   "params": [],
+   "decorators": ["web.post", "login_needed"],
+   "async": false
+  },
   "milo.web:create_app.sign_in": {
    "kind": "nested",
    "file": "src/milo/web.py",
@@ -2638,8 +2717,8 @@
   "milo.web:create_app.status": {
    "kind": "nested",
    "file": "src/milo/web.py",
-   "line": 280,
-   "end": 288,
+   "line": 307,
+   "end": 315,
    "doc": "",
    "params": [],
    "decorators": ["web.get", "login_needed"],
@@ -3389,6 +3468,16 @@
    "decorators": [],
    "async": false
   },
+  "scripts.reset_password:main": {
+   "kind": "function",
+   "file": "scripts/reset_password.py",
+   "line": 21,
+   "end": 43,
+   "doc": "",
+   "params": [],
+   "decorators": [],
+   "async": false
+  },
   "scripts.run_judge:bootstrap": {
    "kind": "function",
    "file": "scripts/run_judge.py",
@@ -3627,6 +3716,32 @@
    "guards": [],
    "templates": []
   },
+  "milo.web:create_app.password_form": {
+   "blueprint": "web",
+   "routes": [
+    ["GET", "/account/password"]
+   ],
+   "urls": [
+    ["GET", "/account/password"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
+  "milo.web:create_app.password_submit": {
+   "blueprint": "web",
+   "routes": [
+    ["POST", "/account/password"]
+   ],
+   "urls": [
+    ["POST", "/account/password"]
+   ],
+   "guards": [
+    "login_needed"
+   ],
+   "templates": []
+  },
   "milo.web:create_app.signup": {
    "blueprint": "web",
    "routes": [
@@ -3699,11 +3814,12 @@
   ["milo.app:App.ingest", "milo.chunk:chunk_body", 84],
   ["milo.app:App.ingest", "milo.index:Index", 89],
   ["milo.app:build_app", "milo.app:App", 367],
-  ["milo.auth_pages:_page", "milo.shell:brand_html", 40],
-  ["milo.auth_pages:_page", "milo.shell:nav_html", 40],
-  ["milo.auth_pages:login_page", "milo.auth_pages:_page", 61],
-  ["milo.auth_pages:signup_page", "milo.auth_pages:_page", 81],
-  ["milo.auth_pages:users_page", "milo.auth_pages:_page", 96],
+  ["milo.auth_pages:_page", "milo.shell:brand_html", 41],
+  ["milo.auth_pages:_page", "milo.shell:nav_html", 41],
+  ["milo.auth_pages:login_page", "milo.auth_pages:_page", 62],
+  ["milo.auth_pages:password_page", "milo.auth_pages:_page", 119],
+  ["milo.auth_pages:signup_page", "milo.auth_pages:_page", 82],
+  ["milo.auth_pages:users_page", "milo.auth_pages:_page", 97],
   ["milo.chunk:chunk_article", "milo.chunk:chunk_body", 100],
   ["milo.chunk:chunk_article", "milo.chunk:front_matter", 99],
   ["milo.chunk:chunk_body", "milo.chunk:Chunk", 114],
@@ -3736,7 +3852,7 @@
   ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
   ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
   ["milo.pgstore:PostgresStore.user_store", "milo.pgstore:PostgresUserStore", 27],
-  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 180],
+  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 187],
   ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 173],
   ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 162],
   ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 151],
@@ -3772,51 +3888,53 @@
   ["milo.tools:Backend.specs", "milo.tools:specs", 121],
   ["milo.tools:specs", "milo.tools:_schema", 65],
   ["milo.tools:specs", "milo.types:ToolSpec", 65],
-  ["milo.users:MemoryUserStore.create", "milo.users:User", 87],
+  ["milo.users:MemoryUserStore.create", "milo.users:User", 89],
   ["milo.web:create_app", "milo.users:MemoryUserStore", 47],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 188],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 196],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 203],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 226],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 257],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 268],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 273],
-  ["milo.web:create_app", "milo.web:create_app.login_needed", 279],
-  ["milo.web:create_app.admin_users", "milo.auth_pages:users_page", 270],
-  ["milo.web:create_app.admin_users", "milo.users:MemoryUserStore.all", 270],
-  ["milo.web:create_app.admin_users", "milo.web:create_app.current_user", 270],
-  ["milo.web:create_app.admin_users", "milo.web:create_app.html", 270],
-  ["milo.web:create_app.ask", "milo.app:App.ask", 212],
-  ["milo.web:create_app.ask", "milo.web:create_app.ensure_thread", 205],
-  ["milo.web:create_app.ask", "milo.web:create_app.owner", 212],
-  ["milo.web:create_app.chat", "milo.web:create_app.chat_page", 193],
-  ["milo.web:create_app.chat", "milo.web:create_app.current_user", 193],
-  ["milo.web:create_app.chat", "milo.web:create_app.ensure_thread", 192],
-  ["milo.web:create_app.chat", "milo.web:create_app.html", 193],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 167],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 172],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 215],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 223],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 230],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 253],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 284],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 295],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 300],
+  ["milo.web:create_app", "milo.web:create_app.login_needed", 306],
+  ["milo.web:create_app.admin_users", "milo.auth_pages:users_page", 297],
+  ["milo.web:create_app.admin_users", "milo.users:MemoryUserStore.all", 297],
+  ["milo.web:create_app.admin_users", "milo.web:create_app.current_user", 297],
+  ["milo.web:create_app.admin_users", "milo.web:create_app.html", 297],
+  ["milo.web:create_app.ask", "milo.app:App.ask", 239],
+  ["milo.web:create_app.ask", "milo.web:create_app.ensure_thread", 232],
+  ["milo.web:create_app.ask", "milo.web:create_app.owner", 239],
+  ["milo.web:create_app.chat", "milo.web:create_app.chat_page", 220],
+  ["milo.web:create_app.chat", "milo.web:create_app.current_user", 220],
+  ["milo.web:create_app.chat", "milo.web:create_app.ensure_thread", 219],
+  ["milo.web:create_app.chat", "milo.web:create_app.html", 220],
   ["milo.web:create_app.chat_page", "milo.shell:brand_html", 98],
   ["milo.web:create_app.chat_page", "milo.shell:nav_html", 99],
   ["milo.web:create_app.current_user", "milo.users:MemoryUserStore.by_id", 51],
-  ["milo.web:create_app.dashboard", "milo.shell:brand_html", 260],
-  ["milo.web:create_app.dashboard", "milo.shell:nav_html", 261],
-  ["milo.web:create_app.dashboard", "milo.web:create_app.current_user", 261],
-  ["milo.web:create_app.dashboard", "milo.web:create_app.html", 265],
-  ["milo.web:create_app.feedback", "milo.flows:owner_hash", 244],
-  ["milo.web:create_app.feedback", "milo.web:create_app.owner", 244],
-  ["milo.web:create_app.flows", "milo.flows:read_flows", 275],
-  ["milo.web:create_app.flows", "milo.flows:summarize", 276],
-  ["milo.web:create_app.flows", "milo.web:create_app.owner", 275],
-  ["milo.web:create_app.history", "milo.store:Store.history", 199],
-  ["milo.web:create_app.history", "milo.web:create_app.ensure_thread", 198],
-  ["milo.web:create_app.history", "milo.web:create_app.owner", 199],
+  ["milo.web:create_app.dashboard", "milo.shell:brand_html", 287],
+  ["milo.web:create_app.dashboard", "milo.shell:nav_html", 288],
+  ["milo.web:create_app.dashboard", "milo.web:create_app.current_user", 288],
+  ["milo.web:create_app.dashboard", "milo.web:create_app.html", 292],
+  ["milo.web:create_app.feedback", "milo.flows:owner_hash", 271],
+  ["milo.web:create_app.feedback", "milo.web:create_app.owner", 271],
+  ["milo.web:create_app.flows", "milo.flows:read_flows", 302],
+  ["milo.web:create_app.flows", "milo.flows:summarize", 303],
+  ["milo.web:create_app.flows", "milo.web:create_app.owner", 302],
+  ["milo.web:create_app.history", "milo.store:Store.history", 226],
+  ["milo.web:create_app.history", "milo.web:create_app.ensure_thread", 225],
+  ["milo.web:create_app.history", "milo.web:create_app.owner", 226],
   ["milo.web:create_app.index", "milo.landing:landing_page", 110],
   ["milo.web:create_app.index", "milo.web:create_app.current_user", 110],
   ["milo.web:create_app.index", "milo.web:create_app.html", 110],
-  ["milo.web:create_app.kb_document", "milo.kb_pages:document_page", 176],
-  ["milo.web:create_app.kb_document", "milo.web:create_app.current_user", 176],
-  ["milo.web:create_app.kb_document", "milo.web:create_app.html", 179],
-  ["milo.web:create_app.kb_index", "milo.kb_pages:index_page", 170],
-  ["milo.web:create_app.kb_index", "milo.web:create_app.current_user", 170],
-  ["milo.web:create_app.kb_index", "milo.web:create_app.html", 170],
+  ["milo.web:create_app.kb_document", "milo.kb_pages:document_page", 203],
+  ["milo.web:create_app.kb_document", "milo.web:create_app.current_user", 203],
+  ["milo.web:create_app.kb_document", "milo.web:create_app.html", 206],
+  ["milo.web:create_app.kb_index", "milo.kb_pages:index_page", 197],
+  ["milo.web:create_app.kb_index", "milo.web:create_app.current_user", 197],
+  ["milo.web:create_app.kb_index", "milo.web:create_app.html", 197],
   ["milo.web:create_app.login", "milo.auth_pages:login_page", 132],
   ["milo.web:create_app.login", "milo.web:create_app.html", 132],
   ["milo.web:create_app.login_needed.wrap.inner", "milo.web:create_app.current_user", 73],
@@ -3828,6 +3946,25 @@
   ["milo.web:create_app.login_submit", "milo.web:create_app.html", 141],
   ["milo.web:create_app.login_submit", "milo.web:create_app.sign_in", 144],
   ["milo.web:create_app.me", "milo.web:create_app.current_user", 154],
+  ["milo.web:create_app.password_form", "milo.auth_pages:password_page", 169],
+  ["milo.web:create_app.password_form", "milo.web:create_app.current_user", 169],
+  ["milo.web:create_app.password_form", "milo.web:create_app.html", 169],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 180],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 182],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 185],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 188],
+  ["milo.web:create_app.password_submit", "milo.auth_pages:password_page", 191],
+  ["milo.web:create_app.password_submit", "milo.users:MemoryUserStore.by_login", 178],
+  ["milo.web:create_app.password_submit", "milo.users:MemoryUserStore.set_password", 190],
+  ["milo.web:create_app.password_submit", "milo.users:check_new_account", 183],
+  ["milo.web:create_app.password_submit", "milo.users:hash_password", 190],
+  ["milo.web:create_app.password_submit", "milo.users:verify_password", 179],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.current_user", 174],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 180],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 182],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 185],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 187],
+  ["milo.web:create_app.password_submit", "milo.web:create_app.html", 191],
   ["milo.web:create_app.signup", "milo.auth_pages:signup_page", 114],
   ["milo.web:create_app.signup", "milo.web:create_app.html", 114],
   ["milo.web:create_app.signup_submit", "milo.auth_pages:signup_page", 125],
@@ -3837,7 +3974,7 @@
   ["milo.web:create_app.signup_submit", "milo.users:hash_password", 126],
   ["milo.web:create_app.signup_submit", "milo.web:create_app.html", 125],
   ["milo.web:create_app.signup_submit", "milo.web:create_app.sign_in", 127],
-  ["milo.web:create_app.status", "milo.status:snapshot", 288],
+  ["milo.web:create_app.status", "milo.status:snapshot", 315],
   ["scripts.build_kb:<module>", "scripts.build_kb:main", 327],
   ["scripts.build_kb:Writer._emit", "scripts.build_kb:sentences", 133],
   ["scripts.build_kb:Writer.items", "scripts.build_kb:Writer._emit", 148],
@@ -4060,6 +4197,15 @@
   ["scripts.make_judge_sheet:main", "scripts.make_judge_sheet:items", 56],
   ["scripts.migrate:<module>", "scripts.migrate:main", 56],
   ["scripts.migrate:main", "scripts.migrate:database_url", 31],
+  ["scripts.reset_password:<module>", "scripts.reset_password:main", 47],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore", 35],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore.close", 39],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore.close", 42],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore.user_store", 36],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresUserStore.by_login", 37],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresUserStore.set_password", 41],
+  ["scripts.reset_password:main", "milo.users:check_new_account", 32],
+  ["scripts.reset_password:main", "milo.users:hash_password", 41],
   ["scripts.run_judge:<module>", "scripts.run_judge:main", 148],
   ["scripts.run_judge:bootstrap", "scripts.run_judge:kappa", 54],
   ["scripts.run_judge:bootstrap", "scripts.run_judge:kappa", 56],
@@ -4080,7 +4226,7 @@
   ["milo.types:ChatReply", "milo.types:Usage", 27],
   ["milo.types:Response", "milo.types:Source", 57],
   ["milo.types:Response", "milo.types:ToolResult", 58],
-  ["milo.users:MemoryUserStore.__init__", "milo.users:User", 79],
+  ["milo.users:MemoryUserStore.__init__", "milo.users:User", 81],
   ["milo.web:create_app.login_needed", "milo.web:create_app.login_needed.wrap", 91],
   ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 88],
   ["milo.web:create_app.login_needed.wrap", "milo.web:create_app.login_needed.wrap.inner", 89],
@@ -4112,7 +4258,7 @@
   ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
   ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
   ["milo.pgstore:PostgresStore.user_store", "milo.pgstore:PostgresUserStore", 27],
-  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 180],
+  ["milo.pgstore:PostgresUserStore.all", "milo.users:User", 187],
   ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 173],
   ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 162],
   ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 151],
@@ -4126,7 +4272,7 @@
   ["milo.serve:load_documents", "milo.types:Document", 35],
   ["milo.tools:Backend.__init__", "milo.store:MemoryStore", 114],
   ["milo.tools:specs", "milo.types:ToolSpec", 65],
-  ["milo.users:MemoryUserStore.create", "milo.users:User", 87],
+  ["milo.users:MemoryUserStore.create", "milo.users:User", 89],
   ["milo.web:create_app", "milo.users:MemoryUserStore", 47],
   ["scripts.build_kb:render_all", "scripts.build_kb:Writer", 275],
   ["scripts.build_kb:render_method", "scripts.build_kb:Writer", 258],
@@ -4154,6 +4300,7 @@
   ["scripts.make_judge_sheet:main", "milo.embed:OpenRouterEmbedder", 52],
   ["scripts.make_judge_sheet:main", "milo.store:MemoryStore", 50],
   ["scripts.make_judge_sheet:main", "milo.tools:Backend", 52],
+  ["scripts.reset_password:main", "milo.pgstore:PostgresStore", 35],
   ["scripts.run_judge:judge_all", "milo.llm:LangChainChat", 73]
  ],
  "inferred_calls": [
@@ -4235,7 +4382,7 @@
   },
   {
    "symbol": "milo.pgstore:PostgresUserStore.all",
-   "line": 178,
+   "line": 185,
    "read": [
     "milo_v2.users"
    ]
@@ -4258,6 +4405,13 @@
    "symbol": "milo.pgstore:PostgresUserStore.create",
    "line": 148,
    "insert": [
+    "milo_v2.users"
+   ]
+  },
+  {
+   "symbol": "milo.pgstore:PostgresUserStore.set_password",
+   "line": 178,
+   "update": [
     "milo_v2.users"
    ]
   },
@@ -4377,7 +4531,7 @@
   "milo.store:MemoryStore.facts",
   "milo.store:MemoryStore.history"
  ],
- "test_files": 15,
+ "test_files": 16,
  "duplicate_names": {
   "_page": ["milo.auth_pages:_page", "milo.kb_pages:_page"],
   "norm": ["scripts.check_project_data:norm", "scripts.eval_retrieval:norm"],
@@ -4429,7 +4583,7 @@
    {
     "kind": "gateway",
     "symbol": "milo.web:create_app.ask",
-    "line": 212,
+    "line": 239,
     "provider": "LangChain",
     "call": "App.ask",
     "gateway": "milo.app:App.ask",
