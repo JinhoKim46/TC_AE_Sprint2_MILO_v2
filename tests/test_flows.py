@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import json
 
+from _auth import signed_in_app
+
 from milo.app import App
 from milo.embed import LexicalEmbedder
 from milo.flows import owner_hash, read_flows, summarize
 from milo.store import MemoryStore
 from milo.tools import Backend
 from milo.types import ChatReply, Document, ToolCall, Usage
-from milo.web import create_app
 
 
 class CallThenAnswer:
@@ -90,7 +91,7 @@ def test_flow_endpoints_and_dashboard_page(tmp_path) -> None:
     app.ingest(
         [Document("kb/x", "Invoices are issued on the first day of each month.", {})]
     )
-    c = create_app(app, secret_key="test").test_client()
+    _, c, _ = signed_in_app(app, role="admin")
     c.get("/chat")
     body = c.post(
         "/api/ask", json={"question": "When are invoices issued each month?"}

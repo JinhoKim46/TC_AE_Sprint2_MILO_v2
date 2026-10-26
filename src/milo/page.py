@@ -593,7 +593,7 @@ PAGE = (
     try {
       const res = await fetch("/api/history");
       const data = await res.json();
-      (data.turns || []).forEach((t) => messages.push({role: t.role === "user" ? "user" : "assistant", text: t.content, sources: [], tool_results: [], cost_usd: 0, trace: []}));
+      (data.turns || []).forEach((t, i) => messages.push({role: t.role === "user" ? "user" : "assistant", text: t.content, sources: t.sources || [], tool_results: [], cost_usd: 0, trace: [], key: i}));
     } catch (err) {
       /* history is optional */
     }
@@ -609,13 +609,14 @@ PAGE = (
         const b = el("button", "");
         b.type = "button";
         b.append(el("span", "", st.title), el("small", "", st.steps.length + (st.steps.length === 1 ? " question" : " questions")));
-        b.addEventListener("click", () => runStory(st, b));
+        b.addEventListener("click", () => { window.location.href = "/chat?new=1&story=" + encodeURIComponent(st.id); });
         list.appendChild(b);
       });
       const wanted = new URLSearchParams(window.location.search).get("story");
       const chosen = (data.storylines || []).find((st) => st.id === wanted);
       if (chosen) {
         const button = [...list.children].find((c) => c.textContent.startsWith(chosen.title));
+        history.replaceState(null, "", "/chat");
         if (button) runStory(chosen, button);
       }
     } catch (err) {

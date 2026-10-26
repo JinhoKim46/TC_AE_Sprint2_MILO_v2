@@ -1,8 +1,11 @@
-"""M6: a Flask chat page. The owner id is bound to the browser session on the server; the page never sends one.
+"""The MILO web app: landing page, accounts, the chat, the knowledge base, and the owner's overview.
 
-Routes:
-  GET  /           the chat page: answer, sources panel, tool-call panel with policy decision, progress, cost
-  POST /api/ask    JSON in {"question": "..."}; JSON out with answer, error, sources, tool_results, cost_usd, stopped
+Access rules:
+- Visitors see the product page, sign-up and sign-in.
+- Customers (registered with an ID and a password) use the chat and the knowledge base.
+- The owner (role "admin") also sees the overview, the status and the user list.
+
+The owner id that the chat uses is the signed-in user's id, kept in the server-side session. The page cannot choose it.
 """
 
 from __future__ import annotations
@@ -12,75 +15,217 @@ import os
 import secrets
 import uuid
 from dataclasses import asdict
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from flask import Flask, Response, jsonify, request, session
+from flask import Flask, Response, jsonify, redirect, request, session, url_for
 
 from milo.app import App
+from milo.auth_pages import login_page, signup_page, users_page
+from milo.flows import owner_hash, read_flows, summarize
 from milo.page import DASHBOARD, PAGE
 from milo.shell import FAVICON, SHELL_CSS, brand_html, nav_html
+from milo.users import (
+    MemoryUserStore,
+    check_new_account,
+    hash_password,
+    verify_password,
+)
 
 REASONS = ("wrong", "outdated", "missing_source", "hard_to_follow")
+DEMO_FILE = Path(__file__).resolve().parents[2] / "data" / "demo_storylines.json"
 
 
-def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
+def create_app(
+    milo_app: App, secret_key: str | None = None, users: Any = None
+) -> Flask:
     web = Flask(__name__)
     web.secret_key = (
         secret_key or os.environ.get("MILO_SECRET_KEY") or secrets.token_hex(32)
     )
+    user_store = users if users is not None else MemoryUserStore()
+
+    def current_user():
+        uid = session.get("user_id")
+        return user_store.by_id(uid) if uid else None
 
     def owner() -> str:
-        """The owner id lives in the server-side session. The page cannot choose it."""
-        if "owner" not in session:
-            session["owner"] = uuid.uuid4().hex
-            session["thread"] = uuid.uuid4().hex
-        return session["owner"]
+        return str(session["user_id"])
 
-    def chat_page(active: str) -> str:
+    def ensure_thread() -> None:
+        if "thread" not in session:
+            session["thread"] = uuid.uuid4().hex
+
+    def sign_in(user) -> None:
+        session.clear()
+        session["user_id"] = user.id
+        session["thread"] = uuid.uuid4().hex
+
+    def wants_json() -> bool:
+        return request.path.startswith("/api/")
+
+    def login_needed(admin: bool = False):
+        """Decorator: a page redirects to sign-in; an API answers 401; a customer on an admin page gets 403."""
+
+        def wrap(view):
+            def inner(*args, **kwargs):
+                user = current_user()
+                if user is None:
+                    if wants_json():
+                        return jsonify({"error": "sign in first"}), 401
+                    return redirect(
+                        url_for("login", next=request.full_path.rstrip("?"))
+                    )
+                if admin and user.role != "admin":
+                    if wants_json():
+                        return jsonify({"error": "owner only"}), 403
+                    return Response(
+                        "This page is for the owner.", status=403, mimetype="text/plain"
+                    )
+                return view(*args, **kwargs)
+
+            inner.__name__ = view.__name__
+            return inner
+
+        return wrap
+
+    def html(page: str) -> Response:
+        return Response(page, mimetype="text/html")
+
+    def chat_page(user) -> str:
         return (
             PAGE.replace("<!--BRAND-->", brand_html("/"))
-            .replace("<!--NAV-->", nav_html(active))
+            .replace("<!--NAV-->", nav_html("chat", user))
             .replace("<!--FAVICON-->", FAVICON)
             .replace("<style>", "<style>" + SHELL_CSS, 1)
         )
 
-    @web.get("/chat")
-    def chat() -> Response:
-        if request.args.get("new"):
-            # a fresh conversation for the same owner
-            session["thread"] = uuid.uuid4().hex
-        owner()
-        return Response(chat_page("chat"), mimetype="text/html")
+    # ---- public pages --------------------------------------------------------------------------------------
 
     @web.get("/")
     def index() -> Response:
         from milo.landing import landing_page
 
-        return Response(landing_page(), mimetype="text/html")
+        return html(landing_page(current_user()))
 
-    @web.get("/api/flows")
-    def flows() -> Any:
-        from milo.flows import read_flows, summarize
+    @web.get("/signup")
+    def signup() -> Response:
+        return html(signup_page())
 
-        rows = read_flows(milo_app.trace_path, owner())
-        return jsonify({"flows": rows, "summary": summarize(rows)})
+    @web.post("/signup")
+    def signup_submit() -> Any:
+        name = (request.form.get("name") or "").strip()
+        login_id = (request.form.get("login_id") or "").strip()
+        password = request.form.get("password") or ""
+        problem = check_new_account(login_id, name, password)
+        if problem is None and user_store.by_login(login_id) is not None:
+            problem = "That ID is already registered. Choose another, or log in."
+        if problem:
+            return html(signup_page(problem, name, login_id))
+        user = user_store.create(login_id, name, hash_password(password), "customer")
+        sign_in(user)
+        return redirect("/chat")
 
-    @web.get("/dashboard")
-    def dashboard() -> Response:
-        page = (
-            DASHBOARD.replace("<!--BRAND-->", brand_html("/"))
-            .replace("<!--NAV-->", nav_html("overview"))
-            .replace("<!--FAVICON-->", FAVICON)
-            .replace("<style>", "<style>" + SHELL_CSS, 1)
+    @web.get("/login")
+    def login() -> Response:
+        return html(login_page(next_url=request.args.get("next", "/chat")))
+
+    @web.post("/login")
+    def login_submit() -> Any:
+        login_id = (request.form.get("login_id") or "").strip()
+        password = request.form.get("password") or ""
+        next_url = request.form.get("next") or "/chat"
+        found = user_store.by_login(login_id)
+        if found is None or not verify_password(password, found[1]):
+            return html(
+                login_page("The ID or password is not correct.", login_id, next_url)
+            )
+        sign_in(found[0])
+        return redirect(next_url if next_url.startswith("/") else "/chat")
+
+    @web.post("/logout")
+    def logout() -> Any:
+        session.clear()
+        return redirect("/")
+
+    @web.get("/api/me")
+    def me() -> Any:
+        user = current_user()
+        if user is None:
+            return jsonify({"signed_in": False})
+        return jsonify(
+            {
+                "signed_in": True,
+                "name": user.display_name,
+                "role": user.role,
+                "login_id": user.login_id,
+            }
         )
-        return Response(page, mimetype="text/html")
+
+    @web.get("/kb")
+    def kb_index() -> Response:
+        from milo.kb_pages import index_page
+
+        return html(index_page(current_user()))
+
+    @web.get("/kb/<path:doc_id>")
+    def kb_document(doc_id: str) -> Any:
+        from milo.kb_pages import document_page
+
+        page = document_page(doc_id, current_user())
+        if page is None:
+            return Response("Document not found", status=404, mimetype="text/plain")
+        return html(page)
+
+    @web.get("/api/demo")
+    def demo() -> Any:
+        return jsonify(json.loads(DEMO_FILE.read_text()))
+
+    # ---- signed-in customers ---------------------------------------------------------------------------------
+
+    @web.get("/chat")
+    @login_needed()
+    def chat() -> Response:
+        if request.args.get("new"):
+            session["thread"] = uuid.uuid4().hex
+        ensure_thread()
+        return html(chat_page(current_user()))
+
+    @web.get("/api/history")
+    @login_needed()
+    def history() -> Any:
+        ensure_thread()
+        turns = milo_app.store.history(owner(), session["thread"], limit=40)
+        return jsonify({"turns": turns})
+
+    @web.post("/api/ask")
+    @login_needed()
+    def ask() -> Any:
+        ensure_thread()
+        body = request.get_json(silent=True) or {}
+        question = body.get("question", "")
+        if not isinstance(question, str):
+            return jsonify(
+                {"answer": "", "error": "invalid_input: question must be text"}
+            ), 400
+        response = milo_app.ask(question, user_id=owner(), thread_id=session["thread"])
+        return jsonify(
+            {
+                "answer": response.answer,
+                "error": response.error,
+                "cost_usd": response.cost_usd,
+                "stopped": response.stopped,
+                "sources": [asdict(s) for s in response.sources],
+                "tool_results": [asdict(t) for t in response.tool_results],
+                "trace": response.trace,
+            }
+        )
 
     @web.post("/api/feedback")
+    @login_needed()
     def feedback() -> Any:
         """One thumbs vote on an answer. Stores the rating, a reason from a fixed list and a hashed owner. No text."""
-        from milo.flows import owner_hash
-
         body = request.get_json(silent=True) or {}
         rating = body.get("rating")
         reason = body.get("reason", "")
@@ -94,8 +239,6 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
             return jsonify(
                 {"ok": False, "error": "feedback is not stored in this run"}
             ), 503
-        from datetime import datetime
-
         record = {
             "ts": datetime.now().isoformat(timespec="seconds"),
             "owner": owner_hash(owner()),
@@ -108,22 +251,32 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
             f.write(json.dumps(record) + "\n")
         return jsonify({"ok": True})
 
-    @web.get("/kb")
-    def kb_index() -> Response:
-        from milo.kb_pages import index_page
+    # ---- the owner only -------------------------------------------------------------------------------------
 
-        return Response(index_page(), mimetype="text/html")
+    @web.get("/dashboard")
+    @login_needed(admin=True)
+    def dashboard() -> Response:
+        page = (
+            DASHBOARD.replace("<!--BRAND-->", brand_html("/"))
+            .replace("<!--NAV-->", nav_html("overview", current_user()))
+            .replace("<!--FAVICON-->", FAVICON)
+            .replace("<style>", "<style>" + SHELL_CSS, 1)
+        )
+        return html(page)
 
-    @web.get("/kb/<path:doc_id>")
-    def kb_document(doc_id: str) -> Any:
-        from milo.kb_pages import document_page
+    @web.get("/admin/users")
+    @login_needed(admin=True)
+    def admin_users() -> Response:
+        return html(users_page(current_user(), user_store.all()))
 
-        page = document_page(doc_id)
-        if page is None:
-            return Response("Document not found", status=404, mimetype="text/plain")
-        return Response(page, mimetype="text/html")
+    @web.get("/api/flows")
+    @login_needed(admin=True)
+    def flows() -> Any:
+        rows = read_flows(milo_app.trace_path, owner())
+        return jsonify({"flows": rows, "summary": summarize(rows)})
 
     @web.get("/api/status")
+    @login_needed(admin=True)
     def status() -> Any:
         from milo.status import snapshot
 
@@ -133,45 +286,5 @@ def create_app(milo_app: App, secret_key: str | None = None) -> Flask:
         url = os.environ.get("MILO_DATABASE_URL")
         model = os.environ.get("MILO_CHAT_MODEL", "anthropic/claude-haiku-5.5")
         return jsonify(snapshot(kind, url, milo_app.trace_path, model))
-
-    @web.get("/api/demo")
-    def demo() -> Any:
-        return jsonify(
-            json.loads(
-                (
-                    Path(__file__).resolve().parents[2]
-                    / "data"
-                    / "demo_storylines.json"
-                ).read_text()
-            )
-        )
-
-    @web.get("/api/history")
-    def history() -> Any:
-        owner_id = owner()
-        turns = milo_app.store.history(owner_id, session["thread"], limit=40)
-        return jsonify({"turns": turns})
-
-    @web.post("/api/ask")
-    def ask() -> Any:
-        body = request.get_json(silent=True) or {}
-        question = body.get("question", "")
-        if not isinstance(question, str):
-            return jsonify(
-                {"answer": "", "error": "invalid_input: question must be text"}
-            ), 400
-        owner_id = owner()
-        response = milo_app.ask(question, user_id=owner_id, thread_id=session["thread"])
-        return jsonify(
-            {
-                "answer": response.answer,
-                "error": response.error,
-                "cost_usd": response.cost_usd,
-                "stopped": response.stopped,
-                "sources": [asdict(s) for s in response.sources],
-                "tool_results": [asdict(t) for t in response.tool_results],
-                "trace": response.trace,
-            }
-        )
 
     return web

@@ -112,7 +112,19 @@ class App:
                 thread_id,
                 [
                     {"role": "user", "content": question},
-                    {"role": "assistant", "content": response.answer},
+                    {
+                        "role": "assistant",
+                        "content": response.answer,
+                        "sources": [
+                            {
+                                "doc_id": src.doc_id,
+                                "chunk_id": src.chunk_id,
+                                "score": round(src.score, 4),
+                                "text": src.text,
+                            }
+                            for src in response.sources
+                        ],
+                    },
                 ],
             )
         trace.append(

@@ -86,7 +86,7 @@ def _documents() -> list[dict[str, str]]:
     return docs
 
 
-def index_page() -> str:
+def index_page(user=None) -> str:
     groups: dict[str, list[dict[str, str]]] = {}
     for d in _documents():
         groups.setdefault(d["section"], []).append(d)
@@ -101,7 +101,7 @@ def index_page() -> str:
             f'<section class="card"><h2>{escape(label)} ({len(items)})</h2><div class="list">{rows}</div></section>'
         )
     body = (
-        f'<header>{brand_html("/")}<span class="sp"></span>{nav_html("kb")}</header>'
+        f'<header>{brand_html("/")}<span class="sp"></span>{nav_html("kb", user)}</header>'
         "<main><h1>Knowledge base</h1>"
         '<p class="muted">The passages MILO can use. All documents are fictional. Open one to read the text that an answer may cite.</p>'
         + "".join(sections)
@@ -110,7 +110,7 @@ def index_page() -> str:
     return _page("MILO knowledge base", body)
 
 
-def document_page(doc_id: str) -> str | None:
+def document_page(doc_id: str, user=None) -> str | None:
     path = (KB / f"{doc_id}.md").resolve()
     if KB.resolve() not in path.parents or not path.is_file():
         return None
@@ -132,7 +132,7 @@ def document_page(doc_id: str) -> str | None:
         else ""
     )
     body_html = (
-        f'<header>{brand_html("/")}<span class="sp"></span>{nav_html("kb")}</header>'
+        f'<header>{brand_html("/")}<span class="sp"></span>{nav_html("kb", user)}</header>'
         "<main>"
         '<p><a href="/kb">Knowledge base</a> / ' + escape(doc_id) + "</p>"
         f"<h1>{escape(title)}</h1>"

@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+from _auth import signed_in_app
+
 from milo.app import build_app
 from milo.embed import LexicalEmbedder
 from milo.store import MemoryStore
 from milo.tools import Backend
 from milo.types import ChatReply
-from milo.web import create_app
 
 
 class Quiet:
@@ -21,16 +22,13 @@ def client():
     store = MemoryStore()
     milo = build_app(Quiet(), LexicalEmbedder(), Backend(store=store))
     milo.store = store
-    return create_app(milo, secret_key="test").test_client()
+    return signed_in_app(milo)[1]
 
 
 def test_chat_lives_at_chat_and_the_shared_navigation_is_on_it() -> None:
     page = client().get("/chat").get_data(as_text=True)
-    assert (
-        "New conversation" in page
-        and 'href="/kb"' in page
-        and 'href="/dashboard"' in page
-    )
+    assert "New conversation" in page and 'href="/kb"' in page and "Log out" in page
+    assert 'href="/dashboard"' not in page  # the overview is the owner's only
     assert "/static/milo-mark.svg" in page
 
 

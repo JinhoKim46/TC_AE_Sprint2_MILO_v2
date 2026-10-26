@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 
+from _auth import signed_in_app
+
 from milo.app import build_app
 from milo.embed import LexicalEmbedder
 from milo.store import MemoryStore
@@ -42,7 +44,7 @@ def client(chat):
             )
         ]
     )
-    return create_app(milo, secret_key="test").test_client()
+    return signed_in_app(milo)[1]
 
 
 def test_page_has_the_chat_composer_and_plain_language_panels() -> None:
@@ -102,7 +104,9 @@ def test_bad_input_is_a_typed_error_not_a_traceback() -> None:
     assert "Traceback" not in str(body)
 
 
-def test_owner_comes_from_the_session_not_the_request() -> None:
+def test_owner_comes_from_the_signed_in_account_not_the_request() -> None:
+    from milo.users import MemoryUserStore, hash_password
+
     chat = ToolThenAnswer()
     milo = build_app(chat, LexicalEmbedder(), Backend())
     milo.ingest(
@@ -112,7 +116,10 @@ def test_owner_comes_from_the_session_not_the_request() -> None:
             )
         ]
     )
-    web = create_app(milo, secret_key="test")
+    users = MemoryUserStore()
+    users.create("ann", "Ann", hash_password("password-123"), "customer")
+    users.create("ben", "Ben", hash_password("password-456"), "customer")
+    web = create_app(milo, secret_key="test", users=users)
     seen: list[str] = []
     original = milo.ask
 
@@ -123,8 +130,8 @@ def test_owner_comes_from_the_session_not_the_request() -> None:
     milo.ask = spy
     a = web.test_client()
     b = web.test_client()
-    a.get("/chat")
-    b.get("/chat")
+    a.post("/login", data={"login_id": "ann", "password": "password-123"})
+    b.post("/login", data={"login_id": "ben", "password": "password-456"})
     a.post(
         "/api/ask",
         json={
@@ -142,9 +149,7 @@ def test_feedback_stores_rating_and_reason_with_a_hashed_owner(tmp_path) -> None
     milo = build_app(ToolThenAnswer(), LexicalEmbedder(), Backend(store=store))
     milo.store = store
     milo.trace_path = tmp_path / "trace.jsonl"
-    web = create_app(milo, secret_key="test")
-    c = web.test_client()
-    c.get("/chat")
+    web, c, _ = signed_in_app(milo)
     ok = c.post("/api/feedback", json={"rating": "down", "reason": "missing_source"})
     assert ok.get_json()["ok"] is True
     bad_rating = c.post("/api/feedback", json={"rating": "maybe"})

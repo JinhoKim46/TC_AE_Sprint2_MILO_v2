@@ -88,7 +88,7 @@ def _mock() -> str:
     )
 
 
-def landing_page() -> str:
+def landing_page(user=None) -> str:
     how = [
         ("Describe your work", "Tell MILO about one kind of work, in your own words."),
         (
@@ -202,14 +202,14 @@ def landing_page() -> str:
         f'<header class="top">{brand_html("/")}<span class="sp"></span>'
         f'<nav class="pagelinks" aria-label="Page sections"><a href="#how">How it works</a><a href="#features">Features</a>'
         '<a href="#video">Video</a><a href="#stories">Demo</a><a href="#faq">FAQ</a></nav>'
-        f'{nav_html("home")}<a class="btn primary" href="/chat">Open the chat</a></header>'
+        f'{nav_html("home", user)}<a class="btn primary" href="/chat?new=1">Open the chat</a></header>'
         "<main>"
         '<section class="hero" style="border-top:0">'
         '<div><p class="eyebrow">Diagnosis assistant for service businesses</p>'
         "<h1>Find where your work loses time, and what to automate first.</h1>"
         '<p class="lede">MILO listens to how your team works, finds the matching passages from past cases and service areas, '
         "and shows you the savings as a range, with every source and step visible.</p>"
-        '<div class="ctas"><a class="btn primary" href="/chat">Start a conversation</a>'
+        '<div class="ctas"><a class="btn primary" href="/chat?new=1">Start a conversation</a>'
         '<a class="btn" href="#stories">Watch a demo storyline</a></div>'
         '<div class="stats"><div class="stat"><b>Cited answers</b>Every claim names its passage</div>'
         '<div class="stat"><b>Ranges, not guesses</b>Estimates are computed in code</div></div></div>'
@@ -241,7 +241,7 @@ def landing_page() -> str:
         '<p class="muted">Each storyline runs a short, scripted conversation in the chat. Try one, then open its sources.</p>'
         '<div class="stories">'
         + "".join(
-            f'<a class="story" href="/chat?story={sid}"><span>Storyline</span><b>{t}</b><span class="muted" style="color:var(--mut);font-weight:400">{d}</span></a>'
+            f'<a class="story" href="/chat?new=1&story={sid}"><span>Storyline</span><b>{t}</b><span class="muted" style="color:var(--mut);font-weight:400">{d}</span></a>'
             for sid, t, d in stories
         )
         + "</div></div></section>"
@@ -252,11 +252,11 @@ def landing_page() -> str:
         + "</div></div></section>"
         '<section><div class="wrap"><div class="final"><h2>See how one answer is made</h2>'
         "<p>Ask a question about your work, then open the steps and the sources behind the answer.</p>"
-        '<a class="btn" href="/chat">Open the chat</a> <a class="btn" href="/dashboard" style="margin-left:8px">Open the overview</a>'
+        '<a class="btn" href="/chat?new=1">Open the chat</a> <a class="btn" href="/dashboard" style="margin-left:8px">Open the overview</a>'
         "</div></div></section>"
         "</main>"
         '<footer class="wrap"><div class="note">A course project. All businesses, figures and documents are fictional.</div>'
-        '<p style="margin-top:14px"><a href="/chat">Chat</a><a href="/dashboard">Overview</a><a href="/kb">Knowledge base</a></p></footer>'
+        '<p style="margin-top:14px"><a href="/chat?new=1">Chat</a><a href="/dashboard">Overview</a><a href="/kb">Knowledge base</a></p></footer>'
     )
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'

@@ -12,6 +12,7 @@ from typing import Any
 import psycopg
 
 from milo.store import MAX_HISTORY_TURNS
+from milo.users import User
 
 
 class PostgresStore:
@@ -22,6 +23,9 @@ class PostgresStore:
     def close(self) -> None:
         self._conn.close()
 
+    def user_store(self) -> PostgresUserStore:
+        return PostgresUserStore(self._conn)
+
     def append_turns(
         self, owner: str, thread: str, turns: list[dict[str, str]]
     ) -> None:
@@ -31,8 +35,17 @@ class PostgresStore:
                 (owner, thread),
             )
             cur.executemany(
-                "insert into milo_v2.turns (owner_id, thread_id, role, content) values (%s, %s, %s, %s)",
-                [(owner, thread, t["role"], t["content"]) for t in turns],
+                "insert into milo_v2.turns (owner_id, thread_id, role, content, sources) values (%s, %s, %s, %s, %s)",
+                [
+                    (
+                        owner,
+                        thread,
+                        t["role"],
+                        t["content"],
+                        json.dumps(t.get("sources", [])),
+                    )
+                    for t in turns
+                ],
             )
 
     def history(
@@ -42,12 +55,15 @@ class PostgresStore:
             return []
         with self._lock, self._conn.cursor() as cur:
             cur.execute(
-                "select role, content from milo_v2.turns where owner_id = %s and thread_id = %s "
+                "select role, content, sources from milo_v2.turns where owner_id = %s and thread_id = %s "
                 "order by id desc limit %s",
                 (owner, thread, limit),
             )
             rows = cur.fetchall()
-        return [{"role": r, "content": c} for r, c in reversed(rows)]
+        return [
+            {"role": r, "content": c, "sources": src or []}
+            for r, c, src in reversed(rows)
+        ]
 
     def add_fact(self, owner: str, field_id: str, entry: dict[str, Any]) -> int:
         with self._lock, self._conn.cursor() as cur:
@@ -115,3 +131,50 @@ class PostgresStore:
                 cur.execute(
                     f"delete from milo_v2.{table} where owner_id = %s", (owner,)
                 )
+
+
+class PostgresUserStore:
+    """Accounts in milo_v2.users. The same four methods as MemoryUserStore."""
+
+    def __init__(self, conn: psycopg.Connection) -> None:
+        self._conn = conn
+        self._lock = threading.Lock()
+
+    def create(
+        self, login_id: str, display_name: str, password_hash: str, role: str
+    ) -> User:
+        with self._lock, self._conn.cursor() as cur:
+            cur.execute(
+                "insert into milo_v2.users (login_id, display_name, password_hash, role) values (%s, %s, %s, %s) returning id",
+                (login_id, display_name, password_hash, role),
+            )
+            return User(cur.fetchone()[0], login_id, display_name, role)
+
+    def by_login(self, login_id: str) -> tuple[User, str] | None:
+        with self._lock, self._conn.cursor() as cur:
+            cur.execute(
+                "select id, display_name, role, password_hash from milo_v2.users where login_id = %s",
+                (login_id,),
+            )
+            row = cur.fetchone()
+        if row is None:
+            return None
+        return User(row[0], login_id, row[1], row[2]), row[3]
+
+    def by_id(self, user_id: int) -> User | None:
+        with self._lock, self._conn.cursor() as cur:
+            cur.execute(
+                "select login_id, display_name, role from milo_v2.users where id = %s",
+                (user_id,),
+            )
+            row = cur.fetchone()
+        if row is None:
+            return None
+        return User(user_id, row[0], row[1], row[2])
+
+    def all(self) -> list[User]:
+        with self._lock, self._conn.cursor() as cur:
+            cur.execute(
+                "select id, login_id, display_name, role from milo_v2.users order by id"
+            )
+            return [User(r[0], r[1], r[2], r[3]) for r in cur.fetchall()]
