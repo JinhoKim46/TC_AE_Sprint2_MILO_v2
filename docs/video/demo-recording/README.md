@@ -13,3 +13,7 @@ Run (after starting the demo server with `MILO_LIVE=1 MILO_DEMO_PASSWORD=<pick> 
 
 `record-demo.mjs` imports `puppeteer-core`, so install it in a folder of your own first. The recording is
 `milo-chat-demo.mp4` in this folder.
+
+Known issue (open): the recording's length does not match the real session. The last run shows about 55 seconds of
+video for a session that takes longer in real time, so the clock is compressed. Narration cannot be timed to scenes
+until this is fixed. Check the frame timestamps from Chrome's screencast against wall-clock times at each caption.

@@ -13,10 +13,11 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from milo.agent_app import AgentApp
 from milo.app import App
 from milo.chunk import front_matter
 from milo.embed import LexicalEmbedder, OpenRouterEmbedder
-from milo.llm import live_chat_model, local_chat_model
+from milo.llm import live_agent_model, live_chat_model, local_chat_model
 from milo.store import MemoryStore
 from milo.tools import Backend
 from milo.types import Document
@@ -51,14 +52,21 @@ def build_web(secret_key: str | None = None):
     store = build_store()
     embeddings = OpenRouterEmbedder(max_cost_usd=0.05) if live else LexicalEmbedder()
     chat = live_chat_model() if live else local_chat_model()
-    milo = App(
-        chat,
-        embeddings,
-        Backend(store=store),
-        fallback_chat=local_chat_model(),
-        trace_path=TRACE,
-        store=store,
-    )
+    common = {
+        "fallback_chat": local_chat_model(),
+        "trace_path": TRACE,
+        "store": store,
+    }
+    if live and os.environ.get("MILO_ENGINE", "agent") == "agent":
+        milo = AgentApp(
+            chat,
+            embeddings,
+            Backend(store=store),
+            agent_model=live_agent_model(),
+            **common,
+        )
+    else:
+        milo = App(chat, embeddings, Backend(store=store), **common)
     milo.ingest(load_documents())
     users = store.user_store() if hasattr(store, "user_store") else MemoryUserStore()
     return create_app(milo, secret_key=secret_key, users=users)

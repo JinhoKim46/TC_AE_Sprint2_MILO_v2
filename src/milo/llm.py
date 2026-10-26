@@ -121,6 +121,22 @@ def live_chat_model() -> LangChainChat:
     return LangChainChat(chat, price)
 
 
+def live_agent_model():
+    """The raw `ChatOpenAI` on OpenRouter for `create_agent`, with the same settings as `live_chat_model`."""
+    if os.environ.get("MILO_LIVE") != "1":
+        raise PermissionError("a live model needs MILO_LIVE=1 (paid call)")
+    from langchain_openai import ChatOpenAI
+
+    return ChatOpenAI(
+        model=os.environ.get("MILO_CHAT_MODEL", DEFAULT_CHAT_MODEL),
+        api_key=os.environ.get("OPENROUTER_API_KEY", "").strip(),
+        base_url=OPENROUTER_BASE_URL,
+        temperature=0,
+        timeout=30,
+        max_retries=0,
+    )
+
+
 LOCAL_BASE_URL = "http://localhost:11434"  # Ollama's native API; thinking is switched off per request
 DEFAULT_LOCAL_MODEL = "qwen3:8b"
 

@@ -16,9 +16,24 @@ const caption = (text) => page.evaluate((t) => {
   }
   el.textContent = t;
 }, text);
-const recorder = await page.screencast({ path: out, ffmpegPath });
+
 
 await page.goto(base + "/", { waitUntil: "networkidle0" });
+// Frames are taken on a clock and kept with their real times, so the video plays at real speed even when the page is still.
+const frames = [];
+const frameDir = out + ".frames";
+const fs = await import("node:fs");
+fs.mkdirSync(frameDir, { recursive: true });
+// Chrome's screencast gives each painted frame its own timestamp, so static parts keep their real length.
+const cdp = await page.createCDPSession();
+cdp.on("Page.screencastFrame", (f) => {
+  const name = `${frameDir}/${String(frames.length).padStart(6, "0")}.jpg`;
+  fs.writeFileSync(name, Buffer.from(f.data, "base64"));
+  frames.push({ name, at: f.metadata.timestamp });
+  cdp.send("Page.screencastFrameAck", { sessionId: f.sessionId }).catch(() => {});
+});
+await cdp.send("Page.startScreencast", { format: "jpeg", quality: 85, everyNthFrame: 1 });
+const t0 = Date.now() / 1000;
 await caption("MILO: a diagnosis chat that shows its work");
 await sleep(3500);
 
@@ -69,6 +84,14 @@ await sleep(4000);
 await caption("Every number comes from the recorded facts and the computed estimate");
 await sleep(3000);
 
-await recorder.stop();
+await cdp.send("Page.stopScreencast");
+await sleep(500);
+// The concat list gives every frame the time until the next one, so the timing is the real timing.
+const listPath = frameDir + "/list.txt";
+const lines = frames.map((f, i) => `file '${f.name}'\nduration ${((frames[i + 1]?.at ?? Date.now() / 1000) - f.at).toFixed(3)}`);
+lines.push(`file '${frames[frames.length - 1].name}'`);
+fs.writeFileSync(listPath, lines.join("\n") + "\n");
+const { execFileSync } = await import("node:child_process");
+execFileSync(ffmpegPath, ["-y", "-f", "concat", "-safe", "0", "-i", listPath, "-vf", "fps=25,format=yuv420p", "-c:v", "libx264", "-crf", "20", out]);
 await browser.close();
-console.log("recorded", out);
+console.log("recorded", out, frames.length, "frames");

@@ -7,6 +7,7 @@ The retrieval step is not run before the model here: the agent decides whether t
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any
 
 from langchain.agents import create_agent
@@ -19,8 +20,12 @@ from milo.tools import Backend, specs, validate_args
 
 
 def make_tools(
-    backend: Backend, user_id: str, calls: list[dict[str, Any]]
+    backend: Backend,
+    user_id: str,
+    calls: list[dict[str, Any]],
+    search: Callable[..., str] | None = None,
 ) -> list[StructuredTool]:
+    """The six tools for one owner. `search` replaces the search_knowledge handler (the chat engine numbers the passages)."""
     all_specs = specs()
 
     def tool_for(spec: Any) -> StructuredTool:
@@ -28,8 +33,13 @@ def make_tools(
             problem = validate_args(spec.name, args, all_specs)
             if problem:
                 return {"ok": False, "error": problem}
-            calls.append({"name": spec.name, "args": args})
-            return backend.call(spec.name, args, user_id=user_id)
+            entry = {"name": spec.name, "args": args, "ok": True}
+            calls.append(entry)
+            if spec.name == "search_knowledge" and search is not None:
+                entry["output"] = search(**args)
+                return entry["output"]
+            entry["output"] = backend.call(spec.name, args, user_id=user_id)
+            return entry["output"]
 
         return StructuredTool(
             name=spec.name,

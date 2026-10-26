@@ -2,42 +2,42 @@
  "schema": 2,
  "scope": ["scripts", "src"],
  "summary": {
-  "files": 40,
-  "lines": 6590,
-  "functions": 172,
-  "methods": 101,
-  "classes": 29,
+  "files": 41,
+  "lines": 6784,
+  "functions": 174,
+  "methods": 104,
+  "classes": 30,
   "routes": 22,
   "route_functions": 22,
-  "call_sites": 1977,
-  "resolved_internal": 516,
-  "resolved_external": 512,
-  "resolved_builtin": 658,
+  "call_sites": 2040,
+  "resolved_internal": 534,
+  "resolved_external": 528,
+  "resolved_builtin": 684,
   "resolved_by_convention": 0,
-  "unresolved": 291,
-  "resolved_ratio": 0.8528,
-  "graph_coverage": 0.8697,
+  "unresolved": 294,
+  "resolved_ratio": 0.8559,
+  "graph_coverage": 0.8726,
   "inferred_edges": 7,
-  "override_edges": 4,
-  "unresolved_value_like": 137,
-  "internal_edges": 515,
-  "reference_edges": 18,
+  "override_edges": 5,
+  "unresolved_value_like": 139,
+  "internal_edges": 533,
+  "reference_edges": 21,
   "sql_sites": 19,
   "gateway_sites": 0,
-  "external_sites": 16,
+  "external_sites": 21,
   "tables": 7,
   "orm_models": 0,
   "import_cycles": 0,
   "lazy_import_cycles": 0,
   "parse_errors": 0,
   "profiles": {
-   "llm": 12
+   "llm": 14
   },
   "infra_resources": 0,
   "infra_lambdas": 0,
   "infra_lambdas_linked": 0,
   "top_unresolved_names": [
-   ["get", 89],
+   ["get", 91],
    ["read_text", 28],
    ["strip", 25],
    ["write_text", 15],
@@ -90,14 +90,39 @@
    "call_sites": 41,
    "unresolved": 4
   },
+  "milo.agent_app": {
+   "file": "src/milo/agent_app.py",
+   "lines": 159,
+   "doc": "The chat engine on LangChain's `create_agent`. It replaces the app's own loop for live answers.",
+   "cli": false,
+   "exports": [],
+   "packages": [
+    "__future__",
+    "langchain",
+    "langgraph",
+    "os",
+    "time",
+    "typing"
+   ],
+   "imports": [
+    "milo.agent_arm",
+    "milo.app",
+    "milo.llm",
+    "milo.types"
+   ],
+   "lazy_imports": [],
+   "call_sites": 51,
+   "unresolved": 2
+  },
   "milo.agent_arm": {
    "file": "src/milo/agent_arm.py",
-   "lines": 75,
+   "lines": 85,
    "doc": "The same tools run by LangChain's `create_agent`, to compare with the app's own loop (`milo.app.App`).",
    "cli": false,
    "exports": [],
    "packages": [
     "__future__",
+    "collections",
     "langchain",
     "langchain_core",
     "langgraph",
@@ -105,8 +130,8 @@
    ],
    "imports": ["milo.app", "milo.tools"],
    "lazy_imports": [],
-   "call_sites": 16,
-   "unresolved": 0
+   "call_sites": 17,
+   "unresolved": 1
   },
   "milo.app": {
    "file": "src/milo/app.py",
@@ -255,7 +280,7 @@
   },
   "milo.llm": {
    "file": "src/milo/llm.py",
-   "lines": 169,
+   "lines": 185,
    "doc": "The model client: LangChain `ChatOpenAI` pointed at OpenRouter, behind the kit's `invoke(messages, tools)`.",
    "cli": false,
    "exports": [],
@@ -271,7 +296,7 @@
     "milo.types"
    ],
    "lazy_imports": [],
-   "call_sites": 48,
+   "call_sites": 54,
    "unresolved": 5
   },
   "milo.mcp_server": {
@@ -337,12 +362,13 @@
   },
   "milo.serve": {
    "file": "src/milo/serve.py",
-   "lines": 68,
+   "lines": 76,
    "doc": "Start the chat page. Choices come from the environment:",
    "cli": true,
    "exports": [],
    "packages": ["__future__", "os", "pathlib"],
    "imports": [
+    "milo.agent_app",
     "milo.app",
     "milo.chunk",
     "milo.embed",
@@ -356,7 +382,7 @@
    "lazy_imports": [
     "milo.pgstore"
    ],
-   "call_sites": 33,
+   "call_sites": 37,
    "unresolved": 6
   },
   "milo.shell": {
@@ -562,7 +588,7 @@
   },
   "scripts.demo_server": {
    "file": "scripts/demo_server.py",
-   "lines": 50,
+   "lines": 51,
    "doc": "A throwaway demo server for recording the video: the real live model and embeddings, an in-memory store, and one demo customer account. Nothing here is saved; restarting the server clears it.",
    "cli": true,
    "exports": [],
@@ -573,7 +599,7 @@
     "sys"
    ],
    "imports": [
-    "milo.app",
+    "milo.agent_app",
     "milo.embed",
     "milo.llm",
     "milo.serve",
@@ -583,7 +609,7 @@
     "milo.web"
    ],
    "lazy_imports": [],
-   "call_sites": 24,
+   "call_sites": 25,
    "unresolved": 0
   },
   "scripts.eval_advanced": {
@@ -925,21 +951,90 @@
    "decorators": [],
    "async": false
   },
+  "milo.agent_app:AgentApp": {
+   "kind": "class",
+   "file": "src/milo/agent_app.py",
+   "line": 29,
+   "end": 146,
+   "doc": "",
+   "bases": [
+    "App"
+   ],
+   "decorators": []
+  },
+  "milo.agent_app:AgentApp.__init__": {
+   "kind": "method",
+   "file": "src/milo/agent_app.py",
+   "line": 30,
+   "end": 33,
+   "doc": "",
+   "params": [
+    "self",
+    "agent_model",
+    "*args",
+    "**kwargs"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.agent_app:AgentApp._ask": {
+   "kind": "method",
+   "file": "src/milo/agent_app.py",
+   "line": 55,
+   "end": 146,
+   "doc": "",
+   "params": [
+    "self",
+    "question",
+    "user_id",
+    "trace",
+    "prior"
+   ],
+   "decorators": [],
+   "async": false
+  },
+  "milo.agent_app:AgentApp._numbered_search": {
+   "kind": "method",
+   "file": "src/milo/agent_app.py",
+   "line": 35,
+   "end": 53,
+   "doc": "The search tool: retrieves, numbers each passage once per answer, and returns the numbered passages.",
+   "params": ["self", "query", "section"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.agent_app:_cost": {
+   "kind": "function",
+   "file": "src/milo/agent_app.py",
+   "line": 149,
+   "end": 159,
+   "doc": "",
+   "params": [
+    "messages"
+   ],
+   "decorators": [],
+   "async": false
+  },
   "milo.agent_arm:make_tools": {
    "kind": "function",
    "file": "src/milo/agent_arm.py",
-   "line": 21,
-   "end": 41,
-   "doc": "",
-   "params": ["backend", "user_id", "calls"],
+   "line": 22,
+   "end": 51,
+   "doc": "The six tools for one owner. `search` replaces the search_knowledge handler (the chat engine numbers the passages).",
+   "params": [
+    "backend",
+    "user_id",
+    "calls",
+    "search"
+   ],
    "decorators": [],
    "async": false
   },
   "milo.agent_arm:make_tools.tool_for": {
    "kind": "nested",
    "file": "src/milo/agent_arm.py",
-   "line": 26,
-   "end": 39,
+   "line": 31,
+   "end": 49,
    "doc": "",
    "params": [
     "spec"
@@ -950,8 +1045,8 @@
   "milo.agent_arm:make_tools.tool_for.run": {
    "kind": "nested",
    "file": "src/milo/agent_arm.py",
-   "line": 27,
-   "end": 32,
+   "line": 32,
+   "end": 42,
    "doc": "",
    "params": [
     "**args"
@@ -962,8 +1057,8 @@
   "milo.agent_arm:run_agent": {
    "kind": "function",
    "file": "src/milo/agent_arm.py",
-   "line": 44,
-   "end": 75,
+   "line": 54,
+   "end": 85,
    "doc": "One question through `create_agent`. Returns the answer, the calls made, and any calls waiting for approval.",
    "params": [
     "question",
@@ -1562,8 +1657,8 @@
   "milo.llm:LocalOllamaChat": {
    "kind": "class",
    "file": "src/milo/llm.py",
-   "line": 128,
-   "end": 164,
+   "line": 144,
+   "end": 180,
    "doc": "The fallback model. It answers from the passages only: tools are not offered, so a fallback can never act.",
    "bases": [],
    "decorators": []
@@ -1571,8 +1666,8 @@
   "milo.llm:LocalOllamaChat.__init__": {
    "kind": "method",
    "file": "src/milo/llm.py",
-   "line": 137,
-   "end": 139,
+   "line": 153,
+   "end": 155,
    "doc": "",
    "params": ["self", "model", "timeout_s"],
    "decorators": [],
@@ -1581,10 +1676,20 @@
   "milo.llm:LocalOllamaChat.invoke": {
    "kind": "method",
    "file": "src/milo/llm.py",
-   "line": 141,
-   "end": 164,
+   "line": 157,
+   "end": 180,
    "doc": "",
    "params": ["self", "messages", "tools"],
+   "decorators": [],
+   "async": false
+  },
+  "milo.llm:live_agent_model": {
+   "kind": "function",
+   "file": "src/milo/llm.py",
+   "line": 124,
+   "end": 137,
+   "doc": "The raw `ChatOpenAI` on OpenRouter for `create_agent`, with the same settings as `live_chat_model`.",
+   "params": [],
    "decorators": [],
    "async": false
   },
@@ -1601,8 +1706,8 @@
   "milo.llm:local_chat_model": {
    "kind": "function",
    "file": "src/milo/llm.py",
-   "line": 167,
-   "end": 169,
+   "line": 183,
+   "end": 185,
    "doc": "The fallback: a local Ollama model. No key, no spend.",
    "params": [],
    "decorators": [],
@@ -2108,8 +2213,8 @@
   "milo.serve:build_store": {
    "kind": "function",
    "file": "src/milo/serve.py",
-   "line": 39,
-   "end": 44,
+   "line": 40,
+   "end": 45,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -2118,8 +2223,8 @@
   "milo.serve:build_web": {
    "kind": "function",
    "file": "src/milo/serve.py",
-   "line": 47,
-   "end": 64,
+   "line": 48,
+   "end": 72,
    "doc": "",
    "params": [
     "secret_key"
@@ -2130,8 +2235,8 @@
   "milo.serve:load_documents": {
    "kind": "function",
    "file": "src/milo/serve.py",
-   "line": 31,
-   "end": 36,
+   "line": 32,
+   "end": 37,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -3654,7 +3759,7 @@
    "kind": "function",
    "file": "scripts/demo_server.py",
    "line": 25,
-   "end": 46,
+   "end": 47,
    "doc": "",
    "params": [],
    "decorators": [],
@@ -4560,11 +4665,25 @@
   ["milo.advanced:self_query", "milo.advanced:_tokens", 112],
   ["milo.advanced:self_query", "milo.advanced:validate_filters", 130],
   ["milo.advanced:translate_keywords", "milo.advanced:_tokens", 80],
-  ["milo.agent_arm:make_tools", "milo.agent_arm:make_tools.tool_for", 41],
-  ["milo.agent_arm:make_tools", "milo.tools:specs", 24],
-  ["milo.agent_arm:make_tools.tool_for.run", "milo.tools:Backend.call", 32],
-  ["milo.agent_arm:make_tools.tool_for.run", "milo.tools:validate_args", 28],
-  ["milo.agent_arm:run_agent", "milo.agent_arm:make_tools", 51],
+  ["milo.agent_app:AgentApp.__init__", "milo.app:App.__init__", 31],
+  ["milo.agent_app:AgentApp._ask", "milo.agent_app:_cost", 121],
+  ["milo.agent_app:AgentApp._ask", "milo.agent_arm:make_tools", 70],
+  ["milo.agent_app:AgentApp._ask", "milo.app:App._ask", 93],
+  ["milo.agent_app:AgentApp._ask", "milo.app:App._input_problem", 62],
+  ["milo.agent_app:AgentApp._ask", "milo.app:_ms", 91],
+  ["milo.agent_app:AgentApp._ask", "milo.app:_ms", 126],
+  ["milo.agent_app:AgentApp._ask", "milo.types:Response", 65],
+  ["milo.agent_app:AgentApp._ask", "milo.types:Response", 132],
+  ["milo.agent_app:AgentApp._ask", "milo.types:Response", 140],
+  ["milo.agent_app:AgentApp._ask", "milo.types:Response", 141],
+  ["milo.agent_app:AgentApp._ask", "milo.types:ToolResult", 103],
+  ["milo.agent_app:AgentApp._ask", "milo.types:ToolResult", 112],
+  ["milo.agent_app:AgentApp._numbered_search", "milo.app:App._retrieve", 37],
+  ["milo.agent_arm:make_tools", "milo.agent_arm:make_tools.tool_for", 51],
+  ["milo.agent_arm:make_tools", "milo.tools:specs", 29],
+  ["milo.agent_arm:make_tools.tool_for.run", "milo.tools:Backend.call", 41],
+  ["milo.agent_arm:make_tools.tool_for.run", "milo.tools:validate_args", 33],
+  ["milo.agent_arm:run_agent", "milo.agent_arm:make_tools", 61],
   ["milo.app:App.__init__", "milo.store:MemoryStore", 75],
   ["milo.app:App._ask", "milo.app:App._cost", 222],
   ["milo.app:App._ask", "milo.app:App._input_problem", 158],
@@ -4628,10 +4747,10 @@
   ["milo.llm:LangChainChat.invoke", "milo.types:ChatReply", 44],
   ["milo.llm:LangChainChat.invoke", "milo.types:ToolCall", 47],
   ["milo.llm:LangChainChat.invoke", "milo.types:Usage", 49],
-  ["milo.llm:LocalOllamaChat.invoke", "milo.types:ChatReply", 161],
-  ["milo.llm:LocalOllamaChat.invoke", "milo.types:Usage", 163],
+  ["milo.llm:LocalOllamaChat.invoke", "milo.types:ChatReply", 177],
+  ["milo.llm:LocalOllamaChat.invoke", "milo.types:Usage", 179],
   ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
-  ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
+  ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 185],
   ["milo.mcp_server:<module>", "milo.mcp_server:build_server", 158],
   ["milo.mcp_server:<module>", "milo.store:MemoryStore", 158],
   ["milo.mcp_server:<module>", "milo.tools:Backend", 158],
@@ -4652,23 +4771,26 @@
   ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 228],
   ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 217],
   ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 206],
-  ["milo.serve:<module>", "milo.serve:build_web", 68],
-  ["milo.serve:build_store", "milo.pgstore:PostgresStore", 43],
-  ["milo.serve:build_store", "milo.store:MemoryStore", 44],
-  ["milo.serve:build_web", "milo.app:App", 54],
-  ["milo.serve:build_web", "milo.app:App.ingest", 62],
-  ["milo.serve:build_web", "milo.embed:LexicalEmbedder", 52],
-  ["milo.serve:build_web", "milo.embed:OpenRouterEmbedder", 52],
-  ["milo.serve:build_web", "milo.llm:live_chat_model", 53],
-  ["milo.serve:build_web", "milo.llm:local_chat_model", 53],
-  ["milo.serve:build_web", "milo.llm:local_chat_model", 58],
-  ["milo.serve:build_web", "milo.serve:build_store", 51],
-  ["milo.serve:build_web", "milo.serve:load_documents", 62],
-  ["milo.serve:build_web", "milo.tools:Backend", 57],
-  ["milo.serve:build_web", "milo.users:MemoryUserStore", 63],
-  ["milo.serve:build_web", "milo.web:create_app", 64],
-  ["milo.serve:load_documents", "milo.chunk:front_matter", 34],
-  ["milo.serve:load_documents", "milo.types:Document", 35],
+  ["milo.serve:<module>", "milo.serve:build_web", 76],
+  ["milo.serve:build_store", "milo.pgstore:PostgresStore", 44],
+  ["milo.serve:build_store", "milo.store:MemoryStore", 45],
+  ["milo.serve:build_web", "milo.agent_app:AgentApp", 61],
+  ["milo.serve:build_web", "milo.app:App", 69],
+  ["milo.serve:build_web", "milo.app:App.ingest", 70],
+  ["milo.serve:build_web", "milo.embed:LexicalEmbedder", 53],
+  ["milo.serve:build_web", "milo.embed:OpenRouterEmbedder", 53],
+  ["milo.serve:build_web", "milo.llm:live_agent_model", 65],
+  ["milo.serve:build_web", "milo.llm:live_chat_model", 54],
+  ["milo.serve:build_web", "milo.llm:local_chat_model", 54],
+  ["milo.serve:build_web", "milo.llm:local_chat_model", 56],
+  ["milo.serve:build_web", "milo.serve:build_store", 52],
+  ["milo.serve:build_web", "milo.serve:load_documents", 70],
+  ["milo.serve:build_web", "milo.tools:Backend", 64],
+  ["milo.serve:build_web", "milo.tools:Backend", 69],
+  ["milo.serve:build_web", "milo.users:MemoryUserStore", 71],
+  ["milo.serve:build_web", "milo.web:create_app", 72],
+  ["milo.serve:load_documents", "milo.chunk:front_matter", 35],
+  ["milo.serve:load_documents", "milo.types:Document", 36],
   ["milo.shell:site_header", "milo.shell:_link", 46],
   ["milo.shell:site_header", "milo.shell:_link", 47],
   ["milo.shell:site_header", "milo.shell:_link", 48],
@@ -4895,19 +5017,20 @@
   ["scripts.create_admin:main", "milo.pgstore:PostgresUserStore.create", 40],
   ["scripts.create_admin:main", "milo.users:check_new_account", 33],
   ["scripts.create_admin:main", "milo.users:hash_password", 40],
-  ["scripts.demo_server:<module>", "scripts.demo_server:main", 50],
-  ["scripts.demo_server:main", "milo.app:App", 34],
-  ["scripts.demo_server:main", "milo.app:App.ingest", 41],
+  ["scripts.demo_server:<module>", "scripts.demo_server:main", 51],
+  ["scripts.demo_server:main", "milo.agent_app:AgentApp", 34],
+  ["scripts.demo_server:main", "milo.app:App.ingest", 42],
   ["scripts.demo_server:main", "milo.embed:OpenRouterEmbedder", 36],
+  ["scripts.demo_server:main", "milo.llm:live_agent_model", 38],
   ["scripts.demo_server:main", "milo.llm:live_chat_model", 35],
-  ["scripts.demo_server:main", "milo.llm:local_chat_model", 38],
-  ["scripts.demo_server:main", "milo.serve:load_documents", 41],
+  ["scripts.demo_server:main", "milo.llm:local_chat_model", 39],
+  ["scripts.demo_server:main", "milo.serve:load_documents", 42],
   ["scripts.demo_server:main", "milo.store:MemoryStore", 33],
   ["scripts.demo_server:main", "milo.tools:Backend", 37],
-  ["scripts.demo_server:main", "milo.users:MemoryUserStore", 42],
-  ["scripts.demo_server:main", "milo.users:MemoryUserStore.create", 43],
-  ["scripts.demo_server:main", "milo.users:hash_password", 43],
-  ["scripts.demo_server:main", "milo.web:create_app", 44],
+  ["scripts.demo_server:main", "milo.users:MemoryUserStore", 43],
+  ["scripts.demo_server:main", "milo.users:MemoryUserStore.create", 44],
+  ["scripts.demo_server:main", "milo.users:hash_password", 44],
+  ["scripts.demo_server:main", "milo.web:create_app", 45],
   ["scripts.eval_advanced:<module>", "scripts.eval_advanced:main", 159],
   ["scripts.eval_advanced:decide", "scripts.eval_advanced:paired_ci", 52],
   ["scripts.eval_advanced:main", "scripts.eval_advanced:replay", 150],
@@ -5073,7 +5196,10 @@
   ["scripts.run_judge:main", "scripts.run_judge:judge_all", 113]
  ],
  "refs": [
-  ["milo.agent_arm:make_tools.tool_for", "milo.agent_arm:make_tools.tool_for.run", 38],
+  ["milo.agent_app:AgentApp", "milo.app:App", 29],
+  ["milo.agent_app:AgentApp.__init__", "milo.types:Source", 33],
+  ["milo.agent_app:AgentApp._ask", "milo.agent_app:AgentApp._numbered_search", 70],
+  ["milo.agent_arm:make_tools.tool_for", "milo.agent_arm:make_tools.tool_for.run", 48],
   ["milo.app:App.__init__", "milo.app:App._retrieve", 78],
   ["milo.app:App.__init__", "milo.index:Index", 73],
   ["milo.app:App.__init__", "milo.store:Store", 75],
@@ -5093,6 +5219,12 @@
   ["scripts.eval_retrieval:metrics", "milo.metrics:recall_at_k", 116]
  ],
  "constructs": [
+  ["milo.agent_app:AgentApp._ask", "milo.types:Response", 65],
+  ["milo.agent_app:AgentApp._ask", "milo.types:Response", 132],
+  ["milo.agent_app:AgentApp._ask", "milo.types:Response", 140],
+  ["milo.agent_app:AgentApp._ask", "milo.types:Response", 141],
+  ["milo.agent_app:AgentApp._ask", "milo.types:ToolResult", 103],
+  ["milo.agent_app:AgentApp._ask", "milo.types:ToolResult", 112],
   ["milo.app:App.__init__", "milo.store:MemoryStore", 75],
   ["milo.app:App._ask", "milo.types:ChatReply", 196],
   ["milo.app:App._ask", "milo.types:Response", 161],
@@ -5111,10 +5243,10 @@
   ["milo.llm:LangChainChat.invoke", "milo.types:ChatReply", 44],
   ["milo.llm:LangChainChat.invoke", "milo.types:ToolCall", 47],
   ["milo.llm:LangChainChat.invoke", "milo.types:Usage", 49],
-  ["milo.llm:LocalOllamaChat.invoke", "milo.types:ChatReply", 161],
-  ["milo.llm:LocalOllamaChat.invoke", "milo.types:Usage", 163],
+  ["milo.llm:LocalOllamaChat.invoke", "milo.types:ChatReply", 177],
+  ["milo.llm:LocalOllamaChat.invoke", "milo.types:Usage", 179],
   ["milo.llm:live_chat_model", "milo.llm:LangChainChat", 121],
-  ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 169],
+  ["milo.llm:local_chat_model", "milo.llm:LocalOllamaChat", 185],
   ["milo.mcp_server:<module>", "milo.store:MemoryStore", 158],
   ["milo.mcp_server:<module>", "milo.tools:Backend", 158],
   ["milo.mcp_server:build_server", "milo.mcp_server:Approvals", 48],
@@ -5123,14 +5255,16 @@
   ["milo.pgstore:PostgresUserStore.by_id", "milo.users:User", 228],
   ["milo.pgstore:PostgresUserStore.by_login", "milo.users:User", 217],
   ["milo.pgstore:PostgresUserStore.create", "milo.users:User", 206],
-  ["milo.serve:build_store", "milo.pgstore:PostgresStore", 43],
-  ["milo.serve:build_store", "milo.store:MemoryStore", 44],
-  ["milo.serve:build_web", "milo.app:App", 54],
-  ["milo.serve:build_web", "milo.embed:LexicalEmbedder", 52],
-  ["milo.serve:build_web", "milo.embed:OpenRouterEmbedder", 52],
-  ["milo.serve:build_web", "milo.tools:Backend", 57],
-  ["milo.serve:build_web", "milo.users:MemoryUserStore", 63],
-  ["milo.serve:load_documents", "milo.types:Document", 35],
+  ["milo.serve:build_store", "milo.pgstore:PostgresStore", 44],
+  ["milo.serve:build_store", "milo.store:MemoryStore", 45],
+  ["milo.serve:build_web", "milo.agent_app:AgentApp", 61],
+  ["milo.serve:build_web", "milo.app:App", 69],
+  ["milo.serve:build_web", "milo.embed:LexicalEmbedder", 53],
+  ["milo.serve:build_web", "milo.embed:OpenRouterEmbedder", 53],
+  ["milo.serve:build_web", "milo.tools:Backend", 64],
+  ["milo.serve:build_web", "milo.tools:Backend", 69],
+  ["milo.serve:build_web", "milo.users:MemoryUserStore", 71],
+  ["milo.serve:load_documents", "milo.types:Document", 36],
   ["milo.tools:Backend.__init__", "milo.store:MemoryStore", 114],
   ["milo.tools:specs", "milo.types:ToolSpec", 65],
   ["milo.users:MemoryUserStore.create", "milo.users:User", 93],
@@ -5138,11 +5272,11 @@
   ["scripts.build_kb:render_all", "scripts.build_kb:Writer", 275],
   ["scripts.build_kb:render_method", "scripts.build_kb:Writer", 258],
   ["scripts.create_admin:main", "milo.pgstore:PostgresStore", 36],
-  ["scripts.demo_server:main", "milo.app:App", 34],
+  ["scripts.demo_server:main", "milo.agent_app:AgentApp", 34],
   ["scripts.demo_server:main", "milo.embed:OpenRouterEmbedder", 36],
   ["scripts.demo_server:main", "milo.store:MemoryStore", 33],
   ["scripts.demo_server:main", "milo.tools:Backend", 37],
-  ["scripts.demo_server:main", "milo.users:MemoryUserStore", 42],
+  ["scripts.demo_server:main", "milo.users:MemoryUserStore", 43],
   ["scripts.eval_advanced:run", "milo.embed:LexicalEmbedder", 57],
   ["scripts.eval_advanced:run", "milo.index:Index", 59],
   ["scripts.eval_agent_arm:<module>", "milo.types:Document", 27],
@@ -5181,12 +5315,13 @@
   ["milo.advanced:retrieve", "milo.index:Index.search", 141],
   ["milo.app:App.__init__", "milo.tools:Backend.attach_search", 78],
   ["milo.app:App._ask", "milo.tools:Backend.specs", 192],
-  ["milo.serve:build_web", "milo.pgstore:PostgresStore.user_store", 63],
+  ["milo.serve:build_web", "milo.pgstore:PostgresStore.user_store", 71],
   ["scripts.eval_attacks:run", "milo.app:App.ask", 169],
   ["scripts.eval_attacks:run", "milo.app:App.ask", 195]
  ],
  "override_calls": [
-  ["milo.agent_arm:make_tools.tool_for.run", "scripts.eval_attacks:RecordingBackend.call", 32],
+  ["milo.agent_arm:make_tools.tool_for.run", "scripts.eval_attacks:RecordingBackend.call", 41],
+  ["milo.app:App.ask", "milo.agent_app:AgentApp._ask", 107],
   ["milo.mcp_server:build_server.call", "scripts.eval_attacks:RecordingBackend.call", 81],
   ["scripts.eval_agent_arm:seeded_backend", "scripts.eval_attacks:RecordingBackend.call", 41],
   ["scripts.eval_tools:live", "scripts.eval_attacks:RecordingBackend.call", 148]
@@ -5326,62 +5461,92 @@
  "gateways": [],
  "external": [
   {
+   "symbol": "milo.agent_app:AgentApp._ask",
+   "line": 71,
+   "service": "LangChain",
+   "call": "langchain.agents.create_agent"
+  },
+  {
+   "symbol": "milo.agent_app:AgentApp._ask",
+   "line": 76,
+   "service": "LangChain",
+   "call": "langchain.agents.middleware.HumanInTheLoopMiddleware"
+  },
+  {
+   "symbol": "milo.agent_app:AgentApp._ask",
+   "line": 86,
+   "service": "LangChain",
+   "call": "langchain.agents.create_agent().invoke"
+  },
+  {
+   "symbol": "milo.agent_app:AgentApp._ask",
+   "line": 95,
+   "service": "LangChain",
+   "call": "langchain.agents.create_agent().invoke().get"
+  },
+  {
+   "symbol": "milo.agent_app:AgentApp._ask",
+   "line": 96,
+   "service": "LangChain",
+   "call": "langchain.agents.create_agent().invoke().get()[].value.get"
+  },
+  {
    "symbol": "milo.agent_arm:run_agent",
-   "line": 49,
+   "line": 59,
    "service": "LangChain",
    "call": "langchain.agents.create_agent"
   },
   {
    "symbol": "milo.agent_arm:run_agent",
-   "line": 53,
+   "line": 63,
    "service": "LangChain",
    "call": "langchain.agents.middleware.HumanInTheLoopMiddleware"
   },
   {
    "symbol": "milo.agent_arm:run_agent",
-   "line": 56,
+   "line": 66,
    "service": "LangChain",
    "call": "langchain.agents.create_agent().invoke"
   },
   {
    "symbol": "milo.agent_arm:run_agent",
-   "line": 61,
+   "line": 71,
    "service": "LangChain",
    "call": "langchain.agents.create_agent().invoke().get"
   },
   {
    "symbol": "milo.agent_arm:run_agent",
-   "line": 62,
+   "line": 72,
    "service": "LangChain",
    "call": "langchain.agents.create_agent().invoke().get()[].value.get"
   },
   {
    "symbol": "milo.llm:LocalOllamaChat.invoke",
-   "line": 158,
+   "line": 174,
    "service": "HTTP (httpx)",
    "call": "httpx.post"
   },
   {
    "symbol": "milo.llm:LocalOllamaChat.invoke",
-   "line": 159,
+   "line": 175,
    "service": "HTTP (httpx)",
    "call": "httpx.post().raise_for_status"
   },
   {
    "symbol": "milo.llm:LocalOllamaChat.invoke",
-   "line": 160,
+   "line": 176,
    "service": "HTTP (httpx)",
    "call": "httpx.post().json"
   },
   {
    "symbol": "milo.llm:LocalOllamaChat.invoke",
-   "line": 163,
+   "line": 179,
    "service": "HTTP (httpx)",
    "call": "httpx.post().json().get"
   },
   {
    "symbol": "milo.llm:LocalOllamaChat.invoke",
-   "line": 163,
+   "line": 179,
    "service": "HTTP (httpx)",
    "call": "httpx.post().json().get"
   },
@@ -5450,7 +5615,7 @@
   "milo.store:MemoryStore.facts",
   "milo.store:MemoryStore.history"
  ],
- "test_files": 18,
+ "test_files": 19,
  "duplicate_names": {
   "_page": ["milo.auth_pages:_page", "milo.kb_pages:_page"],
   "live": ["scripts.eval_agent_arm:live", "scripts.eval_hybrid:live", "scripts.eval_tools:live"],
@@ -5461,6 +5626,17 @@
  "parse_errors": [],
  "profiles": {
   "llm": [
+   {
+    "kind": "gateway",
+    "symbol": "milo.agent_app:AgentApp._ask",
+    "line": 93,
+    "provider": "LangChain",
+    "call": "App._ask",
+    "gateway": "milo.app:App._ask",
+    "settings": {},
+    "message_roles": [],
+    "label": "_ask"
+   },
    {
     "symbol": "milo.app:App._invoke",
     "line": 287,
@@ -5483,10 +5659,22 @@
    },
    {
     "symbol": "milo.llm:LocalOllamaChat.invoke",
-    "line": 158,
+    "line": 174,
     "provider": "Ollama",
     "call": "HTTP · httpx.post",
     "settings": {},
+    "message_roles": []
+   },
+   {
+    "symbol": "milo.llm:live_agent_model",
+    "line": 130,
+    "provider": "LangChain/OpenAI",
+    "call": "ChatOpenAI",
+    "settings": {
+     "model": "os.environ.get('MILO_CHAT_MODEL', DEFAULT_CHAT_MODEL)",
+     "temperature": "0",
+     "timeout": "30"
+    },
     "message_roles": []
    },
    {

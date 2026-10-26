@@ -12,9 +12,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from milo.app import App
+from milo.agent_app import AgentApp
 from milo.embed import OpenRouterEmbedder
-from milo.llm import live_chat_model, local_chat_model
+from milo.llm import live_agent_model, live_chat_model, local_chat_model
 from milo.serve import load_documents
 from milo.store import MemoryStore
 from milo.tools import Backend
@@ -31,10 +31,11 @@ def main() -> None:
     if os.environ.get("MILO_LIVE") != "1":
         raise SystemExit("the recording needs the live model: MILO_LIVE=1")
     store = MemoryStore()
-    app = App(
+    app = AgentApp(
         live_chat_model(),
         OpenRouterEmbedder(max_cost_usd=0.05),
         Backend(store=store),
+        agent_model=live_agent_model(),
         fallback_chat=local_chat_model(),
         store=store,
     )
