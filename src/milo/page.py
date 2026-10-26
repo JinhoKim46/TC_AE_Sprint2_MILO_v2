@@ -812,7 +812,7 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-dir
 <body>
 <!--HEADER-->
 <main>
-  <div class="pagetitle"><h1>Overview: every account, every question</h1><p class="sub">Only the owner sees this page. Figures come from the database.</p></div>
+  <div class="pagetitle"><h1>Overview: every account, every question</h1><p class="sub">Only the owner sees this page. Figures come from the database.</p><button class="button" id="refresh" type="button">Refresh</button></div>
   <section class="card" id="status-card">
     <h2>System status</h2>
     <p class="sub">Live checks of the parts MILO depends on, and spend against the course cap.</p>
