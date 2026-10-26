@@ -1,0 +1,119 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+    }
+    .ans-cols {
+      display: grid;
+      grid-template-columns: 1fr 540px;
+      gap: 32px;
+      align-items: start;
+    }
+    .ans-left {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    #ans-you {
+      align-self: flex-end;
+      max-width: 900px;
+      background: var(--color-accent);
+      color: #ffffff;
+      padding: 22px 30px;
+      border-radius: 30px 30px 8px 30px;
+    }
+    #ans-card {
+      padding: 40px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      border-radius: 28px 28px 28px 8px;
+    }
+    #ans-card b {
+      color: var(--color-accent);
+    }
+    .ans-src {
+      font-size: var(--t-caption);
+      line-height: 1.4;
+      border-top: 2px solid var(--color-line);
+      padding-top: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ans-src span {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    #ans-est {
+      padding: 40px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    #ans-range {
+      font-size: 112px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--color-accent);
+      font-variant-numeric: tabular-nums;
+      margin-top: 8px;
+    }
+    #ans-assume {
+      margin-top: 14px;
+      font-size: var(--t-caption);
+      line-height: 1.4;
+      background: var(--color-warn-soft);
+      color: var(--color-warn);
+      border-radius: 16px;
+      padding: 14px 18px;
+    }
+  </style>
+  <div id="root" data-composition-id="answer" data-width="1920" data-height="1080">
+    <div id="ans-stage" class="g-stage" data-hold>
+      <div id="ans-eyebrow" class="g-eyebrow">Sample exchange</div>
+      <div id="ans-title" class="g-title">MILO answers with a range and its sources.</div>
+      <div class="g-content ans-cols">
+        <div class="ans-left">
+        <div id="ans-you" class="g-body">We get about 40 service requests a week, and each takes about 12 minutes to assign. What could a shared queue save us?</div>
+        <div id="ans-card" class="g-card">
+          <p class="g-body">A shared queue could save about <b>5.3 hours a week</b>, likely between 4.3 and 6.4 hours. The estimate uses today's 40 requests and 12 minutes each, and assumes 4 minutes with one queue <span class="g-cite">1</span></p>
+          <div class="ans-src g-muted" id="ans-src">
+            <span><span class="g-cite">1</span>Request and dispatch management</span>
+            <span><span class="g-cite">2</span>Past case C01</span>
+          </div>
+        </div>
+        </div>
+        <div id="ans-est" class="g-card">
+          <div class="g-eyebrow">Estimate</div>
+          <div id="ans-range">4.3 – 6.4</div>
+          <div class="g-body">hours a week, calculated in code</div>
+          <div id="ans-assume">Assumed: 4 minutes per request with one shared queue</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      const IN = { duration: 0.7, ease: "power3.out" };
+      const range = document.getElementById("ans-range");
+      const counter = { p: 1 };
+      const show = () => {
+        range.textContent = (4.3 * counter.p).toFixed(1) + " – " + (6.4 * counter.p).toFixed(1);
+      };
+      tl.fromTo("#ans-stage", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 0);
+      tl.fromTo(["#ans-eyebrow", "#ans-title"], { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN, stagger: 0.12 }, 0.4);
+      tl.fromTo("#ans-you", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 0.7);
+      tl.fromTo("#ans-card", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 1.0);
+      tl.fromTo("#ans-est", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 1.5);
+      // The range counts up and lands at 2.4 s (soft hit in the root at 22.9 s).
+      tl.fromTo(counter, { p: 0 }, { p: 1, duration: 0.8, ease: "power3.out", onUpdate: show }, 1.6);
+      tl.fromTo("#ans-assume", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 3.0);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

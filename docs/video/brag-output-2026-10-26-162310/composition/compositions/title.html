@@ -1,0 +1,54 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+    }
+    #title-stage {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    #title-mascot {
+      width: 220px;
+      height: 242px;
+    }
+    #title-name {
+      font-family: var(--font-display), serif;
+      font-size: var(--t-hero);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      margin-top: 28px;
+    }
+    #title-lede {
+      font-size: 44px;
+      line-height: 1.3;
+      color: var(--color-ink);
+      margin-top: 28px;
+    }
+    #title-eyebrow {
+      margin-top: 28px;
+    }
+  </style>
+  <div id="root" data-composition-id="title" data-width="1920" data-height="1080">
+    <div id="title-stage" class="g-stage" data-hold>
+      <img id="title-mascot" src="assets/milo-mascot.svg" alt="" />
+      <div id="title-name">MILO</div>
+      <div id="title-lede">A diagnosis assistant for small service businesses.</div>
+      <div id="title-eyebrow" class="g-eyebrow">Maintenance · Printers · Office equipment</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      const IN = { duration: 0.7, ease: "power3.out" };
+      // Mascot is on screen from frame 0 (thumbnail); the rest arrives in order.
+      tl.fromTo("#title-mascot", { opacity: 1, y: 0 }, { opacity: 1, y: 0, duration: 0.01 }, 0);
+      tl.fromTo("#title-name", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 0.3);
+      tl.fromTo("#title-lede", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 0.9);
+      tl.fromTo("#title-eyebrow", { opacity: 0, y: 24 }, { opacity: 1, y: 0, ...IN }, 1.5);
+      window.__timelines["title"] = tl;
+    })();
+  </script>
+</template>
