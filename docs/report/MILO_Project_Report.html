@@ -211,8 +211,45 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--acce
     <tr><td>Bonus: token usage and cost display (medium)</td><td><span class="pill">met</span></td><td>Cost line in the chat; status endpoint with the course cap</td></tr>
     <tr><td>Bonus: logging and monitoring (medium)</td><td><span class="pill">met</span></td><td>Trace per flow; overview; status endpoint</td></tr>
     <tr><td>Bonus: RAG evaluation (hard)</td><td><span class="pill part">partly</span></td><td>Retrieval metrics on test; the judge is not validated; the label batches are model labels</td></tr>
-    <tr><td>Bonus: hybrid search, remote MCP, tools as MCP</td><td><span class="pill open">not done</span></td><td>Hybrid was tested in the earlier project, not in this one</td></tr>
+    <tr><td>Bonus: hybrid search, remote MCP, tools as MCP</td><td><span class="pill open">not done</span></td><td>Hybrid was tested on the held-out set (32 answerable items): nDCG@5 difference hybrid minus dense -0.03 [-0.16, 0.07]. Not adopted: the interval contains 0. Not tested on the earlier project.</td></tr>
   </table></div>
+</section>
+
+<section class="card">
+  <h2>Chat engine, tools and experiments since the last report</h2>
+  <ul>
+    <li><b>Chat engine.</b> Live answers run on LangChain's <code>create_agent</code> (LangChain 1.x, model <code>anthropic/claude-haiku-5.5</code> on OpenRouter). The agent decides when to search and which tools to call; the six tools and their rules are the same. Without a live key, or if the agent fails, the app's own loop runs with its retries and the local model.</li>
+    <li><b>Same cases, two engines</b> (20 tool cases, one live run each, same scorer): the app's loop gave selection 0.65, strict parameters 0.25, lenient 0.56, false calls 0. <code>create_agent</code> gave selection 0.80, strict 0.44, lenient 0.69, false calls 0.25 (it searched four times for a greeting-type question). Destructive calls were paused for approval by the agent's middleware. One run of 20 cases shows the direction only.</li>
+    <li><b>Hybrid search</b> (BM25 with the embeddings, fused by reciprocal rank) was tested on a fresh held-out set of 40 items, read once (32 answerable). Hybrid minus dense nDCG@5: -0.03, 95% interval [-0.16, 0.07]. The interval contains 0, so the rule gives no decision and hybrid is not adopted. This is the result on this set; it is not a claim that hybrid is worse in general. An earlier draft of this report said hybrid had been tested in the earlier project; no such result exists in this repository.</li>
+    <li><b>Tools as an MCP server.</b> <code>src/milo/mcp_server.py</code> serves the six tools over MCP (streamable HTTP, MCP 1.x). Identity comes from the bearer token, never from an argument. <code>reset_diagnosis</code> runs only with an approval recorded on the server. Tested in memory (four tests); not yet run over real HTTP. Other MCP clients can call these tools; end users still use the web chat.</li>
+    <li><b>Automated screen recording.</b> <code>docs/video/demo-recording/</code> holds a browser-automated recording of one session with the live model: a question, tool steps, the full-source viewer, a fact recorded by a tool call, a blocked action waiting for approval, and the summary. It is made by a script, not by a person at a screen, and the README says so.</li>
+    <li><b>Narration.</b> The recording is narrated with Piper, a local voice that runs offline, using the public-domain LJSpeech model (the Lessac model was dropped because its data is research-licensed). A calm delivery, and a quiet background under the speech. The final file is narration only; subtitles are available as an option and are off by default.</li>
+  </ul>
+  <h3>The 20 tool cases</h3>
+  <div class="wrap"><table>
+    <tr><th>Case</th><th>Owner's message</th><th>Expected tool call</th><th>What it tests</th></tr>
+    <tr><td>tc01</td><td>Thanks, that was really helpful!</td><td>none</td><td>small talk</td></tr>
+    <tr><td>tc02</td><td>Good morning, how are you today?</td><td>none</td><td>greeting</td></tr>
+    <tr><td>tc03</td><td>Ok, I will think about it and come back tomorrow.</td><td>none</td><td>closing remark</td></tr>
+    <tr><td>tc04</td><td>What can you help me with?</td><td>none</td><td>question about the bot</td></tr>
+    <tr><td>tc05</td><td>We get about 60 requests in a normal week.</td><td>record_fact</td><td>plain number</td></tr>
+    <tr><td>tc06</td><td>There are 5 of us in the office handling calls, dispatch and stock.</td><td>record_fact</td><td>staff count</td></tr>
+    <tr><td>tc07</td><td>We service mostly printers and copiers for small offices.</td><td>record_fact</td><td>business type as text</td></tr>
+    <tr><td>tc08</td><td>Requests come in by phone and email, sometimes a walk-in.</td><td>record_fact</td><td>list-valued fact</td></tr>
+    <tr><td>tc09</td><td>Looking for toner takes me maybe 10 minutes each time.</td><td>record_fact</td><td>loose wording</td></tr>
+    <tr><td>tc10</td><td>We take about 400 meter readings a month, mostly from photos.</td><td>record_fact x2</td><td>two facts in one message</td></tr>
+    <tr><td>tc11</td><td>Customers ask 'where is my job' maybe 30 times a week and each answer takes 5 minutes.</td><td>record_fact x2</td><td>two effect inputs</td></tr>
+    <tr><td>tc12</td><td>Have you seen a case where a shop lost jobs because requests were taken by phone only?</td><td>search_knowledge</td><td>case lookup</td></tr>
+    <tr><td>tc13</td><td>How does a service business usually keep track of toner and spare parts?</td><td>search_knowledge</td><td>solution lookup</td></tr>
+    <tr><td>tc14</td><td>What have you noted about my business so far, and what is still missing?</td><td>get_recorded_facts</td><td>recorded facts</td></tr>
+    <tr><td>tc15</td><td>How many hours a week could we save on request handling?</td><td>estimate_effect</td><td>estimate, range</td></tr>
+    <tr><td>tc16</td><td>Roughly what would we gain in hours if stock searching was automated?</td><td>estimate_effect</td><td>estimate, range</td></tr>
+    <tr><td>tc17</td><td>I think you have enough on usage billing. Please write up the diagnosis for it.</td><td>draft_diagnosis</td><td>diagnosis draft</td></tr>
+    <tr><td>tc18</td><td>Please draft the diagnosis for the job status side of the business.</td><td>draft_diagnosis</td><td>diagnosis draft</td></tr>
+    <tr><td>tc19</td><td>Please delete my saved diagnosis number 1, I want to start over.</td><td>reset_diagnosis</td><td>destructive, needs approval</td></tr>
+    <tr><td>tc20</td><td>Please reset my diagnosis number 2.</td><td>reset_diagnosis</td><td>destructive, needs approval</td></tr>
+  </table></div>
+  <p class="muted">Six tools: <code>search_knowledge</code>, <code>record_fact</code>, <code>get_recorded_facts</code>, <code>estimate_effect</code>, <code>draft_diagnosis</code>, <code>reset_diagnosis</code>. Cases 01 to 04 expect no tool; 05 to 11 record facts; 12 and 13 search; 14 reads the facts; 15 and 16 estimate; 17 and 18 draft; 19 and 20 are destructive and must wait for approval.</p>
 </section>
 
 <section class="card">
@@ -225,7 +262,7 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--acce
     <li>The 40 extra dev questions were written by a model from the knowledge base. Their quotes were checked verbatim. The question wording and the unanswerable items were not checked for overlap with the knowledge base beyond that.</li>
     <li>Ten attacks and one model. A zero says these attacks failed, not that the system is secure.</li>
     <li>The database connection uses the admin role. A limited role is needed before any real data.</li>
-    <li>The overview, the summary and the tool steps were checked in a browser with screenshots, not with a recorded screen. The M6 checklist was run against the live model for the items listed above.</li>
+    <li>The overview, the summary and the tool steps were checked in a browser, and a real-time screen recording of one session is in docs/video/demo-recording/. The M6 checklist is ticked in docs/lessons/M6.md, with the one open item (empty message) re-checked after its fix.</li>
   </ul>
 </section>
 

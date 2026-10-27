@@ -30,3 +30,20 @@ two labelers following these rules agree closely; agreement is measured, not ass
 - Report Cohen's kappa and raw agreement. Use a fixed rule: a label set is accepted when kappa >= 0.60 and the lower
   end of the 95% bootstrap interval is >= 0.30. If it is not accepted, change the guidelines, not the numbers.
 - Items marked `doubtful` by either labeler are excluded from the agreement figure and reported separately.
+
+## 6. Decision rules for answer labels (added after batch 5)
+These rules were added after the first answer batch, where the two labelers disagreed on 7 of 30 faithfulness labels.
+They make the existing section 3 concrete. They do not change the threshold in section 5.
+
+- **Overstatement:** an answer that strengthens a passage (for example "categorically", "automatically", "a hard
+  constraint", "always") is unsupported when the passage says less. Write the stronger word in your reason.
+- **Claims about the knowledge base:** "the knowledge base has no passage about X" is a claim about the whole knowledge
+  base. With the passages given, judge it against those passages only. With no passages at all, it is unsupported (0),
+  unless the answer is the plain abstention "I do not know" with a request for detail.
+- **Procedures and purposes not in the passages:** a step, a deadline, a reason or a purpose that the passages do not state
+  makes the answer unsupported (0), even if it sounds sensible. The answer may say the passages give no procedure.
+- **Restrictions:** if the passage limits a claim (for example to staff who prepare offers), an answer that drops the
+  limit is unsupported (0).
+- **Cautious wording is fine:** "the passages do not say" and "this is only what the passages support" are not claims.
+- **Relevance is separate:** an answer that addresses the question is relevant even if it is wrong. An answer that only
+  asks for detail, and does not address the question, is not relevant (0).

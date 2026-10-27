@@ -1,0 +1,20 @@
+{"id": "n11", "answerable": 0, "reason": "The passage, \"Do not label contribution margin as net profit\", says nothing about who is attached to a stuck job."}
+{"id": "n05", "answerable": 0, "reason": "The passage, \"OCR confidence never authorizes invoice sending\", does not address merging duplicate requests."}
+{"id": "n12", "answerable": 0, "reason": "The passage, \"The same symptom does not imply the same cause\", says nothing about who owns a conversation."}
+{"id": "n07", "answerable": 0, "reason": "The passage, \"It does not close work without a person\", does not cover customer-held versus own items."}
+{"id": "n09", "answerable": 0, "reason": "The passage, \"A commitment log with the promise\", does not say whether customers must use a website."}
+{"id": "p02", "answerable": 1, "reason": "The passage, \"An approval covers one action\", answers that the approval does not cover the next request."}
+{"id": "n10", "answerable": 0, "reason": "The passage, \"Disconnected or obvious physical faults may bypass remote support\", does not address missing stock."}
+{"id": "n04", "answerable": 0, "reason": "The passage, \"A missing part blocks a visit\", is from C20 and does not address a post-signoff change in C09."}
+{"id": "n08", "answerable": 0, "reason": "The passage, \"Synthetic content can be corrected or replaced\", does not address the scope of an approval."}
+{"id": "p03", "answerable": 1, "reason": "The passage, \"fed from calls, messages and email\", names the contact routes."}
+{"id": "n01", "answerable": 0, "reason": "The passage, \"An approval covers one action\", says nothing about whether a revised invented case becomes real."}
+{"id": "n02", "answerable": 0, "reason": "The passage, \"Collect at least one representative operating cycle before rollout\", does not describe what an effect answer points out."}
+{"id": "n06", "answerable": 0, "reason": "The passage, \"its synthetic origin never changes\", does not address instructions in an article to run a tool."}
+{"id": "n03", "answerable": 0, "reason": "The passage, \"Do not label contribution margin as net profit\", does not address photo reads or invoice sending."}
+{"id": "p01", "answerable": 1, "reason": "The passage, \"Customer-held stock, recorded separately from the business's own stock\", answers how they are treated."}
+{"id": "n15", "answerable": 0, "reason": "The passage, \"A retry with the same movement ID cannot decrement twice\", does not address supplier delivery dates."}
+{"id": "p04", "answerable": 1, "reason": "The passage, \"A session belongs to the signed-in owner who started it\", answers whose account it is."}
+{"id": "n14", "answerable": 0, "reason": "The passage, \"It does not require customers to use a portal\", does not say what is recorded for a promise."}
+{"id": "n13", "answerable": 0, "reason": "The passage, \"A coverage check before a repair or visit is booked\", does not say whether the board can close jobs."}
+{"id": "p05", "answerable": 1, "reason": "The passage, \"A post-signoff configuration change triggers impact review\", answers what follows in C09."}

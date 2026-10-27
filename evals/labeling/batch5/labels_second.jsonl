@@ -1,0 +1,30 @@
+{"id": "a01", "faithful": 1, "relevant": 1, "reason": "Review step and \"only exceptions need a person\" are in the passages; the answer says the passages give no auto-send rule."}
+{"id": "a02", "faithful": 0, "relevant": 1, "reason": "\"requests often arrive by several routes\" generalises one case, and \"I haven't recorded anything\" is not in the passages."}
+{"id": "a03", "faithful": 1, "relevant": 1, "reason": "Quotes C11-R02 \"Do not label contribution margin as net profit\"."}
+{"id": "a04", "faithful": 1, "relevant": 1, "reason": "Each point matches a passage, e.g. \"reveals missing commitment ownership\", and the gap is stated cautiously."}
+{"id": "a05", "faithful": 1, "relevant": 1, "reason": "C14-R03 \"preserving history\" and C13-R03 \"retain revision history\" support it."}
+{"id": "a06", "faithful": 0, "relevant": 1, "reason": "Passage says lead times are \"not supplied\", not \"listed as unverified\"; \"confirm the date directly with the supplier\" is not stated."}
+{"id": "a07", "faithful": 0, "relevant": 1, "reason": "Drops the restriction: passage limits reading to \"Staff ... who prepare offers\", answer says the provider's staff."}
+{"id": "a08", "faithful": 1, "relevant": 1, "reason": "C04-R01 \"physical quantity minus valid reservations at that location\"."}
+{"id": "a09", "faithful": 0, "relevant": 1, "reason": "\"Those measures would give you a baseline\" is a purpose the passages do not state."}
+{"id": "a10", "faithful": 0, "relevant": 1, "reason": "\"without checking any specific tasks\" conflicts with \"Available equipment checked\"; \"doesn't show which required checks were covered\" is not in [2]."}
+{"id": "a11", "faithful": 0, "relevant": 1, "reason": "Misreads C08-Q03: \"rather than running an unbounded extra stage\" is not what the passage says."}
+{"id": "a12", "faithful": 1, "relevant": 1, "reason": "\"0.8 times ... 1.2 times it, unless the owner gave a range\"."}
+{"id": "a13", "faithful": 0, "relevant": 1, "reason": "\"Not automatically\" is a firm claim the passages do not make; they only describe reminders."}
+{"id": "a14", "faithful": 1, "relevant": 1, "reason": "States the passages do not say, and related points match C10-AT03 \"follow-up rather than fabricated completion\"."}
+{"id": "a15", "faithful": 0, "relevant": 1, "reason": "Passage says \"Assignment time was mistaken for an agreed arrival time\", not that a complaint was; the checking steps are not stated."}
+{"id": "a16", "faithful": 0, "relevant": 1, "reason": "\"closed as 'unable to reproduce, monitoring'\" is a procedure the passages do not give."}
+{"id": "a17", "faithful": 0, "relevant": 1, "reason": "\"Names the inputs it used\" and \"States the assumption\" are not things the passages say the answer points out."}
+{"id": "a18", "faithful": 0, "relevant": 1, "reason": "\"a hard constraint\" overstates \"take precedence over distance\"."}
+{"id": "a19", "faithful": 1, "relevant": 1, "reason": "\"An approval covers one action. It does not carry over to a later request\"."}
+{"id": "a20", "faithful": 1, "relevant": 1, "reason": "Lists C01-R01 to R04, e.g. \"Never merge solely on school name or textual similarity\"."}
+{"id": "a21", "faithful": 0, "relevant": 1, "reason": "\"so the customer's agreed slot isn't lost\" adds a purpose to C02-R04 that the passage does not state."}
+{"id": "a22", "faithful": 1, "relevant": 1, "reason": "C09-R02 \"post-signoff configuration change triggers impact review\"."}
+{"id": "a23", "faithful": 0, "relevant": 1, "reason": "No passages, yet claims \"found no facts stored for you\" and tool limits."}
+{"id": "a24", "faithful": 1, "relevant": 1, "reason": "Describes \"figures that are ready to check\" and says no passage states automatic sending."}
+{"id": "a25", "faithful": 0, "relevant": 1, "reason": "\"I haven't recorded anything about your business yet\" and the offer to draft a diagnosis are not in the passages."}
+{"id": "a26", "faithful": 1, "relevant": 0, "reason": "Plain abstention \"I do not know\" with a request for detail; it does not address the question."}
+{"id": "a27", "faithful": 1, "relevant": 1, "reason": "\"marks unknowns explicitly instead of filling them with a guess\" and the stop rule match."}
+{"id": "a28", "faithful": 0, "relevant": 1, "reason": "\"so they can be reused\" is a purpose not stated, and \"no recorded facts yet\" is not in the passages."}
+{"id": "a29", "faithful": 1, "relevant": 1, "reason": "C06-R01 \"cannot silently become a billable authorization\" and C06-Q03 \"Unknown is different from excluded\"."}
+{"id": "a30", "faithful": 1, "relevant": 1, "reason": "C16-R01 \"Do not collect patient records for routine IT triage\"."}

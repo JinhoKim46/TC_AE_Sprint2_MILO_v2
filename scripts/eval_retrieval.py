@@ -52,6 +52,31 @@ def load_chunks():
 ACCESS_LOG = ROOT / "evals" / "results" / "test_access.log"
 
 
+HELDOUT = (
+    ROOT / "data" / "gold_heldout.jsonl"
+)  # a fresh set, written after the dev and test sets; read once
+HELDOUT_LOG = ROOT / "evals" / "results" / "retrieval" / "heldout_access.log"
+
+
+def read_heldout_once() -> list[dict]:
+    """The held-out rows. Read once: the read is logged, and a second read is refused."""
+    reads = (
+        HELDOUT_LOG.read_text().count("read heldout split")
+        if HELDOUT_LOG.exists()
+        else 0
+    )
+    if reads >= 1 and os.environ.get("MILO_HELDOUT_REREAD") != "1":
+        raise SystemExit(
+            "the held-out split was already read once; see " + str(HELDOUT_LOG)
+        )
+    HELDOUT_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with HELDOUT_LOG.open("a") as f:
+        f.write(
+            f"read heldout split by eval_retrieval at {datetime.now().isoformat(timespec='seconds')}\n"
+        )
+    return [json.loads(x) for x in HELDOUT.read_text().splitlines() if x.strip()]
+
+
 def split_rows(split: str) -> list[dict]:
     """The rows of one split. The test split is read once: every read is logged, and a second read is refused."""
     if split == "test":

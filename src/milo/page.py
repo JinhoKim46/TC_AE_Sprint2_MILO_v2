@@ -715,7 +715,12 @@ PAGE = (
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const q = input.value.trim();
-    if (!q || busy) return;
+    if (!q) {
+      working.textContent = "Type a question first.";
+      setTimeout(() => { if (working.textContent === "Type a question first.") working.textContent = ""; }, 2500);
+      return;
+    }
+    if (busy) return;
     input.value = "";
     autosize();
     ask(q);

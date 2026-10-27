@@ -1,0 +1,266 @@
+{
+  "split": "heldout",
+  "n": 32,
+  "summary": {
+    "dense": {
+      "recall5": 0.7812,
+      "recall5_ci": [
+        0.625,
+        0.9062
+      ],
+      "ndcg5": 0.5979
+    },
+    "bm25": {
+      "recall5": 0.4375,
+      "recall5_ci": [
+        0.25,
+        0.5938
+      ],
+      "ndcg5": 0.3427
+    },
+    "hybrid": {
+      "recall5": 0.6562,
+      "recall5_ci": [
+        0.4688,
+        0.8125
+      ],
+      "ndcg5": 0.5644
+    }
+  },
+  "hybrid_minus_dense_ndcg5": {
+    "mean": -0.0335,
+    "ci": [
+      -0.1581,
+      0.0699
+    ]
+  },
+  "decision": "no decision: the interval contains 0",
+  "rrf_k": 60,
+  "pool": 50,
+  "rows": [
+    {
+      "qid": "h01",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h02",
+      "type": "paraphrase",
+      "dense": null,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h03",
+      "type": "paraphrase",
+      "dense": 2,
+      "bm25": 4,
+      "hybrid": 1
+    },
+    {
+      "qid": "h04",
+      "type": "paraphrase",
+      "dense": null,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h05",
+      "type": "paraphrase",
+      "dense": null,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h06",
+      "type": "paraphrase",
+      "dense": null,
+      "bm25": null,
+      "hybrid": 3
+    },
+    {
+      "qid": "h07",
+      "type": "paraphrase",
+      "dense": 3,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "qid": "h08",
+      "type": "paraphrase",
+      "dense": null,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h09",
+      "type": "paraphrase",
+      "dense": null,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h10",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "qid": "h11",
+      "type": "paraphrase",
+      "dense": 4,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h12",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": null,
+      "hybrid": 1
+    },
+    {
+      "qid": "h13",
+      "type": "paraphrase",
+      "dense": 4,
+      "bm25": null,
+      "hybrid": 4
+    },
+    {
+      "qid": "h14",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": null,
+      "hybrid": 1
+    },
+    {
+      "qid": "h15",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": null,
+      "hybrid": 2
+    },
+    {
+      "qid": "h16",
+      "type": "paraphrase",
+      "dense": null,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h17",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "qid": "h18",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": 5,
+      "hybrid": 1
+    },
+    {
+      "qid": "h19",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": null,
+      "hybrid": 3
+    },
+    {
+      "qid": "h20",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "qid": "h21",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "qid": "h22",
+      "type": "paraphrase",
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "qid": "h23",
+      "type": "paraphrase",
+      "dense": 3,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h24",
+      "type": "paraphrase",
+      "dense": 4,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h25",
+      "type": "identifier",
+      "dense": 2,
+      "bm25": null,
+      "hybrid": null
+    },
+    {
+      "qid": "h26",
+      "type": "identifier",
+      "dense": 2,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "qid": "h27",
+      "type": "identifier",
+      "dense": 1,
+      "bm25": 2,
+      "hybrid": 1
+    },
+    {
+      "qid": "h28",
+      "type": "identifier",
+      "dense": 3,
+      "bm25": 3,
+      "hybrid": 1
+    },
+    {
+      "qid": "h29",
+      "type": "identifier",
+      "dense": 2,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "qid": "h30",
+      "type": "identifier",
+      "dense": 4,
+      "bm25": 5,
+      "hybrid": 3
+    },
+    {
+      "qid": "h31",
+      "type": "identifier",
+      "dense": 1,
+      "bm25": 2,
+      "hybrid": 1
+    },
+    {
+      "qid": "h32",
+      "type": "identifier",
+      "dense": 5,
+      "bm25": null,
+      "hybrid": 3
+    }
+  ]
+}

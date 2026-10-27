@@ -1,0 +1,23 @@
+{
+  "batch": "batch5",
+  "n": 30,
+  "labels": "faithful and relevant",
+  "faithful": {
+    "agreement": 0.767,
+    "kappa": 0.507,
+    "kappa_ci_95": [
+      0.171,
+      0.798
+    ],
+    "rule_passed": false
+  },
+  "relevant": {
+    "agreement": 0.967,
+    "kappa": 0.0,
+    "kappa_ci_95": [
+      0.0,
+      1.0
+    ],
+    "rule_passed": false
+  }
+}
