@@ -1,0 +1,22 @@
+{
+  "batch": "batch5 (revised guidelines, section 6)",
+  "n": 30,
+  "faithful": {
+    "agreement": 0.933,
+    "kappa": 0.867,
+    "kappa_ci_95": [
+      0.667,
+      1.0
+    ],
+    "rule_passed": true
+  },
+  "relevant": {
+    "agreement": 1.0,
+    "kappa": 1.0,
+    "kappa_ci_95": [
+      1.0,
+      1.0
+    ],
+    "rule_passed": true
+  }
+}
