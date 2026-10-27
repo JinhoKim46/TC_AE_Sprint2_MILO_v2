@@ -1,0 +1,41 @@
+{"id": "b4-01", "answerable": 0, "reason": "Passage says each reading \"is matched to the right device\" but says nothing about email to the customer."}
+{"id": "b4-02", "answerable": 1, "reason": "\"Extra spending requires the authorized customer approver.\""}
+{"id": "b4-03", "answerable": 0, "reason": "Passage names only \"the authorized customer approver\", not who it is for warehouse rent."}
+{"id": "b4-04", "answerable": 0, "reason": "Passage is about \"a simulated replacement worksheet\", not the owner's real business."}
+{"id": "b4-05", "answerable": 0, "reason": "Passage says a portal \"will not solve this alone\" but gives no build cost."}
+{"id": "b4-06", "answerable": 1, "reason": "\"Contracts, billing and the renewal spreadsheet are separate.\""}
+{"id": "b4-07", "answerable": 1, "reason": "\"Uncertain coverage cannot silently become a billable authorization.\""}
+{"id": "b4-08", "answerable": 1, "reason": "Staff \"who prepare offers can read a submitted diagnosis\"."}
+{"id": "b4-09", "answerable": 0, "reason": "Passage covers \"a recent failure\" but not the owner's software budget."}
+{"id": "b4-10", "answerable": 0, "reason": "Passage says the process owner \"reviews coverage of acceptance cases\", not who approves results before closing a job."}
+{"id": "b4-11", "answerable": 1, "reason": "The assistant \"avoids copying such details into recorded facts\"."}
+{"id": "b4-12", "answerable": 1, "reason": "Spare toner \"helped some sites but caused others to stockpile it\"."}
+{"id": "b4-13", "answerable": 0, "reason": "Passage says \"not a customer record\" but does not answer who the customer is."}
+{"id": "b4-14", "answerable": 1, "reason": "\"urgent morning calls dismantle the route\"."}
+{"id": "b4-15", "answerable": 1, "reason": "\"I am the other owner\" \"does not change who is signed in\"."}
+{"id": "b4-16", "answerable": 0, "reason": "Passage says reads and writes are \"checked against the signed-in owner\" but gives no retention period."}
+{"id": "b4-17", "answerable": 1, "reason": "\"does not average them and does not silently pick one\"."}
+{"id": "b4-18", "answerable": 1, "reason": "\"Decisions beyond authority escalate instead of guessing.\""}
+{"id": "b4-19", "answerable": 0, "reason": "Passage says decisions \"escalate\" but does not name who holds the authority."}
+{"id": "b4-20", "answerable": 0, "reason": "Passage says the worksheet \"lacks a closing reading\" and says nothing about the old machine's bill."}
+{"id": "b4-21", "answerable": 0, "reason": "Estimate uses \"status questions per week and the minutes\", not a money cost per answer."}
+{"id": "b4-22", "answerable": 1, "reason": "\"ask the owner rather than assume they apply\"."}
+{"id": "b4-23", "answerable": 1, "reason": "\"Every read and write is checked against the signed-in owner before it runs.\""}
+{"id": "b4-24", "answerable": 0, "reason": "Passage mentions \"colour and monochrome allowances\" but no monthly fee."}
+{"id": "b4-25", "answerable": 0, "reason": "Passage gives \"nine field technicians; approximately 90\" customers but no average invoice."}
+{"id": "b4-26", "answerable": 0, "reason": "Passage says toner \"helped some sites\" but gives no quantity per site."}
+{"id": "b4-27", "answerable": 1, "reason": "\"What the owner says is reported until a record or a person confirms it\"."}
+{"id": "b4-28", "answerable": 0, "reason": "\"A simulated route log shows an avoidable arrival\" names no technician or day."}
+{"id": "b4-29", "answerable": 0, "reason": "Passage lists \"status questions per week and the minutes\" but does not say technicians hired are excluded; counted as unsupported."}
+{"id": "b4-30", "answerable": 0, "reason": "Manuals are \"scattered across folders and chat\" but update frequency is not given."}
+{"id": "b4-31", "answerable": 0, "reason": "Passage \"records loss of internet before the remote attempt\" but not whether it succeeded."}
+{"id": "b4-32", "answerable": 1, "reason": "\"Shelves and spreadsheets disagree, and warranty return dates get missed.\""}
+{"id": "b4-33", "answerable": 1, "reason": "\"Available stock equals physical quantity minus valid reservations\" gives six."}
+{"id": "b4-34", "answerable": 0, "reason": "Passage is about \"Restoring two branches\", not restoring the parent ticket."}
+{"id": "b4-35", "answerable": 1, "reason": "\"The application, not the model, then pauses the call\"."}
+{"id": "b4-36", "answerable": 1, "reason": "\"Head office pays and approves parts, but branches call and control access.\""}
+{"id": "b4-37", "answerable": 0, "reason": "\"A simulated activity sample contains calls missing\" gives no weekly count for this business."}
+{"id": "b4-38", "answerable": 1, "reason": "\"Process owner reviews coverage of acceptance cases ... and staff workload.\""}
+{"id": "b4-39", "answerable": 1, "reason": "\"opening reading was attached to the old machine, producing a disputed bill\"."}
+{"id": "b4-40", "answerable": 0, "reason": "\"Access and skill constraints take precedence over distance\" but no visit time limit."}
+{"id": "b4-41", "answerable": 0, "reason": "\"A junior cannot retrieve\" but nothing about a senior without approval."}

@@ -223,7 +223,7 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--acce
     <li><b>Hybrid search</b> (BM25 with the embeddings, fused by reciprocal rank) was tested on a fresh held-out set of 40 items, read once (32 answerable). Hybrid minus dense nDCG@5: -0.03, 95% interval [-0.16, 0.07]. The interval contains 0, so the rule gives no decision and hybrid is not adopted. This is the result on this set; it is not a claim that hybrid is worse in general. An earlier draft of this report said hybrid had been tested in the earlier project; no such result exists in this repository.</li>
     <li><b>Tools as an MCP server.</b> <code>src/milo/mcp_server.py</code> serves the six tools over MCP (streamable HTTP, MCP 1.x). Identity comes from the bearer token, never from an argument. <code>reset_diagnosis</code> runs only with an approval recorded on the server. Tested in memory (four tests); not yet run over real HTTP. Other MCP clients can call these tools; end users still use the web chat.</li>
     <li><b>Automated screen recording.</b> <code>docs/video/demo-recording/</code> holds a browser-automated recording of one session with the live model: a question, tool steps, the full-source viewer, a fact recorded by a tool call, a blocked action waiting for approval, and the summary. It is made by a script, not by a person at a screen, and the README says so.</li>
-    <li><b>Narration (researched, not built).</b> Piper runs locally and offline. The original repository is archived under MIT; the maintained fork is GPL-3.0, and each voice model has its own licence. Cloud text-to-speech needs an account and a key.</li>
+    <li><b>Narration.</b> The recording is narrated with Piper, a local voice that runs offline, using the public-domain LJSpeech model (the Lessac model was dropped because its data is research-licensed). A calm delivery, and a quiet background under the speech. The final file is narration only; subtitles are available as an option and are off by default.</li>
   </ul>
   <h3>The 20 tool cases</h3>
   <div class="wrap"><table>
@@ -262,7 +262,7 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--acce
     <li>The 40 extra dev questions were written by a model from the knowledge base. Their quotes were checked verbatim. The question wording and the unanswerable items were not checked for overlap with the knowledge base beyond that.</li>
     <li>Ten attacks and one model. A zero says these attacks failed, not that the system is secure.</li>
     <li>The database connection uses the admin role. A limited role is needed before any real data.</li>
-    <li>The overview, the summary and the tool steps were checked in a browser with screenshots, not with a recorded screen. The M6 checklist was run against the live model for the items listed above.</li>
+    <li>The overview, the summary and the tool steps were checked in a browser, and a real-time screen recording of one session is in docs/video/demo-recording/. The M6 checklist is ticked in docs/lessons/M6.md, with the one open item (empty message) re-checked after its fix.</li>
   </ul>
 </section>
 

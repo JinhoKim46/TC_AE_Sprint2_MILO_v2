@@ -1,0 +1,41 @@
+{"id": "b4-01", "answerable": 0, "reason": "The passage says each reading is \"matched to the right device and agreement\" but does not say whether it is emailed to the customer."}
+{"id": "b4-02", "answerable": 1, "reason": "Extra spending requires \"the authorized customer approver\", identifying who must sign off."}
+{"id": "b4-03", "answerable": 0, "reason": "The passage names the role \"authorized customer approver\" without identifying who approves warehouse rent."}
+{"id": "b4-04", "answerable": 0, "reason": "The evidence concerns \"A simulated replacement worksheet\", not actual worksheets from the owner's business last month."}
+{"id": "b4-05", "answerable": 0, "reason": "The statement \"Customers will keep calling\" answers the portal's effect but gives no cost to build it."}
+{"id": "b4-06", "answerable": 1, "reason": "The statement \"Contracts, billing and the renewal spreadsheet are separate\" answers no."}
+{"id": "b4-07", "answerable": 1, "reason": "Uncertain coverage \"cannot silently become a billable authorization\", ruling out silently charging the visit."}
+{"id": "b4-08", "answerable": 1, "reason": "Staff who prepare offers \"can read a submitted diagnosis\", answering yes."}
+{"id": "b4-09", "answerable": 0, "reason": "The assistant asks about \"a recent normal event and a recent failure\", but the passage does not address the software budget."}
+{"id": "b4-10", "answerable": 0, "reason": "The passage says the process owner \"reviews coverage of acceptance cases\", not who approves final results before job closure."}
+{"id": "b4-11", "answerable": 1, "reason": "The assistant \"leaves the personal details out\" of recorded facts, answering no."}
+{"id": "b4-12", "answerable": 1, "reason": "Spare toner \"helped some sites but caused others to stockpile it\", showing that it did not always work well."}
+{"id": "b4-13", "answerable": 0, "reason": "The passage says \"not a customer record\" but does not identify a customer, leaving that part unanswered."}
+{"id": "b4-14", "answerable": 1, "reason": "The statement \"urgent morning calls dismantle the route\" shows that the planned route does not survive."}
+{"id": "b4-15", "answerable": 1, "reason": "The identity claim \"does not change who is signed in\", answering no."}
+{"id": "b4-16", "answerable": 0, "reason": "Each read and write is \"checked against the signed-in owner\", but no audit-log retention period is stated."}
+{"id": "b4-17", "answerable": 1, "reason": "The assistant \"does not average them and does not silently pick one\", rejecting both options."}
+{"id": "b4-18", "answerable": 1, "reason": "Decisions beyond authority \"escalate instead of guessing\", specifying the required response."}
+{"id": "b4-19", "answerable": 0, "reason": "The instruction to \"escalate instead of guessing\" does not identify who has approval authority."}
+{"id": "b4-20", "answerable": 0, "reason": "The worksheet \"lacks a closing reading\", which does not establish whether the opening reading is missing or what the old machine's bill says."}
+{"id": "b4-21", "answerable": 0, "reason": "The estimate uses \"status questions per week\" and time per answer, but no monetary cost is given."}
+{"id": "b4-22", "answerable": 1, "reason": "The instruction \"ask the owner rather than assume they apply\" rules out applying the fictional examples without checking."}
+{"id": "b4-23", "answerable": 1, "reason": "Every read is \"checked against the signed-in owner\", so merely naming another owner's ID does not authorize access."}
+{"id": "b4-24", "answerable": 0, "reason": "The calculation includes \"colour and monochrome allowances\", but the monthly fee is not stated."}
+{"id": "b4-25", "answerable": 0, "reason": "The passage gives \"nine field technicians\" and approximately 90 customers but no average monthly invoice amount."}
+{"id": "b4-26", "answerable": 0, "reason": "Spare toner \"caused others to stockpile it\", but no recommended quantity per site is given."}
+{"id": "b4-27", "answerable": 1, "reason": "What the owner says is \"reported until a record or a person confirms it\", so it is not immediately treated as proven."}
+{"id": "b4-28", "answerable": 0, "reason": "The passage describes \"A simulated route log\" without identifying a technician or a Monday incident."}
+{"id": "b4-29", "answerable": 0, "reason": "The stated inputs are \"status questions per week\" and answer time, but the passage does not establish whether technician hiring is also an input."}
+{"id": "b4-30", "answerable": 0, "reason": "Manuals are \"scattered across folders and chat\", but their update frequency is not stated."}
+{"id": "b4-31", "answerable": 0, "reason": "The call records \"loss of internet before the remote attempt\", but the attempt's outcome is not stated."}
+{"id": "b4-32", "answerable": 0, "reason": "The passage reports \"Shelves and spreadsheets disagree\" alongside missed return dates without establishing the cause of those missed dates."}
+{"id": "b4-33", "answerable": 1, "reason": "Applying \"physical quantity minus valid reservations\" gives ten minus four, leaving six available."}
+{"id": "b4-34", "answerable": 0, "reason": "The passage says \"Restoring two branches leaves the third child ticket open\" but does not state what restoring the parent ticket does."}
+{"id": "b4-35", "answerable": 1, "reason": "The passage assigns control to \"The application, not the model\" and requires explicit approval before the call runs."}
+{"id": "b4-36", "answerable": 1, "reason": "The passage says \"Head office pays and approves parts\" and \"branches call and control access\", answering both parts."}
+{"id": "b4-37", "answerable": 0, "reason": "The simulated sample \"contains calls missing from tickets\", but no weekly count is provided."}
+{"id": "b4-38", "answerable": 1, "reason": "The \"Process owner reviews\" both acceptance-case coverage and staff workload, identifying who checks them."}
+{"id": "b4-39", "answerable": 1, "reason": "The replacement's opening reading \"was attached to the old machine, producing a disputed bill\", explaining the dispute."}
+{"id": "b4-40", "answerable": 0, "reason": "The passage says \"Access and skill constraints take precedence over distance\" but gives no visit time limit."}
+{"id": "b4-41", "answerable": 0, "reason": "The rule says \"A junior cannot retrieve another customer's restricted configuration\" but does not address senior access without approval."}
