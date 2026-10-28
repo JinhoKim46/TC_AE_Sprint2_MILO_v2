@@ -1,7 +1,7 @@
 # Location of the project kit (override with KIT_SRC=<path>).
 KIT_SRC ?= ../../../project-kit
 
-.PHONY: check lint test kit-sync contract eval-retrieval eval-retrieval-replay eval-advanced eval-advanced-replay eval-tools-selftest eval-tools-live eval-test-replay
+.PHONY: up check lint test kit-sync contract eval-retrieval eval-retrieval-replay eval-advanced eval-advanced-replay eval-tools-selftest eval-tools-live eval-test-replay
 
 check: lint test
 
@@ -47,3 +47,8 @@ eval-tools-live:
 # M7: replay of the single logged test read (no model call). The test split is not run again.
 eval-test-replay:
 	uv run python scripts/eval_retrieval.py --replay evals/results/retrieval/test_gemini.json
+
+# Run the web app locally on http://127.0.0.1:5000 with the live model and PostgreSQL. Reads .env (see .env.example).
+up:
+	@test -f .env || (echo "No .env yet: copy .env.example to .env and fill it in." && exit 1)
+	set -a; . ./.env; set +a; MILO_LIVE=1 MILO_STORE=postgres uv run python -m milo.serve

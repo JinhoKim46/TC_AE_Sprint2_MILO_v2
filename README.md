@@ -93,10 +93,10 @@ make check              # lint, format check and the offline test suite (no netw
 make contract           # the course's contract suite against milo.app:build_app
 ```
 
-Run the web app:
+Run the web app locally (live model and PostgreSQL), then open http://127.0.0.1:5000:
 
 ```bash
-MILO_LIVE=1 MILO_STORE=postgres uv run python -m milo.serve   # then open http://127.0.0.1:5000
+make up                 # reads .env, then starts milo.serve on 127.0.0.1:5000
 ```
 
 Copy `.env.example` to `.env` and fill in the names it lists. Never commit `.env`.
