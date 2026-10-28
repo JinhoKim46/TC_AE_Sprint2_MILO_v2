@@ -93,22 +93,32 @@ make check              # lint, format check and the offline test suite (no netw
 make contract           # the course's contract suite against milo.app:build_app
 ```
 
-Run the web app:
+Run the web app locally (live model and PostgreSQL), then open http://127.0.0.1:5000:
 
 ```bash
-MILO_LIVE=1 MILO_STORE=postgres uv run python -m milo.serve   # then open http://127.0.0.1:5000
+make up                 # reads .env, then starts milo.serve on 127.0.0.1:5000
 ```
 
-Copy `.env.example` to `.env` and fill in the names it lists. Never commit `.env`.
+Before the first run, copy `.env.example` to `.env` and fill in the required values. Never commit `.env`.
 
-| Variable | Purpose |
-|---|---|
-| `OPENROUTER_API_KEY` | Key for the chat model and the embeddings (live mode only). |
-| `MILO_LIVE` | `1` enables paid model calls. Without it, nothing spends. |
-| `MILO_CHAT_MODEL` | Chat model on OpenRouter (default `anthropic/claude-haiku-5.5`). |
-| `MILO_STORE` | `memory` (default) or `postgres`. |
-| `MILO_DATABASE_URL` | PostgreSQL connection string, used when `MILO_STORE=postgres`. |
-| `MILO_SECRET_KEY` | Signs the session cookie. |
+| Variable | Required | Purpose |
+|---|---|---|
+| `OPENROUTER_API_KEY` | live mode | Key for the chat model and the embeddings on OpenRouter. |
+| `MILO_DATABASE_URL` | with `MILO_STORE=postgres` | PostgreSQL connection string (a Supabase session pooler works). |
+| `MILO_SECRET_KEY` | yes | Signs the session cookie. Use a long random string. |
+| `MILO_LIVE` | set by `make up` | `1` enables paid model calls. Without it nothing spends. |
+| `MILO_STORE` | set by `make up` | `memory` (default) or `postgres`. |
+| `MILO_CHAT_MODEL` | optional | Chat model on OpenRouter (default `anthropic/claude-haiku-5.5`). |
+| `MILO_PRICE_IN`, `MILO_PRICE_OUT` | optional | USD per million tokens for the cost line (defaults are in code). |
+| `MILO_LOCAL_MODEL` | optional | Local fallback model on Ollama (default `qwen3:8b`). |
+| `MILO_ENGINE` | optional | `agent` (`create_agent`, the default when live) or `loop` (the app's own loop). |
+| `MILO_MCP_TOKENS` | MCP server only | JSON object of bearer token to owner id, for `milo.mcp_server`. |
+| `MILO_DEMO_PASSWORD` | demo only | Password of the throwaway account in `scripts/demo_server.py`. |
+| `JUDGE_MODEL` | experiments only | Judge model for the LLM-judge experiment. |
+| `MILO_TEST_REREAD`, `MILO_HELDOUT_REREAD` | never set | Allow a second read of the test or held-out split (each read is logged). |
+| `MILO_DB_TESTS` | tests only | Run the database tests against `MILO_DATABASE_URL`. |
+
+`.env.example` lists the same names with comments. Copy it to `.env` and fill in the required values.
 
 ## Results at a glance
 
